@@ -114,4 +114,13 @@ Before pushing:
 3. Run `git add -u` to stage modified/deleted files.
 4. Run `git commit -m "chore: sync changes"`.
 
+### 🌱 First‑Commit Ritual
+When you make your first commit to Vauntico, run this message in your commit body:
+
+"I join the Vauntico legacy — building with clarity, peace, love, abundance, and humor."
+
+This ritual marks your entry into the movement and connects your work to the story we are building together.
+
+---
+
 Thank you for contributing to Vauntico! 🎉

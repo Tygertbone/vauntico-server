@@ -1,4 +1,9 @@
 #!/bin/sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+if git diff --cached --name-only | grep -E '\.env|\.log|dist/|build/'; then
+  echo "⚠️ Warning: You are trying to commit ignored files!"
+  exit 1
+fi
+
 npm run lint && npm run tsc:check

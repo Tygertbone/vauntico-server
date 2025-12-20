@@ -103,4 +103,15 @@ pnpm test:e2e
 - Join our Discord for discussions
 - Email hello@vauntico.com for sensitive matters
 
+---
+
+### Pre‑Push Checklist
+Before pushing:
+1. Run `git status` to check U/M/D files.
+2. If you see untracked files:
+   - Add them if they belong in source/docs/config.
+   - Ignore them if they are logs, builds, or secrets.
+3. Run `git add -u` to stage modified/deleted files.
+4. Run `git commit -m "chore: sync changes"`.
+
 Thank you for contributing to Vauntico! 🎉

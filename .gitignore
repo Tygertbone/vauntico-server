@@ -1,0 +1,57 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Logs and reports
+*.log
+*.txt
+*.out
+*.err
+
+# OS / Editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+*.bak
+
+# IDE / Workspace
+.vscode/
+*.code-workspace
+.idea/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Coverage / testing
+coverage/
+*.lcov
+
+# Public assets (if generated)
+public/
+
+# Temporary / experimental dirs
+homepage-redesign/
+vault-landing/
+vauntico-fulfillment-engine-temp/
+vauntico-rebirth/
+vauntico-vault-landing/
+
+# Misc
+scripts/
+tests/
+docs/

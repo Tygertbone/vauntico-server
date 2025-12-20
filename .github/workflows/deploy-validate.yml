@@ -1,0 +1,64 @@
+name: Deploy and Validate
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: Run ESLint security rules
+        run: |
+          cd server-v2
+          npm run lint
+        continue-on-error: true
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: security-scan
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy to Vercel
+        id: vercel
+        run: echo "url=$(vercel --prod --yes --confirm --token=${{ secrets.VERCEL_TOKEN }})" >> $GITHUB_OUTPUT
+
+      - name: Wait for domain propagation
+        run: sleep 30
+
+      - name: Validate Endpoints
+        run: ./server-v2/validate-endpoints.sh https://api.vauntico.com
+
+      - name: Validate Vercel deployment
+        run: ./server-v2/validate-endpoints.sh ${{ steps.vercel.outputs.url }}

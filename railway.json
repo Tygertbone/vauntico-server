@@ -6,16 +6,8 @@
   },
   "deploy": {
     "runtime": "V2",
-    "numReplicas": 1,
     "startCommand": "npm run start",
     "healthcheckPath": "/health",
-    "sleepApplication": false,
-    "useLegacyStacker": false,
-    "multiRegionConfig": {
-      "us-east4-eqdc4a": {
-        "numReplicas": 1
-      }
-    },
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }

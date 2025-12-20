@@ -1,9 +1,9 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "npm install && npm run build"
+buildCommand = "cd server-v2 && npm install --omit=dev && npm run build"
 
 [deploy]
-startCommand = "npm start"
+startCommand = "cd server-v2 && node dist/index.js"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
@@ -11,4 +11,3 @@ restartPolicyMaxRetries = 10
 
 [environments.production]
 NODE_ENV = "production"
-PORT = "8080"

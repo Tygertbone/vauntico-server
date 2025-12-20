@@ -2,14 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import { sendSlackAlert } from '../utils/slack-alerts';
 import { securityMonitor, SecurityEventType } from './security';
 
-declare global {
-  namespace Express {
-    interface Request {
-      requestId?: string;
-    }
-  }
-}
-
 // Custom error classes for structured error handling
 export class ValidationError extends Error {
   constructor(message: string, public field?: string) {

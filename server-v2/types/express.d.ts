@@ -1,20 +1,7 @@
-import { JWTPayload } from "../src/auth/tokens";
+import 'express';
 
-export interface User {
-  id: string;
-  email: string;
-  firstName?: string;
-  lastName?: string;
-  subscriptionTier: string;
-  iat?: number;
-  exp?: number;
-}
-
-declare global {
-  namespace Express {
-    interface Request {
-      user?: JWTPayload;
-      requestId?: string;
-    }
+declare module 'express-serve-static-core' {
+  interface Request {
+    requestId?: string;
   }
 }

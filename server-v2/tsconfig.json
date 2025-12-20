@@ -14,7 +14,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "types": ["node", "express"],
-    "typeRoots": ["./src/types", "./node_modules/@types"],
+    "typeRoots": ["./types", "./node_modules/@types"],
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "declaration": false,
@@ -39,6 +39,7 @@
   },
   "include": [
     "src/**/*",
+    "types/**/*",
     "scripts/**/*",
     "__tests__/**/*"
   ],

@@ -1,6 +1,6 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "cd server-v2 && npm install --omit=dev && npm run build"
+buildCommand = "cd server-v2 && npm ci --omit=dev && npm run build"
 
 [deploy]
 startCommand = "cd server-v2 && node dist/index.js"

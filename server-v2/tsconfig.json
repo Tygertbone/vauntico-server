@@ -27,6 +27,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "baseUrl": ".",
+    "typeRoots": ["./src/types", "./node_modules/@types"],
     "paths": {
       "@/*": ["src/*"],
       "@/routes/*": ["src/routes/*"],
@@ -44,7 +45,6 @@
     "node_modules",
     "dist",
     "*.js",
-    "src/services/featureUsageService.ts",
-    "src/middleware/errorHandler.ts"
+    "src/services/featureUsageService.ts"
   ]
 }

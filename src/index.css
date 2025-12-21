@@ -1,6 +1,7 @@
 ﻿@import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import './styles/sacred-animations.css';
 
 /* Base styles */
 * {
@@ -73,11 +74,30 @@ body {
 
 /* Button styles */
 .btn-primary {
-  @apply bg-vault-gradient text-white font-bold py-2 px-4 rounded-lg hover:shadow-lg transition-all duration-300;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .btn-secondary {
-  @apply border-2 border-vault-purple text-vault-purple font-bold py-2 px-4 rounded-lg hover:bg-vault-purple hover:text-white transition-all duration-300;
+  border: 2px solid #7c3aed;
+  color: #7c3aed;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #7c3aed;
+  color: white;
 }
 
 /* Component utilities */

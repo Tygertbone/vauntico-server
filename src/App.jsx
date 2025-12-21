@@ -3,6 +3,7 @@ import { useState, lazy, Suspense } from 'react'
 import ErrorBoundary from './components/ErrorBoundary'
 import LoadingSpinner from './components/LoadingSpinner'
 import { FullLogo } from './components/Logo'
+import ThemeToggle from './components/ThemeToggle'
 
 // Eager load homepage (critical)
 import Home from './pages/Home'
@@ -24,6 +25,12 @@ const Ascend = lazy(() => import('./pages/Ascend'))
 const About = lazy(() => import('./pages/About'))
 const Philosophy = lazy(() => import('./pages/Philosophy'))
 const Referrals = lazy(() => import('./pages/Referrals'))
+
+// New sacred pages
+const LegacyTree = lazy(() => import('./pages/LegacyTree'))
+const CodeSanctification = lazy(() => import('./pages/CodeSanctification'))
+const UbuntuEchoChamber = lazy(() => import('./pages/UbuntuEchoChamber'))
+const LoveLoopsCanvas = lazy(() => import('./pages/LoveLoopsCanvas'))
 
 // Loading fallback component
 function PageLoader() {
@@ -75,6 +82,18 @@ function App() {
                   <Link to="/pricing" className="text-gray-700 hover:text-vault-purple font-medium transition-colors">
                     Pricing
                   </Link>
+                  <Link to="/legacy-tree" className="text-gray-700 hover:text-vault-purple font-medium transition-colors">
+                    Legacy Tree
+                  </Link>
+                  <Link to="/code-sanctification" className="text-gray-700 hover:text-vault-purple font-medium transition-colors">
+                    Code Sanctification
+                  </Link>
+                  <Link to="/ubuntu-echo" className="text-gray-700 hover:text-vault-purple font-medium transition-colors">
+                    Ubuntu Echo
+                  </Link>
+                  <Link to="/love-loops" className="text-gray-700 hover:text-vault-purple font-medium transition-colors">
+                    Love Loops
+                  </Link>
                 </div>
                 
                 {/* Mobile menu button */}
@@ -99,6 +118,7 @@ function App() {
 
                 {/* Desktop CTA buttons */}
                 <div className="hidden lg:flex items-center space-x-4">
+                  <ThemeToggle />
                   <Link to="/signin" className="btn-outline text-sm" aria-label="Sign in to your account">
                     Sign In
                   </Link>
@@ -141,8 +161,40 @@ function App() {
                   >
                     Pricing
                   </Link>
+                  <Link 
+                    to="/legacy-tree" 
+                    className="block text-gray-700 hover:text-vault-purple font-medium transition-colors py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Legacy Tree
+                  </Link>
+                  <Link 
+                    to="/code-sanctification" 
+                    className="block text-gray-700 hover:text-vault-purple font-medium transition-colors py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Code Sanctification
+                  </Link>
+                  <Link 
+                    to="/ubuntu-echo" 
+                    className="block text-gray-700 hover:text-vault-purple font-medium transition-colors py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Ubuntu Echo
+                  </Link>
+                  <Link 
+                    to="/love-loops" 
+                    className="block text-gray-700 hover:text-vault-purple font-medium transition-colors py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Love Loops
+                  </Link>
                   
                   <div className="border-t border-gray-200 pt-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-700">Theme</span>
+                      <ThemeToggle />
+                    </div>
                     <Link to="/signin" className="btn-outline w-full text-center" aria-label="Sign in to your account">
                       Sign In
                     </Link>
@@ -175,6 +227,12 @@ function App() {
                 <Route path="/philosophy" element={<Philosophy />} />
                 <Route path="/referrals" element={<Referrals />} />
 
+                {/* New Sacred Features */}
+                <Route path="/legacy-tree" element={<LegacyTree />} />
+                <Route path="/code-sanctification" element={<CodeSanctification />} />
+                <Route path="/ubuntu-echo" element={<UbuntuEchoChamber />} />
+                <Route path="/love-loops" element={<LoveLoopsCanvas />} />
+
                 {/* 404 Catch-all */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
@@ -203,6 +261,16 @@ function App() {
                     <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
                     <li><Link to="/lore" className="hover:text-white transition-colors">Lore Vault</Link></li>
                     <li><Link to="/ascend" className="hover:text-white transition-colors">Ascend</Link></li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold mb-4">Sacred Features</h3>
+                  <ul className="space-y-2 text-gray-400">
+                    <li><Link to="/legacy-tree" className="hover:text-white transition-colors">Legacy Tree</Link></li>
+                    <li><Link to="/code-sanctification" className="hover:text-white transition-colors">Code Sanctification</Link></li>
+                    <li><Link to="/ubuntu-echo" className="hover:text-white transition-colors">Ubuntu Echo Chamber</Link></li>
+                    <li><Link to="/love-loops" className="hover:text-white transition-colors">Love Loops Canvas</Link></li>
                   </ul>
                 </div>
                 

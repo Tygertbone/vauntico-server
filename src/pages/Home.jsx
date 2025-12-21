@@ -5,20 +5,24 @@ import Bento from '../sections/Bento';
 import Journey from '../sections/Journey';
 import TestimonialsSection from '../components/TestimonialsSection';
 import TrustLayer from '../components/TrustLayer';
-import TrustScoreCalculator from './TrustScoreCalculator';
+import TrustEngineTeaser from '../components/TrustEngineTeaser';
+import CreatorsInFlow from '../components/CreatorsInFlow';
+import AbundanceAura from '../components/AbundanceAura';
+import AbundanceOracle from '../components/AbundanceOracle';
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-[#0A1018] text-white">
+    <main className="relative min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white">
       <Nav />
       <Hero />
-      <section id="try" className="mx-auto max-w-5xl px-6 py-16">
-        <TrustScoreCalculator />
-      </section>
+      <TrustEngineTeaser />
+      <CreatorsInFlow />
+      <AbundanceAura />
       <Bento />
       <TestimonialsSection />
       <TrustLayer />
       <Journey />
+      <AbundanceOracle />
     </main>
   );
 }

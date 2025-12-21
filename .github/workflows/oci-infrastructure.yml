@@ -548,12 +548,15 @@ jobs:
   notify-slack:
     needs: [validate-inputs, setup-infrastructure, setup-compute, setup-database]
     runs-on: ubuntu-latest
-    if: always() && secrets.SLACK_WEBHOOK_URL
+    if: always()
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - name: Notify Slack
+        if: env.SLACK_WEBHOOK_URL != ''
         uses: 8398a7/action-slack-send-to-webhook@v1.2.4
         with:
-          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
           text: |
             🚀 **OCI Infrastructure Deployment**
             

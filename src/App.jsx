@@ -4,10 +4,15 @@ import ErrorBoundary from './components/ErrorBoundary'
 import LoadingSpinner from './components/LoadingSpinner'
 import { FullLogo } from './components/Logo'
 import ThemeToggle from './components/ThemeToggle'
+import CookieConsentBanner from './components/CookieConsentBanner'
 
 // Eager load homepage (critical)
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
+
+// Lazy load legal pages
+const Terms = lazy(() => import('./pages/legal/Terms'))
+const Privacy = lazy(() => import('./pages/legal/Privacy'))
 
 // Lazy load all other pages
 const Dashboard = lazy(() => import('./pages/Dashboard'))
@@ -227,6 +232,10 @@ function App() {
                 <Route path="/philosophy" element={<Philosophy />} />
                 <Route path="/referrals" element={<Referrals />} />
 
+                {/* Legal Pages */}
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
+
                 {/* New Sacred Features */}
                 <Route path="/legacy-tree" element={<LegacyTree />} />
                 <Route path="/code-sanctification" element={<CodeSanctification />} />
@@ -289,6 +298,8 @@ function App() {
                     <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
                     <li><a href="mailto:hello@vauntico.com" className="hover:text-white transition-colors">Contact</a></li>
                     <li><Link to="/ascend" className="hover:text-white transition-colors">Ascend</Link></li>
+                    <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+                    <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
                   </ul>
                 </div>
               </div>
@@ -304,6 +315,9 @@ function App() {
               </div>
             </div>
           </footer>
+
+          {/* Cookie Consent Banner */}
+          <CookieConsentBanner />
         </div>
       </Router>
     </ErrorBoundary>

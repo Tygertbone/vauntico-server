@@ -1,0 +1,573 @@
+name: OCI Infrastructure Setup
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment (dev/staging/prod)'
+        required: true
+        default: 'dev'
+      compartment_id:
+        description: 'OCI Compartment OCID'
+        required: true
+      setup_components:
+        description: 'Components to setup (infrastructure,compute,database,monitoring,secrets)'
+        required: true
+        default: 'infrastructure,compute,database,monitoring,secrets'
+      create_pr:
+        description: 'Create PR for infrastructure changes'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  OCI_CLI_AUTH: security_token
+  OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
+  OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
+  OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
+  OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+  OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION || 'us-ashburn-1' }}
+
+jobs:
+  validate-inputs:
+    runs-on: ubuntu-latest
+    outputs:
+      components: ${{ steps.parse-components.outputs.components }}
+      environment: ${{ steps.set-env.outputs.environment }}
+    steps:
+      - name: Validate inputs
+        run: |
+          echo "Validating workflow inputs..."
+          
+          # Validate environment
+          if [[ "${{ github.event.inputs.environment }}" =~ ^(dev|staging|prod)$ ]]; then
+            echo "✅ Environment is valid: ${{ github.event.inputs.environment }}"
+          else
+            echo "❌ Invalid environment: ${{ github.event.inputs.environment }}"
+            exit 1
+          fi
+          
+          # Validate compartment ID format
+          if [[ "${{ github.event.inputs.compartment_id }}" =~ ^ocid1\.compartment\. ]]; then
+            echo "✅ Compartment ID format is valid"
+          else
+            echo "❌ Invalid compartment ID format"
+            exit 1
+          fi
+          
+          # Validate components
+          COMPONENTS="${{ github.event.inputs.setup_components }}"
+          VALID_COMPONENTS="infrastructure,compute,database,monitoring,secrets"
+          for component in ${COMPONENTS//,/ }; do
+            if [[ "$VALID_COMPONENTS" == *"$component"* ]]; then
+              echo "✅ Valid component: $component"
+            else
+              echo "❌ Invalid component: $component"
+              exit 1
+            fi
+          done
+
+      - name: Parse components
+        id: parse-components
+        run: |
+          COMPONENTS="${{ github.event.inputs.setup_components }}"
+          echo "components=$COMPONENTS" >> $GITHUB_OUTPUT
+
+      - name: Set environment variables
+        id: set-env
+        run: |
+          ENVIRONMENT="${{ github.event.inputs.environment }}"
+          echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
+          
+          # Set environment-specific variables
+          case $ENVIRONMENT in
+            dev)
+              echo "INFRA_PREFIX=vauntico-dev" >> $GITHUB_ENV
+              echo "DB_NAME=VAUNTICO_DEV" >> $GITHUB_ENV
+              ;;
+            staging)
+              echo "INFRA_PREFIX=vauntico-staging" >> $GITHUB_ENV
+              echo "DB_NAME=VAUNTICO_STAGING" >> $GITHUB_ENV
+              ;;
+            prod)
+              echo "INFRA_PREFIX=vauntico-prod" >> $GITHUB_ENV
+              echo "DB_NAME=VAUNTICO_PROD" >> $GITHUB_ENV
+              ;;
+          esac
+
+  setup-infrastructure:
+    needs: validate-inputs
+    runs-on: ubuntu-latest
+    if: contains(needs.validate-inputs.outputs.components, 'infrastructure')
+    outputs:
+      vcn_id: ${{ steps.setup-vcn.outputs.vcn_id }}
+      public_subnet_id: ${{ steps.setup-subnets.outputs.public_subnet_id }}
+      private_subnet_id: ${{ steps.setup-subnets.outputs.private_subnet_id }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup OCI CLI
+        run: |
+          echo "Setting up OCI CLI..."
+          
+          # Create OCI config directory
+          mkdir -p ~/.oci
+          
+          # Write OCI config
+          cat > ~/.oci/config << EOF
+          [DEFAULT]
+          user = ${{ secrets.OCI_CLI_USER }}
+          fingerprint = ${{ secrets.OCI_CLI_FINGERPRINT }}
+          tenancy = ${{ secrets.OCI_CLI_TENANCY }}
+          region = ${{ secrets.OCI_CLI_REGION }}
+          key_file = ~/.oci/oci_key.pem
+          
+          [${{ github.event.inputs.environment }}]
+          user = ${{ secrets.OCI_CLI_USER }}
+          fingerprint = ${{ secrets.OCI_CLI_FINGERPRINT }}
+          tenancy = ${{ secrets.OCI_CLI_TENANCY }}
+          region = ${{ secrets.OCI_CLI_REGION }}
+          key_file = ~/.oci/oci_key.pem
+          EOF
+          
+          # Write private key
+          echo '${{ secrets.OCI_CLI_KEY_CONTENT }}' > ~/.oci/oci_key.pem
+          chmod 600 ~/.oci/oci_key.pem
+          
+          # Verify OCI CLI setup
+          oci iam compartment list --max-items 1
+
+      - name: Create VCN
+        id: setup-vcn
+        run: |
+          echo "Creating VCN for ${{ needs.validate-inputs.outputs.environment }}..."
+          
+          VCN_NAME="${INFRA_PREFIX}-VCN"
+          VCN_CIDR="${VCN_CIDR:-10.0.0.0/16}"
+          
+          VCN_ID=$(oci network vcn create \
+            --compartment-id "${{ github.event.inputs.compartment_id }}" \
+            --display-name "$VCN_NAME" \
+            --cidr-block "$VCN_CIDR" \
+            --wait-for-state AVAILABLE \
+            --query 'data.id' \
+            --raw-output)
+          
+          echo "vcn_id=$VCN_ID" >> $GITHUB_OUTPUT
+          echo "✅ VCN created: $VCN_ID"
+
+      - name: Create Subnets
+        id: setup-subnets
+        run: |
+          echo "Creating subnets..."
+          
+          # Public subnet
+          PUBLIC_SUBNET_ID=$(oci network subnet create \
+            --compartment-id "${{ github.event.inputs.compartment_id }}" \
+            --vcn-id "${{ steps.setup-vcn.outputs.vcn_id }}" \
+            --display-name "${INFRA_PREFIX}-Public-Subnet" \
+            --cidr-block "${PUBLIC_SUBNET_CIDR:-10.0.1.0/24}" \
+            --prohibit-public-ip-on-vnic false \
+            --wait-for-state AVAILABLE \
+            --query 'data.id' \
+            --raw-output)
+          
+          # Private subnet
+          PRIVATE_SUBNET_ID=$(oci network subnet create \
+            --compartment-id "${{ github.event.inputs.compartment_id }}" \
+            --vcn-id "${{ steps.setup-vcn.outputs.vcn_id }}" \
+            --display-name "${INFRA_PREFIX}-Private-Subnet" \
+            --cidr-block "${PRIVATE_SUBNET_CIDR:-10.0.2.0/24}" \
+            --prohibit-public-ip-on-vnic true \
+            --wait-for-state AVAILABLE \
+            --query 'data.id' \
+            --raw-output)
+          
+          echo "public_subnet_id=$PUBLIC_SUBNET_ID" >> $GITHUB_OUTPUT
+          echo "private_subnet_id=$PRIVATE_SUBNET_ID" >> $GITHUB_OUTPUT
+          echo "✅ Subnets created"
+
+      - name: Create Gateways
+        run: |
+          echo "Creating gateways..."
+          
+          # Internet Gateway
+          IG_ID=$(oci network internet-gateway create \
+            --compartment-id "${{ github.event.inputs.compartment_id }}" \
+            --vcn-id "${{ steps.setup-vcn.outputs.vcn_id }}" \
+            --display-name "${INFRA_PREFIX}-IG" \
+            --is-enabled true \
+            --wait-for-state AVAILABLE \
+            --query 'data.id' \
+            --raw-output)
+          
+          # NAT Gateway
+          NAT_ID=$(oci network nat-gateway create \
+            --compartment-id "${{ github.event.inputs.compartment_id }}" \
+            --vcn-id "${{ steps.setup-vcn.outputs.vcn_id }}" \
+            --display-name "${INFRA_PREFIX}-NAT" \
+            --wait-for-state AVAILABLE \
+            --query 'data.id' \
+            --raw-output)
+          
+          echo "✅ Gateways created: IG=$IG_ID, NAT=$NAT_ID"
+
+      - name: Create Route Tables
+        run: |
+          echo "Creating route tables..."
+          
+          # Public route table
+          PUBLIC_RT_ID=$(oci network route-table create \
+            --compartment-id "${{ github.event.inputs.compartment_id }}" \
+            --vcn-id "${{ steps.setup-vcn.outputs.vcn_id }}" \
+            --display-name "${INFRA_PREFIX}-Public-RT" \
+            --route-rules '[{"cidrBlock":"0.0.0.0/0","networkEntityId":"'"$IG_ID"'"}]' \
+            --wait-for-state AVAILABLE \
+            --query 'data.id' \
+            --raw-output)
+          
+          # Private route table
+          PRIVATE_RT_ID=$(oci network route-table create \
+            --compartment-id "${{ github.event.inputs.compartment_id }}" \
+            --vcn-id "${{ steps.setup-vcn.outputs.vcn_id }}" \
+            --display-name "${INFRA_PREFIX}-Private-RT" \
+            --route-rules '[{"cidrBlock":"0.0.0.0/0","networkEntityId":"'"$NAT_ID"'"}]' \
+            --wait-for-state AVAILABLE \
+            --query 'data.id' \
+            --raw-output)
+          
+          # Associate route tables with subnets
+          oci network subnet update \
+            --subnet-id "${{ steps.setup-subnets.outputs.public_subnet_id }}" \
+            --route-table-id "$PUBLIC_RT_ID" \
+            --force
+          
+          oci network subnet update \
+            --subnet-id "${{ steps.setup-subnets.outputs.private_subnet_id }}" \
+            --route-table-id "$PRIVATE_RT_ID" \
+            --force
+          
+          echo "✅ Route tables created and associated"
+
+      - name: Create Security Lists
+        run: |
+          echo "Creating security lists..."
+          
+          # Public subnet security list
+          EGRESS_RULES='[{"destination":"0.0.0.0/0","protocol":"all"}]'
+          INGRESS_RULES='[
+            {"source":"0.0.0.0/0","protocol":"6","tcpOptions":{"destinationPortRange":{"min":22,"max":22}}},
+            {"source":"0.0.0.0/0","protocol":"6","tcpOptions":{"destinationPortRange":{"min":80,"max":80}}},
+            {"source":"0.0.0.0/0","protocol":"6","tcpOptions":{"destinationPortRange":{"min":443,"max":443}}}
+          ]'
+          
+          PUBLIC_SL_ID=$(oci network security-list create \
+            --compartment-id "${{ github.event.inputs.compartment_id }}" \
+            --vcn-id "${{ steps.setup-vcn.outputs.vcn_id }}" \
+            --display-name "${INFRA_PREFIX}-Public-SL" \
+            --egress-security-rules "$EGRESS_RULES" \
+            --ingress-security-rules "$INGRESS_RULES" \
+            --query 'data.id' \
+            --raw-output)
+          
+          # Associate security list with public subnet
+          oci network subnet update \
+            --subnet-id "${{ steps.setup-subnets.outputs.public_subnet_id }}" \
+            --security-list-ids '["'"$PUBLIC_SL_ID"'"]' \
+            --force
+          
+          echo "✅ Security lists created and associated"
+
+      - name: Generate Infrastructure Summary
+        run: |
+          cat > infrastructure-summary-${{ github.event.inputs.environment }}.json << EOF
+          {
+            "environment": "${{ github.event.inputs.environment }}",
+            "compartment_id": "${{ github.event.inputs.compartment_id }}",
+            "infrastructure": {
+              "vcn": {
+                "id": "${{ steps.setup-vcn.outputs.vcn_id }}",
+                "name": "${INFRA_PREFIX}-VCN",
+                "cidr": "${VCN_CIDR:-10.0.0.0/16}"
+              },
+              "public_subnet": {
+                "id": "${{ steps.setup-subnets.outputs.public_subnet_id }}",
+                "name": "${INFRA_PREFIX}-Public-Subnet",
+                "cidr": "${PUBLIC_SUBNET_CIDR:-10.0.1.0/24}"
+              },
+              "private_subnet": {
+                "id": "${{ steps.setup-subnets.outputs.private_subnet_id }}",
+                "name": "${INFRA_PREFIX}-Private-Subnet",
+                "cidr": "${PRIVATE_SUBNET_CIDR:-10.0.2.0/24}"
+              }
+            },
+            "created_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "workflow_run_id": "${{ github.run_id }}"
+          }
+          EOF
+          
+          echo "✅ Infrastructure summary generated"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: infrastructure-summary-${{ github.event.inputs.environment }}
+          path: infrastructure-summary-${{ github.event.inputs.environment }}.json
+
+  setup-compute:
+    needs: [validate-inputs, setup-infrastructure]
+    runs-on: ubuntu-latest
+    if: contains(needs.validate-inputs.outputs.components, 'compute')
+    outputs:
+      instance_id: ${{ steps.create-instance.outputs.instance_id }}
+      public_ip: ${{ steps.get-instance-info.outputs.public_ip }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup OCI CLI
+        run: |
+          # Same setup as infrastructure job
+          mkdir -p ~/.oci
+          cat > ~/.oci/config << EOF
+          [DEFAULT]
+          user = ${{ secrets.OCI_CLI_USER }}
+          fingerprint = ${{ secrets.OCI_CLI_FINGERPRINT }}
+          tenancy = ${{ secrets.OCI_CLI_TENANCY }}
+          region = ${{ secrets.OCI_CLI_REGION }}
+          key_file = ~/.oci/oci_key.pem
+          EOF
+          echo '${{ secrets.OCI_CLI_KEY_CONTENT }}' > ~/.oci/oci_key.pem
+          chmod 600 ~/.oci/oci_key.pem
+
+      - name: Generate SSH Key
+        run: |
+          echo "Generating SSH key for compute instance..."
+          ssh-keygen -t rsa -b 4096 -f ~/.ssh/vauntico-${{ github.event.inputs.environment }} -N "" -C "vauntico-${{ github.event.inputs.environment }}"
+          echo "ssh_private_key<<EOF" >> $GITHUB_ENV
+          cat ~/.ssh/vauntico-${{ github.event.inputs.environment }} >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          echo "ssh_public_key<<EOF" >> $GITHUB_ENV
+          cat ~/.ssh/vauntico-${{ github.event.inputs.environment }}.pub >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create Compute Instance
+        id: create-instance
+        run: |
+          echo "Creating compute instance..."
+          
+          INSTANCE_NAME="${INFRA_PREFIX}-bastion"
+          AVAILABILITY_DOMAIN=$(oci iam availability-domain list --compartment-id "${{ github.event.inputs.compartment_id }}" --query 'data[0].name' --raw-output)
+          
+          INSTANCE_ID=$(oci compute instance launch \
+            --compartment-id "${{ github.event.inputs.compartment_id }}" \
+            --availability-domain "$AVAILABILITY_DOMAIN" \
+            --subnet-id "${{ needs.setup-infrastructure.outputs.public_subnet_id }}" \
+            --display-name "$INSTANCE_NAME" \
+            --shape "VM.Standard.A1.Flex" \
+            --shape-config '{"ocpus":"1","memoryInGBs":"6"}' \
+            --assign-public-ip true \
+            --ssh-authorized-keys-file "$HOME/.ssh/vauntico-${{ github.event.inputs.environment }}.pub" \
+            --user-data-file "$(pwd)/.github/workloads/cloud-init.yaml" \
+            --wait-for-state RUNNING \
+            --query 'data.id' \
+            --raw-output)
+          
+          echo "instance_id=$INSTANCE_ID" >> $GITHUB_OUTPUT
+          echo "✅ Compute instance created: $INSTANCE_ID"
+
+      - name: Get Instance Information
+        id: get-instance-info
+        run: |
+          sleep 30  # Wait for instance to fully initialize
+          
+          PUBLIC_IP=$(oci compute instance list-vnics \
+            --instance-id "${{ steps.create-instance.outputs.instance_id }}" \
+            --query 'data[0].publicIp' \
+            --raw-output)
+          
+          echo "public_ip=$PUBLIC_IP" >> $GITHUB_OUTPUT
+          echo "✅ Instance public IP: $PUBLIC_IP"
+
+      - name: Test SSH Connection
+        run: |
+          echo "Testing SSH connection..."
+          
+          # Test SSH connection
+          for i in {1..30}; do
+            if ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -i ~/.ssh/vauntico-${{ github.event.inputs.environment }} ubuntu@"${{ steps.get-instance-info.outputs.public_ip }}" "echo 'SSH connection successful'" 2>/dev/null; then
+              echo "✅ SSH connection successful"
+              break
+            fi
+            echo "Waiting for SSH service... (attempt $i/30)"
+            sleep 10
+          done
+
+      - name: Upload SSH Keys
+        uses: actions/upload-artifact@v4
+        with:
+          name: ssh-keys-${{ github.event.inputs.environment }}
+          path: |
+            ~/.ssh/vauntico-${{ github.event.inputs.environment }}
+            ~/.ssh/vauntico-${{ github.event.inputs.environment }}.pub
+
+  setup-database:
+    needs: [validate-inputs, setup-infrastructure]
+    runs-on: ubuntu-latest
+    if: contains(needs.validate-inputs.outputs.components, 'database')
+    outputs:
+      db_id: ${{ steps.create-db.outputs.db_id }}
+      connection_string: ${{ steps.get-db-details.outputs.connection_string }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup OCI CLI
+        run: |
+          # Same setup as previous jobs
+          mkdir -p ~/.oci
+          cat > ~/.oci/config << EOF
+          [DEFAULT]
+          user = ${{ secrets.OCI_CLI_USER }}
+          fingerprint = ${{ secrets.OCI_CLI_FINGERPRINT }}
+          tenancy = ${{ secrets.OCI_CLI_TENANCY }}
+          region = ${{ secrets.OCI_CLI_REGION }}
+          key_file = ~/.oci/oci_key.pem
+          EOF
+          echo '${{ secrets.OCI_CLI_KEY_CONTENT }}' > ~/.oci/oci_key.pem
+          chmod 600 ~/.oci/oci_key.pem
+
+      - name: Create Autonomous Database
+        id: create-db
+        run: |
+          echo "Creating Autonomous Database..."
+          
+          DB_NAME="${INFRA_PREFIX}-ADB"
+          DB_ADMIN_PASSWORD=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-16)
+          
+          DB_ID=$(oci db autonomous-database create \
+            --compartment-id "${{ github.event.inputs.compartment_id }}" \
+            --subnet-id "${{ needs.setup-infrastructure.outputs.private_subnet_id }}" \
+            --display-name "$DB_NAME" \
+            --db-name "${DB_NAME}" \
+            --admin-password "$DB_ADMIN_PASSWORD" \
+            --cpu-core-count 1 \
+            --data-storage-size-in-tbs 1 \
+            --workload OLTP \
+            --auto-scaling-enabled true \
+            --is-free-tier true \
+            --is-dedicated false \
+            --license-model LICENSE_INCLUDED \
+            --db-version 19c \
+            --whitelisted-ips '[]' \
+            --wait-for-state AVAILABLE \
+            --query 'data.id' \
+            --raw-output)
+          
+          echo "db_id=$DB_ID" >> $GITHUB_OUTPUT
+          echo "db_admin_password=$DB_ADMIN_PASSWORD" >> $GITHUB_ENV
+          echo "✅ Autonomous Database created: $DB_ID"
+
+      - name: Get Database Details
+        id: get-db-details
+        run: |
+          sleep 60  # Wait for database to be fully available
+          
+          CONNECTION_STRING=$(oci db autonomous-database get \
+            --autonomous-database-id "${{ steps.create-db.outputs.db_id }}" \
+            --query 'data.connection_strings.high' \
+            --raw-output)
+          
+          echo "connection_string=$CONNECTION_STRING" >> $GITHUB_OUTPUT
+          echo "✅ Database connection string retrieved"
+
+      - name: Download Database Wallet
+        run: |
+          echo "Downloading database wallet..."
+          
+          mkdir -p db-wallet
+          WALLET_PASSWORD=$(openssl rand -base64 16 | tr -d "=+/" | cut -c1-16)
+          
+          oci db autonomous-database generate-wallet \
+            --autonomous-database-id "${{ steps.create-db.outputs.db_id }}" \
+            --password "$WALLET_PASSWORD" \
+            --file "db-wallet/Wallet_${DB_NAME}.zip"
+          
+          cd db-wallet && unzip -q Wallet_${DB_NAME}.zip && cd ..
+          
+          echo "db_wallet_password=$WALLET_PASSWORD" >> $GITHUB_ENV
+          echo "✅ Database wallet downloaded and extracted"
+
+      - name: Upload Database Credentials
+        uses: actions/upload-artifact@v4
+        with:
+          name: database-credentials-${{ github.event.inputs.environment }}
+          path: |
+            db-wallet/
+          retention-days: 7
+
+  create-pr:
+    needs: [validate-inputs, setup-infrastructure, setup-compute, setup-database]
+    runs-on: ubuntu-latest
+    if: github.event.inputs.create_pr == 'true'
+    steps:
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: "Infrastructure Update - ${{ github.event.inputs.environment }}"
+          body: |
+            ## Infrastructure Update Summary
+            
+            **Environment:** ${{ github.event.inputs.environment }}
+            **Components:** ${{ github.event.inputs.setup_components }}
+            **Compartment:** ${{ github.event.inputs.compartment_id }}
+            
+            ### Created Resources
+            - **VCN:** ${{ needs.setup-infrastructure.outputs.vcn_id }}
+            - **Public Subnet:** ${{ needs.setup-infrastructure.outputs.public_subnet_id }}
+            - **Private Subnet:** ${{ needs.setup-infrastructure.outputs.private_subnet_id }}
+            - **Compute Instance:** ${{ needs.setup-compute.outputs.instance_id }}
+            - **Database:** ${{ needs.setup-database.outputs.db_id }}
+            
+            ### Connection Information
+            - **Instance Public IP:** ${{ needs.setup-compute.outputs.public_ip }}
+            - **Database Connection:** ${{ needs.setup-database.outputs.connection_string }}
+            
+            ### Next Steps
+            1. Review the created resources in OCI Console
+            2. Test connectivity to the compute instance
+            3. Configure application with database credentials
+            4. Set up monitoring and alerting
+            
+            ---
+            *Automated infrastructure deployment via GitHub Actions*
+          branch: infrastructure-${{ github.event.inputs.environment }}
+          delete-branch: true
+
+  notify-slack:
+    needs: [validate-inputs, setup-infrastructure, setup-compute, setup-database]
+    runs-on: ubuntu-latest
+    if: always() && secrets.SLACK_WEBHOOK_URL
+    steps:
+      - name: Notify Slack
+        uses: 8398a7/action-slack-send-to-webhook@v1.2.4
+        with:
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          text: |
+            🚀 **OCI Infrastructure Deployment**
+            
+            **Environment:** ${{ github.event.inputs.environment }}
+            **Components:** ${{ github.event.inputs.setup_components }}
+            **Status:** ${{ job.status }}
+            
+            **Resources Created:**
+            - VCN: ${{ needs.setup-infrastructure.outputs.vcn_id || 'N/A' }}
+            - Public Subnet: ${{ needs.setup-infrastructure.outputs.public_subnet_id || 'N/A' }}
+            - Private Subnet: ${{ needs.setup-infrastructure.outputs.private_subnet_id || 'N/A' }}
+            - Compute Instance: ${{ needs.setup-compute.outputs.instance_id || 'N/A' }}
+            - Database: ${{ needs.setup-database.outputs.db_id || 'N/A' }}
+            
+            **Public IP:** ${{ needs.setup-compute.outputs.public_ip || 'N/A' }}
+            
+            **Workflow:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

@@ -3,6 +3,8 @@ import Nav from '../components/Nav';
 import Hero from '../components/Hero';
 import Bento from '../sections/Bento';
 import Journey from '../sections/Journey';
+import TestimonialsSection from '../components/TestimonialsSection';
+import TrustLayer from '../components/TrustLayer';
 import TrustScoreCalculator from './TrustScoreCalculator';
 
 export default function Home() {
@@ -14,6 +16,8 @@ export default function Home() {
         <TrustScoreCalculator />
       </section>
       <Bento />
+      <TestimonialsSection />
+      <TrustLayer />
       <Journey />
     </main>
   );

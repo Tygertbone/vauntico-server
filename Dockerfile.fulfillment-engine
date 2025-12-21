@@ -1,0 +1,27 @@
+# Use Node.js 20 Alpine for smaller image size
+FROM node:20-alpine
+
+# Install curl for health checks
+RUN apk add --no-cache curl
+
+# Set working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json first
+COPY vauntico-fulfillment-engine/package*.json ./
+
+# Install dependencies
+RUN npm ci --omit=dev
+
+# Copy the rest of the application
+COPY vauntico-fulfillment-engine ./
+
+# Expose port
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD curl -f http://localhost:8080/api/status || exit 1
+
+# Start the application
+CMD ["node", "server.js"]

@@ -1,0 +1,21 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true
+    jsonData:
+      timeInterval: "15s"
+      queryTimeout: "60s"
+      httpMethod: "POST"
+
+  - name: Uptime Kuma
+    type: json
+    access: proxy
+    url: http://uptime-kuma:3001/api/status-page
+    editable: true
+    jsonData:
+      tlsSkipVerify: true

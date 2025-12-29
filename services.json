@@ -1,24 +1,69 @@
 {
   "services": [
     {
-      "Name": "server-v2",
-      "Url": "https://vauntico-server-v2.up.railway.app",
-      "Path": "/health"
+      "name": "Frontend",
+      "url": "https://vauntico.com",
+      "health_endpoint": "/api/health",
+      "infrastructure": "Vercel",
+      "expected_response": {
+        "status": "ok",
+        "timestamp": "<ISO_TIMESTAMP>",
+        "uptime": "<SECONDS>"
+      }
     },
     {
-      "Name": "vauntico-fulfillment-engine",
-      "Url": "https://vauntico-fulfillment-engine.up.railway.app",
-      "Path": "/health"
+      "name": "Backend API",
+      "url": "https://api.vauntico.com",
+      "health_endpoint": "/health",
+      "infrastructure": "OCI",
+      "service": "backend-api",
+      "expected_response": {
+        "status": "ok",
+        "service": "backend-api",
+        "timestamp": "<ISO_TIMESTAMP>"
+      }
     },
     {
-      "Name": "vault-landing",
-      "Url": "https://vauntico-vault-landing.up.railway.app",
-      "Path": "/health.json"
+      "name": "Fulfillment Engine",
+      "url": "https://api.vauntico.com",
+      "health_endpoint": "/fulfillment/health",
+      "infrastructure": "OCI",
+      "service": "fulfillment-engine",
+      "expected_response": {
+        "status": "ok",
+        "service": "fulfillment-engine",
+        "timestamp": "<ISO_TIMESTAMP>"
+      }
     },
     {
-      "Name": "homepage-redesign",
-      "Url": "https://vauntico.com",
-      "Path": "/api/health"
+      "name": "Vault Landing",
+      "url": "https://api.vauntico.com",
+      "health_endpoint": "/vault/health",
+      "infrastructure": "OCI",
+      "service": "vault-landing",
+      "expected_response": {
+        "status": "ok",
+        "service": "vault-landing",
+        "timestamp": "<ISO_TIMESTAMP>"
+      }
     }
-  ]
+  ],
+  "infrastructure": {
+    "frontend": "Vercel",
+    "backend": "OCI Compute",
+    "monitoring": "OCI",
+    "database": "OCI Autonomous Database"
+  },
+  "migration": {
+    "status": "completed",
+    "previous_backend": "Railway",
+    "migration_date": "2025-12-22",
+    "notes": "Successfully migrated from Railway to OCI Compute with Docker Compose"
+  },
+  "health_check_configuration": {
+    "timeout_seconds": 30,
+    "retry_attempts": 3,
+    "alert_threshold": 2,
+    "monitoring_interval": "60s"
+  }
 }

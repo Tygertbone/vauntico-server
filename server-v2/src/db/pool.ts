@@ -77,7 +77,10 @@ export async function checkDatabaseHealth(): Promise<{
 export async function query<T = any>(
   text: string,
   params?: any[]
-): Promise<{ rows: T[]; rowCount: number | null }> {
+): Promise<{
+    id: any;
+    created_at: any; rows: T[]; rowCount: number | null 
+}> {
   const { monitoredQuery } = await import('../utils/database-monitoring');
   return monitoredQuery(
     () => pool.query(text, params),

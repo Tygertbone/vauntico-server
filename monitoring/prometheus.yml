@@ -13,8 +13,7 @@ alerting:
 
 # Load rules once and periodically evaluate them
 rule_files:
-  # - "first_rules.yml"
-  # - "second_rules.yml"
+  - "vauntico-health-rules.yml"
 
 scrape_configs:
   # Prometheus itself
@@ -101,3 +100,75 @@ scrape_configs:
         target_label: instance
         regex: '([^:]+).*'
         replacement: '${1}'
+
+  # OCI Load Balancer monitoring
+  - job_name: 'oci-load-balancer'
+    static_configs:
+      - targets:
+        - 'api.vauntico.com:80'
+        - 'api.vauntico.com:443'
+    metrics_path: /health
+    scrape_interval: 30s
+    scheme: https
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: '([^:]+).*'
+        replacement: 'oci-lb-${1}'
+
+  # OCI Backend API Health Check
+  - job_name: 'oci-backend-api'
+    static_configs:
+      - targets: ['api.vauntico.com']
+    metrics_path: /health
+    scrape_interval: 60s
+    scheme: https
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        regex: '(.+)'
+        replacement: 'backend-api'
+      - source_labels: [__address__]
+        target_label: instance
+        regex: '(.+)'
+        replacement: 'oci-backend-api'
+
+  # OCI Fulfillment Engine Health Check
+  - job_name: 'oci-fulfillment-engine'
+    static_configs:
+      - targets: ['api.vauntico.com']
+    metrics_path: /fulfillment/health
+    scrape_interval: 60s
+    scheme: https
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        regex: '(.+)'
+        replacement: 'fulfillment-engine'
+      - source_labels: [__address__]
+        target_label: instance
+        regex: '(.+)'
+        replacement: 'oci-fulfillment-engine'
+
+  # OCI Vault Landing Health Check
+  - job_name: 'oci-vault-landing'
+    static_configs:
+      - targets: ['api.vauntico.com']
+    metrics_path: /vault/health
+    scrape_interval: 60s
+    scheme: https
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        regex: '(.+)'
+        replacement: 'vault-landing'
+      - source_labels: [__address__]
+        target_label: instance
+        regex: '(.+)'
+        replacement: 'oci-vault-landing'
+
+  # Frontend Health Check (Vercel)
+  - job_name: 'frontend-vercel'
+    metrics_path: /api/health
+    static_configs:
+      - targets: ['vauntico.com']

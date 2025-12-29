@@ -138,14 +138,37 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto">
           <div className="animate-pulse">
             <div className="h-8 bg-white/50 rounded w-1/4 mb-6"></div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              {[1, 2, 3].map(i => (
-                <div key={i} className="bg-white/70 rounded-lg p-6 shadow-sm">
-                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-                  <div className="h-32 bg-gray-100 rounded"></div>
-                </div>
-              ))}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          {/* Payment Bridge Section */}
+          <div className="bg-white/70 rounded-lg p-6 shadow-sm">
+            <div className="h-4 bg-gray-200 rounded w-3/4 mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Payment Bridge Requests</h3>
             </div>
+            <div className="h-32 bg-gray-100 rounded">
+              <p className="text-gray-500 text-center">Pending requests will appear here</p>
+            </div>
+          </div>
+
+          {/* Verification Section */}
+          <div className="bg-white/70 rounded-lg p-6 shadow-sm">
+            <div className="h-4 bg-gray-200 rounded w-3/4 mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Verification Requests</h3>
+            </div>
+            <div className="h-32 bg-gray-100 rounded">
+              <p className="text-gray-500 text-center">Pending verifications will appear here</p>
+            </div>
+          </div>
+
+          {/* Content Recovery Section */}
+          <div className="bg-white/70 rounded-lg p-6 shadow-sm">
+            <div className="h-4 bg-gray-200 rounded w-3/4 mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Content Recovery Cases</h3>
+            </div>
+            <div className="h-32 bg-gray-100 rounded">
+              <p className="text-gray-500 text-center">Active cases will appear here</p>
+            </div>
+          </div>
+        </div>
           </div>
         </div>
       </div>

@@ -278,6 +278,57 @@ export class PaystackService {
   }
 
   /**
+   * Initiate payout to creator
+   */
+  async initiatePayout(options: {
+    recipient: any; // Bank account details
+    amount: number; // Amount in cents
+    currency: string;
+    reference: string; // Unique reference
+    reason?: string; // Payout reason
+  }): Promise<{ reference: string; transfer_code: string; status: string }> {
+    try {
+      const payload: any = {
+        type: 'payout',
+        name: options.recipient.name || 'Creator Payout',
+        email: options.recipient.email,
+        amount: options.amount,
+        currency: options.currency || 'NGN',
+        reference: options.reference,
+        reason: options.reason || 'Creator payment request payout',
+      };
+
+      const response = await axios.post(
+        `${this.baseUrl}/transfer`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${this.secretKey}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      logger.info('Paystack payout initiated', {
+        reference: options.reference,
+        amount: options.amount,
+        currency: options.currency || 'NGN',
+        transferCode: response.data.data.transfer_code,
+        status: response.data.data.status,
+      });
+
+      return response.data.data;
+    } catch (error: any) {
+      logger.error('Failed to initiate Paystack payout', {
+        reference: options.reference,
+        amount: options.amount,
+        error: error.response?.data || error.message
+      });
+      throw new Error('Failed to initiate Paystack payout');
+    }
+  }
+
+  /**
    * Cancel subscription
    */
   async cancelSubscription(subscriptionCode: string): Promise<boolean> {

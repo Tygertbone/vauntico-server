@@ -5,17 +5,20 @@
 Welcome to the official Vauntico platform - your gateway to AI-powered trust scoring and premium content vaults.
 
 ### 🌟 Live Services
-- **Homepage**: https://vauntico.com
-- **Vault Access**: https://vault.vauntico.com
-- **API Backend**: https://api.vauntico.com
-- **Fulfillment Engine**: https://fulfillment.vauntico.com
+- **Frontend**: https://vauntico.com (Vercel)
+- **API Gateway**: https://api.vauntico.com (OCI Load Balancer)
+- **Backend Services**:
+  - **Server v2**: https://api.vauntico.com/health
+  - **Fulfillment Engine**: https://api.vauntico.com/fulfillment/health
+  - **Vault Landing**: https://api.vauntico.com/vault/health
 
 ### 🚀 Production Status
-- ✅ All services deployed and healthy
+- ✅ All services deployed on OCI infrastructure
 - ✅ SSL certificates active
 - ✅ DNS configured for production
 - ✅ Payment processing live
-- ✅ Monitoring and alerts configured
+- ✅ Prometheus + Grafana monitoring configured
+- ✅ Health checks standardized across all services
 
 ### 📋 Quick Start for Contributors
 
@@ -40,8 +43,11 @@ pnpm run dev
 
 #### Redeployment
 ```bash
-# Deploy all services
-.\scripts\railway-deploy-all.ps1
+# Deploy all services to OCI
+.\scripts\oci-deploy-all.sh
+
+# Run health smoke tests
+.\scripts\oci-health-smoke-test.sh
 ```
 
 ### 🧪 Testing
@@ -51,10 +57,11 @@ pnpm run dev
 - Dependency audits passed
 
 ### 📊 Monitoring
-- Slack alerts configured
-- Resend email notifications active
-- Railway health checks enabled
+- Slack alerts configured via AlertManager
+- Prometheus + Grafana monitoring active
+- OCI health checks standardized
 - Vercel analytics integrated
+- Automated health smoke tests
 
 ## 🕊️ Launch Rituals
 
@@ -81,19 +88,87 @@ To all who contributed to this vision:
 
 ## 📚 Documentation
 
-- [Deployment Guide](./README_DEPLOYMENT.md)
+- [OCI Deployment Guide](./docs/OCI_DEPLOYMENT_GUIDE.md)
+- [OCI Infrastructure Setup](./docs/OCI_INFRASTRUCTURE_SETUP_GUIDE.md)
+- [OCI Quick Reference](./docs/OCI_QUICK_REFERENCE.md)
 - [Contributing Guidelines](./CONTRIBUTING.md)
 - [API Documentation](./docs/)
 - [Lore Vault](./README-LORE.md)
+- [Railway to OCI Migration](./RAILWAY_TO_OCI_MIGRATION_COMPLETE.md)
 
 ## 🛠️ Tech Stack
 
 - **Frontend**: React + Vite + Vercel
-- **Backend**: Node.js + Express + Railway
-- **Database**: PostgreSQL
+- **Backend**: Node.js + Express + OCI Compute
+- **Database**: PostgreSQL + OCI Autonomous Database
 - **Payments**: Paystack
-- **Monitoring**: Sentry, Vercel Analytics
-- **Deployment**: Railway + Vercel
+- **Monitoring**: Prometheus + Grafana + Sentry
+- **Deployment**: OCI + Docker Compose + Vercel
+- **Load Balancer**: OCI Load Balancer
+- **Container Registry**: OCI Container Registry
+
+## 🚨 Emergency Revenue Features
+
+Vauntico includes emergency revenue services to help creators in critical situations. These features provide fast-track payment processing, brand verification, and content recovery services.
+
+### Available Services
+
+#### 💰 Payment Bridge
+- **Purpose**: Emergency payment processing for creators facing urgent financial needs
+- **Features**: Fast-track Paystack integration, automated approval workflows
+- **Environment Variable**: `ENABLE_PAYMENT_BRIDGE=true`
+- **Fee Configuration**: `PAYMENT_BRIDGE_FEE_PERCENTAGE=10` (10% default)
+
+#### ✅ Brand Verification
+- **Purpose**: Expedited brand verification for creators needing immediate trust validation
+- **Features**: Automated verification tokens, admin approval workflow
+- **Environment Variable**: `ENABLE_VERIFICATION=true`
+- **Pricing**: `VERIFICATION_BRAND_PRICE=99` ($99 one-time fee)
+
+#### 🛡️ Content Recovery
+- **Purpose**: Emergency content recovery for creators facing copyright infringement
+- **Features**: Case management, legal documentation support, recovery tracking
+- **Environment Variable**: `ENABLE_CONTENT_RECOVERY=true`
+- **Fee Configuration**: `CONTENT_RECOVERY_FEE_PERCENTAGE=30` (30% of recovered amount)
+
+### Configuration
+
+Add these environment variables to your `.env` file:
+
+```bash
+# Emergency Services Features
+ENABLE_PAYMENT_BRIDGE=true
+ENABLE_VERIFICATION=true
+ENABLE_CONTENT_RECOVERY=true
+PAYMENT_BRIDGE_FEE_PERCENTAGE=10
+VERIFICATION_BRAND_PRICE=99
+CONTENT_RECOVERY_FEE_PERCENTAGE=30
+```
+
+### Health Monitoring
+
+The health endpoint now includes emergency services metrics:
+
+```bash
+GET /health
+{
+  "status": "ok",
+  "service": "backend-api",
+  "emergencyServices": {
+    "pendingPayments": 0,
+    "pendingVerifications": 0,
+    "activeCases": 0
+  }
+}
+```
+
+### Admin Management
+
+All emergency services include admin dashboards for:
+- Monitoring pending requests
+- Managing approval workflows
+- Tracking recovery cases
+- Exporting analytics data
 
 ## 🤝 Contributing
 

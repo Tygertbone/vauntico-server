@@ -31,6 +31,15 @@ const About = lazy(() => import('./pages/About'))
 const Philosophy = lazy(() => import('./pages/Philosophy'))
 const Referrals = lazy(() => import('./pages/Referrals'))
 
+// Service landing pages
+const PaymentBridgeLanding = lazy(() => import('./pages/PaymentBridgeLanding'))
+const VerificationLanding = lazy(() => import('./pages/VerificationLanding'))
+const ContentRecoveryLanding = lazy(() => import('./pages/ContentRecoveryLanding'))
+
+// Service pages (require auth)
+const PaymentBridge = lazy(() => import('./pages/PaymentBridge'))
+const Verification = lazy(() => import('./pages/Verification'))
+
 // New sacred pages
 const LegacyTree = lazy(() => import('./pages/LegacyTree'))
 const CodeSanctification = lazy(() => import('./pages/CodeSanctification'))
@@ -51,6 +60,19 @@ function PageLoader() {
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false)
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (servicesDropdownOpen && !event.target.closest('.services-dropdown')) {
+        setServicesDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [servicesDropdownOpen])
 
   return (
     <ErrorBoundary>
@@ -87,6 +109,76 @@ function App() {
                   <Link to="/pricing" className="text-gray-700 hover:text-vault-purple font-medium transition-colors">
                     Pricing
                   </Link>
+                  
+                  {/* Services Dropdown */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
+                      className="text-gray-700 hover:text-vault-purple font-medium transition-colors flex items-center gap-1"
+                      aria-label="Services menu"
+                      aria-expanded={servicesDropdownOpen}
+                    >
+                      Services
+                      <svg 
+                        className={`w-4 h-4 transition-transform ${servicesDropdownOpen ? 'rotate-180' : ''}`} 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    
+                    {servicesDropdownOpen && (
+                      <div className="services-dropdown absolute top-full left-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                        <div className="py-2">
+                          <Link 
+                            to="/services/payment-bridge" 
+                            className="block px-4 py-3 text-gray-700 hover:bg-vault-purple hover:text-white transition-colors"
+                            onClick={() => setServicesDropdownOpen(false)}
+                          >
+                            <div className="font-medium">Payment Bridge</div>
+                            <div className="text-sm text-gray-500">Cross-border payments for creators</div>
+                          </Link>
+                          <Link 
+                            to="/services/verification" 
+                            className="block px-4 py-3 text-gray-700 hover:bg-vault-purple hover:text-white transition-colors"
+                            onClick={() => setServicesDropdownOpen(false)}
+                          >
+                            <div className="font-medium">Creator Verification</div>
+                            <div className="text-sm text-gray-500">Build trust with brands</div>
+                          </Link>
+                          <Link 
+                            to="/services/content-recovery" 
+                            className="block px-4 py-3 text-gray-700 hover:bg-vault-purple hover:text-white transition-colors"
+                            onClick={() => setServicesDropdownOpen(false)}
+                          >
+                            <div className="font-medium">Content Recovery</div>
+                            <div className="text-sm text-gray-500">Recover stolen content revenue</div>
+                          </Link>
+                          <div className="border-t border-gray-200 mt-2 pt-2">
+                            <Link 
+                              to="/workshop-kit" 
+                              className="block px-4 py-3 text-gray-700 hover:bg-vault-purple hover:text-white transition-colors"
+                              onClick={() => setServicesDropdownOpen(false)}
+                            >
+                              <div className="font-medium">Workshop Kit</div>
+                              <div className="text-sm text-gray-500">Creator education resources</div>
+                            </Link>
+                            <Link 
+                              to="/audit-service" 
+                              className="block px-4 py-3 text-gray-700 hover:bg-vault-purple hover:text-white transition-colors"
+                              onClick={() => setServicesDropdownOpen(false)}
+                            >
+                              <div className="font-medium">Audit Service</div>
+                              <div className="text-sm text-gray-500">Content performance analysis</div>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
                   <Link to="/legacy-tree" className="text-gray-700 hover:text-vault-purple font-medium transition-colors">
                     Legacy Tree
                   </Link>
@@ -166,6 +258,51 @@ function App() {
                   >
                     Pricing
                   </Link>
+                  
+                  {/* Mobile Services Section */}
+                  <div className="border-t border-gray-200 pt-4 mt-4">
+                    <div className="font-medium text-gray-900 mb-3">Services</div>
+                    <div className="space-y-2">
+                      <Link 
+                        to="/services/payment-bridge" 
+                        className="block text-gray-600 hover:text-vault-purple font-medium transition-colors py-2 pl-4"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Payment Bridge
+                      </Link>
+                      <Link 
+                        to="/services/verification" 
+                        className="block text-gray-600 hover:text-vault-purple font-medium transition-colors py-2 pl-4"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Creator Verification
+                      </Link>
+                      <Link 
+                        to="/services/content-recovery" 
+                        className="block text-gray-600 hover:text-vault-purple font-medium transition-colors py-2 pl-4"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Content Recovery
+                      </Link>
+                      <div className="border-t border-gray-200 pt-2 mt-2">
+                        <Link 
+                          to="/workshop-kit" 
+                          className="block text-gray-600 hover:text-vault-purple font-medium transition-colors py-2 pl-4"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          Workshop Kit
+                        </Link>
+                        <Link 
+                          to="/audit-service" 
+                          className="block text-gray-600 hover:text-vault-purple font-medium transition-colors py-2 pl-4"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          Audit Service
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  
                   <Link 
                     to="/legacy-tree" 
                     className="block text-gray-700 hover:text-vault-purple font-medium transition-colors py-2"
@@ -225,6 +362,13 @@ function App() {
 
                 <Route path="/audit-service" element={<AuditService />} />
                 <Route path="/addons" element={<Addons />} />
+                <Route path="/payment-bridge" element={<PaymentBridge />} />
+                <Route path="/verification" element={<Verification />} />
+
+                {/* Service landing pages */}
+                <Route path="/services/payment-bridge" element={<PaymentBridgeLanding />} />
+                <Route path="/services/verification" element={<VerificationLanding />} />
+                <Route path="/services/content-recovery" element={<ContentRecoveryLanding />} />
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/lore" element={<LoreVault />} />
                 <Route path="/ascend" element={<Ascend />} />
@@ -286,6 +430,9 @@ function App() {
                 <div>
                   <h3 className="font-semibold mb-4">Services</h3>
                   <ul className="space-y-2 text-gray-400">
+                    <li><Link to="/services/payment-bridge" className="hover:text-white transition-colors">Payment Bridge</Link></li>
+                    <li><Link to="/services/verification" className="hover:text-white transition-colors">Creator Verification</Link></li>
+                    <li><Link to="/services/content-recovery" className="hover:text-white transition-colors">Content Recovery</Link></li>
                     <li><Link to="/workshop-kit" className="hover:text-white transition-colors">Workshop Kit</Link></li>
                     <li><Link to="/audit-service" className="hover:text-white transition-colors">Audit Service</Link></li>
                     <li><Link to="/addons" className="hover:text-white transition-colors">Add-ons</Link></li>

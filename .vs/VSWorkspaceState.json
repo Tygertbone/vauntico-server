@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\demo",
+    "\\docs\\scripts",
+    "\\nginx",
+    "\\nginx\\conf.d",
+    "\\server",
+    "\\vauntico-fulfillment-engine",
+    "\\vauntico-fulfillment-engine\\utils",
+    "\\vauntico-server"
+  ],
+  "PreviewInSolutionExplorer": false
+}

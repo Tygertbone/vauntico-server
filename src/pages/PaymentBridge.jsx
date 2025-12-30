@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { axios } from 'axios';
+import axios from 'axios';
 
 const PaymentBridge = () => {
   const [formData, setFormData] = useState({
@@ -288,4 +288,4 @@ const PaymentBridge = () => {
   );
 };
 
-import paymentBridgeRoutes from '../routes/paymentBridge';
+export default PaymentBridge;

@@ -232,10 +232,11 @@ router.get('/directory', async (req: Request, res: Response) => {
     }
 
     // Add pagination
-    const offset = (page - 1) * limit;
-    const limitNum = Number(limit);
+    const page_num = Number(page);
+    const limit_num = Number(limit);
+    const offset = (page_num - 1) * limit_num;
     const limitClause = `LIMIT $${queryParams.length + 1} OFFSET ${offset}`;
-    queryParams.push(limitNum);
+    queryParams.push(limit_num);
 
     const result = await query(`
       SELECT 
@@ -280,7 +281,7 @@ router.get('/directory', async (req: Request, res: Response) => {
         page,
         limit,
         total: verifications.length,
-        totalPages: Math.ceil(verifications.length / limit),
+        totalPages: Math.ceil(verifications.length / limit_num),
       },
     });
   } catch (error) {

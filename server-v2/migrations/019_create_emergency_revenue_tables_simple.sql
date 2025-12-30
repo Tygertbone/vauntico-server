@@ -1,4 +1,4 @@
--- Migration: Emergency Revenue Tables
+-- Migration: Emergency Revenue Tables (Simplified Version)
 -- Purpose: Add creator payment processing, verification, and content recovery capabilities
 -- Date: 2025-01-06
 -- Dependencies: Requires users table (001_create_schema.sql)
@@ -154,75 +154,6 @@ CREATE TRIGGER set_content_recovery_case_number
     BEFORE INSERT ON content_recovery_cases
     FOR EACH ROW EXECUTE FUNCTION set_case_number();
 
--- Function to update user's trust score based on verification
-CREATE OR REPLACE FUNCTION update_trust_score_on_verification()
-RETURNS TRIGGER AS $$
-DECLARE
-    current_trust DECIMAL;
-    new_trust DECIMAL;
-BEGIN
-    -- Get current trust score for the creator
-    SELECT COALESCE(overall_score, 0) INTO current_trust
-    FROM trust_scores 
-    WHERE user_id = NEW.creator_id 
-    ORDER BY calculated_at DESC 
-    LIMIT 1;
-    
-    -- Calculate new trust score (clamp between 0 and 100)
-    new_trust := LEAST(100, GREATEST(0, current_trust + COALESCE(NEW.trust_score_impact, 0)));
-    
-    -- Update or insert trust score
-    INSERT INTO trust_scores (
-        user_id, 
-        overall_score, 
-        consistency_score, 
-        engagement_score, 
-        revenue_score, 
-        platform_health_score, 
-        legacy_score, 
-        calculated_at, 
-        next_calculation,
-        score_trend,
-        previous_score
-    ) VALUES (
-        NEW.creator_id,
-        new_trust,
-        COALESCE((SELECT consistency_score FROM trust_scores WHERE user_id = NEW.creator_id ORDER BY calculated_at DESC LIMIT 1), 0),
-        COALESCE((SELECT engagement_score FROM trust_scores WHERE user_id = NEW.creator_id ORDER BY calculated_at DESC LIMIT 1), 0),
-        COALESCE((SELECT revenue_score FROM trust_scores WHERE user_id = NEW.creator_id ORDER BY calculated_at DESC LIMIT 1), 0),
-        COALESCE((SELECT platform_health_score FROM trust_scores WHERE user_id = NEW.creator_id ORDER BY calculated_at DESC LIMIT 1), 0),
-        COALESCE((SELECT legacy_score FROM trust_scores WHERE user_id = NEW.creator_id ORDER BY calculated_at DESC LIMIT 1), 0),
-        NOW(),
-        NOW() + INTERVAL '24 hours',
-        CASE 
-            WHEN new_trust > current_trust THEN 'up'
-            WHEN new_trust < current_trust THEN 'down'
-            ELSE 'stable'
-        END,
-        current_trust
-    ) ON CONFLICT (user_id) DO UPDATE SET
-        overall_score = EXCLUDED.overall_score,
-        consistency_score = EXCLUDED.consistency_score,
-        engagement_score = EXCLUDED.engagement_score,
-        revenue_score = EXCLUDED.revenue_score,
-        platform_health_score = EXCLUDED.platform_health_score,
-        legacy_score = EXCLUDED.legacy_score,
-        calculated_at = NOW(),
-        next_calculation = NOW() + INTERVAL '24 hours',
-        score_trend = EXCLUDED.score_trend,
-        previous_score = EXCLUDED.previous_score;
-    
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- Apply trust score update trigger for verified verifications
-CREATE TRIGGER update_trust_on_verification
-    AFTER UPDATE ON creator_verifications
-    FOR EACH ROW 
-    WHEN (NEW.verification_status = 'verified' AND OLD.verification_status != 'verified')
-    EXECUTE FUNCTION update_trust_score_on_verification();
-
 -- Update timestamp triggers
 CREATE TRIGGER update_creator_payment_requests_updated_at 
     BEFORE UPDATE ON creator_payment_requests 
@@ -236,52 +167,6 @@ CREATE TRIGGER update_content_recovery_cases_updated_at
     BEFORE UPDATE ON content_recovery_cases 
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Views for Common Queries
-
--- Creator verification summary view
-CREATE OR REPLACE VIEW creator_verification_summary AS
-SELECT 
-    c.id as creator_id,
-    c.email,
-    COUNT(cv.id) as total_verifications,
-    COUNT(CASE WHEN cv.verification_status = 'verified' THEN 1 END) as verified_count,
-    COUNT(CASE WHEN cv.verification_status = 'pending' THEN 1 END) as pending_count,
-    SUM(cv.trust_score_impact) as total_trust_impact,
-    MAX(cv.verified_at) as last_verification_date,
-    STRING_AGG(DISTINCT cv.platform, ', ' ORDER BY cv.platform') as verified_platforms
-FROM users c
-LEFT JOIN creator_verifications cv ON c.id = cv.creator_id
-GROUP BY c.id, c.email;
-
--- Active recovery cases view
-CREATE OR REPLACE VIEW active_recovery_cases AS
-SELECT 
-    crc.*,
-    u.email as case_owner_email,
-    COALESCE(u.first_name || ' ' || u.last_name, 'Unknown') as case_owner_name,
-    investigator.email as investigator_email,
-    COALESCE(investigator.first_name || ' ' || investigator.last_name, 'Unassigned') as investigator_name
-FROM content_recovery_cases crc
-JOIN users u ON crc.user_id = u.id
-LEFT JOIN users investigator ON crc.assigned_investigator_id = investigator.id
-WHERE crc.status IN ('open', 'investigating')
-ORDER BY crc.priority DESC, crc.created_at ASC;
-
--- Payment request summary view
-CREATE OR REPLACE VIEW payment_request_summary AS
-SELECT 
-    cpr.creator_id,
-    c.email as creator_email,
-    COUNT(cpr.id) as total_requests,
-    COUNT(CASE WHEN cpr.status = 'pending' THEN 1 END) as pending_requests,
-    COUNT(CASE WHEN cpr.status = 'paid' THEN 1 END) as paid_requests,
-    SUM(CASE WHEN cpr.status = 'paid' THEN cpr.amount_cents ELSE 0 END) as total_paid_amount_cents,
-    SUM(cpr.processing_fee_cents) as total_fees_cents,
-    MAX(cpr.created_at) as last_request_date
-FROM creator_payment_requests cpr
-JOIN users c ON cpr.creator_id = c.id
-GROUP BY cpr.creator_id, c.email;
-
 -- Comments for documentation
 COMMENT ON TABLE creator_payment_requests IS 'Handles international payment bridging and Paystack payouts for creators';
 COMMENT ON TABLE creator_verifications IS 'Stores platform verification data that impacts creator trust scores';
@@ -294,19 +179,3 @@ COMMENT ON COLUMN content_recovery_cases.case_number IS 'Auto-generated unique c
 
 -- Verification of migration success
 SELECT 'Migration 019: Emergency revenue tables created successfully' as status;
-
--- Row count verification (for testing)
-SELECT 
-    'creator_payment_requests' as table_name,
-    COUNT(*) as row_count
-FROM creator_payment_requests
-UNION ALL
-SELECT 
-    'creator_verifications' as table_name,
-    COUNT(*) as row_count
-FROM creator_verifications
-UNION ALL
-SELECT 
-    'content_recovery_cases' as table_name,
-    COUNT(*) as row_count
-FROM content_recovery_cases;

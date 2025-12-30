@@ -1,36 +1,31 @@
 # Dependencies
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+*/node_modules/
 
 # Build outputs
 dist/
 build/
-.next/
-out/
-.cache/
-.parcel-cache/
+*/dist/
+*/build/
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.staging
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Runtime data
 pids
 *.pid
 *.seed
 *.pid.lock
-
-# Logs
-logs
-*.log
-*.txt
-*.out
-*.err
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-production-validation-*.log
 
 # Coverage directory used by tools like istanbul
 coverage/
@@ -39,23 +34,8 @@ coverage/
 # nyc test coverage
 .nyc_output
 
-# Grunt intermediate storage
-.grunt
-
-# Bower dependency directory
-bower_components
-
-# node-waf configuration
-.lock-wscript
-
-# Compiled binary addons
-build/Release
-
 # Dependency directories
 jspm_packages/
-
-# TypeScript cache
-*.tsbuildinfo
 
 # Optional npm cache directory
 .npm
@@ -73,178 +53,51 @@ jspm_packages/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.*.local
-!.env.example
+.env.test
 
-# parcel-bundler cache
+# parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
 
-# Next.js build output
+# next.js build output
 .next
 
-# Nuxt.js build / generate output
+# nuxt.js build output
 .nuxt
-dist
 
-# Gatsby files
-.cache/
-public
+# vuepress build output
+.vuepress/dist
 
-# Storybook build outputs
-.out
-.storybook-out
+# Serverless directories
+.serverless
 
-# Temporary folders
-tmp/
-temp/
+# FuseBox cache
+.fusebox/
 
-# OS generated files
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# macOS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
 
-# IDE and editor files
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-*.code-workspace
 
-# Personal configuration files
-.gitconfig
-.gitignoreecho
-.bash_history
-.bash_profile
-.bashrc
-.python_history
-.ollama
-.node_repl_history
-.npmrc
-.wslconfig
-.virtualbox
-
-# SSL certificates (keep in sample-certificate-files/ if needed)
-*.pem
-*.crt
-*.key
-*.csr
-!sample-certificate-files/*.pem
-!sample-certificate-files/*.crt
-!sample-certificate-files/*.key
-
-# Windows specific
-desktop.ini
-$null
--p/
-
-# PowerShell scripts (keep if needed for deployment)
-*.ps1
-!scripts/*.ps1
-
-# Shell scripts (keep if needed)
-*.sh
-!scripts/*.sh
-
-# Large files and binaries
-*.exe
-*.dmg
-*.pkg
-*.deb
-*.rpm
-
-# Database files
-*.db
-*.sqlite
-*.sqlite3
-
-# Backup files
-*.bak
-*.backup
-*.old
-
-# Temporary/experimental directories that shouldn't be in repo
-vauntico-fulfillment-engine-temp/
-vauntico-rebirth/
-vauntico-vault-landing/
-
-# Personal files and workspaces
-claude-integration.patch
-vauntico-mvp.code-workspace
-vauntico_cookie_banner.tsx
-
-# Temporary output files
-error.txt
-output.txt
-ignal.txt
-cd
-npm
-repo-structure.txt
-
-# Experimental/duplicate project folders
-vault-landing/
-homepage-redesign/
-
-# Logs directory
-logs/
-
-# Monitoring artifacts
-monitoring/
-
-# Test outputs and temporary files
-test-deployment.ps1
-test-routes.ps1
-simple-load-test.sh
-stress-test.js
-crawl-link-validator.js
-
-# Installation scripts (keep if needed for documentation)
-install-oci.ps1
-reclamation-ritual.ps1
-
-# Documentation build artifacts (keep source docs/)
-*.md
-!docs/*.md
-!README*.md
-!CONTRIBUTING.md
-
-# Service configuration (keep examples)
-services.json
-!services.json.example
-
-# Railway deployment files (keep if needed)
-.railwayignore
-railpack-plan.json
-railway.json
-railway.toml
-
-# Vercel deployment files (keep if needed)
-.vercel/
-
-# Docker files (keep if needed for deployment)
-Dockerfile*
-docker-compose.yml
-!docker-compose.example.yml
-
-# Sentry build files
-.env.sentry-build-plugin
-
-# Husky git hooks (keep if configured)
-.husky/
-
-# GitHub workflows (keep if configured)
-.github/
-
-# Continue.dev configuration (keep if used)
-.continue/
-continue.yaml
+# Temporary files
+*.tmp
+*.temp

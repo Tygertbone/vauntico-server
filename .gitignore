@@ -101,3 +101,30 @@ Desktop.ini
 # Temporary files
 *.tmp
 *.temp
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+terraform.tfstate.d/
+
+# OCI/Cloud specific
+shape_config.json
+source_details.json
+
+# MCP/Tooling
+cline_mcp_settings.json
+
+# Generated reports (keep in docs/ directory)
+*_REPORT.md
+*_PLAN.md
+
+# Build artifacts
+vauntico-staging/
+vauntico-fulfillment-engine-temp/
+
+# PowerShell scripts (keep specific ones)
+terraform_run.ps1
+test-*.ps1
+verify-*.ps1

@@ -1,4 +1,4 @@
-# ============================================================================
+ ============================================================================
 # Vauntico MVP - OCI Infrastructure Verification Script (PowerShell)
 # ============================================================================
 # This script verifies that your OCI infrastructure is up and running properly

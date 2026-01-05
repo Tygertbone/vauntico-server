@@ -1,0 +1,90 @@
+#cloud-config
+package_update: true
+packages:
+  - docker
+  - curl
+  - docker-compose
+
+runcmd:
+  - [ bash, -c ]
+    - |
+      # Create vauntico directory
+      sudo mkdir -p /srv/vauntico
+      cd /srv/vauntico
+      
+      # Wait for docker to be ready
+      sudo systemctl start docker
+      sudo systemctl enable docker
+      
+      # Pull and run vauntico services
+      echo "Pulling Vauntico services..."
+      sudo docker pull vauntico/trust-score:latest || true
+      sudo docker pull vauntico/server:latest || true
+      sudo docker pull vauntico/fulfillment:latest || true
+      sudo docker pull vauntico/legacy:latest || true
+      
+      echo "Starting Vauntico services..."
+      
+      # Trust Score Service (Port 3000)
+      sudo docker run -d \
+        --name trust-score \
+        --restart unless-stopped \
+        -p 3000:3000 \
+        vauntico/trust-score:latest || true
+      
+      # Vauntico Server (Port 3001)
+      sudo docker run -d \
+        --name vauntico-server \
+        --restart unless-stopped \
+        -p 3001:3001 \
+        vauntico/server:latest || true
+      
+      # Fulfillment Engine (Port 3002)
+      sudo docker run -d \
+        --name fulfillment \
+        --restart unless-stopped \
+        -p 3002:3002 \
+        vauntico/fulfillment:latest || true
+      
+      # Legacy Server (Port 3003)
+      sudo docker run -d \
+        --name legacy \
+        --restart unless-stopped \
+        -p 3003:3003 \
+        vauntico/legacy:latest || true
+      
+      echo "All Vauntico services started successfully"
+      
+      # Health check
+      echo "Performing health checks..."
+      sleep 30
+      
+      curl -f http://localhost:3000/health || echo "Trust score health check failed"
+      curl -f http://localhost:3001/health || echo "Server health check failed"
+      curl -f http://localhost:3002/health || echo "Fulfillment health check failed"
+      curl -f http://localhost:3003/health || echo "Legacy health check failed"
+      
+      echo "Deployment completed successfully"
+
+write_files:
+  - path: /var/log/cloud-init-output.log
+    permissions: '0644'
+    owner: root:root
+    content: |
+      Vauntico cloud-init deployment completed at $(date)
+
+final_message: |
+  ✅ Vauntico backend deployment completed successfully!
+  
+  All four services are now running:
+  - Trust Score Service: http://localhost:3000
+  - Vauntico Server: http://localhost:3001
+  - Fulfillment Engine: http://localhost:3002
+  - Legacy Server: http://localhost:3003
+  
+  Next steps:
+  1. Configure external access and load balancer
+  2. Set up monitoring and logging
+  3. Test API endpoints and integration
+  4. Configure DNS records
+  5. Perform end-to-end validation

@@ -31,6 +31,12 @@
       "dest": "/index.html"
     }
   ],
+  "rewrites": [
+    {
+      "source": "/api/waitlist",
+      "destination": "https://vauntico-server.vauntico.com/api/waitlist"
+    }
+  ],
   "env": {
     "NEXT_PUBLIC_API_URL": "@backend-url",
     "NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY": "@paystack-public-key",

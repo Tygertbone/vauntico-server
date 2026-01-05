@@ -1,0 +1,28 @@
+# Ignore local installers and binaries
+*.exe
+*.node
+
+# Ignore Terraform providers
+.terraform/
+
+# Ignore node_modules (Vercel installs dependencies itself)
+node_modules/
+
+# Ignore staging artifacts
+vauntico-staging/
+
+# Ignore large files and build artifacts that shouldn't be deployed
+*.log
+*.sql
+backup_*.sql
+
+# Ignore monitoring and local files
+logs/
+monitoring/
+temp/
+tmp/
+
+# Ignore Oracle Cloud and infrastructure files
+terraform-mcp-server/
+oci-*.sh
+*.pem

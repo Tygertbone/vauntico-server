@@ -546,10 +546,353 @@ npm run check
 
 ---
 
+## 🚀 Quick Start Templates
+
+### Environment Setup Templates
+
+#### Local Development Environment
+```bash
+# 1. Clone and setup
+git clone https://github.com/Tygertbone/vauntico-server.git
+cd vauntico-mvp
+npm install
+
+# 2. Environment templates
+cp .env.template .env.local
+cp server-v2/.env.example server-v2/.env.local
+cp vauntico-fulfillment-engine/.env.example vauntico-fulfillment-engine/.env.local
+
+# 3. Start all services
+npm run dev
+```
+
+#### Frontend Environment (.env.local)
+```bash
+# API Configuration
+VITE_API_URL=http://localhost:3000
+VITE_APP_URL=http://localhost:5173
+
+# Payment Processing
+VITE_PAYSTACK_PUBLIC_KEY=pk_test_your_test_key_here
+VITE_STRIPE_PUBLIC_KEY=pk_test_your_stripe_key_here
+
+# Development
+VITE_DEV_MODE=true
+VITE_DEBUG=true
+VITE_LOG_LEVEL=debug
+
+# Analytics (optional)
+VITE_GOOGLE_ANALYTICS_ID=GA_MEASUREMENT_ID
+VITE_SENTRY_DSN=YOUR_SENTRY_DSN
+```
+
+#### Backend Environment (server-v2/.env.local)
+```bash
+# Server Configuration
+NODE_ENV=development
+PORT=3000
+HOST=localhost
+
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/vauntico_dev
+DATABASE_SSL=false
+
+# Authentication
+JWT_SECRET=your-super-secret-jwt-key-for-development
+SESSION_SECRET=your-super-secret-session-key-for-development
+JWT_EXPIRES_IN=15m
+REFRESH_TOKEN_EXPIRES_IN=7d
+
+# External Services
+RESEND_API_KEY=re_your_resend_api_key
+PAYSTACK_SECRET_KEY=sk_test_your_paystack_secret
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret
+
+# Development
+DEBUG=true
+LOG_LEVEL=debug
+CORS_ORIGIN=http://localhost:5173
+
+# Security
+BCRYPT_ROUNDS=12
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+
+# Monitoring
+ENABLE_METRICS=true
+METRICS_PORT=9090
+```
+
+#### Payment Engine Environment (vauntico-fulfillment-engine/.env.local)
+```bash
+# Server Configuration
+NODE_ENV=development
+PORT=3001
+HOST=localhost
+
+# Stripe Configuration
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+STRIPE_SUCCESS_URL=http://localhost:5173/success
+STRIPE_CANCEL_URL=http://localhost:5173/cancel
+
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/vauntico_payments
+DATABASE_SSL=false
+
+# Development
+DEBUG=true
+LOG_LEVEL=debug
+ENABLE_WEBHOOK_LOGGING=true
+
+# Security
+WEBHOOK_SIGNATURE_TOLERANCE=300
+```
+
+### Docker Development Environment
+```bash
+# Development Docker Compose
+docker-compose -f docker-compose.dev.yml up -d
+
+# Individual services
+docker-compose -f docker-compose.dev.yml up frontend
+docker-compose -f docker-compose.dev.yml up backend
+docker-compose -f docker-compose.dev.yml up payments
+```
+
+### IDE Configuration Templates
+
+#### VS Code (.vscode/settings.json)
+```json
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "emmet.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
+}
+```
+
+#### VS Code Extensions (.vscode/extensions.json)
+```json
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-typescript-next",
+    "ms-vscode.vscode-json",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "ms-vscode.vscode-gitlens"
+  ]
+}
+```
+
+---
+
+## 🛠️ Development Scripts Reference
+
+### Available Scripts
+```bash
+# Development
+npm run dev              # Start all services
+npm run dev:frontend    # Start frontend only
+npm run dev:backend     # Start backend only
+npm run dev:payments    # Start payment engine only
+
+# Building
+npm run build            # Build all services
+npm run build:frontend   # Build frontend only
+npm run build:backend    # Build backend only
+npm run build:payments   # Build payment engine only
+
+# Testing
+npm run test             # Run all tests
+npm run test:frontend    # Run frontend tests
+npm run test:backend     # Run backend tests
+npm run test:payments    # Run payment engine tests
+npm run test:e2e         # Run end-to-end tests
+
+# Code Quality
+npm run lint             # Lint all services
+npm run lint:fix         # Fix linting issues
+npm run format           # Format code with Prettier
+npm run type-check       # TypeScript type checking
+
+# Database
+npm run db:migrate       # Run database migrations
+npm run db:seed          # Seed database with test data
+npm run db:reset         # Reset database
+
+# Deployment
+npm run deploy:staging   # Deploy to staging
+npm run deploy:prod      # Deploy to production
+npm run deploy:validate   # Validate deployment
+```
+
+---
+
+## 🔧 Troubleshooting Guide
+
+### Common Issues
+
+#### Port Conflicts
+```bash
+# Check what's using ports
+netstat -tulpn | grep :3000
+netstat -tulpn | grep :5173
+netstat -tulpn | grep :3001
+
+# Kill processes
+sudo lsof -ti:3000 | xargs kill -9
+```
+
+#### Database Connection Issues
+```bash
+# Test database connection
+psql $DATABASE_URL -c "SELECT version();"
+
+# Reset database
+npm run db:reset
+npm run db:migrate
+npm run db:seed
+```
+
+#### Dependency Issues
+```bash
+# Clear and reinstall
+rm -rf node_modules package-lock.json
+npm install
+
+# Clear npm cache
+npm cache clean --force
+```
+
+#### Environment Variable Issues
+```bash
+# Check loaded environment variables
+npm run env:check
+
+# Validate required variables
+node -e "
+const required = ['DATABASE_URL', 'JWT_SECRET'];
+const missing = required.filter(env => !process.env[env]);
+if (missing.length > 0) {
+  console.error('Missing environment variables:', missing);
+  process.exit(1);
+}
+console.log('All required variables present');
+"
+```
+
+---
+
+## 🎯 Development Best Practices
+
+### Code Organization
+```
+src/
+├── components/          # Reusable UI components
+├── pages/              # Page components
+├── hooks/               # Custom React hooks
+├── utils/               # Utility functions
+├── types/               # TypeScript type definitions
+├── services/            # API service functions
+└── styles/              # Global styles and Tailwind
+
+server-v2/
+├── routes/              # API route handlers
+├── middleware/          # Express middleware
+├── models/              # Database models
+├── services/            # Business logic
+├── utils/               # Utility functions
+├── config/              # Configuration
+└── __tests__/           # Test files
+```
+
+### Git Workflow
+```bash
+# Feature development
+git checkout -b feature/new-feature-name
+# Make changes...
+git add .
+git commit -m "feat: add new feature description"
+git push origin feature/new-feature-name
+# Create pull request
+
+# Hotfix development
+git checkout -b hotfix/urgent-fix-name
+# Make fixes...
+git add .
+git commit -m "fix: resolve urgent issue description"
+git push origin hotfix/urgent-fix-name
+# Create pull request with priority label
+```
+
+### Environment Management
+```bash
+# Use environment-specific configs
+export NODE_ENV=development
+export DATABASE_URL=postgresql://localhost:5432/vauntico_dev
+
+# Use direnv for automatic loading
+echo "export NODE_ENV=development" > .envrc
+echo "export DATABASE_URL=postgresql://localhost:5432/vauntico_dev" >> .envrc
+```
+
+---
+
+## 📊 Performance Guidelines
+
+### Frontend Performance
+- Use React.memo for expensive components
+- Implement code splitting with React.lazy()
+- Optimize images with WebP format
+- Use intersection observer for lazy loading
+- Minimize re-renders with useCallback/useMemo
+
+### Backend Performance
+- Implement database connection pooling
+- Use Redis for session storage
+- Add compression middleware
+- Implement API response caching
+- Use database indexes effectively
+
+### Database Performance
+- Add appropriate indexes
+- Use EXPLAIN ANALYZE for query optimization
+- Implement connection pooling
+- Monitor slow queries
+- Regular vacuum and analyze operations
+
+---
+
 **Welcome aboard!** 🎉
 
 We're excited to have you contribute to Vauntico. If you need help getting started, don't hesitate to reach out through GitHub Discussions or Issues.
 
-**Last Updated**: January 5, 2025  
-**Version**: 2.0.0  
-**Status**: Contributor Ready
+**Quick Start Commands:**
+```bash
+# Clone and setup
+git clone https://github.com/Tygertbone/vauntico-server.git
+cd vauntico-mvp
+npm install
+cp .env.template .env.local
+npm run dev
+
+# Or use our scripts
+./scripts/backend-deploy.sh --help
+./scripts/validate-deployment.sh --help
+```
+
+**Last Updated**: January 6, 2026  
+**Version**: 3.0.0  
+**Status**: Production Ready with Templates

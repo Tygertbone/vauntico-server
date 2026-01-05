@@ -157,3 +157,117 @@ repo-structure.txt
 terraform_run.ps1
 test-*.ps1
 verify-*.ps1
+
+# Additional security rules
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE workspace files
+*.code-workspace
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# OS specific files
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.backup
+*.bak
+*.tmp
+*.temp
+*.old
+*.orig
+*.rej
+
+# Installation files
+*.exe
+*.msi
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.dmg
+*.app
+*.zip
+*.tar
+*.tar.gz
+*.rar
+
+# Binary executables
+*.bin
+*.out
+*.app
+
+# Database files
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+*.mdb
+
+# Configuration files with secrets
+config.json
+secrets.json
+credentials.json
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Cloud provider specific
+.aws/
+.azure/
+.gcp/
+.google/
+kubeconfig
+*.kubeconfig
+
+# Monitoring and analytics
+*.dat
+*.trace
+*.prof
+
+# Generated documentation (keep in docs/)
+*_REPORT.md
+*_PLAN.md
+*_SUMMARY.md
+*_AUDIT.md
+*_CHECKLIST.md
+*_GUIDE.md
+
+# Temporary build directories
+tmp/
+temp/
+.cache/
+.parcel-cache/
+
+# Lock files (keep package-lock.json)
+yarn.lock
+pnpm-lock.yaml
+
+# Runtime files
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage and testing
+coverage/
+.nyc_output
+*.lcov
+
+# Deployment artifacts
+.ec2/
+.serverless/
+.vercel/
+.netlify/

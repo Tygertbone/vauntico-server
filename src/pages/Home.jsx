@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import TrustScoreCalculator from '../components/TrustScoreCalculator';
+import TrustScoreCalculator from './TrustScoreCalculator';
 import WaitlistSystem from '../components/WaitlistSystem';
 
 const Home = () => {

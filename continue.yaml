@@ -5,3 +5,15 @@ schema: v1
 packages:
   - uses: continuedev/base-models
   - uses: continuedev/base-context-vsc
+
+models:
+  - title: "GLM-4-Plus"
+    provider: "openai"
+    model: "glm-4-plus"
+    apiBase: "https://open.bigmodel.cn/api/paas/v4/"
+    apiKey: "YOUR_ZAI_API_KEY_HERE"
+  - title: "GLM-4-Air"
+    provider: "openai"
+    model: "glm-4-air"
+    apiBase: "https://open.bigmodel.cn/api/paas/v4/"
+    apiKey: "YOUR_ZAI_API_KEY_HERE"

@@ -8,13 +8,13 @@ build/
 */dist/
 */build/
 
-# Environment files
+# Environment files (CRITICAL SECURITY)
 .env
-.env.local
-.env.production
-.env.staging
+.env.*
+!.env.example
+!.env.template
 
-# Logs
+# Logs and runtime
 logs/
 *.log
 npm-debug.log*
@@ -101,6 +101,29 @@ Desktop.ini
 # Temporary files
 *.tmp
 *.temp
+*.backup
+*.bak
+
+# Security - Binary files and installers
+*.exe
+*.msi
+*.dmg
+*.pkg
+*.deb
+*.rpm
+
+# Security - Certificate files
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Security - Database files
+*.sql
+*.sqlite
+*.sqlite3
+*.db
 
 # Terraform
 .terraform/
@@ -124,13 +147,13 @@ cline_mcp_settings.json
 vauntico-staging/
 vauntico-fulfillment-engine-temp/
 
-# PowerShell scripts (keep specific ones)
-terraform_run.ps1
-test-*.ps1
-verify-*.ps1
-*.exe
+# Development and deployment
 .terraform/
 .vs/
 repo-structure.txt
 .vercel/
-*.env*
+
+# PowerShell scripts (keep specific ones)
+terraform_run.ps1
+test-*.ps1
+verify-*.ps1

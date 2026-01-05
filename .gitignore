@@ -132,3 +132,5 @@ verify-*.ps1
 .terraform/
 .vs/
 repo-structure.txt
+.vercel/
+*.env*

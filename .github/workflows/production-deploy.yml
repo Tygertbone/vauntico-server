@@ -61,18 +61,22 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         continue-on-error: false
 
-      - name: Deploy backend to Vercel
-        run: cd server-v2 && npx vercel --prod --yes
+      - name: Deploy backend using consolidated script
+        run: |
+          chmod +x scripts/backend-deploy.sh
+          ./scripts/backend-deploy.sh
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_BACKEND_PROJECT_ID }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          REPO_URL: ${{ github.repository }}
+          OCI_COMPARTMENT_ID: ${{ secrets.OCI_COMPARTMENT_ID }}
+          OCI_USER_OCID: ${{ secrets.OCI_USER_OCID }}
+          OCI_TENANCY: ${{ secrets.OCI_TENANCY }}
+          OCI_REGION: ${{ secrets.OCI_REGION }}
 
       - name: Validate backend deployment
         run: |
-          sleep 30
-          curl -f https://api.vauntico.com/health || exit 1
-          echo "✅ Backend deployment successful"
+          chmod +x scripts/validate-deployment.sh
+          ./scripts/validate-deployment.sh https://api.vauntico.com production
+        continue-on-error: false
 
       - name: Slack notification
         run: |

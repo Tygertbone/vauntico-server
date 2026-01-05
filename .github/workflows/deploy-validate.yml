@@ -58,7 +58,11 @@ jobs:
         run: sleep 30
 
       - name: Validate Endpoints
-        run: ./server-v2/validate-endpoints.sh https://api.vauntico.com
+        run: |
+          chmod +x scripts/validate-deployment.sh
+          ./scripts/validate-deployment.sh https://api.vauntico.com production
 
       - name: Validate Vercel deployment
-        run: ./server-v2/validate-endpoints.sh ${{ steps.vercel.outputs.url }}
+        run: |
+          chmod +x scripts/validate-deployment.sh
+          ./scripts/validate-deployment.sh ${{ steps.vercel.outputs.url }} production

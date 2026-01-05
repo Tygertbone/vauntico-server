@@ -128,3 +128,7 @@ vauntico-fulfillment-engine-temp/
 terraform_run.ps1
 test-*.ps1
 verify-*.ps1
+*.exe
+.terraform/
+.vs/
+repo-structure.txt

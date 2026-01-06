@@ -88,7 +88,7 @@ create_bastion_session() {
         --compartment-id "$compartment_id" \
         --subnet-id "$subnet_id" \
         --ssh-public-key-file "$BASTION_SSH_KEY.pub" \
-        --target-private-ip "$(cat server-v2/.env.local | grep INSTANCE_PRIVATE_IP | cut -d'=' -f2)" \
+        --target-private-ip "${OCI_TARGET_PRIVATE_IP}" \
         --target-ssh-username "$OCI_USER" \
         --target-port 22)
     
@@ -109,8 +109,8 @@ upload_scripts() {
     log "Uploading deployment scripts..."
     
     local scripts=(
-        "backend-deploy-v2-optimized.sh"
-        "validate-backend-deployment.sh"
+        "backend-deploy.sh"
+        "validate-deployment.sh"
     )
     
     for script in "${scripts[@]}"; do
@@ -127,7 +127,7 @@ upload_scripts() {
     
     # Make scripts executable
     log "Making scripts executable..."
-    echo "$SSH_CMD" -- "ssh -i \"$BASTION_SSH_KEY\" -o ProxyCommand=\"oci bastion session connect --session-id $SESSION_ID\" \"chmod +x ~/backend-deploy-v2-optimized.sh ~/validate-backend-deployment.sh\" ${OCI_USER}@localhost" || {
+    echo "$SSH_CMD" -- "ssh -i \"$BASTION_SSH_KEY\" -o ProxyCommand=\"oci bastion session connect --session-id $SESSION_ID\" \"chmod +x ~/backend-deploy.sh ~/validate-deployment.sh\" ${OCI_USER}@localhost" || {
         log_error "Failed to make scripts executable"
         return 1
     }
@@ -141,7 +141,7 @@ execute_deployment() {
     
     # Run deployment via bastion
     log "Running backend deployment..."
-    if ! echo "$SSH_CMD" -- "ssh -i \"$BASTION_SSH_KEY\" -o ProxyCommand=\"oci bastion session connect --session-id $SESSION_ID\" \"cd ~ && ./backend-deploy-v2-optimized.sh\" ${OCI_USER}@localhost"; then
+    if ! echo "$SSH_CMD" -- "ssh -i \"$BASTION_SSH_KEY\" -o ProxyCommand=\"oci bastion session connect --session-id $SESSION_ID\" \"cd ~ && ./backend-deploy.sh\" ${OCI_USER}@localhost"; then
         log_error "Backend deployment failed"
         return 1
     fi
@@ -155,7 +155,7 @@ validate_deployment() {
     
     # Run validation via bastion
     log "Running deployment validation..."
-    if ! echo "$SSH_CMD" -- "ssh -i \"$BASTION_SSH_KEY\" -o ProxyCommand=\"oci bastion session connect --session-id $SESSION_ID\" \"cd ~ && ./validate-backend-deployment.sh http://localhost:3000\" ${OCI_USER}@localhost"; then
+    if ! echo "$SSH_CMD" -- "ssh -i \"$BASTION_SSH_KEY\" -o ProxyCommand=\"oci bastion session connect --session-id $SESSION_ID\" \"cd ~ && ./validate-deployment.sh http://localhost:3000\" ${OCI_USER}@localhost"; then
         log_error "Deployment validation failed"
         return 1
     fi

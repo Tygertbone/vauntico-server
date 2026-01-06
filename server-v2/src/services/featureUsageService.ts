@@ -4,7 +4,7 @@ import { subscriptionManager } from '../utils/subscriptions';
 import { emailCampaignWorker } from '../queue/emailCampaignWorker'; // Temporarily disabled for build
 
 export interface UsageRecord {
-  userId: number;
+  userId: string;
   featureName: string;
   quantity?: number;
   metadata?: Record<string, any>;
@@ -60,10 +60,10 @@ export class FeatureUsageService {
         };
       }
 
-      // Record the usage (this should be done after successful feature usage)
+      // Record usage (this should be done after successful feature usage)
       // await emailCampaignWorker.recordFeatureUsage(userId.toString(), featureName); // Temporarily disabled for build
 
-      // Log the successful usage
+      // Log successful usage
       logger.info('Feature usage recorded successfully', {
         userId,
         featureName,
@@ -100,7 +100,7 @@ export class FeatureUsageService {
   /**
    * Check if user can use a feature without recording usage
    */
-  async checkUsage(userId: number, featureName: string): Promise<UsageCheck> {
+  async checkUsage(userId: string, featureName: string): Promise<UsageCheck> {
     try {
       const subscription = await subscriptionManager.getSubscription(userId);
       const currentUsage = await this.getCurrentUsage(userId, featureName);
@@ -131,9 +131,9 @@ export class FeatureUsageService {
   /**
    * Get current usage for a feature this month
    */
-  private async getCurrentUsage(userId: number, featureName: string): Promise<number> {
+  private async getCurrentUsage(userId: string, featureName: string): Promise<number> {
     try {
-      // Get usage from email_campaigns service (reusing the existing tracking)
+      // Get usage from email_campaigns service (reusing existing tracking)
       // This provides a unified usage tracking system
 
       const result = await pool.query(`
@@ -201,7 +201,7 @@ export class FeatureUsageService {
   /**
    * Get comprehensive usage report for a user
    */
-  async getUsageReport(userId: number): Promise<any> {
+  async getUsageReport(userId: string): Promise<any> {
     try {
       const subscription = await subscriptionManager.getSubscription(userId);
 
@@ -247,7 +247,7 @@ export class FeatureUsageService {
 
       try {
         const usageCheck = await this.recordUsage({
-          userId: Number(req.user.userId) || 0,
+          userId: req.user.userId as string, // Cast to string to satisfy interface
           featureName,
           quantity,
           metadata: {

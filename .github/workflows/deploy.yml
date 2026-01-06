@@ -1,0 +1,164 @@
+name: Deploy Vauntico Backend via OCI Bastion
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install OCI CLI
+        run: |
+          curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh > install-oci-cli.sh
+          chmod +x install-oci-cli.sh
+          sudo ./install-oci-cli.sh --accept-all-defaults
+          echo '/home/runner/bin' >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq openssh-client
+
+      - name: Configure OCI CLI
+        run: |
+          # Create OCI directory
+          mkdir -p ~/.oci
+          
+          # Decode and save private key
+          echo "${{ secrets.OCI_KEY_FILE }}" | base64 -d > ~/.oci/oci_api_key.pem
+          chmod 600 ~/.oci/oci_api_key.pem
+          
+          # Create OCI config file
+          cat > ~/.oci/config << EOF
+          [DEFAULT]
+          user=${{ secrets.OCI_USER_OCID }}
+          tenancy=${{ secrets.OCI_TENANCY_OCID }}
+          region=${{ secrets.OCI_REGION }}
+          fingerprint=${{ secrets.OCI_KEY_FINGERPRINT }}
+          key_file=~/.oci/oci_api_key.pem
+          EOF
+          
+          chmod 600 ~/.oci/config
+          
+          # Verify OCI CLI configuration
+          oci setup validate
+          
+          # Test OCI CLI connectivity
+          oci iam user get --user-id "${{ secrets.OCI_USER_OCID }}"
+
+      - name: Create SSH key for bastion connection
+        run: |
+          # Generate SSH key pair if not exists
+          if [ ! -f ~/.ssh/id_rsa ]; then
+            ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ""
+            chmod 600 ~/.ssh/id_rsa
+            chmod 644 ~/.ssh/id_rsa.pub
+          fi
+          
+          # Add to known hosts to avoid prompts
+          mkdir -p ~/.ssh
+          ssh-keyscan -H localhost >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Create bastion configuration files
+        run: |
+          # Create bastion-config.json from secret
+          echo '${{ secrets.OCI_BASTION_CONFIG }}' > bastion-config.json
+          
+          # Create bastion-cidr.json from secret
+          echo '${{ secrets.OCI_BASTION_CIDR }}' > bastion-cidr.json
+          
+          # Verify JSON files are valid
+          jq empty bastion-config.json
+          jq empty bastion-cidr.json
+          
+          echo "Bastion configuration files created successfully"
+
+      - name: Make deployment scripts executable
+        run: |
+          chmod +x scripts/deploy-backend.sh
+          chmod +x scripts/deploy-via-bastion.sh
+          chmod +x scripts/validate-deployment.sh
+          chmod +x scripts/cleanup.sh
+
+      - name: Deploy backend via bastion
+        run: |
+          # Execute deployment via bastion
+          ./scripts/deploy-via-bastion.sh deploy
+        env:
+          # Pass all secrets to the deployment script
+          OCI_TENANCY_OCID: ${{ secrets.OCI_TENANCY_OCID }}
+          OCI_USER_OCID: ${{ secrets.OCI_USER_OCID }}
+          OCI_REGION: ${{ secrets.OCI_REGION }}
+          OCI_KEY_FINGERPRINT: ${{ secrets.OCI_KEY_FINGERPRINT }}
+          OCI_KEY_FILE: ${{ secrets.OCI_KEY_FILE }}
+          OCI_TARGET_PRIVATE_IP: ${{ secrets.OCI_TARGET_PRIVATE_IP }}
+          OCI_BASTION_CONFIG: ${{ secrets.OCI_BASTION_CONFIG }}
+          OCI_BASTION_CIDR: ${{ secrets.OCI_BASTION_CIDR }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          PAYSTACK_PUBLIC_KEY: ${{ secrets.PAYSTACK_PUBLIC_KEY }}
+          PAYSTACK_SECRET_KEY: ${{ secrets.PAYSTACK_SECRET_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REPO_URL: "https://github.com/${{ github.repository }}.git"
+          NODE_ENV: "production"
+          PORT: "3000"
+
+      - name: Validate deployment
+        run: |
+          # Wait for application to start
+          sleep 30
+          
+          # Run validation script
+          ./scripts/deploy-via-bastion.sh validate
+        env:
+          OCI_TARGET_PRIVATE_IP: ${{ secrets.OCI_TARGET_PRIVATE_IP }}
+          OCI_BASTION_CONFIG: ${{ secrets.OCI_BASTION_CONFIG }}
+          OCI_BASTION_CIDR: ${{ secrets.OCI_BASTION_CIDR }}
+          OCI_TENANCY_OCID: ${{ secrets.OCI_TENANCY_OCID }}
+          OCI_USER_OCID: ${{ secrets.OCI_USER_OCID }}
+          OCI_REGION: ${{ secrets.OCI_REGION }}
+          OCI_KEY_FINGERPRINT: ${{ secrets.OCI_KEY_FINGERPRINT }}
+          OCI_KEY_FILE: ${{ secrets.OCI_KEY_FILE }}
+
+      - name: Send Slack notification
+        if: always()
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+              -H 'Content-type: application/json' \
+              -d '{"text":"🚀 Vauntico backend deployed successfully via OCI Bastion to ${{ secrets.OCI_TARGET_PRIVATE_IP }}!"}'
+          else
+            curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+              -H 'Content-type: application/json' \
+              -d '{"text":"❌ Vauntico backend deployment failed. Please check the GitHub Actions logs."}'
+          fi
+
+      - name: Cleanup bastion session
+        if: always()
+        run: |
+          # Clean up any remaining bastion sessions
+          ./scripts/deploy-via-bastion.sh cleanup || true
+          
+          # Clean up local files
+          rm -f bastion-config.json bastion-cidr.json
+          rm -rf ~/.oci/oci_api_key.pem ~/.oci/config
+        env:
+          OCI_TENANCY_OCID: ${{ secrets.OCI_TENANCY_OCID }}
+          OCI_USER_OCID: ${{ secrets.OCI_USER_OCID }}
+          OCI_REGION: ${{ secrets.OCI_REGION }}
+          OCI_KEY_FINGERPRINT: ${{ secrets.OCI_KEY_FINGERPRINT }}
+          OCI_KEY_FILE: ${{ secrets.OCI_KEY_FILE }}
+        continue-on-error: true

@@ -194,6 +194,17 @@ main() {
     if [[ -n "${REPO_URL:-}" ]]; then
         log "📥 Cloning application repository..."
         git clone "$REPO_URL" .
+        
+        # Navigate to server-v2 directory
+        if [[ -d "server-v2" ]]; then
+            log "📂 Moving to server-v2 directory..."
+            cd server-v2
+            # Copy environment file if it exists in root
+            if [[ -f "../.env" ]]; then
+                log "📋 Copying environment configuration..."
+                cp ../.env .env
+            fi
+        fi
     else
         log "📥 No REPO_URL provided, using placeholder application..."
     fi
@@ -459,9 +470,22 @@ LOG_DIR=$LOG_DIR
 API_VERSION=2.0.0
 EOF
 
-    # Install dependencies
-    log "📦 Installing application dependencies..."
-    npm ci --production
+    # Check if this is a TypeScript project (server-v2)
+    if [[ -f "package.json" && -f "tsconfig.json" ]]; then
+        log "📦 Detected TypeScript project, installing all dependencies..."
+        npm install
+        
+        # Build TypeScript project
+        log "🔧 Building TypeScript application..."
+        npm run build
+        
+        # Install production dependencies only
+        log "📦 Installing production dependencies..."
+        npm ci --production
+    else
+        log "📦 Installing JavaScript dependencies..."
+        npm ci --production
+    fi
     
     # Security audit
     log "🔒 Running security audit..."
@@ -475,11 +499,24 @@ EOF
     
     # Create PM2 ecosystem file
     log "🔧 Creating PM2 ecosystem configuration..."
+    
+    # Determine the correct script entry point
+    local script_file="./server.js"
+    if [[ -f "package.json" && -f "tsconfig.json" && -d "dist" ]]; then
+        # TypeScript project with built dist directory
+        script_file="./dist/index.js"
+        log "📦 Using TypeScript build output: $script_file"
+    elif [[ -f "package.json" && -f "tsconfig.json" ]]; then
+        # TypeScript project, use compiled output
+        script_file="./dist/index.js"
+        log "📦 Using TypeScript compiled output: $script_file"
+    fi
+    
     cat > ecosystem.config.js << EOF
 module.exports = {
   apps: [{
     name: '$SERVICE_NAME',
-    script: './server.js',
+    script: '$script_file',
     instances: 'max',
     exec_mode: 'cluster',
     env: {
@@ -494,7 +531,7 @@ module.exports = {
     max_memory_restart: '1G',
     node_args: '--max-old-space-size=1024',
     watch: false,
-    ignore_watch: ['node_modules', 'logs'],
+    ignore_watch: ['node_modules', 'logs', 'src', 'dist'],
     restart_delay: 4000,
     max_restarts: 10,
     min_uptime: '10s'

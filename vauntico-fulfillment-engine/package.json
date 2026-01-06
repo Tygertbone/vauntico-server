@@ -1,0 +1,33 @@
+{
+  "name": "vauntico-fulfillment-engine",
+  "version": "1.0.0",
+  "packageManager": "npm@10.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "build": "echo 'No build step required for Node.js server'",
+    "test": "jest",
+    "test:integration": "jest --testPathPattern=integration",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.0",
+    "airtable": "^0.12.2",
+    "dotenv": "^17.2.2",
+    "express": "^4.19.2",
+    "resend": "^6.0.3"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "eslint": "^8.54.0",
+    "supertest": "^6.3.3"
+  }
+}

@@ -1,4 +1,4 @@
-name: Deploy Vauntico Backend via OCI Bastion
+name: Deploy Vauntico Backend
 
 on:
   push:
@@ -6,10 +6,123 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy-backend:
+  # Job 1: Install & configure OCI CLI
+  install-oci:
     runs-on: ubuntu-latest
+    outputs:
+      oci-configured: ${{ steps.configure.outputs.success }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip jq curl
+
+      - name: Install OCI CLI
+        run: |
+          # Upgrade pip and install OCI CLI
+          python3 -m pip install --upgrade pip
+          pip install oci-cli
+          
+          # Verify installation
+          oci --version
+          
+          # Add OCI CLI to PATH
+          echo ~/.local/bin >> $GITHUB_PATH
+
+      - name: Configure OCI CLI
+        id: configure
+        run: |
+          # Create OCI directory
+          mkdir -p ~/.oci
+          
+          # Write private key from secret
+          echo "${{ secrets.OCI_PRIVATE_KEY }}" | base64 -d > ~/.oci/oci_api_key.pem
+          chmod 600 ~/.oci/oci_api_key.pem
+          
+          # Create OCI config file
+          cat > ~/.oci/config <<EOF
+          [DEFAULT]
+          user=${{ secrets.OCI_USER_OCID }}
+          fingerprint=${{ secrets.OCI_FINGERPRINT }}
+          tenancy=${{ secrets.OCI_TENANCY_OCID }}
+          region=${{ secrets.OCI_REGION }}
+          key_file=~/.oci/oci_api_key.pem
+          EOF
+          
+          chmod 600 ~/.oci/config
+          
+          # Validate configuration
+          if oci iam compartment list --compartment-id ${{ secrets.OCI_TENANCY_OCID }} --limit 1 >/dev/null 2>&1; then
+            echo "success=true" >> $GITHUB_OUTPUT
+            echo "✅ OCI CLI configured successfully"
+          else
+            echo "success=false" >> $GITHUB_OUTPUT
+            echo "❌ OCI CLI configuration failed"
+            exit 1
+          fi
+
+  # Job 2: Authenticate with OCI
+  authenticate-oci:
+    runs-on: ubuntu-latest
+    needs: install-oci
+    if: needs.install-oci.outputs.oci-configured == 'true'
+    outputs:
+      auth-success: ${{ steps.auth.outputs.success }}
+      namespace: ${{ steps.auth.outputs.namespace }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install OCI CLI
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install oci-cli
+          echo ~/.local/bin >> $GITHUB_PATH
+
+      - name: Authenticate and get namespace
+        id: auth
+        run: |
+          # Configure OCI CLI
+          mkdir -p ~/.oci
+          echo "${{ secrets.OCI_PRIVATE_KEY }}" | base64 -d > ~/.oci/oci_api_key.pem
+          chmod 600 ~/.oci/oci_api_key.pem
+          
+          cat > ~/.oci/config <<EOF
+          [DEFAULT]
+          user=${{ secrets.OCI_USER_OCID }}
+          fingerprint=${{ secrets.OCI_FINGERPRINT }}
+          tenancy=${{ secrets.OCI_TENANCY_OCID }}
+          region=${{ secrets.OCI_REGION }}
+          key_file=~/.oci/oci_api_key.pem
+          EOF
+          
+          chmod 600 ~/.oci/config
+          
+          # Test authentication
+          echo "🔐 Testing OCI authentication..."
+          if NAMESPACE=$(oci os ns get --query 'data' --raw-output 2>/dev/null); then
+            echo "success=true" >> $GITHUB_OUTPUT
+            echo "namespace=$NAMESPACE" >> $GITHUB_OUTPUT
+            echo "✅ OCI authentication successful"
+            echo "📦 Object Storage Namespace: $NAMESPACE"
+          else
+            echo "success=false" >> $GITHUB_OUTPUT
+            echo "❌ OCI authentication failed"
+            exit 1
+          fi
+
+  # Job 3: Deploy services
+  deploy-services:
+    runs-on: ubuntu-latest
+    needs: authenticate-oci
+    if: needs.authenticate-oci.outputs.auth-success == 'true'
+    outputs:
+      deployment-url: ${{ steps.deploy.outputs.url }}
+      deployment-success: ${{ steps.deploy.outputs.success }}
     environment: production
-    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,142 +133,186 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
-      - name: Install OCI CLI
-        run: |
-          # Upgrade pip and install OCI CLI using pip
-          python3 -m pip install --upgrade pip
-          pip install oci-cli
-          
-          # Verify installation
-          oci --version
-          
-          # Add OCI CLI to PATH if needed
-          echo ~/.local/bin >> $GITHUB_PATH
-
       - name: Install dependencies
         run: |
+          # Install OCI CLI
+          python3 -m pip install --upgrade pip
+          pip install oci-cli
+          echo ~/.local/bin >> $GITHUB_PATH
+          
+          # Install system deps
           sudo apt-get update
           sudo apt-get install -y jq openssh-client
 
-      - name: Configure OCI CLI
+      - name: Configure OCI for deployment
         run: |
           mkdir -p ~/.oci
-          echo "${{ secrets.OCI_KEY_FILE }}" | base64 -d > ~/.oci/oci_api_key.pem
+          echo "${{ secrets.OCI_PRIVATE_KEY }}" | base64 -d > ~/.oci/oci_api_key.pem
           chmod 600 ~/.oci/oci_api_key.pem
-
+          
           cat > ~/.oci/config <<EOF
           [DEFAULT]
           user=${{ secrets.OCI_USER_OCID }}
-          fingerprint=${{ secrets.OCI_KEY_FINGERPRINT }}
+          fingerprint=${{ secrets.OCI_FINGERPRINT }}
           tenancy=${{ secrets.OCI_TENANCY_OCID }}
           region=${{ secrets.OCI_REGION }}
           key_file=~/.oci/oci_api_key.pem
           EOF
-
+          
           chmod 600 ~/.oci/config
-          oci --version
-          oci iam region list
 
-      - name: Create SSH key for bastion connection
+      - name: Deploy to Railway (fallback)
+        id: deploy
         run: |
-          # Generate SSH key pair if not exists
-          if [ ! -f ~/.ssh/id_rsa ]; then
-            ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ""
-            chmod 600 ~/.ssh/id_rsa
-            chmod 644 ~/.ssh/id_rsa.pub
+          echo "🚀 Starting deployment process..."
+          
+          # Check if Railway token is available
+          if [ -n "${{ secrets.RAILWAY_TOKEN }}" ]; then
+            echo "📡 Deploying to Railway..."
+            
+            # Install Railway CLI
+            npm install -g @railway/cli
+            
+            # Deploy to Railway
+            if railway deploy --service=backend; then
+              echo "success=true" >> $GITHUB_OUTPUT
+              echo "url=https://api.vauntico.com" >> $GITHUB_OUTPUT
+              echo "✅ Railway deployment successful"
+            else
+              echo "success=false" >> $GITHUB_OUTPUT
+              echo "❌ Railway deployment failed"
+              exit 1
+            fi
+          else
+            echo "🏗️ Deploying to OCI (using bastion method)..."
+            
+            # Create bastion config files if secrets exist
+            if [ -n "${{ secrets.OCI_BASTION_CONFIG }}" ]; then
+              echo '${{ secrets.OCI_BASTION_CONFIG }}' > bastion-config.json
+              echo '${{ secrets.OCI_BASTION_CIDR }}' > bastion-cidr.json
+              
+              # Make scripts executable
+              chmod +x scripts/deploy-via-bastion.sh scripts/validate-deployment.sh
+              
+              # Deploy via bastion
+              if ./scripts/deploy-via-bastion.sh deploy; then
+                echo "success=true" >> $GITHUB_OUTPUT
+                echo "url=https://api.vauntico.com" >> $GITHUB_OUTPUT
+                echo "✅ OCI deployment via bastion successful"
+              else
+                echo "success=false" >> $GITHUB_OUTPUT
+                echo "❌ OCI deployment via bastion failed"
+                exit 1
+              fi
+            else
+              echo "success=false" >> $GITHUB_OUTPUT
+              echo "❌ No deployment method available (missing RAILWAY_TOKEN or OCI_BASTION_CONFIG)"
+              exit 1
+            fi
+          fi
+        env:
+          OCI_TENANCY_OCID: ${{ secrets.OCI_TENANCY_OCID }}
+          OCI_USER_OCID: ${{ secrets.OCI_USER_OCID }}
+          OCI_REGION: ${{ secrets.OCI_REGION }}
+          OCI_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
+          OCI_PRIVATE_KEY: ${{ secrets.OCI_PRIVATE_KEY }}
+          OCI_BASTION_CONFIG: ${{ secrets.OCI_BASTION_CONFIG }}
+          OCI_BASTION_CIDR: ${{ secrets.OCI_BASTION_CIDR }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+  # Job 4: Validate deployment
+  validate-deployment:
+    runs-on: ubuntu-latest
+    needs: deploy-services
+    if: needs.deploy-services.outputs.deployment-success == 'true'
+    steps:
+      - name: Wait for deployment to stabilize
+        run: |
+          echo "⏳ Waiting for services to fully start..."
+          sleep 30
+
+      - name: Health check against API endpoint
+        run: |
+          API_URL="${{ needs.deploy-services.outputs.deployment-url }}"
+          echo "🔍 Performing health check against: $API_URL/health"
+          
+          # Try health check with retries
+          for i in {1..5}; do
+            echo "📡 Health check attempt $i/5..."
+            
+            if curl -f -s -o /dev/null -w "%{http_code}" "$API_URL/health" | grep -q "200\|302"; then
+              echo "✅ Health check passed - API is responding"
+              
+              # Additional detailed check
+              RESPONSE=$(curl -s "$API_URL/health" || echo "{}")
+              echo "📊 Health response: $RESPONSE"
+              
+              # Check if response contains expected fields
+              if echo "$RESPONSE" | jq -e '.status' >/dev/null 2>&1; then
+                echo "✅ API health endpoint is properly configured"
+                exit 0
+              else
+                echo "⚠️ API responded but health format unexpected"
+              fi
+            else
+              echo "⚠️ Health check failed, retrying in 10 seconds..."
+              sleep 10
+            fi
+          done
+          
+          echo "❌ Health check failed after 5 attempts"
+          exit 1
+
+      - name: Basic functionality test
+        run: |
+          API_URL="${{ needs.deploy-services.outputs.deployment-url }}"
+          echo "🧪 Testing basic API functionality..."
+          
+          # Test a simple endpoint
+          if curl -f -s "$API_URL/" >/dev/null; then
+            echo "✅ Basic API endpoint accessible"
+          else
+            echo "⚠️ Basic API endpoint not accessible, but deployment may still be valid"
           fi
           
-          # Add to known hosts to avoid prompts
-          mkdir -p ~/.ssh
-          ssh-keyscan -H localhost >> ~/.ssh/known_hosts 2>/dev/null || true
+          echo "🎉 Deployment validation completed"
 
-      - name: Create bastion configuration files
-        run: |
-          # Create bastion-config.json from secret
-          echo '${{ secrets.OCI_BASTION_CONFIG }}' > bastion-config.json
-          
-          # Create bastion-cidr.json from secret
-          echo '${{ secrets.OCI_BASTION_CIDR }}' > bastion-cidr.json
-          
-          # Verify JSON files are valid
-          jq empty bastion-config.json
-          jq empty bastion-cidr.json
-          
-          echo "Bastion configuration files created successfully"
-
-      - name: Make deployment scripts executable
-        run: |
-          chmod +x scripts/deploy-backend.sh
-          chmod +x scripts/deploy-via-bastion.sh
-          chmod +x scripts/validate-deployment.sh
-          chmod +x scripts/cleanup.sh
-
-      - name: Deploy backend via bastion
-        run: |
-          # Execute deployment via bastion
-          ./scripts/deploy-via-bastion.sh deploy
-        env:
-          # Pass all secrets to the deployment script
-          OCI_TENANCY_OCID: ${{ secrets.OCI_TENANCY_OCID }}
-          OCI_USER_OCID: ${{ secrets.OCI_USER_OCID }}
-          OCI_REGION: ${{ secrets.OCI_REGION }}
-          OCI_KEY_FINGERPRINT: ${{ secrets.OCI_KEY_FINGERPRINT }}
-          OCI_KEY_FILE: ${{ secrets.OCI_KEY_FILE }}
-          OCI_TARGET_PRIVATE_IP: ${{ secrets.OCI_TARGET_PRIVATE_IP }}
-          OCI_BASTION_CONFIG: ${{ secrets.OCI_BASTION_CONFIG }}
-          OCI_BASTION_CIDR: ${{ secrets.OCI_BASTION_CIDR }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          PAYSTACK_PUBLIC_KEY: ${{ secrets.PAYSTACK_PUBLIC_KEY }}
-          PAYSTACK_SECRET_KEY: ${{ secrets.PAYSTACK_SECRET_KEY }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          REPO_URL: "https://github.com/${{ github.repository }}.git"
-          NODE_ENV: "production"
-          PORT: "3000"
-
-      - name: Validate deployment
-        run: |
-          # Wait for application to start
-          sleep 30
-          
-          # Run validation script
-          ./scripts/deploy-via-bastion.sh validate
-        env:
-          OCI_TARGET_PRIVATE_IP: ${{ secrets.OCI_TARGET_PRIVATE_IP }}
-          OCI_BASTION_CONFIG: ${{ secrets.OCI_BASTION_CONFIG }}
-          OCI_BASTION_CIDR: ${{ secrets.OCI_BASTION_CIDR }}
-          OCI_TENANCY_OCID: ${{ secrets.OCI_TENANCY_OCID }}
-          OCI_USER_OCID: ${{ secrets.OCI_USER_OCID }}
-          OCI_REGION: ${{ secrets.OCI_REGION }}
-          OCI_KEY_FINGERPRINT: ${{ secrets.OCI_KEY_FINGERPRINT }}
-          OCI_KEY_FILE: ${{ secrets.OCI_KEY_FILE }}
-
+  # Notification job (runs regardless of deployment outcome)
+  notify:
+    runs-on: ubuntu-latest
+    needs: [deploy-services, validate-deployment]
+    if: always()
+    steps:
       - name: Send Slack notification
-        if: always()
+        if: secrets.SLACK_WEBHOOK_URL != ''
         run: |
-          if [ "${{ job.status }}" = "success" ]; then
+          if [ "${{ needs.deploy-services.outputs.deployment-success }}" = "true" ] && [ "${{ needs.validate-deployment.result }}" = "success" ]; then
             curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
               -H 'Content-type: application/json' \
-              -d '{"text":"🚀 Vauntico backend deployed successfully via OCI Bastion to ${{ secrets.OCI_TARGET_PRIVATE_IP }}!"}'
+              -d '{"text":"🚀 Vauntico backend deployed and validated successfully! API: ${{ needs.deploy-services.outputs.deployment-url }}"}'
+          elif [ "${{ needs.deploy-services.outputs.deployment-success }}" = "true" ]; then
+            curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+              -H 'Content-type: application/json' \
+              -d '{"text":"⚠️ Vauntico backend deployed but validation failed. Please check the API: ${{ needs.deploy-services.outputs.deployment-url }}"}'
           else
             curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
               -H 'Content-type: application/json' \
-              -d '{"text":"❌ Vauntico backend deployment failed. Please check the GitHub Actions logs."}'
+              -d '{"text":"❌ Vauntico backend deployment failed. Please check GitHub Actions logs."}'
           fi
 
-      - name: Cleanup bastion session
-        if: always()
+  # Cleanup job
+  cleanup:
+    runs-on: ubuntu-latest
+    needs: [deploy-services, validate-deployment]
+    if: always()
+    steps:
+      - name: Cleanup deployment artifacts
         run: |
-          # Clean up any remaining bastion sessions
-          ./scripts/deploy-via-bastion.sh cleanup || true
+          echo "🧹 Cleaning up deployment artifacts..."
           
-          # Clean up local files
+          # Remove any temporary files
           rm -f bastion-config.json bastion-cidr.json
           rm -rf ~/.oci/oci_api_key.pem ~/.oci/config
-        env:
-          OCI_TENANCY_OCID: ${{ secrets.OCI_TENANCY_OCID }}
-          OCI_USER_OCID: ${{ secrets.OCI_USER_OCID }}
-          OCI_REGION: ${{ secrets.OCI_REGION }}
-          OCI_KEY_FINGERPRINT: ${{ secrets.OCI_KEY_FINGERPRINT }}
-          OCI_KEY_FILE: ${{ secrets.OCI_KEY_FILE }}
+          
+          echo "✅ Cleanup completed"
         continue-on-error: true

@@ -271,3 +271,4 @@ coverage/
 .serverless/
 .vercel/
 .netlify/
+set-oci-secrets.ps1 

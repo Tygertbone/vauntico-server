@@ -41,4 +41,13 @@ CI/CD pipelines must run jobs in parallel (test, lint, security, build) to maxim
 ### Rule 10: Verification Loops
 Every automated agent or CI job must verify its own output (tests, scans, browser checks) before merging.
 
+### Rule 11: Test Implementation
+All workspaces must have working test suites before merging. Missing test scripts cause CI failures.
+
+### Rule 12: Lint Configuration
+ESLint configuration must be valid for all workspaces. Lint failures block deployment.
+
+### Rule 13: Script Dependencies
+All npm scripts referenced in workflows must exist in package.json. Missing scripts cause CI failures.
+
 ---

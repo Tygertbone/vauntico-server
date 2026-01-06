@@ -15,12 +15,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup OCI CLI
+    - name: Install OCI CLI
       run: |
-        curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh > install.sh
-        chmod +x install.sh
-        sudo ./install.sh --accept-all-defaults
+        python3 -m pip install oci-cli
         echo "/home/runner/bin" >> $GITHUB_PATH
+        
+    - name: Verify OCI CLI Installation
+      run: |
+        oci --version
         
     - name: Configure OCI CLI
       env:

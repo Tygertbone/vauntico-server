@@ -22,10 +22,15 @@ jobs:
 
       - name: Install OCI CLI
         run: |
-          curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh > install-oci-cli.sh
-          chmod +x install-oci-cli.sh
-          sudo ./install-oci-cli.sh --accept-all-defaults
-          echo '/home/runner/bin' >> $GITHUB_PATH
+          # Upgrade pip and install OCI CLI using pip
+          python3 -m pip install --upgrade pip
+          pip install oci-cli
+          
+          # Verify installation
+          oci --version
+          
+          # Add OCI CLI to PATH if needed
+          echo ~/.local/bin >> $GITHUB_PATH
 
       - name: Install dependencies
         run: |
@@ -41,23 +46,20 @@ jobs:
           echo "${{ secrets.OCI_KEY_FILE }}" | base64 -d > ~/.oci/oci_api_key.pem
           chmod 600 ~/.oci/oci_api_key.pem
           
-          # Create OCI config file
-          cat > ~/.oci/config << EOF
-          [DEFAULT]
-          user=${{ secrets.OCI_USER_OCID }}
-          tenancy=${{ secrets.OCI_TENANCY_OCID }}
-          region=${{ secrets.OCI_REGION }}
-          fingerprint=${{ secrets.OCI_KEY_FINGERPRINT }}
-          key_file=~/.oci/oci_api_key.pem
-          EOF
+          # Run oci setup config with all required parameters
+          echo -e "${{ secrets.OCI_TENANCY_OCID }}\n${{ secrets.OCI_USER_OCID }}\n${{ secrets.OCI_REGION }}\n${{ secrets.OCI_KEY_FINGERPRINT }}\n~/.oci/oci_api_key.pem\nn\n" | oci setup config
           
+          # Set correct permissions on config file
           chmod 600 ~/.oci/config
           
-          # Verify OCI CLI configuration
+          # Verify OCI CLI installation
+          oci --version
+          
+          # Validate OCI CLI configuration
           oci setup validate
           
           # Test OCI CLI connectivity
-          oci iam user get --user-id "${{ secrets.OCI_USER_OCID }}"
+          oci iam region list
 
       - name: Create SSH key for bastion connection
         run: |

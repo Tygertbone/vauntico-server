@@ -39,26 +39,21 @@ jobs:
 
       - name: Configure OCI CLI
         run: |
-          # Create OCI directory
           mkdir -p ~/.oci
-          
-          # Decode and save private key
           echo "${{ secrets.OCI_KEY_FILE }}" | base64 -d > ~/.oci/oci_api_key.pem
           chmod 600 ~/.oci/oci_api_key.pem
-          
-          # Run oci setup config with all required parameters
-          echo -e "${{ secrets.OCI_TENANCY_OCID }}\n${{ secrets.OCI_USER_OCID }}\n${{ secrets.OCI_REGION }}\n${{ secrets.OCI_KEY_FINGERPRINT }}\n~/.oci/oci_api_key.pem\nn\n" | oci setup config
-          
-          # Set correct permissions on config file
+
+          cat > ~/.oci/config <<EOF
+          [DEFAULT]
+          user=${{ secrets.OCI_USER_OCID }}
+          fingerprint=${{ secrets.OCI_KEY_FINGERPRINT }}
+          tenancy=${{ secrets.OCI_TENANCY_OCID }}
+          region=${{ secrets.OCI_REGION }}
+          key_file=~/.oci/oci_api_key.pem
+          EOF
+
           chmod 600 ~/.oci/config
-          
-          # Verify OCI CLI installation
           oci --version
-          
-          # Validate OCI CLI configuration
-          oci setup validate
-          
-          # Test OCI CLI connectivity
           oci iam region list
 
       - name: Create SSH key for bastion connection

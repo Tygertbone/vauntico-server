@@ -15,7 +15,7 @@
     "test": "npm run test --workspaces",
     "test:integration": "npm run test:integration --workspaces",
     "test:smoke": "npm run test:smoke --workspaces",
-    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint . --ext .js --ignore-path .gitignore --max-warnings 10",
     "format": "prettier --check .",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",

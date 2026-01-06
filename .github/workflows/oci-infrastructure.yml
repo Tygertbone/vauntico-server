@@ -107,36 +107,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup OCI CLI
+      - name: Configure OCI CLI
         run: |
-          echo "Setting up OCI CLI..."
-          
-          # Create OCI config directory
           mkdir -p ~/.oci
-          
-          # Write OCI config
-          cat > ~/.oci/config << EOF
+          echo "${{ secrets.OCI_KEY_FILE }}" | base64 -d > ~/.oci/oci_api_key.pem
+          chmod 600 ~/.oci/oci_api_key.pem
+
+          cat > ~/.oci/config <<EOF
           [DEFAULT]
-          user = ${{ secrets.OCI_CLI_USER }}
-          fingerprint = ${{ secrets.OCI_CLI_FINGERPRINT }}
-          tenancy = ${{ secrets.OCI_CLI_TENANCY }}
-          region = ${{ secrets.OCI_CLI_REGION }}
-          key_file = ~/.oci/oci_key.pem
-          
-          [${{ github.event.inputs.environment }}]
-          user = ${{ secrets.OCI_CLI_USER }}
-          fingerprint = ${{ secrets.OCI_CLI_FINGERPRINT }}
-          tenancy = ${{ secrets.OCI_CLI_TENANCY }}
-          region = ${{ secrets.OCI_CLI_REGION }}
-          key_file = ~/.oci/oci_key.pem
+          user=${{ secrets.OCI_USER_OCID }}
+          fingerprint=${{ secrets.OCI_KEY_FINGERPRINT }}
+          tenancy=${{ secrets.OCI_TENANCY_OCID }}
+          region=${{ secrets.OCI_REGION }}
+          key_file=~/.oci/oci_api_key.pem
           EOF
-          
-          # Write private key
-          echo '${{ secrets.OCI_CLI_KEY_CONTENT }}' > ~/.oci/oci_key.pem
-          chmod 600 ~/.oci/oci_key.pem
-          
-          # Verify OCI CLI setup
-          oci iam compartment list --max-items 1
+
+          chmod 600 ~/.oci/config
+          oci --version
+          oci iam region list
 
       - name: Create VCN
         id: setup-vcn
@@ -326,20 +314,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup OCI CLI
+      - name: Configure OCI CLI
         run: |
-          # Same setup as infrastructure job
           mkdir -p ~/.oci
-          cat > ~/.oci/config << EOF
+          echo "${{ secrets.OCI_KEY_FILE }}" | base64 -d > ~/.oci/oci_api_key.pem
+          chmod 600 ~/.oci/oci_api_key.pem
+
+          cat > ~/.oci/config <<EOF
           [DEFAULT]
-          user = ${{ secrets.OCI_CLI_USER }}
-          fingerprint = ${{ secrets.OCI_CLI_FINGERPRINT }}
-          tenancy = ${{ secrets.OCI_CLI_TENANCY }}
-          region = ${{ secrets.OCI_CLI_REGION }}
-          key_file = ~/.oci/oci_key.pem
+          user=${{ secrets.OCI_USER_OCID }}
+          fingerprint=${{ secrets.OCI_KEY_FINGERPRINT }}
+          tenancy=${{ secrets.OCI_TENANCY_OCID }}
+          region=${{ secrets.OCI_REGION }}
+          key_file=~/.oci/oci_api_key.pem
           EOF
-          echo '${{ secrets.OCI_CLI_KEY_CONTENT }}' > ~/.oci/oci_key.pem
-          chmod 600 ~/.oci/oci_key.pem
+
+          chmod 600 ~/.oci/config
+          oci --version
+          oci iam region list
 
       - name: Generate SSH Key
         run: |
@@ -423,20 +415,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup OCI CLI
+      - name: Configure OCI CLI
         run: |
-          # Same setup as previous jobs
           mkdir -p ~/.oci
-          cat > ~/.oci/config << EOF
+          echo "${{ secrets.OCI_KEY_FILE }}" | base64 -d > ~/.oci/oci_api_key.pem
+          chmod 600 ~/.oci/oci_api_key.pem
+
+          cat > ~/.oci/config <<EOF
           [DEFAULT]
-          user = ${{ secrets.OCI_CLI_USER }}
-          fingerprint = ${{ secrets.OCI_CLI_FINGERPRINT }}
-          tenancy = ${{ secrets.OCI_CLI_TENANCY }}
-          region = ${{ secrets.OCI_CLI_REGION }}
-          key_file = ~/.oci/oci_key.pem
+          user=${{ secrets.OCI_USER_OCID }}
+          fingerprint=${{ secrets.OCI_KEY_FINGERPRINT }}
+          tenancy=${{ secrets.OCI_TENANCY_OCID }}
+          region=${{ secrets.OCI_REGION }}
+          key_file=~/.oci/oci_api_key.pem
           EOF
-          echo '${{ secrets.OCI_CLI_KEY_CONTENT }}' > ~/.oci/oci_key.pem
-          chmod 600 ~/.oci/oci_key.pem
+
+          chmod 600 ~/.oci/config
+          oci --version
+          oci iam region list
 
       - name: Create Autonomous Database
         id: create-db

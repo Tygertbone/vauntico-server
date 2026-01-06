@@ -139,10 +139,6 @@ source_details.json
 # MCP/Tooling
 cline_mcp_settings.json
 
-# Generated reports (keep in docs/ directory)
-*_REPORT.md
-*_PLAN.md
-
 # Build artifacts
 vauntico-staging/
 vauntico-fulfillment-engine-temp/
@@ -238,14 +234,6 @@ kubeconfig
 *.trace
 *.prof
 
-# Generated documentation (keep in docs/)
-*_REPORT.md
-*_PLAN.md
-*_SUMMARY.md
-*_AUDIT.md
-*_CHECKLIST.md
-*_GUIDE.md
-
 # Temporary build directories
 tmp/
 temp/
@@ -271,4 +259,4 @@ coverage/
 .serverless/
 .vercel/
 .netlify/
-set-oci-secrets.ps1 
+set-oci-secrets.ps1

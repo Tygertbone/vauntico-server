@@ -400,6 +400,82 @@ npm run start:prod
 
 ---
 
+## 🔄 VAUNTICO.md Memory File
+
+The `VAUNTICO.md` file is our living memory file that records recurring issues, fixes, and best practices. Every mistake becomes a rule to prevent future occurrences.
+
+### Key Rules from VAUNTICO.md:
+- **Rule 1**: Always use Node.js v24 in workflows
+- **Rule 5**: Use semantic commit prefixes (`feat:`, `fix:`, `docs:`, `ci:`, `chore:`, `scripts:`, `security:`)
+- **Rule 6**: All PRs must pass unit tests, integration tests, security scans, and browser smoke tests
+- **Rule 7**: Use project scripts (`npm run deploy`, `npm run validate`, `npm run cleanup`) instead of manual commands
+- **Rule 9**: CI/CD pipelines must run jobs in parallel for maximum efficiency
+
+**Always check VAUNTICO.md before coding to avoid repeating past mistakes.**
+
+---
+
+## ⚡ Slash Commands
+
+Use these npm scripts instead of manual commands for consistency and automation:
+
+```bash
+# Deployment Commands
+npm run deploy              # Deploy using backend-deploy.sh
+npm run validate            # Validate deployment using validate-deployment.sh
+npm run cleanup             # Clean up resources using cleanup.sh
+
+# Development Commands
+npm run test               # Run all tests
+npm run test:integration   # Run integration tests
+npm run test:smoke         # Run browser smoke tests
+npm run lint               # Run linting
+npm run format:check       # Check code formatting
+npm run format:fix         # Fix code formatting
+
+# Git Commands
+npm run commit-pr          # Git add, commit with message, and push to main
+```
+
+---
+
+## 🏆 CI/CD Victory Checklist
+
+Follow this checklist to ensure successful deployments:
+
+## CI/CD Victory Checklist
+1. ✅ Push commits with semantic messages
+2. ✅ Pipeline runs parallel jobs (test, lint, security, build)
+3. ✅ Always use Node.js v24
+4. ✅ Check VAUNTICO.md before coding
+5. ✅ Use npm scripts instead of manual commands
+6. ✅ Merge only when all verification checks pass
+
+### Verification Requirements:
+- **Unit Tests**: All unit tests must pass
+- **Integration Tests**: All integration tests must pass
+- **Security Scans**: Trivy and Snyk scans must complete
+- **Browser Smoke Tests**: End-to-end browser tests must pass
+- **Code Quality**: Linting and formatting checks must pass
+- **Build**: Application must build successfully
+
+### Parallel Job Structure:
+Our CI/CD runs jobs in parallel for efficiency:
+- `test`: Unit tests
+- `integration`: Integration tests
+- `lint`: Code quality and formatting
+- `security-scan`: Vulnerability scanning (Trivy, Snyk)
+- `build`: Application build verification
+- `browser-smoke`: End-to-end browser tests
+
+### Before Merging:
+1. All parallel jobs must pass successfully
+2. Security scans must not have critical vulnerabilities
+3. Build must complete without errors
+4. Browser smoke tests must validate core functionality
+
+---
+
 ## 📊 Monitoring & Debugging
 
 ### Health Checks

@@ -48,11 +48,11 @@ jest.mock('../src/config/database', () => ({
 // Mock external services
 jest.mock('@upstash/redis', () => ({
   Redis: jest.fn().mockImplementation(() => ({
-    get: jest.fn().mockResolvedValue(null),
-    set: jest.fn().mockResolvedValue('OK'),
-    del: jest.fn().mockResolvedValue(1),
-    exists: jest.fn().mockResolvedValue(0),
-    ping: jest.fn().mockResolvedValue('PONG'),
+    get: jest.fn().mockResolvedValue(null as any),
+    set: jest.fn().mockResolvedValue('OK' as any),
+    del: jest.fn().mockResolvedValue(1 as any),
+    exists: jest.fn().mockResolvedValue(0 as any),
+    ping: jest.fn().mockResolvedValue('PONG' as any),
   })),
 }));
 
@@ -61,15 +61,15 @@ jest.mock('stripe', () => ({
   __esModule: true,
   default: jest.fn().mockImplementation(() => ({
     webhooks: {
-      constructEvent: jest.fn().mockReturnValue({ type: 'payment_intent.succeeded', data: {} }),
+      constructEvent: jest.fn().mockReturnValue({ type: 'payment_intent.succeeded', data: {} } as any),
     },
     customers: {
-      create: jest.fn().mockResolvedValue({ id: 'cus_test123', email: 'test@example.com' }),
-      retrieve: jest.fn().mockResolvedValue({ id: 'cus_test123', email: 'test@example.com' }),
+      create: jest.fn().mockResolvedValue({ id: 'cus_test123', email: 'test@example.com' } as any),
+      retrieve: jest.fn().mockResolvedValue({ id: 'cus_test123', email: 'test@example.com' } as any),
     },
     paymentIntents: {
-      create: jest.fn().mockResolvedValue({ id: 'pi_test123', status: 'succeeded' }),
-      confirm: jest.fn().mockResolvedValue({ id: 'pi_test123', status: 'succeeded' }),
+      create: jest.fn().mockResolvedValue({ id: 'pi_test123', status: 'succeeded' } as any),
+      confirm: jest.fn().mockResolvedValue({ id: 'pi_test123', status: 'succeeded' } as any),
     },
   })),
 }));
@@ -79,11 +79,11 @@ jest.mock('paystack', () => ({
   __esModule: true,
   default: jest.fn().mockImplementation(() => ({
     transaction: {
-      initialize: jest.fn().mockResolvedValue({ data: { authorization_url: 'https://test.paystack.co' } }),
-      verify: jest.fn().mockResolvedValue({ data: { status: 'success' } }),
+      initialize: jest.fn().mockResolvedValue({ data: { authorization_url: 'https://test.paystack.co' } } as any),
+      verify: jest.fn().mockResolvedValue({ data: { status: 'success' } } as any),
     },
     customer: {
-      create: jest.fn().mockResolvedValue({ data: { id: 'cus_test123', email: 'test@example.com' } }),
+      create: jest.fn().mockResolvedValue({ data: { id: 'cus_test123', email: 'test@example.com' } } as any),
     },
   })),
 }));
@@ -92,7 +92,7 @@ jest.mock('paystack', () => ({
 jest.mock('resend', () => ({
   Resend: jest.fn().mockImplementation(() => ({
     emails: {
-      send: jest.fn().mockResolvedValue({ id: 'email_test123' }),
+      send: jest.fn().mockResolvedValue({ id: 'email_test123' } as any),
     },
   })),
 }));

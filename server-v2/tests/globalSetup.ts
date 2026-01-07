@@ -1,5 +1,4 @@
 // Jest global setup file for server-v2
-import { jest } from '@jest/globals';
 
 // Global test setup runs once before all tests
 export default async function globalSetup() {
@@ -7,9 +6,6 @@ export default async function globalSetup() {
   
   // Load test environment variables
   process.env.NODE_ENV = 'test';
-  
-  // Set test timeout
-  jest.setTimeout(30000);
   
   // Mock console methods to reduce noise in test output
   const originalConsoleLog = console.log;

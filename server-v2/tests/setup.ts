@@ -45,54 +45,93 @@ jest.mock('../src/config/database', () => ({
   FEATURE_DESCRIPTION: process.env.FEATURE_DESCRIPTION,
 }));
 
-// Mock external services
+// Mock external services with proper error handling
 jest.mock('@upstash/redis', () => ({
   Redis: jest.fn().mockImplementation(() => ({
-    get: jest.fn().mockResolvedValue(null as any),
-    set: jest.fn().mockResolvedValue('OK' as any),
-    del: jest.fn().mockResolvedValue(1 as any),
-    exists: jest.fn().mockResolvedValue(0 as any),
-    ping: jest.fn().mockResolvedValue('PONG' as any),
-  })),
+    get: jest.fn().mockResolvedValue(null),
+    set: jest.fn().mockResolvedValue('OK'),
+    del: jest.fn().mockResolvedValue(1),
+    exists: jest.fn().mockResolvedValue(0),
+    ping: jest.fn().mockResolvedValue('PONG'),
+  }),
 }));
 
-// Mock Stripe
-jest.mock('stripe', () => ({
+// Mock Stripe with comprehensive error scenarios
+jest.mock('stripe', () => {
   __esModule: true,
   default: jest.fn().mockImplementation(() => ({
     webhooks: {
-      constructEvent: jest.fn().mockReturnValue({ type: 'payment_intent.succeeded', data: {} } as any),
+      constructEvent: jest.fn().mockReturnValue({
+        type: 'payment_intent.succeeded',
+        data: { id: 'pi_test_123' }
+      }),
+      constructEvent: jest.fn().mockImplementation(() => {
+        throw new Error('Invalid webhook signature');
+      }),
     },
     customers: {
-      create: jest.fn().mockResolvedValue({ id: 'cus_test123', email: 'test@example.com' } as any),
-      retrieve: jest.fn().mockResolvedValue({ id: 'cus_test123', email: 'test@example.com' } as any),
+      create: jest.fn().mockResolvedValue({
+        id: 'cus_test123',
+        email: 'test@example.com'
+      }),
+      create: jest.fn().mockRejectedValue(new Error('API limit exceeded')),
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new Error('Customer not found');
+      }),
     },
     paymentIntents: {
-      create: jest.fn().mockResolvedValue({ id: 'pi_test123', status: 'succeeded' } as any),
-      confirm: jest.fn().mockResolvedValue({ id: 'pi_test123', status: 'succeeded' } as any),
+      create: jest.fn().mockResolvedValue({
+        id: 'pi_test123',
+        status: 'succeeded'
+      }),
+      confirm: jest.fn().mockRejectedValue(new Error('Payment failed')),
     },
-  })),
+  }),
 }));
 
-// Mock Paystack
+// Mock Paystack with error handling
 jest.mock('paystack', () => ({
   __esModule: true,
   default: jest.fn().mockImplementation(() => ({
     transaction: {
-      initialize: jest.fn().mockResolvedValue({ data: { authorization_url: 'https://test.paystack.co' } } as any),
-      verify: jest.fn().mockResolvedValue({ data: { status: 'success' } } as any),
+      initialize: jest.fn().mockResolvedValue({
+        data: { 
+          authorization_url: 'https://test.paystack.co/authorize',
+          reference: 'ref_test_123'
+        }
+      }),
+      initialize: jest.fn().mockRejectedValue(new Error('Invalid parameters')),
+      verify: jest.fn().mockResolvedValue({
+        data: { status: 'success' }
+      }),
+      verify: jest.fn().mockImplementation(() => {
+        throw new Error('Transaction not found');
+      }),
     },
     customer: {
-      create: jest.fn().mockResolvedValue({ data: { id: 'cus_test123', email: 'test@example.com' } } as any),
+      create: jest.fn().mockResolvedValue({
+        data: { 
+          id: 'cus_test123',
+          email: 'test@example.com',
+          customer_code: 'CUS_001'
+        }
+      }),
+      create: jest.fn().mockRejectedValue(new Error('Duplicate customer')),
     },
   })),
 }));
 
-// Mock Resend
+// Mock Resend with comprehensive error scenarios
 jest.mock('resend', () => ({
   Resend: jest.fn().mockImplementation(() => ({
     emails: {
-      send: jest.fn().mockResolvedValue({ id: 'email_test123' } as any),
+      send: jest.fn().mockResolvedValue({
+        id: 'email_test_123'
+      }),
+      send: jest.fn().mockRejectedValue(new Error('Rate limit exceeded')),
+      send: jest.fn().mockImplementation(() => {
+        throw new Error('Invalid email format');
+      }),
     },
   })),
 }));

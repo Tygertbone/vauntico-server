@@ -22,5 +22,15 @@ module.exports = {
   testTimeout: 30000,
   detectOpenHandles: true,
   forceExit: true,
-  verbose: true
+  verbose: true,
+  globals: {
+    'ts-jest': {
+      tsconfig: {
+        compilerOptions: {
+          strict: false
+        }
+      }
+    }
+  },
+  setupFiles: ['<rootDir>/tests/setup.ts']
 };

@@ -1,0 +1,22 @@
+# =============================================================================
+# VAUNTICO GRAFANA DATASOURCE PROVISIONING
+# =============================================================================
+# Phase 1: Foundation - Prometheus Datasource Configuration
+# Updated: 2026-01-07 - Environment Standardization
+
+apiVersion: 1
+
+datasources:
+  - name: 'Prometheus'
+    type: 'prometheus'
+    access: 'proxy'
+    url: 'http://prometheus:9090'
+    isDefault: true
+    jsonData:
+      timeInterval: '5s'
+      queryTimeout: '60s'
+      httpMethod: 'POST'
+    secureJsonData: {}
+    editable: true
+    basicAuth: false
+    withCredentials: false

@@ -1,9 +1,9 @@
 # =============================================================================
-# VAUNTICO SERVER-V2 DOCKERFILE (Railway Deployment)
+# STANDARDIZED VAUNTICO BACKEND DOCKERFILE
 # =============================================================================
-# Based on standardized backend template
-# Service: server-v2 (Trust Score Backend)
-# Health Check: /health
+# Base template for all Node.js backend services
+# Version: 2.0.0
+# Purpose: Consistent build process, health checks, and deployment
 
 FROM node:20-alpine
 
@@ -21,16 +21,23 @@ RUN addgroup -g 1001 -S vauntico && \
 WORKDIR /app
 
 # Copy package files
-COPY server-v2/package*.json ./
+COPY ${SERVICE_PATH:-.}/package*.json ./
 
-# Install dependencies
-RUN npm ci --omit=dev
+# Install dependencies based on environment
+ARG NODE_ENV=production
+RUN if [ "$NODE_ENV" = "development" ]; then \
+        npm ci; \
+    else \
+        npm ci --omit=dev; \
+    fi
 
 # Copy application code
-COPY server-v2 .
+COPY ${SERVICE_PATH:-.} .
 
-# Build the application
-RUN npm run build
+# Build application if needed
+RUN if [ -f "package.json" ] && grep -q "build" package.json; then \
+        npm run build; \
+    fi
 
 # Change ownership to non-root user
 RUN chown -R vauntico:vauntico /app
@@ -39,15 +46,14 @@ USER vauntico
 # Expose port
 EXPOSE 8080
 
-# Health check
+# Standardized health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD curl -f http://localhost:8080/health || exit 1
+    CMD curl -f http://localhost:8080${HEALTH_CHECK_PATH:-/health} || exit 1
 
 # Environment variables
 ENV NODE_ENV=production
 ENV PORT=8080
-ENV HEALTHCHECK_PATH=/health
 
 # Use dumb-init for proper signal handling
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["node", "dist/index.js"]
+CMD ["node", "${START_SCRIPT:-dist/index.js}"]

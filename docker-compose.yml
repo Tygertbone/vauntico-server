@@ -1,6 +1,52 @@
 version: '3.9'
 
 services:
+  # --- Infrastructure Services (Data Layer) ---
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: vauntico-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=vauntico_db
+      - POSTGRES_USER=vauntico_user
+      - POSTGRES_PASSWORD=secure_password_change_this
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vauntico_user -d vauntico_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    labels:
+      - "prometheus.scrape=true"
+      - "prometheus.port=9187"
+      - "prometheus.path=/metrics"
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: vauntico-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass redis_password_change_this
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    labels:
+      - "prometheus.scrape=true"
+      - "prometheus.port=9121"
+      - "prometheus.path=/metrics"
+
   # --- Application Services ---
   # Trust Score Backend (server-v2)
   trust-score-backend:
@@ -11,10 +57,17 @@ services:
     ports:
       - "3001:8080"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - PORT=8080
+      - DATABASE_URL=postgresql://vauntico_user:secure_password_change_this@postgres:5432/vauntico_db
+      - UPSTASH_REDIS_URL=redis://:redis_password_change_this@redis:6379
     env_file:
       - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
@@ -23,6 +76,8 @@ services:
       retries: 3
       start_period: 40s
     labels:
+      - "environment=development"
+      - "service=trust-score-backend"
       - "prometheus.scrape=true"
       - "prometheus.port=8080"
       - "prometheus.path=/metrics"
@@ -253,6 +308,21 @@ services:
     restart: unless-stopped
     depends_on:
       - prometheus
+
+# --- Data Volumes ---
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+  uptime-kuma-data:
+    driver: local
+  alertmanager-data:
+    driver: local
 
 networks:
   default:

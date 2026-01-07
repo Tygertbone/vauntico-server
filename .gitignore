@@ -121,8 +121,12 @@ Desktop.ini
 *.p12
 *.pfx
 
-# Security - Database files
+# Security - Database files (but allow standardized init scripts)
 *.sql
+!scripts/init-db.sql
+!scripts/*.sql
+
+# Database files (exclude)
 *.sqlite
 *.sqlite3
 *.db
@@ -262,3 +266,4 @@ coverage/
 .vercel/
 .netlify/
 set-oci-secrets.ps1
+.vercel/

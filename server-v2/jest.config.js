@@ -25,11 +25,7 @@ module.exports = {
   verbose: true,
   globals: {
     'ts-jest': {
-      tsconfig: {
-        compilerOptions: {
-          strict: false
-        }
-      }
+      tsconfig: 'tsconfig.json'
     }
   },
   setupFiles: ['<rootDir>/tests/setup.ts']

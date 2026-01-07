@@ -35,6 +35,19 @@ jobs:
       - name: Configure OCI CLI
         id: configure
         run: |
+          # Check if required secrets are available
+          if [ -z "${{ secrets.OCI_PRIVATE_KEY }}" ] || [ -z "${{ secrets.OCI_USER_OCID }}" ] || [ -z "${{ secrets.OCI_TENANCY_OCID }}" ] || [ -z "${{ secrets.OCI_FINGERPRINT }}" ] || [ -z "${{ secrets.OCI_REGION }}" ]; then
+            echo "❌ Required OCI secrets are missing"
+            echo "Missing secrets:"
+            [ -z "${{ secrets.OCI_PRIVATE_KEY }}" ] && echo "- OCI_PRIVATE_KEY"
+            [ -z "${{ secrets.OCI_USER_OCID }}" ] && echo "- OCI_USER_OCID"
+            [ -z "${{ secrets.OCI_TENANCY_OCID }}" ] && echo "- OCI_TENANCY_OCID"
+            [ -z "${{ secrets.OCI_FINGERPRINT }}" ] && echo "- OCI_FINGERPRINT"
+            [ -z "${{ secrets.OCI_REGION }}" ] && echo "- OCI_REGION"
+            echo "success=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
           # Create OCI directory
           mkdir -p ~/.oci
           
@@ -54,8 +67,12 @@ jobs:
           
           chmod 600 ~/.oci/config
           
-          # Validate configuration
-          if oci iam compartment list --compartment-id ${{ secrets.OCI_TENANCY_OCID }} --limit 1 >/dev/null 2>&1; then
+          # Force API key authentication
+          export OCI_CLI_AUTH=api_key
+          
+          # Validate configuration with timeout
+          echo "🔍 Testing OCI authentication..."
+          if timeout 30 oci iam compartment list --compartment-id ${{ secrets.OCI_TENANCY_OCID }} --limit 1 --auth api_key >/dev/null 2>&1; then
             echo "success=true" >> $GITHUB_OUTPUT
             echo "✅ OCI CLI configured successfully"
           else
@@ -101,9 +118,12 @@ jobs:
           
           chmod 600 ~/.oci/config
           
-          # Test authentication
+          # Force API key authentication
+          export OCI_CLI_AUTH=api_key
+          
+          # Test authentication with timeout
           echo "🔐 Testing OCI authentication..."
-          if NAMESPACE=$(oci os ns get --query 'data' --raw-output 2>/dev/null); then
+          if NAMESPACE=$(timeout 30 oci os ns get --query 'data' --raw-output --auth api_key 2>/dev/null); then
             echo "success=true" >> $GITHUB_OUTPUT
             echo "namespace=$NAMESPACE" >> $GITHUB_OUTPUT
             echo "✅ OCI authentication successful"
@@ -160,6 +180,9 @@ jobs:
           EOF
           
           chmod 600 ~/.oci/config
+          
+          # Force API key authentication
+          export OCI_CLI_AUTH=api_key
 
       - name: Deploy to Railway (fallback)
         id: deploy
@@ -173,44 +196,49 @@ jobs:
             # Install Railway CLI
             npm install -g @railway/cli
             
-            # Deploy to Railway
-            if railway deploy --service=backend; then
+            # Deploy to Railway with timeout
+            if timeout 300 railway deploy --service=backend; then
               echo "success=true" >> $GITHUB_OUTPUT
               echo "url=https://api.vauntico.com" >> $GITHUB_OUTPUT
               echo "✅ Railway deployment successful"
             else
               echo "success=false" >> $GITHUB_OUTPUT
-              echo "❌ Railway deployment failed"
+              echo "❌ Railway deployment failed or timed out"
               exit 1
             fi
           else
             echo "🏗️ Deploying to OCI (using bastion method)..."
             
-            # Create bastion config files if secrets exist
-            if [ -n "${{ secrets.OCI_BASTION_CONFIG }}" ]; then
+            # Check if OCI bastion secrets are available
+            if [ -n "${{ secrets.OCI_BASTION_CONFIG }}" ] && [ -n "${{ secrets.OCI_BASTION_CIDR }}" ]; then
               echo '${{ secrets.OCI_BASTION_CONFIG }}' > bastion-config.json
               echo '${{ secrets.OCI_BASTION_CIDR }}' > bastion-cidr.json
               
               # Make scripts executable
               chmod +x scripts/deploy-via-bastion.sh scripts/validate-deployment.sh
               
-              # Deploy via bastion
-              if ./scripts/deploy-via-bastion.sh deploy; then
+              # Deploy via bastion with timeout
+              if timeout 300 ./scripts/deploy-via-bastion.sh deploy; then
                 echo "success=true" >> $GITHUB_OUTPUT
                 echo "url=https://api.vauntico.com" >> $GITHUB_OUTPUT
                 echo "✅ OCI deployment via bastion successful"
               else
                 echo "success=false" >> $GITHUB_OUTPUT
-                echo "❌ OCI deployment via bastion failed"
+                echo "❌ OCI deployment via bastion failed or timed out"
                 exit 1
               fi
             else
+              echo "❌ No deployment method available"
+              echo "Missing secrets:"
+              [ -z "${{ secrets.RAILWAY_TOKEN }}" ] && echo "- RAILWAY_TOKEN"
+              [ -z "${{ secrets.OCI_BASTION_CONFIG }}" ] && echo "- OCI_BASTION_CONFIG"
+              [ -z "${{ secrets.OCI_BASTION_CIDR }}" ] && echo "- OCI_BASTION_CIDR"
               echo "success=false" >> $GITHUB_OUTPUT
-              echo "❌ No deployment method available (missing RAILWAY_TOKEN or OCI_BASTION_CONFIG)"
               exit 1
             fi
           fi
         env:
+          OCI_CLI_AUTH: api_key
           OCI_TENANCY_OCID: ${{ secrets.OCI_TENANCY_OCID }}
           OCI_USER_OCID: ${{ secrets.OCI_USER_OCID }}
           OCI_REGION: ${{ secrets.OCI_REGION }}
@@ -236,15 +264,15 @@ jobs:
           API_URL="${{ needs.deploy-services.outputs.deployment-url }}"
           echo "🔍 Performing health check against: $API_URL/health"
           
-          # Try health check with retries
+          # Try health check with retries and timeouts
           for i in {1..5}; do
             echo "📡 Health check attempt $i/5..."
             
-            if curl -f -s -o /dev/null -w "%{http_code}" "$API_URL/health" | grep -q "200\|302"; then
+            if timeout 10 curl -f -s -o /dev/null -w "%{http_code}" "$API_URL/health" | grep -q "200\|302"; then
               echo "✅ Health check passed - API is responding"
               
               # Additional detailed check
-              RESPONSE=$(curl -s "$API_URL/health" || echo "{}")
+              RESPONSE=$(timeout 10 curl -s "$API_URL/health" || echo "{}")
               echo "📊 Health response: $RESPONSE"
               
               # Check if response contains expected fields
@@ -268,8 +296,8 @@ jobs:
           API_URL="${{ needs.deploy-services.outputs.deployment-url }}"
           echo "🧪 Testing basic API functionality..."
           
-          # Test a simple endpoint
-          if curl -f -s "$API_URL/" >/dev/null; then
+          # Test a simple endpoint with timeout
+          if timeout 10 curl -f -s "$API_URL/" >/dev/null; then
             echo "✅ Basic API endpoint accessible"
           else
             echo "⚠️ Basic API endpoint not accessible, but deployment may still be valid"

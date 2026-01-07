@@ -1,0 +1,133 @@
+# Prometheus configuration for Vauntico KPI monitoring
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "alert_rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+scrape_configs:
+  # Vauntico Backend Application Metrics
+  - job_name: 'vauntico-backend'
+    static_configs:
+      - targets: ['localhost:3001']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # KPI Specific Metrics Endpoints
+  - job_name: 'vauntico-kpi'
+    static_configs:
+      - targets: ['localhost:3001']
+    metrics_path: '/api/v1/metrics/kpi'
+    scrape_interval: 60s
+    scrape_timeout: 15s
+
+  # Database Health Monitoring
+  - job_name: 'vauntico-db-health'
+    static_configs:
+      - targets: ['localhost:3001']
+    metrics_path: '/db-health'
+    scrape_interval: 30s
+    scrape_timeout: 5s
+
+  # Blind Spot Monitoring
+  - job_name: 'vauntico-blind-spots'
+    static_configs:
+      - targets: ['localhost:3001']
+    metrics_path: '/api/v1/metrics/blind-spots'
+    scrape_interval: 300s  # Every 5 minutes
+    scrape_timeout: 10s
+
+  # Deployment Tracking
+  - job_name: 'vauntico-deployment'
+    static_configs:
+      - targets: ['localhost:3001']
+    metrics_path: '/api/v1/metrics/deployment-tracking'
+    scrape_interval: 600s  # Every 10 minutes
+    scrape_timeout: 15s
+
+# Monetization Phase 1 KPIs
+# Target: 100K MRR from creators
+recording_rules:
+  - name: vauntico_phase1_kpis
+    interval: 60s
+    rules:
+      # Pro Subscriptions (Primary revenue driver)
+      - record: vauntico:pro_subscriptions:current
+        expr: increase(pro_subscriptions_total[5m])
+      
+      # Score Insurance Signups (Secondary revenue)
+      - record: vauntico:score_insurance_signups:current
+        expr: increase(score_insurance_signups_total[5m])
+      
+      # Trust Calculator Usage (Engagement metric)
+      - record: vauntico:trust_calculator_usage:current
+        expr: increase(trust_calculator_usage_total[5m])
+      
+      # MRR Calculation
+      - record: vauntico:mrr:current
+        expr: (vauntico:pro_subscriptions:current * 99) + (vauntico:score_insurance_signups:current * 29)
+      
+      # MRR Progress towards Phase 1 Target
+      - record: vauntico:mrr:progress_percentage
+        expr: (vauntico:mrr:current / 100000) * 100
+
+# Alert Rules for Critical KPIs
+alert_rules.yml: |
+  groups:
+    - name: vauntico_critical_alerts
+      rules:
+        # Application Health Alerts
+        - alert: ApplicationDown
+          expr: up{job="vauntico-backend"} == 0
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Vauntico backend is down"
+            description: "Vauntico backend has been down for more than 1 minute"
+
+        - alert: DatabaseDown
+          expr: up{job="vauntico-db-health"} == 0
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Database connectivity lost"
+            description: "Database has been unreachable for more than 2 minutes"
+
+        # KPI Performance Alerts
+        - alert: LowSubscriptionRate
+          expr: increase(pro_subscriptions_total[1h]) < 5
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Low subscription rate detected"
+            description: "Less than 5 pro subscriptions in the last hour"
+
+        - alert: MRRBehindTarget
+          expr: vauntico:mrr:progress_percentage < 10
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: "MRR significantly behind target"
+            description: "Current MRR progress is less than 10% of Phase 1 target"
+
+        # Blind Spot Monitoring Alerts
+        - alert: BlindSpotCheckFailed
+          expr: blind_spot_check_success == 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Blind spot mitigation check failed"
+            description: "One or more blind spot mitigations are not functioning properly"

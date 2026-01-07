@@ -284,20 +284,24 @@ jobs:
     if: always()
     steps:
       - name: Send Slack notification
-        if: secrets.SLACK_WEBHOOK_URL != ''
         run: |
-          if [ "${{ needs.deploy-services.outputs.deployment-success }}" = "true" ] && [ "${{ needs.validate-deployment.result }}" = "success" ]; then
-            curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
-              -H 'Content-type: application/json' \
-              -d '{"text":"🚀 Vauntico backend deployed and validated successfully! API: ${{ needs.deploy-services.outputs.deployment-url }}"}'
-          elif [ "${{ needs.deploy-services.outputs.deployment-success }}" = "true" ]; then
-            curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
-              -H 'Content-type: application/json' \
-              -d '{"text":"⚠️ Vauntico backend deployed but validation failed. Please check the API: ${{ needs.deploy-services.outputs.deployment-url }}"}'
+          # Check if Slack webhook URL is available
+          if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+            if [ "${{ needs.deploy-services.outputs.deployment-success }}" = "true" ] && [ "${{ needs.validate-deployment.result }}" = "success" ]; then
+              curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+                -H 'Content-type: application/json' \
+                -d '{"text":"🚀 Vauntico backend deployed and validated successfully! API: ${{ needs.deploy-services.outputs.deployment-url }}"}'
+            elif [ "${{ needs.deploy-services.outputs.deployment-success }}" = "true" ]; then
+              curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+                -H 'Content-type: application/json' \
+                -d '{"text":"⚠️ Vauntico backend deployed but validation failed. Please check the API: ${{ needs.deploy-services.outputs.deployment-url }}"}'
+            else
+              curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+                -H 'Content-type: application/json' \
+                -d '{"text":"❌ Vauntico backend deployment failed. Please check GitHub Actions logs."}'
+            fi
           else
-            curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
-              -H 'Content-type: application/json' \
-              -d '{"text":"❌ Vauntico backend deployment failed. Please check GitHub Actions logs."}'
+            echo "📢 Slack webhook URL not configured, skipping notification"
           fi
 
   # Cleanup job

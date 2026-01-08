@@ -1,0 +1,306 @@
+name: 'Phase 4 - Creator Economy Validation'
+
+on:
+  push:
+    branches:
+      - 'feature/phase4-creator-economy'
+  pull_request:
+    branches:
+      - 'feature/phase4-creator-economy'
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  validate-ubuntu-council:
+    name: 'Validate Ubuntu Council Features'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd server-v2
+          npm ci
+
+      - name: Run Ubuntu Council tests
+        run: |
+          cd server-v2
+          npm test -- --testPathPattern=**/ubuntu-council.test.ts
+
+      - name: Validate Ubuntu Council KPIs
+        run: |
+          cd server-v2
+          npm run test:kpi:ubuntu-council
+
+  validate-sponsorships:
+    name: 'Validate Sponsorship Features'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd server-v2
+          npm ci
+
+      - name: Run Sponsorship tests
+        run: |
+          cd server-v2
+          npm test -- --testPathPattern=**/sponsorships.test.ts
+
+      - name: Validate Sponsorship KPIs
+        run: |
+          cd server-v2
+          npm run test:kpi:sponsorships
+
+  validate-marketplace:
+    name: 'Validate Marketplace Features'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd server-v2
+          npm ci
+
+      - name: Run Marketplace tests
+        run: |
+          cd server-v2
+          npm test -- --testPathPattern=**/marketplace.test.ts
+
+      - name: Validate Marketplace KPIs
+        run: |
+          cd server-v2
+          npm run test:kpi:marketplace
+
+  validate-community-engagement:
+    name: 'Validate Community Engagement Features'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd server-v2
+          npm ci
+
+      - name: Run Community Engagement tests
+        run: |
+          cd server-v2
+          npm test -- --testPathPattern=**/community-engagement.test.ts
+
+      - name: Validate Community Engagement KPIs
+        run: |
+          cd server-v2
+          npm run test:kpi:community-engagement
+
+  validate-phase4-integration:
+    name: 'Validate Phase 4 Integration'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd server-v2
+          npm ci
+
+      - name: Run Phase 4 integration tests
+        run: |
+          cd server-v2
+          npm test -- --testPathPattern=**/integration/phase4.test.ts
+
+      - name: Validate KPI Dashboard
+        run: |
+          cd server-v2
+          npm run test:kpi:phase4
+
+  check-monetization-alignment:
+    name: 'Check Monetization Alignment'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate memories.md alignment
+        run: |
+          echo "Checking if Phase 4 features align with monetization strategy..."
+          cd server-v2
+          node scripts/validate-monetization-alignment.js --phase=4
+
+      - name: Validate semantic commits
+        run: |
+          echo "Checking commit messages for phase4:* semantic convention..."
+          cd server-v2
+          # This would validate that all commits follow the phase4:* convention
+
+      - name: Validate PR requirements
+        run: |
+          echo "Checking if PRs reference monetization impact and memories.md alignment..."
+          cd server-v2
+          node scripts/validate-pr-requirements.js
+
+  security-validation:
+    name: 'Security & Compliance Validation'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run security tests
+        run: |
+          cd server-v2
+          npm run test:security:phase4
+
+      - name: Check dependency security
+        run: |
+          cd server-v2
+          npm audit --audit-level=high
+
+      - name: Validate marketplace compliance
+        run: |
+          echo "Validating marketplace submission compliance..."
+          cd server-v2
+          node scripts/validate-marketplace-compliance.js
+
+  performance-validation:
+    name: 'Performance Validation'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run performance benchmarks
+        run: |
+          cd server-v2
+          npm run test:performance:creator-economy
+
+      - name: Validate API performance
+        run: |
+          echo "Testing API response times and load capacity..."
+          cd server-v2
+          node scripts/validate-api-performance.js --phase=creator-economy
+
+  deployment-validation:
+    name: 'Deployment Readiness Validation'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate deployment configuration
+        run: |
+          echo "Validating Phase 4 deployment configuration..."
+          cd server-v2
+          node scripts/validate-deployment-config.js --phase=4
+
+      - name: Check environment variables
+        run: |
+          echo "Checking required environment variables for Phase 4..."
+          cd server-v2
+          node scripts/validate-environment.js --phase=4
+
+      - name: Validate CI/CD pipelines
+        run: |
+          echo "Validating CI/CD pipeline configuration..."
+          cd server-v2
+          node scripts/validate-cicd-pipelines.js --phase=creator-economy
+
+  notify-results:
+    name: 'Notify Results'
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [validate-ubuntu-council, validate-sponsorships, validate-marketplace, validate-community-engagement, validate-phase4-integration, check-monetization-alignment, security-validation, performance-validation, deployment-validation]
+    steps:
+      - name: Generate validation report
+        run: |
+          echo "Generating Phase 4 validation report..."
+          cd server-v2
+          node scripts/generate-phase4-validation-report.js
+
+      - name: Create GitHub comment
+        uses: actions/github-script@v7
+        if: success()
+        with:
+          script: |
+            const report = require('./validation-report.json');
+            
+            const comment = `
+            ## 🧪 Phase 4 - Creator Economy Validation Results
+            
+            **Overall Status:** ${report.overall_status} ✅
+            
+            **Validation Summary:**
+            ${report.summary}
+            
+            **📊 Metrics:**
+            - Tests Run: ${report.tests_run}
+            - Tests Passed: ${report.tests_passed}
+            - Tests Failed: ${report.tests_failed}
+            - Coverage: ${report.coverage}%
+            
+            **🔍 Issues Found:**
+            ${report.issues.map(issue => `• ${issue}`).join('\n')}
+            
+            **✅ Validations Passed:**
+            ${report.validations.map(validation => `• ${validation}`).join('\n')}
+            
+            **📝 Memory Alignment:** ${report.memories_alignment}
+            
+            **🚨 Next Steps:**
+            ${report.next_steps}
+            `;
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Phase 4 Validation - ${report.overall_status}`,
+              body: comment,
+              labels: ['phase4', 'validation', 'creator-economy']
+            });
+
+      - name: Update Phase 4 dashboard
+        run: |
+          echo "Updating Phase 4 KPI dashboard with validation results..."
+          cd server-v2
+          node scripts/update-kpi-dashboard.js --phase=4 --validation-report
+
+env:
+  VAUNTICO_ENVIRONMENT: 'validation'
+  NODE_ENV: 'test'
+  DATABASE_URL: 'postgresql://localhost:5432/vauntico_test'
+  DATABASE_USER: 'vauntico_test'
+  DATABASE_PASSWORD: 'test_password'

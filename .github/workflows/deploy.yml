@@ -3,6 +3,8 @@ name: Deploy Vauntico Backend
 on:
   push:
     branches: [ main ]
+    tags:
+      - 'v*.*.*-prod'
   workflow_dispatch:
     inputs:
       monetization_phase:
@@ -41,8 +43,21 @@ jobs:
       - name: Extract monetization context from memories.md
         id: context
         run: |
-          MONETIZATION_PHASE="${{ github.event.inputs.monetization_phase || 'Phase 1: Foundation' }}"
-          echo "📊 Extracting monetization context for $MONETIZATION_PHASE..."
+          # Detect phase from tag if available, otherwise use input
+          if [[ "${{ github.ref }}" == refs/tags/v1* ]]; then
+            MONETIZATION_PHASE="Phase 1: Foundation"
+          elif [[ "${{ github.ref }}" == refs/tags/v2* ]]; then
+            MONETIZATION_PHASE="Phase 2: B2B API Licensing"
+          elif [[ "${{ github.ref }}" == refs/tags/v3* ]]; then
+            MONETIZATION_PHASE="Phase 3: Enterprise Compliance"
+          elif [[ "${{ github.ref }}" == refs/tags/v4* ]]; then
+            MONETIZATION_PHASE="Phase 4: Creator Economy"
+          elif [[ "${{ github.ref }}" == refs/tags/v5* ]]; then
+            MONETIZATION_PHASE="Phase 5: Vauntico Credits"
+          else
+            MONETIZATION_PHASE="${{ github.event.inputs.monetization_phase || 'Phase 1: Foundation' }}"
+          fi
+          echo "📊 Extracting monetization context for $MONETIZATION_PHASE (trigger: ${{ github.ref }})..."
           
           case "$MONETIZATION_PHASE" in
             "Phase 1: Foundation")

@@ -1,0 +1,269 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Build outputs
+dist/
+build/
+*/dist/
+*/build/
+
+# Environment files (CRITICAL SECURITY)
+.env
+.env.*
+!.env.example
+!.env.template
+
+# Logs and runtime
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file (but allow standardized test config)
+.env.test.local
+.env.test.production
+!.env.test
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.backup
+*.bak
+
+# Security - Binary files and installers
+*.exe
+*.msi
+*.dmg
+*.pkg
+*.deb
+*.rpm
+
+# Security - Certificate files
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Security - Database files (but allow standardized init scripts)
+*.sql
+!scripts/init-db.sql
+!scripts/*.sql
+
+# Database files (exclude)
+*.sqlite
+*.sqlite3
+*.db
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+terraform.tfstate.d/
+
+# OCI/Cloud specific
+shape_config.json
+source_details.json
+
+# MCP/Tooling
+cline_mcp_settings.json
+
+# Build artifacts
+vauntico-staging/
+vauntico-fulfillment-engine-temp/
+
+# Development and deployment
+.terraform/
+.vs/
+repo-structure.txt
+.vercel/
+
+# PowerShell scripts (keep specific ones)
+terraform_run.ps1
+test-*.ps1
+verify-*.ps1
+
+# Additional security rules
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE workspace files
+*.code-workspace
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# OS specific files
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.backup
+*.bak
+*.tmp
+*.temp
+*.old
+*.orig
+*.rej
+
+# Installation files
+*.exe
+*.msi
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.dmg
+*.app
+*.zip
+*.tar
+*.tar.gz
+*.rar
+
+# Binary executables
+*.bin
+*.out
+*.app
+
+# Database files
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+*.mdb
+
+# Configuration files with secrets
+config.json
+secrets.json
+credentials.json
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Cloud provider specific
+.aws/
+.azure/
+.gcp/
+.google/
+kubeconfig
+*.kubeconfig
+
+# Monitoring and analytics
+*.dat
+*.trace
+*.prof
+
+# Temporary build directories
+tmp/
+temp/
+.cache/
+.parcel-cache/
+
+# Lock files (keep package-lock.json)
+yarn.lock
+pnpm-lock.yaml
+
+# Runtime files
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage and testing
+coverage/
+.nyc_output
+*.lcov
+
+# Deployment artifacts
+.ec2/
+.serverless/
+.vercel/
+.netlify/
+set-oci-secrets.ps1
+.vercel/

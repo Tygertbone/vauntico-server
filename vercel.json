@@ -1,0 +1,52 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/payment-bridge",
+      "dest": "/payment-bridge.html"
+    },
+    {
+      "src": "/services/verification",
+      "dest": "/services/verification.html"
+    },
+    {
+      "src": "/services/recovery",
+      "dest": "/services/recovery.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/waitlist",
+      "destination": "https://vauntico-server.vauntico.com/api/waitlist"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_URL": "@backend-url",
+    "NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY": "@paystack-public-key",
+    "NEXT_PUBLIC_ENABLE_PAYMENT_BRIDGE": "true",
+    "NEXT_PUBLIC_ENABLE_VERIFICATION": "true",
+    "NEXT_PUBLIC_ENABLE_CONTENT_RECOVERY": "true"
+  },
+  "functions": {
+    "src/api/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}

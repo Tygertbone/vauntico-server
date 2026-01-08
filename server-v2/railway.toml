@@ -1,0 +1,15 @@
+[build]
+builder = "RAILPACK"
+workingDirectory = "server-v2"
+buildCommand = "npm ci --omit=dev && npm run build"
+
+[deploy]
+workingDirectory = "server-v2"
+startCommand = "node dist/index.js"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+[environments.production]
+NODE_ENV = "production"

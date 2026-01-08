@@ -1,0 +1,59 @@
+# =============================================================================
+# STANDARDIZED VAUNTICO BACKEND DOCKERFILE
+# =============================================================================
+# Base template for all Node.js backend services
+# Version: 2.0.0
+# Purpose: Consistent build process, health checks, and deployment
+
+FROM node:20-alpine
+
+# Install system dependencies
+RUN apk add --no-cache \
+    curl \
+    dumb-init \
+    && rm -rf /var/cache/apk/*
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S vauntico && \
+    adduser -S vauntico -u 1001 -G vauntico
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY ${SERVICE_PATH:-.}/package*.json ./
+
+# Install dependencies based on environment
+ARG NODE_ENV=production
+RUN if [ "$NODE_ENV" = "development" ]; then \
+        npm ci; \
+    else \
+        npm ci --omit=dev; \
+    fi
+
+# Copy application code
+COPY ${SERVICE_PATH:-.} .
+
+# Build application if needed
+RUN if [ -f "package.json" ] && grep -q "build" package.json; then \
+        npm run build; \
+    fi
+
+# Change ownership to non-root user
+RUN chown -R vauntico:vauntico /app
+USER vauntico
+
+# Expose port
+EXPOSE 8080
+
+# Standardized health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:8080${HEALTH_CHECK_PATH:-/health} || exit 1
+
+# Environment variables
+ENV NODE_ENV=production
+ENV PORT=8080
+
+# Use dumb-init for proper signal handling
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["node", "${START_SCRIPT:-dist/index.js}"]

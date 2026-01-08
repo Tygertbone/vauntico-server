@@ -1,0 +1,846 @@
+openapi: 3.0.3
+info:
+  title: Vauntico Enterprise API
+  description: |
+    Enterprise compliance and integration features for Vauntico Phase 3.
+    
+    This API provides enterprise-grade compliance features including:
+    - POPIA and GDPR compliance management
+    - Data privacy and audit logging
+    - Slack and Notion integrations
+    - Webhook system for enterprise partners
+    - KPI tracking and monitoring
+    
+    ## Compliance Frameworks
+    - **POPIA**: Protection of Personal Information Act (South Africa)
+    - **GDPR**: General Data Protection Regulation (EU)
+    - **ISO 27001**: Information Security Management
+    - **SOC 2**: Service Organization Control 2
+    
+    ## Authentication
+    All enterprise endpoints require Bearer token authentication with enterprise-level permissions.
+  version: 3.0.0
+  contact:
+    name: Vauntico Enterprise Support
+    email: enterprise@vauntico.com
+    url: https://vauntico.com/enterprise
+  license:
+    name: Enterprise License
+    url: https://vauntico.com/enterprise/license
+
+servers:
+  - url: https://api.vauntico.com/v1/enterprise
+    description: Production server
+  - url: https://staging-api.vauntico.com/v1/enterprise
+    description: Staging server
+  - url: http://localhost:8080/api/v1/enterprise
+    description: Development server
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT token with enterprise permissions.
+        
+        Include the token in the Authorization header:
+        `Authorization: Bearer <your_jwt_token>`
+
+  schemas:
+    ComplianceStatus:
+      type: object
+      properties:
+        framework:
+          type: string
+          enum: [popia, gdpr, iso27001, soc2, hipaa]
+          description: Compliance framework identifier
+        status:
+          type: string
+          enum: [active, inactive, pending, violation]
+          description: Current compliance status
+        score:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Compliance score percentage
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Last compliance check timestamp
+        statistics:
+          $ref: '#/components/schemas/ComplianceStatistics'
+
+    ComplianceStatistics:
+      type: object
+      properties:
+        totalEvents:
+          type: integer
+          description: Total compliance events in timeframe
+        eventsByFramework:
+          type: object
+          additionalProperties:
+            type: integer
+          description: Event count by compliance framework
+        eventsByCategory:
+          type: object
+          additionalProperties:
+            type: integer
+          description: Event count by data category
+        eventsByRiskLevel:
+          type: object
+          additionalProperties:
+            type: integer
+          description: Event count by risk level
+        privacyRequestsStats:
+          $ref: '#/components/schemas/PrivacyRequestsStats'
+        crossBorderTransfers:
+          type: integer
+          description: Number of cross-border data transfers
+
+    PrivacyRequestsStats:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Total privacy requests
+        pending:
+          type: integer
+          description: Pending privacy requests
+        completed:
+          type: integer
+          description: Completed privacy requests
+        rejected:
+          type: integer
+          description: Rejected privacy requests
+
+    PrivacyRequest:
+      type: object
+      required:
+        - type
+        - userId
+        - dataCategories
+      properties:
+        id:
+          type: string
+          readOnly: true
+          description: Unique request identifier
+        type:
+          type: string
+          enum: [access, portability, rectification, erasure, restriction]
+          description: Type of privacy request
+        userId:
+          type: string
+          description: User identifier
+        dataCategories:
+          type: array
+          items:
+            type: string
+            enum: [
+              personal_identifiable,
+              sensitive_personal,
+              financial,
+              health,
+              biometric,
+              geolocation,
+              communication
+            ]
+          description: Data categories affected
+        status:
+          type: string
+          enum: [pending, processing, completed, rejected]
+          readOnly: true
+          description: Request status
+        requestedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Request timestamp
+        completedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Completion timestamp
+        reason:
+          type: string
+          description: Reason for request
+        evidence:
+          type: array
+          items:
+            type: string
+          readOnly: true
+          description: Evidence of request processing
+
+    DataRetentionCheck:
+      type: object
+      properties:
+        dataCategory:
+          type: string
+          enum: [
+            personal_identifiable,
+            sensitive_personal,
+            financial,
+            health,
+            biometric,
+            geolocation,
+            communication
+          ]
+          description: Data category to check
+        compliant:
+          type: boolean
+          description: Whether data retention is compliant
+        maxRetentionDays:
+          type: integer
+          description: Maximum allowed retention days
+        daysUntilExpiry:
+          type: integer
+          description: Days until data must be deleted
+        action:
+          type: string
+          enum: [retain, review, delete]
+          description: Recommended action
+
+    SlackNotification:
+      type: object
+      required:
+        - type
+        - title
+        - message
+        - severity
+      properties:
+        type:
+          type: string
+          enum: [trust_score_update, compliance_alert, kpi_milestone, security_incident, integration_status]
+          description: Notification type
+        userId:
+          type: string
+          description: User identifier (optional)
+        organization:
+          type: string
+          description: Organization name (optional)
+        severity:
+          type: string
+          enum: [info, warning, error, critical]
+          description: Notification severity
+        title:
+          type: string
+          description: Notification title
+        message:
+          type: string
+          description: Notification message
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Additional metadata
+        timestamp:
+          type: string
+          format: date-time
+          description: Notification timestamp
+
+    NotionKPIData:
+      type: object
+      required:
+        - organization
+        - trustScore
+        - complianceScore
+      properties:
+        organization:
+          type: string
+          description: Organization name
+        trustScore:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Trust score (0-100)
+        complianceScore:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Compliance score (0-100)
+        kpiMetrics:
+          $ref: '#/components/schemas/KPIMetrics'
+        timestamp:
+          type: string
+          format: date-time
+          description: KPI timestamp
+        trends:
+          $ref: '#/components/schemas/KPITrends'
+
+    KPIMetrics:
+      type: object
+      properties:
+        mrr:
+          type: number
+          description: Monthly recurring revenue
+        activeUsers:
+          type: integer
+          description: Number of active users
+        integrationUsage:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Integration usage percentage
+        complianceAdherence:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Compliance adherence percentage
+
+    KPITrends:
+      type: object
+      properties:
+        trustScoreChange:
+          type: number
+          description: Trust score change
+        complianceScoreChange:
+          type: number
+          description: Compliance score change
+        mrrGrowth:
+          type: number
+          description: MRR growth rate
+
+    WebhookSubscription:
+      type: object
+      required:
+        - organizationId
+        - endpoint
+        - secret
+        - events
+      properties:
+        id:
+          type: string
+          readOnly: true
+          description: Subscription identifier
+        organizationId:
+          type: string
+          description: Organization identifier
+        endpoint:
+          type: string
+          format: uri
+          description: Webhook endpoint URL
+        secret:
+          type: string
+          description: Webhook signing secret
+        events:
+          type: array
+          items:
+            type: string
+          description: List of events to subscribe to
+        active:
+          type: boolean
+          readOnly: true
+          description: Subscription status
+        retryCount:
+          type: integer
+          readOnly: true
+          description: Current retry count
+        lastDelivery:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Last successful delivery
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Subscription creation timestamp
+
+    WebhookDelivery:
+      type: object
+      required:
+        - event
+        - organization
+        - data
+      properties:
+        event:
+          type: string
+          description: Event type
+        organization:
+          type: string
+          description: Organization identifier
+        data:
+          type: object
+          additionalProperties: true
+          description: Event payload data
+
+    EnterpriseDashboard:
+      type: object
+      properties:
+        overview:
+          type: object
+          properties:
+            totalUsers:
+              type: integer
+              description: Total enterprise users
+            enterpriseUsers:
+              type: integer
+              description: Number of enterprise users
+            activeIntegrations:
+              type: integer
+              description: Number of active integrations
+            complianceScore:
+              type: number
+              minimum: 0
+              maximum: 100
+              description: Overall compliance score
+            lastUpdated:
+              type: string
+              format: date-time
+              description: Last update timestamp
+        compliance:
+          $ref: '#/components/schemas/ComplianceStatus'
+        integrations:
+          type: object
+          properties:
+            health:
+              type: object
+              additionalProperties: true
+              description: Integration health status
+            statistics:
+              type: object
+              additionalProperties: true
+              description: Integration statistics
+        kpis:
+          type: object
+          properties:
+            mrr:
+              type: number
+              description: Monthly recurring revenue
+            mrrGrowth:
+              type: number
+              description: MRR growth rate
+            trustScoreAverage:
+              type: number
+              description: Average trust score
+            complianceAdherence:
+              type: number
+              description: Compliance adherence rate
+            integrationUsage:
+              type: number
+              description: Integration usage rate
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: Error message
+        details:
+          type: object
+          additionalProperties: true
+          description: Additional error details
+
+tags:
+  - name: compliance
+    description: Compliance management endpoints
+  - name: privacy
+    description: Data privacy and rights management
+  - name: integrations
+    description: External integration endpoints
+  - name: monitoring
+    description: Monitoring and dashboard endpoints
+
+paths:
+  /compliance/status:
+    get:
+      tags:
+        - compliance
+      summary: Get compliance status
+      description: Retrieve current compliance status and statistics
+      responses:
+        '200':
+          description: Compliance status retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/ComplianceStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /compliance/privacy-request:
+    post:
+      tags:
+        - privacy
+      summary: Create privacy request
+      description: Create a new data privacy request (access, portability, rectification, erasure, or restriction)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrivacyRequest'
+      responses:
+        '201':
+          description: Privacy request created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      requestId:
+                        type: string
+                        description: Request identifier
+                      type:
+                        type: string
+                        description: Request type
+                      userId:
+                        type: string
+                        description: User identifier
+                      status:
+                        type: string
+                        description: Request status
+                      message:
+                        type: string
+                        description: Success message
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /compliance/privacy-requests:
+    get:
+      tags:
+        - privacy
+      summary: Get privacy requests
+      description: Retrieve privacy requests with optional filtering
+      parameters:
+        - name: userId
+          in: query
+          schema:
+            type: string
+          description: Filter by user ID
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, processing, completed, rejected]
+          description: Filter by status
+      responses:
+        '200':
+          description: Privacy requests retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      requests:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/PrivacyRequest'
+                      total:
+                        type: integer
+                        description: Total number of requests
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /compliance/retention-check:
+    get:
+      tags:
+        - compliance
+      summary: Check data retention compliance
+      description: Check if data retention complies with policies
+      parameters:
+        - name: dataCategory
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [
+              personal_identifiable,
+              sensitive_personal,
+              financial,
+              health,
+              biometric,
+              geolocation,
+              communication
+            ]
+          description: Data category to check
+        - name: dataAge
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 0
+          description: Age of data in days
+      responses:
+        '200':
+          description: Retention compliance check completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/DataRetentionCheck'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/slack/notify:
+    post:
+      tags:
+        - integrations
+      summary: Send Slack notification
+      description: Send a notification to Slack enterprise channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SlackNotification'
+      responses:
+        '200':
+          description: Slack notification sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Slack notification sent successfully'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/notion/update:
+    post:
+      tags:
+        - integrations
+      summary: Update Notion KPI dashboard
+      description: Update enterprise KPI data in Notion dashboard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotionKPIData'
+      responses:
+        '200':
+          description: Notion dashboard updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Notion KPI dashboard updated successfully'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/webhooks/subscribe:
+    post:
+      tags:
+        - integrations
+      summary: Create webhook subscription
+      description: Subscribe to enterprise events via webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookSubscription'
+      responses:
+        '201':
+          description: Webhook subscription created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      subscriptionId:
+                        type: string
+                        description: Subscription identifier
+                      message:
+                        type: string
+                        description: Success message
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/webhooks/deliver:
+    post:
+      tags:
+        - integrations
+      summary: Deliver webhook
+      description: Deliver webhook event to subscribed endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookDelivery'
+      responses:
+        '200':
+          description: Webhook delivery initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Webhook delivery initiated'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/health:
+    get:
+      tags:
+        - monitoring
+      summary: Check integration health
+      description: Check health status of all enterprise integrations
+      responses:
+        '200':
+          description: Integration health retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      health:
+                        type: object
+                        additionalProperties: true
+                        description: Health status of integrations
+                      statistics:
+                        type: object
+                        additionalProperties: true
+                        description: Integration statistics
+                      timestamp:
+                        type: string
+                        format: date-time
+                        description: Check timestamp
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /dashboard:
+    get:
+      tags:
+        - monitoring
+      summary: Get enterprise dashboard
+      description: Retrieve comprehensive enterprise dashboard overview
+      responses:
+        '200':
+          description: Dashboard data retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/EnterpriseDashboard'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error: 'Invalid request parameters'
+            details:
+              missingFields: ['type', 'userId']
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error: 'Invalid or missing authentication token'
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error: 'Internal server error'

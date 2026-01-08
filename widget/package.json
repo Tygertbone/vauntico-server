@@ -1,0 +1,76 @@
+{
+  "name": "@vauntico/trust-widget",
+  "version": "2.0.0",
+  "description": "White-label embeddable trust score widget for Vauntico Phase 2",
+  "main": "dist/vauntico-trust-widget.js",
+  "module": "dist/vauntico-trust-widget.esm.js",
+  "types": "dist/VaunticoTrustWidget.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "build:dev": "rollup -c --environment NODE_ENV:development",
+    "build:watch": "rollup -c --watch",
+    "dev": "npm run build:dev && npm run serve",
+    "serve": "http-server demo -p 8080 -c-1",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm run test",
+    "demo": "npm run build:dev && npm run serve"
+  },
+  "keywords": [
+    "trust-score",
+    "widget",
+    "embeddable",
+    "white-label",
+    "vauntico",
+    "reputation",
+    "trust"
+  ],
+  "author": "Vauntico Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tygertbone/vauntico-server.git",
+    "directory": "widget"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/jest": "^29.5.8",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
+    "eslint": "^8.54.0",
+    "http-server": "^14.1.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "rollup": "^4.6.1",
+    "ts-jest": "^29.1.1",
+    "tslib": "^2.6.2",
+    "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "typescript": ">=4.5.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie <= 11"
+  ]
+}

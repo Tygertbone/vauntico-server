@@ -1,0 +1,44 @@
+config:
+  target: 'http://localhost:3001'
+  phases:
+    - duration: 30
+      arrivalRate: 2  # 2 requests/second for basic test
+      name: "Health check phase"
+    - duration: 60
+      arrivalRate: 5  # 5 requests/second for sustained load
+      name: "Sustain phase"
+  defaults:
+    headers:
+      Content-Type: 'application/json'
+
+scenarios:
+  - name: 'API Health Benchmarking'
+    weight: 50
+    requests:
+      - get:
+          url: '/health'
+          expect:
+            - statusCode: 200
+
+  - name: 'Public Endpoints Load Test'
+    weight: 35
+    requests:
+      - get:
+          url: '/api/plans'
+          expect:
+            - statusCode: 200
+      - get:
+          url: '/monitoring/health'
+          expect:
+            - statusCode: 200
+
+  - name: 'Authentication Stress Test'
+    weight: 15
+    requests:
+      - post:
+          url: '/auth/login'
+          json:
+            email: 'invalid@test.com'
+            password: 'wrongpass'
+          expect:
+            - statusCode: 401

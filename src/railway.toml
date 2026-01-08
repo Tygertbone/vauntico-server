@@ -1,0 +1,15 @@
+[build]
+builder = "NIXPACKS"
+buildCommand = "npm install && npm run build"
+
+[deploy]
+startCommand = "npm start"
+healthcheckPath = "/health.json"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+preDeployCommand = "powershell.exe -ExecutionPolicy Bypass -File scripts/comprehensive-health-check.ps1"
+
+[environments.production]
+NODE_ENV = "production"
+PORT = "8080"

@@ -1,0 +1,620 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": "Prometheus",
+      "description": "Widget loads by tier - Phase 2 B2B API Licensing",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            }
+          }
+        },
+        "overrides": {}
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": "widget-loads-by-tier",
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "values": [
+            "Basic",
+            "Pro", 
+            "Enterprise"
+          ]
+        },
+        "reduceOptions": [
+          {
+            "value": "sum",
+            "text": "Sum"
+          },
+          {
+            "value": "mean",
+            "text": "Mean"
+          },
+          {
+            "value": "last",
+            "text": "Last"
+          },
+          {
+            "value": "first",
+            "text": "First"
+          },
+          {
+            "value": "max",
+            "text": "Max"
+          },
+          {
+            "value": "min",
+            "text": "Min"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(vauntico_widget_loads_total[5m])) by (tier)",
+          "legendFormat": "{{tier}} - {{__value__.labels.tier}}",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(vauntico_widget_loads_total[5m]))",
+          "legendFormat": "Total Loads",
+          "refId": "B"
+        }
+      ],
+      "title": "Widget Loads by Tier",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "description": "Widget refresh rate and credit consumption - Phase 2 monetization",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            }
+          }
+        },
+        "overrides": {}
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": "widget-refresh-credits",
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "yAxes": [
+          {
+            "label": "Refresh Rate",
+            "show": true,
+            "min": 0
+          },
+          {
+            "label": "Credits Used",
+            "show": true,
+            "min": 0
+          }
+        ]
+      },
+      "targets": [
+        {
+          "expr": "rate(vauntico_widget_refreshes_total[5m])",
+          "legendFormat": "Refresh Rate/min",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(vauntico_credits_consumed_total[5m])",
+          "legendFormat": "Credits/min",
+          "refId": "B"
+        }
+      ],
+      "title": "Widget Refresh & Credit Usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "description": "Active widget integrations and configuration changes",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            }
+          }
+        },
+        "overrides": {}
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": "widget-active-integrations",
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "expr": "vauntico_widget_active_count",
+          "legendFormat": "Active Widgets",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(vauntico_config_changes_total[5m])",
+          "legendFormat": "Config Changes/min",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(vauntico_user_interactions_total[5m])",
+          "legendFormat": "User Interactions/min",
+          "refId": "C"
+        }
+      ],
+      "title": "Active Integrations & Interactions",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "description": "Phase 2 Monthly Recurring Revenue (MRR) tracking",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "unit": "currencyUSD"
+          }
+        },
+        "overrides": {}
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "id": "phase2-mrr-tracking",
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "yAxes": [
+          {
+            "label": "MRR",
+            "show": true,
+            "min": 0
+          },
+          {
+            "label": "Target Progress",
+            "show": true,
+            "min": 0,
+            "max": 100
+          }
+        ]
+      },
+      "targets": [
+        {
+          "expr": "vauntico_phase2_mrr_total",
+          "legendFormat": "Current MRR",
+          "refId": "A"
+        },
+        {
+          "expr": "vauntico_phase2_mrr_target",
+          "legendFormat": "Target MRR",
+          "refId": "B"
+        },
+        {
+          "expr": "(vauntico_phase2_mrr_total / vauntico_phase2_mrr_target) * 100",
+          "legendFormat": "Progress to Target (%)",
+          "refId": "C"
+        }
+      ],
+      "title": "Phase 2 MRR Progress (Target: 500K)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "description": "Tier distribution and quota breaches for Phase 2",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            }
+          }
+        },
+        "overrides": {}
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 24
+      },
+      "id": "tier-distribution-quota",
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum by (tier) (rate(vauntico_api_requests_total[5m]))",
+          "legendFormat": "{{tier}} Requests/sec",
+          "refId": "A"
+        },
+        {
+          "expr": "sum by (tier) (rate(vauntico_quota_breaches_total[5m]))",
+          "legendFormat": "{{tier}} Quota Breaches/sec",
+          "refId": "B"
+        },
+        {
+          "expr": "sum by (tier) (vauntico_calculation_quota_used[5m]))",
+          "legendFormat": "{{tier}} Quota Used",
+          "refId": "C"
+        },
+        {
+          "expr": "sum by (tier) (vauntico_calculation_quota_limit[5m]))",
+          "legendFormat": "{{tier}} Quota Limit",
+          "refId": "D"
+        }
+      ],
+      "title": "Tier Distribution & Quota Usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "description": "Widget error rate and uptime metrics for SLA monitoring",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "unit": "percent"
+          }
+        },
+        "overrides": {}
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 32
+      },
+      "id": "widget-error-rate-uptime",
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "yAxes": [
+          {
+            "label": "Error Rate",
+            "show": true,
+            "min": 0,
+            "max": 100
+          },
+          {
+            "label": "Uptime",
+            "show": true,
+            "min": 0,
+            "max": 100
+          }
+        ]
+      },
+      "targets": [
+        {
+          "expr": "rate(vauntico_widget_errors_total[5m]) * 100",
+          "legendFormat": "Widget Error Rate (%)",
+          "refId": "A"
+        },
+        {
+          "expr": "vauntico_widget_uptime_percentage",
+          "legendFormat": "Widget Uptime (%)",
+          "refId": "B"
+        }
+      ],
+      "title": "Widget Error Rate & Uptime (SLA)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "description": "Revenue breakdown by tier for Phase 2 B2B licensing",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "unit": "currencyUSD"
+          }
+        },
+        "overrides": {}
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 40
+      },
+      "id": "revenue-by-tier",
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum by (tier) (rate(vauntico_license_revenue_basic[5m]))",
+          "legendFormat": "Basic Revenue ($29/mo)",
+          "refId": "A"
+        },
+        {
+          "expr": "sum by (tier) (rate(vauntico_license_revenue_pro[5m]))",
+          "legendFormat": "Pro Revenue ($99/mo)",
+          "refId": "B"
+        },
+        {
+          "expr": "sum by (tier) (rate(vauntico_license_revenue_enterprise[5m]))",
+          "legendFormat": "Enterprise Revenue ($499/mo)",
+          "refId": "C"
+        }
+      ],
+      "title": "Revenue by Tier (Phase 2 Licensing)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "description": "Trust score distribution and average scores by tier",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            }
+          }
+        },
+        "overrides": {}
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 48
+      },
+      "id": "trust-score-distribution",
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "expr": "avg by (tier) (vauntico_trust_score_average[5m])",
+          "legendFormat": "{{tier}} Avg Trust Score",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum by (tier) (rate(vauntico_trust_score_calculations[5m])))",
+          "legendFormat": "{{tier}} 95th Percentile Score",
+          "refId": "B"
+        },
+        {
+          "expr": "sum by (tier) (rate(vauntico_trust_score_calculations[5m]))",
+          "legendFormat": "{{tier}} Calculations/sec",
+          "refId": "C"
+        }
+      ],
+      "title": "Trust Score Analytics by Tier",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "description": "Monetization thresholds and alert status for Phase 2",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 0.8
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          }
+        },
+        "overrides": {}
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 56
+      },
+      "id": "monetization-thresholds",
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "expr": "vauntico_mrr_progress_percentage",
+          "legendFormat": "MRR Progress to 500K Target",
+          "refId": "A"
+        },
+        {
+          "expr": "vauntico_customer_acquisition_rate",
+          "legendFormat": "Customer Acquisition Rate",
+          "refId": "B"
+        },
+        {
+          "expr": "vauntico_churn_rate",
+          "legendFormat": "Customer Churn Rate",
+          "refId": "C"
+        }
+      ],
+      "title": "Monetization Thresholds & Alerts",
+      "type": "singlestat",
+      "alerting": {
+        "conditions": [
+          {
+            "evaluator": "gt",
+            "operator": {
+              "type": "is"
+            },
+            "query": {
+              "params": ["A"],
+              "query": "A > 90"
+            },
+            "red": {
+              "value": 10
+            }
+          },
+          {
+            "evaluator": "gt",
+            "operator": {
+              "type": "is"
+            },
+            "query": {
+              "params": ["B"],
+              "query": "B > 0.1"
+            },
+            "yellow": {
+              "value": 5
+            }
+          },
+          {
+            "evaluator": "gt",
+            "operator": {
+              "type": "is"
+            },
+            "query": {
+              "params": ["C"],
+              "query": "C > 0.05"
+            },
+            "red": {
+              "value": 10
+            }
+          }
+        ],
+        "notifications": []
+      }
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 27,
+  "style": "dark",
+  "tags": [
+    "vauntico",
+    "phase2",
+    "widget",
+    "kpi",
+    "monetization",
+    "b2b-api-licensing"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "title": "Vauntico Phase 2: B2B API Licensing KPI Dashboard",
+  "uid": "vauntico-phase2-kpi",
+  "version": 2
+}

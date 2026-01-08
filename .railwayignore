@@ -1,0 +1,35 @@
+# Multi-service Railway ignore - allow only backend services
+ignore:
+  # Frontend packages to ignore
+  - src/
+  - homepage-redesign/
+  - vault-landing/
+  - app/
+  - demo/
+  - docs/
+  - public/
+  - logs/
+  - scripts/
+  - tests/
+  - vauntico-mvp/
+  - vauntico-rebirth/
+  - vauntico-vault-landing/
+  
+  # Root config files
+  - package.json
+  - package-lock.json
+  - tsconfig.json
+  - .eslintrc.json
+  - .stylelintrc.json
+  - tailwind.config.js
+  - postcss.config.js
+  
+  # Hidden files
+  - .*
+
+# Allow backend services (explicitly allowed)
+allow:
+  - server-v2/
+  - vauntico-fulfillment-engine/
+  - server/
+  - vauntico-server/

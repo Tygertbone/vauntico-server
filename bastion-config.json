@@ -1,0 +1,5 @@
+{
+  "compartment_id": "ocid1.compartment.oc1..aaaaaaaaqjphq7si5cxb5tvjmoxxhpbohfz637qtx253apiyzzw6myh54zda",
+  "subnet_id": "ocid1.subnet.oc1.af-johannesburg-1.aaaaaaaaosgyyaqwy7zq5ug4seimcwxhc47itvxny2vivusdnriynp3by7zq",
+  "bastion_id": "ocid1.bastion.oc1.af-johannesburg-1.amaaaaaa4eq3kmqa3gjgzvc777iiudhu5ch2kmauer24cxapefhlyxipl5ha"
+}

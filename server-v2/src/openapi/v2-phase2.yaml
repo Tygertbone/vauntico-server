@@ -1,0 +1,1115 @@
+openapi: 3.0.3
+info:
+  title: Vauntico Trust Score API - Phase 2 B2B API Licensing
+  description: |
+    Comprehensive API for trust score management and white-label widget integration.
+    Designed for Phase 2 B2B API Licensing with tier-based monetization.
+    
+    ## Monetization Context
+    - **Target**: 500K MRR from businesses
+    - **Tiers**: Basic ($29/mo), Pro ($99/mo), Enterprise ($499/mo)
+    - **Features**: Widget licensing, API access, analytics, KPI tracking
+    
+    ## Authentication
+    All API endpoints require authentication via `X-API-Key` header.
+    API keys are tier-specific and enforce rate limits and quotas.
+    
+    ## Rate Limiting
+    - Basic: 1,000 requests/hour, 10 calculations/month
+    - Pro: 5,000 requests/hour, 100 calculations/month  
+    - Enterprise: 20,000 requests/hour, 500 calculations/month
+    
+    ## Error Handling
+    Standard HTTP status codes with detailed error responses.
+    Includes monetization context for credit usage and quota tracking.
+  version: 2.0.0
+  contact:
+    name: Vauntico API Support
+    url: https://docs.vauntico.com
+    email: api-support@vauntico.com
+  license: MIT
+  termsOfService: https://vauntico.com/terms
+  x-monetization-phase: Phase 2: B2B API Licensing
+  x-mrr-target: 500K
+  x-tiers-supported:
+    basic:
+      price: 29
+      currency: USD
+      period: monthly
+      requests_per_hour: 1000
+      calculations_per_month: 10
+      features: [basic_trust_score, standard_support]
+    pro:
+      price: 99
+      currency: USD
+      period: monthly
+      requests_per_hour: 5000
+      calculations_per_month: 100
+      features: [advanced_trust_score, api_access, analytics, priority_support]
+    enterprise:
+      price: 499
+      currency: USD
+      period: monthly
+      requests_per_hour: 20000
+      calculations_per_month: 500
+      features: [white_label_widget, custom_api_access, advanced_analytics, dedicated_support, sla_guarantee]
+
+servers:
+  - url: https://api.vauntico.com
+    description: Production server
+  - url: https://staging-api.vauntico.com
+    description: Staging server
+  - url: http://localhost:3000
+    description: Development server
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /api/v1/trust-score:
+    get:
+      tags:
+        - Trust Score
+        - Core API
+      summary: Get user's trust score
+      description: |
+        Retrieve the current trust score for a user based on their subscription tier.
+        Includes monetization context for credit usage and quota tracking.
+      security:
+        - ApiKeyAuth
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: string
+            description: User ID to fetch trust score for
+            example: user_123456
+      responses:
+        '200':
+          description: Trust score retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustScoreResponse'
+              examples:
+                basic_tier:
+                  summary: Basic tier response
+                  value:
+                    score: 75
+                    tier: basic
+                    factors:
+                      transaction_history: 80
+                      verification_status: 70
+                      community_engagement: 75
+                    calculatedAt: '2024-01-15T10:30:00Z'
+                    expiresAt: '2024-01-16T10:30:00Z'
+                    monetization:
+                      tier: basic
+                      creditsRemaining: 7
+                      nextCalculationCost: 1
+                    metadata:
+                      version: '2.0.0'
+                      endpoint: '/api/v1/trust-score'
+                      rateLimitRemaining: 950
+                pro_tier:
+                  summary: Pro tier response
+                  value:
+                    score: 85
+                    tier: pro
+                    factors:
+                      transaction_history: 90
+                      verification_status: 85
+                      community_engagement: 80
+                      dispute_resolution: 88
+                    calculatedAt: '2024-01-15T10:30:00Z'
+                    expiresAt: '2024-01-16T10:30:00Z'
+                    monetization:
+                      tier: pro
+                      creditsRemaining: 450
+                      nextCalculationCost: 0
+                    metadata:
+                      version: '2.0.0'
+                      endpoint: '/api/v1/trust-score'
+                      rateLimitRemaining: 4950
+                enterprise_tier:
+                  summary: Enterprise tier response
+                  value:
+                    score: 92
+                    tier: enterprise
+                    factors:
+                      transaction_history: 95
+                      verification_status: 95
+                      community_engagement: 88
+                      dispute_resolution: 92
+                      custom_metrics: 90
+                    calculatedAt: '2024-01-15T10:30:00Z'
+                    expiresAt: '2024-01-16T10:30:00Z'
+                    monetization:
+                      tier: enterprise
+                      creditsRemaining: 950
+                      nextCalculationCost: 0
+                    metadata:
+                      version: '2.0.0'
+                      endpoint: '/api/v1/trust-score'
+                      rateLimitRemaining: 19950
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+    
+    post:
+      tags:
+        - Trust Score
+        - Core API
+      summary: Calculate trust score
+      description: |
+        Trigger a recalculation of user's trust score.
+        Checks quota availability and credits usage for monetization tracking.
+      security:
+        - ApiKeyAuth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrustScoreCalculationRequest'
+      responses:
+        '202':
+          description: Trust score calculation initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustScoreCalculationResponse'
+              examples:
+                basic_tier:
+                  summary: Basic tier calculation
+                  value:
+                    calculationId: calc_abc123
+                    estimatedTime: 30
+                    status: processing
+                    startedAt: '2024-01-15T10:30:00Z'
+                    monetization:
+                      tier: basic
+                      creditsCharged: 1
+                      creditsRemaining: 7
+                      calculationCost: 1
+                    metadata:
+                      version: '2.0.0'
+                      endpoint: '/api/v1/trust-score'
+                      rateLimitRemaining: 949
+                      webhookUrl: 'https://webhook.example.com/trust-score'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /api/v1/trust-score/{userId}/history:
+    get:
+      tags:
+        - Trust Score
+        - Premium API
+      summary: Get trust score history
+      description: |
+        Retrieve historical trust score data for a user.
+        Only available for Pro and Enterprise tiers.
+      security:
+        - ApiKeyAuth
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            description: User ID to fetch history for
+            example: user_123456
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+            description: Maximum number of records to return
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+            description: Number of records to skip for pagination
+      responses:
+        '200':
+          description: Trust score history retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustScoreHistoryResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Forbidden - Trust score history requires Pro or Enterprise tier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: Forbidden
+                message: Trust score history requires Pro or Enterprise tier
+                monetization:
+                  required_tier: pro
+                  current_tier: basic
+                  upgrade_url: https://vauntico.com/upgrade
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /api/v1/metrics/widget-usage:
+    post:
+      tags:
+        - Widget
+        - Analytics
+        - KPI
+      summary: Track widget usage for KPI analytics
+      description: |
+        Endpoint for tracking widget interactions and usage patterns.
+        Essential for Phase 2 white-label widget monetization tracking.
+      security:
+        - ApiKeyAuth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WidgetUsageRequest'
+      responses:
+        '200':
+          description: Usage tracked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WidgetUsageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /api/v1/metrics/widget-analytics:
+    get:
+      tags:
+        - Widget
+        - Analytics
+        - KPI
+      summary: Get widget analytics dashboard
+      description: |
+        Retrieve comprehensive widget usage analytics for KPI monitoring.
+        Provides monetization insights and usage patterns.
+      security:
+        - ApiKeyAuth
+      parameters:
+        - name: timeframe
+          in: query
+          schema:
+            type: string
+            enum: [1h, 24h, 7d, 30d]
+            default: 24h
+            description: Timeframe for analytics data
+        - name: tier
+          in: query
+          schema:
+            type: string
+            enum: [basic, pro, enterprise, all]
+            default: all
+            description: Filter by subscription tier
+      responses:
+        '200':
+          description: Analytics data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WidgetAnalyticsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /api/v1/widget/health:
+    get:
+      tags:
+        - Widget
+        - Health
+      summary: Widget health check endpoint
+      description: |
+        Health check for widget API endpoints and services.
+        Returns operational status and KPI metrics.
+      security:
+        - ApiKeyAuth
+      responses:
+        '200':
+          description: Widget services are healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WidgetHealthResponse'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication and tier validation
+
+  schemas:
+    Error:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          example: Unauthorized
+          description: Error type identifier
+        message:
+          type: string
+          example: Invalid or missing API key
+          description: Human-readable error description
+        monetization:
+          type: object
+          description: Monetization context for errors
+          properties:
+            tier:
+              type: string
+              enum: [basic, pro, enterprise]
+              description: Required tier for this operation
+            current_tier:
+              type: string
+              enum: [basic, pro, enterprise]
+              description: User's current tier
+            credits_remaining:
+              type: integer
+              minimum: 0
+              description: Credits remaining in user's account
+            upgrade_url:
+              type: string
+              format: uri
+              description: URL to upgrade subscription tier
+            quota_reset_date:
+              type: string
+              format: date-time
+              description: When monthly quota resets
+
+    TrustScoreResponse:
+      type: object
+      required:
+        - score
+        - tier
+        - calculatedAt
+        - expiresAt
+        - monetization
+        - metadata
+      properties:
+        score:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: User's trust score (0-100)
+          example: 85
+        tier:
+          type: string
+          enum: [basic, pro, enterprise]
+          description: User's subscription tier
+          example: pro
+        factors:
+          type: object
+          description: Score calculation factors
+          additionalProperties:
+            type: number
+            minimum: 0
+            maximum: 100
+          example:
+            transaction_history: 90
+            verification_status: 85
+            community_engagement: 80
+            dispute_resolution: 88
+        calculatedAt:
+          type: string
+          format: date-time
+          description: When score was calculated
+          example: '2024-01-15T10:30:00Z'
+        expiresAt:
+          type: string
+          format: date-time
+          description: When score expires and needs refresh
+          example: '2024-01-16T10:30:00Z'
+        monetization:
+          $ref: '#/components/schemas/MonetizationContext'
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+
+    TrustScoreCalculationRequest:
+      type: object
+      required:
+        - userId
+      properties:
+        userId:
+          type: string
+          description: User ID to calculate trust score for
+          example: user_123456
+        webhookUrl:
+          type: string
+          format: uri
+          description: Optional webhook URL for calculation completion notification
+          example: https://webhook.example.com/trust-score
+        priority:
+          type: string
+          enum: [normal, high, urgent]
+          default: normal
+          description: Calculation priority (Enterprise only)
+          example: normal
+
+    TrustScoreCalculationResponse:
+      type: object
+      required:
+        - calculationId
+        - estimatedTime
+        - status
+        - startedAt
+        - monetization
+        - metadata
+      properties:
+        calculationId:
+          type: string
+          description: Unique ID for tracking calculation progress
+          example: calc_abc123
+        estimatedTime:
+          type: integer
+          description: Estimated time to complete calculation (seconds)
+          example: 30
+        status:
+          type: string
+          enum: [processing, completed, failed]
+          description: Current calculation status
+          example: processing
+        startedAt:
+          type: string
+          format: date-time
+          description: When calculation started
+          example: '2024-01-15T10:30:00Z'
+        monetization:
+          $ref: '#/components/schemas/MonetizationContext'
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+
+    TrustScoreHistoryResponse:
+      type: object
+      required:
+        - userId
+        - history
+        - pagination
+        - monetization
+        - metadata
+      properties:
+        userId:
+          type: string
+          description: User ID for the history request
+          example: user_123456
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrustScoreHistoryEntry'
+          description: Array of historical trust score entries
+        pagination:
+          type: object
+          required:
+            - total
+            - limit
+            - offset
+            - hasMore
+          properties:
+            total:
+              type: integer
+              description: Total number of historical entries
+              example: 45
+            limit:
+              type: integer
+              description: Number of entries returned in this request
+              example: 10
+            offset:
+              type: integer
+              description: Number of entries skipped
+              example: 0
+            hasMore:
+              type: boolean
+              description: Whether more entries are available
+              example: true
+        monetization:
+          $ref: '#/components/schemas/MonetizationContext'
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+
+    TrustScoreHistoryEntry:
+      type: object
+      required:
+        - score
+        - calculatedAt
+        - factors
+      properties:
+        score:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Historical trust score
+          example: 82
+        calculatedAt:
+          type: string
+          format: date-time
+          description: When this score was calculated
+          example: '2024-01-14T09:15:00Z'
+        factors:
+          type: object
+          description: Score factors at time of calculation
+          additionalProperties:
+            type: number
+            minimum: 0
+            maximum: 100
+
+    MonetizationContext:
+      type: object
+      required:
+        - tier
+      properties:
+        tier:
+          type: string
+          enum: [basic, pro, enterprise]
+          description: User's subscription tier
+          example: pro
+        creditsRemaining:
+          type: integer
+          minimum: 0
+          description: Credits remaining in user's account
+          example: 450
+        nextCalculationCost:
+          type: integer
+          minimum: 0
+          description: Cost in credits for next calculation
+          example: 0
+        quotaUsed:
+          type: integer
+          minimum: 0
+          description: Monthly quota used
+          example: 25
+        quotaLimit:
+          type: integer
+          minimum: 0
+          description: Monthly quota limit
+          example: 100
+        quotaResetDate:
+          type: string
+          format: date-time
+          description: When monthly quota resets
+          example: '2024-02-01T00:00:00Z'
+
+    ResponseMetadata:
+      type: object
+      required:
+        - version
+        - endpoint
+        - generatedAt
+      properties:
+        version:
+          type: string
+          description: API version
+          example: '2.0.0'
+        endpoint:
+          type: string
+          description: API endpoint that generated the response
+          example: '/api/v1/trust-score'
+        generatedAt:
+          type: string
+          format: date-time
+          description: When response was generated
+          example: '2024-01-15T10:30:00Z'
+        rateLimitRemaining:
+          type: integer
+          minimum: 0
+          description: Rate limit remaining for this hour
+          example: 4950
+        requestId:
+          type: string
+          description: Unique request identifier for tracking
+          example: req_abc123
+
+    WidgetUsageRequest:
+      type: object
+      required:
+        - action
+        - userId
+        - timestamp
+      properties:
+        action:
+          type: string
+          enum: [load, refresh, error, config_change, interaction]
+          description: Type of widget action
+          example: load
+        userId:
+          type: string
+          description: User ID associated with widget
+          example: user_123456
+        tier:
+          type: string
+          enum: [basic, pro, enterprise]
+          description: User's subscription tier
+          example: pro
+        score:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: User's current trust score
+          example: 85
+        widgetConfig:
+          type: object
+          description: Widget configuration settings
+          properties:
+            theme:
+              type: string
+              enum: [light, dark, auto]
+              description: Widget theme
+              example: light
+            showLogo:
+              type: boolean
+              description: Whether Vauntico logo is shown
+              example: true
+            showDetails:
+              type: boolean
+              description: Whether trust factors are shown
+              example: true
+            primaryColor:
+              type: string
+              format: color
+              description: Custom primary color
+              example: '#007bff'
+        timestamp:
+          type: string
+          format: date-time
+          description: When the action occurred
+          example: '2024-01-15T10:30:00Z'
+        metadata:
+          type: object
+          description: Optional metadata for enhanced analytics
+          properties:
+            userAgent:
+              type: string
+              description: Browser user agent
+              example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+            referrer:
+              type: string
+              format: uri
+              description: Referring page
+              example: https://partner.example.com/dashboard
+            screenResolution:
+              type: string
+              description: Screen resolution
+              example: 1920x1080
+            timezone:
+              type: string
+              description: User timezone
+              example: America/New_York
+
+    WidgetUsageResponse:
+      type: object
+      required:
+        - success
+        - tracked
+        - timestamp
+        - metrics
+        - monetization
+        - metadata
+      properties:
+        success:
+          type: boolean
+          description: Whether usage was tracked successfully
+          example: true
+        tracked:
+          type: boolean
+          description: Whether the action was tracked
+          example: true
+        timestamp:
+          type: string
+          format: date-time
+          description: When tracking was recorded
+          example: '2024-01-15T10:30:00Z'
+        metrics:
+          type: object
+          description: Current widget usage metrics
+          properties:
+            widgetLoads:
+              type: integer
+              description: Total widget loads
+              example: 150
+            widgetRefreshes:
+              type: integer
+              description: Total widget refreshes
+              example: 45
+            widgetErrors:
+              type: integer
+              description: Total widget errors
+              example: 3
+            configChanges:
+              type: integer
+              description: Total configuration changes
+              example: 12
+            userInteractions:
+              type: integer
+              description: Total user interactions
+              example: 89
+            activeWidgets:
+              type: integer
+              description: Currently active widgets
+              example: 25
+            tierDistribution:
+              type: object
+              description: Distribution across tiers
+              additionalProperties:
+                type: integer
+              example:
+                basic: 50
+                pro: 80
+                enterprise: 20
+            averageScore:
+              type: number
+              description: Average trust score
+              example: 78.5
+            errorRate:
+              type: number
+              description: Error rate percentage
+              example: 0.02
+        monetization:
+          type: object
+          description: Monetization context for this usage
+          properties:
+            tier:
+              type: string
+              enum: [basic, pro, enterprise]
+              description: User tier
+              example: pro
+            creditsUsed:
+              type: integer
+              minimum: 0
+              description: Credits used by this action
+              example: 1
+            widgetUsageCount:
+              type: integer
+              minimum: 0
+              description: Total widget usage count
+              example: 151
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+
+    WidgetAnalyticsResponse:
+      type: object
+      required:
+        - success
+        - timeframe
+        - analytics
+        - monetization
+        - phase
+        - metadata
+      properties:
+        success:
+          type: boolean
+          description: Whether analytics were retrieved successfully
+          example: true
+        timeframe:
+          type: string
+          description: Timeframe for the analytics data
+          example: 24h
+        analytics:
+          type: object
+          properties:
+            totalUsage:
+              type: integer
+              description: Total widget usage in timeframe
+              example: 1250
+            actionBreakdown:
+              type: object
+              description: Usage breakdown by action type
+              additionalProperties:
+                type: integer
+              example:
+                load: 300
+                refresh: 125
+                error: 8
+                config_change: 25
+                interaction: 792
+            tierDistribution:
+              type: object
+              description: User distribution by tier
+              additionalProperties:
+                type: integer
+              example:
+                basic: 150
+                pro: 200
+                enterprise: 50
+            performanceMetrics:
+              type: object
+              properties:
+                averageScore:
+                  type: number
+                  description: Average trust score
+                  example: 82.3
+                errorRate:
+                  type: number
+                  description: Error rate percentage
+                  example: 0.008
+                refreshRate:
+                  type: number
+                  description: Refresh rate per load
+                  example: 0.42
+                uptimePercentage:
+                  type: number
+                  description: Widget uptime percentage
+                  example: 99.8
+            monetizationMetrics:
+              type: object
+              properties:
+                totalCreditsUsed:
+                  type: integer
+                  description: Total credits consumed
+                  example: 125
+                widgetUptime:
+                  type: integer
+                  description: Widget uptime in milliseconds
+                  example: 2592000000
+                activeIntegrations:
+                  type: integer
+                  description: Number of active widget integrations
+                  example: 45
+                revenuePerWidget:
+                  type: number
+                  description: Average revenue per widget
+                  example: 2.35
+        monetization:
+          type: object
+          description: Phase 2 monetization context
+          properties:
+            target500K:
+              type: string
+              description: Phase 2 target
+              example: 500K MRR from businesses
+            currentMRR:
+              type: number
+              description: Current Monthly Recurring Revenue
+              example: 125000
+            progressPercentage:
+              type: number
+              description: Progress toward 500K target
+              example: 25.0
+            licenseRevenue:
+              type: number
+              description: Revenue from API licenses
+              example: 125000
+            enterpriseCount:
+              type: integer
+              description: Number of enterprise customers
+              example: 50
+            proCount:
+              type: integer
+              description: Number of pro customers
+              example: 200
+            basicCount:
+              type: integer
+              description: Number of basic customers
+              example: 150
+        phase:
+          type: string
+          description: Current monetization phase
+          example: Phase 2: B2B API Licensing
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+
+    WidgetHealthResponse:
+      type: object
+      required:
+        - status
+        - version
+        - timestamp
+        - endpoints
+        - phase
+        - kpiMetrics
+        - dependencies
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          description: Overall widget service status
+          example: healthy
+        version:
+          type: string
+          description: Widget API version
+          example: 2.0.0
+        timestamp:
+          type: string
+          format: date-time
+          description: Health check timestamp
+          example: '2024-01-15T10:30:00Z'
+        endpoints:
+          type: object
+          description: Status of individual endpoints
+          properties:
+            trustScore:
+              type: string
+              enum: [operational, degraded, down]
+              example: operational
+            usageTracking:
+              type: string
+              enum: [operational, degraded, down]
+              example: operational
+            analytics:
+              type: string
+              enum: [operational, degraded, down]
+              example: operational
+        phase:
+          type: string
+          description: Current monetization phase
+          example: Phase 2: B2B API Licensing
+        kpiMetrics:
+          type: object
+          description: Current KPI metrics
+          properties:
+            widgetLoads:
+              type: integer
+              description: Total widget loads
+              example: 1250
+            activeWidgets:
+              type: integer
+              description: Currently active widgets
+              example: 45
+            errorRate:
+              type: number
+              description: Current error rate
+              example: 0.005
+        dependencies:
+          type: object
+          description: Status of external dependencies
+          properties:
+            apiGateway:
+              type: string
+              enum: [operational, degraded, down]
+              example: operational
+            database:
+              type: string
+              enum: [operational, degraded, down]
+              example: operational
+            monitoring:
+              type: string
+              enum: [operational, degraded, down]
+              example: operational
+
+  responses:
+    Unauthorized:
+      description: Unauthorized - Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: Unauthorized
+            message: Invalid or missing API key
+            monetization:
+              tier: unknown
+              current_tier: unknown
+              upgrade_url: https://vauntico.com/sign-up
+
+    Forbidden:
+      description: Forbidden - Insufficient subscription tier or quota exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            tier_insufficient:
+              summary: Insufficient tier for operation
+              value:
+                error: Forbidden
+                message: Trust score history requires Pro or Enterprise tier
+                monetization:
+                  tier: pro
+                  current_tier: basic
+                  upgrade_url: https://vauntico.com/upgrade
+            quota_exceeded:
+              summary: Monthly quota exceeded
+              value:
+                error: Forbidden
+                message: Monthly calculation quota exceeded
+                monetization:
+                  tier: pro
+                  current_tier: pro
+                  quota_used: 100
+                  quota_limit: 100
+                  quota_reset_date: '2024-02-01T00:00:00Z'
+                  upgrade_url: https://vauntico.com/upgrade
+
+    NotFound:
+      description: Not Found - User not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: Not Found
+            message: User not found or trust score unavailable
+
+    RateLimited:
+      description: Too Many Requests - Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: Too Many Requests
+            message: Rate limit exceeded. Please try again later.
+            monetization:
+              tier: pro
+              current_tier: pro
+              rate_limit_per_hour: 5000
+              reset_time: '2024-01-15T11:00:00Z'
+
+    BadRequest:
+      description: Bad Request - Invalid request data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: Bad Request
+            message: Missing required fields: userId
+            required_fields: [action, userId, timestamp]
+
+tags:
+  - name: Trust Score
+    description: Core trust score management endpoints
+  - name: Widget
+    description: White-label widget integration and analytics
+  - name: Analytics
+    description: Usage tracking and KPI monitoring
+  - name: KPI
+    description: Monetization and business intelligence
+  - name: Core API
+    description: Essential API functionality
+  - name: Premium API
+    description: Enhanced features for higher tiers
+  - name: Health
+    description: Service health and status monitoring

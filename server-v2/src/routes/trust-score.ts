@@ -15,7 +15,7 @@ const qp = (param: any): string => {
 // AuthedRequest type for authenticated routes
 type AuthedRequest = Request & { user: NonNullable<Request['user']> };
 
-const router = Router();
+const router: Router = Router();
 
 /**
  * @swagger

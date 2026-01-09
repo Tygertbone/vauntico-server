@@ -63,19 +63,7 @@ jest.mock('stripe', () => ({
   })),
 }));
 
-// Mock Paystack
-jest.mock('paystack', () => ({
-  __esModule: true,
-  default: jest.fn().mockImplementation(() => ({
-    transaction: {
-      initialize: jest.fn(() => Promise.resolve({ data: { authorization_url: 'https://test.paystack.co' } })),
-      verify: jest.fn(() => Promise.resolve({ data: { status: 'success' } })),
-    },
-    customer: {
-      create: jest.fn(() => Promise.resolve({ data: { id: 'cus_test123', email: 'test@example.com' } })),
-    },
-  })),
-}));
+// Paystack not used in codebase, no mock needed
 
 // Mock Resend
 jest.mock('resend', () => ({

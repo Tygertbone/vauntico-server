@@ -156,13 +156,13 @@ router.post('/api/v1/metrics/widget-usage', async (req: Request, res: Response) 
     };
 
     // Log widget usage for KPI tracking
-    await ApiUsageService.logWidgetUsage(apiKey, {
+    await ApiUsageService.logWidgetUsage(Array.isArray(apiKey) ? apiKey[0] : apiKey, {
       ...usageData,
       metadata
     });
 
     // Get current widget metrics
-    const metrics = await ApiUsageService.getWidgetMetrics(apiKey);
+    const metrics = await ApiUsageService.getWidgetMetrics(Array.isArray(apiKey) ? apiKey[0] : apiKey);
 
     // Phase 2 specific KPI tracking
     const phase2Metrics = {
@@ -226,10 +226,10 @@ router.get('/api/v1/widget/data', async (req: Request, res: Response) => {
     }
 
     // Log API usage
-    await ApiUsageService.logUsage(apiKey, 'widget-data', 'basic');
+    await ApiUsageService.logUsage(Array.isArray(apiKey) ? apiKey[0] : apiKey, 'widget-data', 'basic');
 
     // Get widget data (using existing getWidgetMetrics method)
-    const widgetMetrics = await ApiUsageService.getWidgetMetrics(apiKey);
+    const widgetMetrics = await ApiUsageService.getWidgetMetrics(Array.isArray(apiKey) ? apiKey[0] : apiKey);
 
     res.json({
       widgetId,
@@ -342,7 +342,7 @@ router.get('/api/v1/metrics/widget-analytics', async (req: Request, res: Respons
     const tier = qp(req.query.tier) || 'all';
     
     // Get comprehensive analytics (using existing getWidgetAnalytics method)
-    const analytics = await ApiUsageService.getWidgetAnalytics(apiKey, {
+    const analytics = await ApiUsageService.getWidgetAnalytics(Array.isArray(apiKey) ? apiKey[0] : apiKey, {
       timeframe: timeframe,
       tier: tier
     });
@@ -419,10 +419,10 @@ router.get('/api/v1/widget/tier', async (req: Request, res: Response) => {
     }
 
     // Log API usage
-    await ApiUsageService.logUsage(apiKey, 'widget-tier', tier);
+    await ApiUsageService.logUsage(Array.isArray(apiKey) ? apiKey[0] : apiKey, 'widget-tier', tier);
 
     // Get tier-specific widget data (using existing getWidgetAnalytics method)
-    const tierData = await ApiUsageService.getWidgetAnalytics(apiKey, {
+    const tierData = await ApiUsageService.getWidgetAnalytics(Array.isArray(apiKey) ? apiKey[0] : apiKey, {
       timeframe: '24h',
       tier: tier
     });

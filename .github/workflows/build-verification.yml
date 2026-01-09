@@ -38,6 +38,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Validate environment configuration
+        run: node scripts/validate-env.js
+        env:
+          NODE_ENV: test
+
       - name: Wait for PostgreSQL
         run: |
           until pg_isready -h localhost -p 5432; do

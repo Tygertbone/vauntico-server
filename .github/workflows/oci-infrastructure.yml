@@ -109,6 +109,30 @@ jobs:
 
       - name: Configure OCI CLI
         run: |
+          echo "🔧 Configuring OCI CLI..."
+
+          # Validate required OCI secrets
+          if [[ -z "${{ secrets.OCI_USER_OCID }}" ]]; then
+            echo "❌ OCI_USER_OCID secret is missing"
+            exit 1
+          fi
+          if [[ -z "${{ secrets.OCI_TENANCY_OCID }}" ]]; then
+            echo "❌ OCI_TENANCY_OCID secret is missing"
+            exit 1
+          fi
+          if [[ -z "${{ secrets.OCI_REGION }}" ]]; then
+            echo "❌ OCI_REGION secret is missing"
+            exit 1
+          fi
+          if [[ -z "${{ secrets.OCI_KEY_FINGERPRINT }}" ]]; then
+            echo "❌ OCI_KEY_FINGERPRINT secret is missing"
+            exit 1
+          fi
+          if [[ -z "${{ secrets.OCI_KEY_FILE }}" ]]; then
+            echo "❌ OCI_KEY_FILE secret is missing"
+            exit 1
+          fi
+
           mkdir -p ~/.oci
           echo "${{ secrets.OCI_KEY_FILE }}" | base64 -d > ~/.oci/oci_api_key.pem
           chmod 600 ~/.oci/oci_api_key.pem
@@ -123,8 +147,17 @@ jobs:
           EOF
 
           chmod 600 ~/.oci/config
+
+          # Test OCI CLI configuration
+          echo "Testing OCI CLI configuration..."
           oci --version
-          oci iam region list
+          oci iam region list --query 'data[0].name' --raw-output
+
+          # Validate authentication
+          echo "Validating OCI authentication..."
+          oci iam user get --user-id "${{ secrets.OCI_USER_OCID }}" --query 'data.name' --raw-output
+
+          echo "✅ OCI CLI configured successfully"
 
       - name: Create VCN
         id: setup-vcn
@@ -550,23 +583,7 @@ jobs:
     steps:
       - name: Notify Slack
         if: env.SLACK_WEBHOOK_URL != ''
-        uses: 8398a7/action-slack-send-to-webhook@v1.2.4
-        with:
-          webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
-          text: |
-            🚀 **OCI Infrastructure Deployment**
-            
-            **Environment:** ${{ github.event.inputs.environment }}
-            **Components:** ${{ github.event.inputs.setup_components }}
-            **Status:** ${{ job.status }}
-            
-            **Resources Created:**
-            - VCN: ${{ needs.setup-infrastructure.outputs.vcn_id || 'N/A' }}
-            - Public Subnet: ${{ needs.setup-infrastructure.outputs.public_subnet_id || 'N/A' }}
-            - Private Subnet: ${{ needs.setup-infrastructure.outputs.private_subnet_id || 'N/A' }}
-            - Compute Instance: ${{ needs.setup-compute.outputs.instance_id || 'N/A' }}
-            - Database: ${{ needs.setup-database.outputs.db_id || 'N/A' }}
-            
-            **Public IP:** ${{ needs.setup-compute.outputs.public_ip || 'N/A' }}
-            
-            **Workflow:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+            -H 'Content-type: application/json' \
+            -d '{"text":"🚀 OCI Infrastructure Deployment completed for ${{ github.event.inputs.environment }}"}'

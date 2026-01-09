@@ -28,6 +28,59 @@ jobs:
           node-version: '24'
           cache: 'npm'
 
+      - name: Validate required secrets
+        run: |
+          echo "🔐 Validating required secrets for ${{ inputs.environment }} deployment..."
+
+          # Check common required secrets
+          MISSING_SECRETS=()
+
+          # Core application secrets
+          [[ -z "${{ secrets.DATABASE_URL }}" ]] && MISSING_SECRETS+=("DATABASE_URL")
+          [[ -z "${{ secrets.JWT_SECRET }}" ]] && MISSING_SECRETS+=("JWT_SECRET")
+          [[ -z "${{ secrets.JWT_REFRESH_SECRET }}" ]] && MISSING_SECRETS+=("JWT_REFRESH_SECRET")
+          [[ -z "${{ secrets.CRON_SECRET }}" ]] && MISSING_SECRETS+=("CRON_SECRET")
+          [[ -z "${{ secrets.UPSTASH_REDIS_REST_URL }}" ]] && MISSING_SECRETS+=("UPSTASH_REDIS_REST_URL")
+          [[ -z "${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" ]] && MISSING_SECRETS+=("UPSTASH_REDIS_REST_TOKEN")
+          [[ -z "${{ secrets.RESEND_API_KEY }}" ]] && MISSING_SECRETS+=("RESEND_API_KEY")
+          [[ -z "${{ secrets.SESSION_SECRET }}" ]] && MISSING_SECRETS+=("SESSION_SECRET")
+          [[ -z "${{ secrets.ADMIN_ACCESS_KEY }}" ]] && MISSING_SECRETS+=("ADMIN_ACCESS_KEY")
+          [[ -z "${{ secrets.ANTHROPIC_API_KEY }}" ]] && MISSING_SECRETS+=("ANTHROPIC_API_KEY")
+          [[ -z "${{ secrets.SLACK_WEBHOOK_URL }}" ]] && MISSING_SECRETS+=("SLACK_WEBHOOK_URL")
+
+          # Payment secrets
+          [[ -z "${{ secrets.PAYSTACK_SECRET_KEY }}" ]] && MISSING_SECRETS+=("PAYSTACK_SECRET_KEY")
+          [[ -z "${{ secrets.PAYSTACK_PUBLIC_KEY }}" ]] && MISSING_SECRETS+=("PAYSTACK_PUBLIC_KEY")
+          [[ -z "${{ secrets.PAYSTACK_CREATOR_PASS_PLAN_CODE }}" ]] && MISSING_SECRETS+=("PAYSTACK_CREATOR_PASS_PLAN_CODE")
+          [[ -z "${{ secrets.PAYSTACK_ENTERPRISE_PLAN_CODE }}" ]] && MISSING_SECRETS+=("PAYSTACK_ENTERPRISE_PLAN_CODE")
+
+          # OAuth secrets
+          [[ -z "${{ secrets.GOOGLE_CLIENT_ID }}" ]] && MISSING_SECRETS+=("GOOGLE_CLIENT_ID")
+          [[ -z "${{ secrets.GOOGLE_CLIENT_SECRET }}" ]] && MISSING_SECRETS+=("GOOGLE_CLIENT_SECRET")
+
+          # Production-specific secrets
+          if [[ "${{ inputs.environment }}" == "production" ]]; then
+            [[ -z "${{ secrets.OCI_COMPARTMENT_ID }}" ]] && MISSING_SECRETS+=("OCI_COMPARTMENT_ID")
+            [[ -z "${{ secrets.OCI_USER_OCID }}" ]] && MISSING_SECRETS+=("OCI_USER_OCID")
+            [[ -z "${{ secrets.OCI_TENANCY }}" ]] && MISSING_SECRETS+=("OCI_TENANCY")
+            [[ -z "${{ secrets.OCI_REGION }}" ]] && MISSING_SECRETS+=("OCI_REGION")
+            [[ -z "${{ secrets.VERCEL_TOKEN }}" ]] && MISSING_SECRETS+=("VERCEL_TOKEN")
+            [[ -z "${{ secrets.VERCEL_PROJECT_ID }}" ]] && MISSING_SECRETS+=("VERCEL_PROJECT_ID")
+            [[ -z "${{ secrets.VERCEL_ORG_ID }}" ]] && MISSING_SECRETS+=("VERCEL_ORG_ID")
+            [[ -z "${{ secrets.VERCEL_FRONTEND_PROJECT_ID }}" ]] && MISSING_SECRETS+=("VERCEL_FRONTEND_PROJECT_ID")
+            [[ -z "${{ secrets.TEST_JWT_TOKEN }}" ]] && MISSING_SECRETS+=("TEST_JWT_TOKEN")
+          fi
+
+          if [[ ${#MISSING_SECRETS[@]} -gt 0 ]]; then
+            echo "❌ Missing required secrets:"
+            for secret in "${MISSING_SECRETS[@]}"; do
+              echo "  - $secret"
+            done
+            exit 1
+          fi
+
+          echo "✅ All required secrets are present"
+
       - name: Validate environment variables
         run: node docs/scripts/validate-health-endpoints.js
 

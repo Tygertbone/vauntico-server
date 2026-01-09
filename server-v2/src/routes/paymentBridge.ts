@@ -57,13 +57,15 @@ router.post('/request', authenticate, paymentRequestValidation, async (req: Requ
       });
     }
 
-    const userId = req.user?.userId;
-    if (!userId) {
-      return res.status(401).json({
-        error: 'Unauthorized',
-        message: 'Authentication required',
-      });
-    }
+  const userId = req.user?.userId;
+  if (!userId) {
+    return res.status(401).json({
+      error: 'Unauthorized',
+      message: 'Authentication required',
+    });
+  }
+
+  const typedUserId: string = userId;
 
     const { amount, currency, requestType, bankAccount, notes } = req.body;
 
@@ -101,7 +103,7 @@ router.post('/request', authenticate, paymentRequestValidation, async (req: Requ
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW())
       RETURNING id, reference, created_at, status
     `, [
-      userId,
+      typedUserId,
       requestType,
       amount,
       currency,
@@ -175,7 +177,9 @@ router.get('/requests', authenticate, paginationValidation, async (req: Request,
       });
     }
 
-    const { page = 1, limit = 20, status } = req.body;
+    const page: number = req.body.page || 1;
+    const limit: number = req.body.limit || 20;
+    const status: string | undefined = req.body.status;
 
     // Build query with optional status filter
     let whereClause = 'WHERE creator_id = $1';
@@ -406,7 +410,7 @@ router.get('/status/:id', authenticate, async (req: Request, res: Response) => {
       FROM creator_payment_requests pr
       JOIN users u ON pr.creator_id = u.id
       WHERE pr.id = $1 AND pr.creator_id = $2
-    `, [requestId, userId]);
+    `, [requestId, userId as string]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({
@@ -421,7 +425,7 @@ router.get('/status/:id', authenticate, async (req: Request, res: Response) => {
     await securityMonitor.logSecurityEvent({
       type: SecurityEventType.DATA_ACCESS,
       severity: 'low',
-      ip: req.ip,
+      ip: req.ip || '',
       userAgent: req.get('User-Agent') || '',
       userId,
       endpoint: req.path,

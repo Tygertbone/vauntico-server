@@ -1,7 +1,19 @@
 import { Router, Request, Response } from 'express';
 import { authenticateApiKey, validateSubscriptionTier } from '../middleware/auth';
 import { TrustScoreService } from '../services/trustScoreService';
-import { ApiUsageService } from '../services/apiUsageService';
+import ApiUsageService from '../services/apiUsageService';
+import { normalizeQueryParam } from '../utils/queryParams';
+
+// Query parameter helper function
+const qp = (param: any): string => {
+  if (Array.isArray(param)) {
+    return param[0] || '';
+  }
+  return param?.toString() || '';
+};
+
+// AuthedRequest type for authenticated routes
+type AuthedRequest = Request & { user: NonNullable<Request['user']> };
 
 const router = Router();
 
@@ -10,7 +22,7 @@ const router = Router();
  * /api/v1/trust-score:
  *   get:
  *     summary: Get user's trust score
- *     description: Retrieve the current trust score for a user based on their subscription tier
+ *     description: Retrieve current trust score for a user based on their subscription tier
  *     parameters:
  *       - in: query
  *         name: userId
@@ -78,52 +90,56 @@ const router = Router();
  */
 
 // Get trust score for a user
-router.get('/api/v1/trust-score', async (req: Request, res: Response) => {
+router.get('/api/v1/trust-score', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userId } = req.query;
+    const userId: string = qp(req.query.userId);
     const apiKey = req.headers['x-api-key'];
     
     // Validate API key
     if (!apiKey || !await authenticateApiKey(apiKey)) {
-      return res.status(401).json({
+      res.status(401).json({
         error: 'Unauthorized',
         message: 'Invalid or missing API key'
       });
+      return;
     }
 
     // Validate required parameters
     if (!userId) {
-      return res.status(400).json({
+      res.status(400).json({
         error: 'Bad Request',
         message: 'userId parameter is required'
       });
+      return;
     }
 
     // Get user's subscription tier for quota validation
-    const userTier = await validateSubscriptionTier(apiKey, userId as string);
+    const userTier = await validateSubscriptionTier(apiKey, userId);
     
     // Check API access based on tier
     if (!userTier || !['basic', 'pro', 'enterprise'].includes(userTier)) {
-      return res.status(403).json({
+      res.status(403).json({
         error: 'Forbidden',
         message: 'Insufficient subscription tier or invalid user'
       });
+      return;
     }
 
     // Log API usage
     await ApiUsageService.logUsage(apiKey, 'trust-score-get', userTier);
 
     // Get trust score
-    const trustScore = await TrustScoreService.getTrustScore(userId as string, userTier);
+    const trustScore = await TrustScoreService.getTrustScore(userId, userTier);
 
     if (!trustScore) {
-      return res.status(404).json({
+      res.status(404).json({
         error: 'Not Found',
         message: 'User not found or trust score unavailable'
       });
+      return;
     }
 
-    // Add monetization context to response
+// Add monetization context to response
     const response = {
       score: trustScore.score,
       tier: userTier,
@@ -132,13 +148,13 @@ router.get('/api/v1/trust-score', async (req: Request, res: Response) => {
       expiresAt: trustScore.expiresAt,
       monetization: {
         tier: userTier,
-        creditsRemaining: trustScore.creditsRemaining || null,
-        nextCalculationCost: trustScore.nextCalculationCost || 0
+        creditsRemaining: trustScore.creditsRemaining ?? null,
+        nextCalculationCost: trustScore.nextCalculationCost ?? 0
       },
       metadata: {
         version: '2.0.0',
         endpoint: '/api/v1/trust-score',
-        rateLimitRemaining: trustScore.rateLimitRemaining || null
+        rateLimitRemaining: trustScore.rateLimitRemaining ?? null
       }
     };
 
@@ -176,9 +192,9 @@ router.post('/api/v1/trust-score', async (req: Request, res: Response) => {
 
     // Get user's subscription tier for quota validation
     const userTier = await validateSubscriptionTier(apiKey, userId);
-    
+
     // Check if user has calculation quota available
-    const quotaCheck = await TrustScoreService.checkCalculationQuota(userId as string, userTier);
+    const quotaCheck = await TrustScoreService.checkCalculationQuota(userId, userTier);
     if (!quotaCheck.allowed) {
       return res.status(429).json({
         error: 'Too Many Requests',
@@ -190,7 +206,7 @@ router.post('/api/v1/trust-score', async (req: Request, res: Response) => {
     await ApiUsageService.logUsage(apiKey, 'trust-score-calculate', userTier);
 
     // Initiate trust score calculation
-    const calculation = await TrustScoreService.calculateTrustScore(userId as string, userTier);
+    const calculation = await TrustScoreService.calculateTrustScore(userId, userTier);
 
     // Add monetization context to response
     const response = {
@@ -207,8 +223,8 @@ router.post('/api/v1/trust-score', async (req: Request, res: Response) => {
       metadata: {
         version: '2.0.0',
         endpoint: '/api/v1/trust-score',
-        rateLimitRemaining: quotaCheck.rateLimitRemaining || null,
-        webhookUrl: calculation.webhookUrl || null
+        rateLimitRemaining: quotaCheck.rateLimitRemaining ?? null,
+        webhookUrl: calculation.webhookUrl ?? null
       }
     };
 
@@ -222,12 +238,152 @@ router.post('/api/v1/trust-score', async (req: Request, res: Response) => {
   }
 });
 
+// Additional endpoint for timeframe-based trust score
+router.get('/api/v1/trust-score/timeframe', async (req: Request, res: Response) => {
+  try {
+    const userId: string = qp(req.query.userId);
+    const timeframe: string = qp(req.query.timeframe);
+    const apiKey = req.headers['x-api-key'];
+    
+    // Validate API key
+    if (!apiKey || !await authenticateApiKey(apiKey)) {
+      return res.status(401).json({
+        error: 'Unauthorized',
+        message: 'Invalid or missing API key'
+      });
+    }
+
+    // Validate required parameters
+    if (!userId) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        message: 'userId parameter is required'
+      });
+    }
+
+    // Get user's subscription tier for quota validation
+    const userTier = await validateSubscriptionTier(apiKey, userId);
+    
+    // Check API access based on tier
+    if (!userTier || !['basic', 'pro', 'enterprise'].includes(userTier)) {
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: 'Insufficient subscription tier or invalid user'
+      });
+    }
+
+    // Log API usage
+    await ApiUsageService.logUsage(apiKey, 'trust-score-timeframe', userTier);
+
+    // Get trust score for specific timeframe (using existing getTrustScore method)
+    const trustScore = await TrustScoreService.getTrustScore(userId, userTier);
+
+    if (!trustScore) {
+      return res.status(404).json({
+        error: 'Not Found',
+        message: 'User not found or trust score unavailable for specified timeframe'
+      });
+    }
+
+    res.json({
+      score: trustScore.score,
+      tier: userTier,
+      timeframe: timeframe,
+      calculatedAt: trustScore.calculatedAt,
+      metadata: {
+        version: '2.0.0',
+        endpoint: '/api/v1/trust-score/timeframe'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching timeframe trust score:', error);
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'Failed to retrieve timeframe trust score'
+    });
+  }
+});
+
+// Additional endpoint for tier-based trust score
+router.get('/api/v1/trust-score/tier', async (req: Request, res: Response) => {
+  try {
+    const userId: string = qp(req.query.userId);
+    const tier: string = qp(req.query.tier);
+    const apiKey = req.headers['x-api-key'];
+    
+    // Validate API key
+    if (!apiKey || !await authenticateApiKey(apiKey)) {
+      return res.status(401).json({
+        error: 'Unauthorized',
+        message: 'Invalid or missing API key'
+      });
+    }
+
+    // Validate required parameters
+    if (!userId || !tier) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        message: 'userId and tier parameters are required'
+      });
+    }
+
+    // Validate tier
+    if (!['basic', 'pro', 'enterprise'].includes(tier)) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        message: 'Invalid tier. Must be one of: basic, pro, enterprise'
+      });
+    }
+
+    // Get user's subscription tier for quota validation
+    const userTier = await validateSubscriptionTier(apiKey, userId);
+    
+    // Check API access based on tier
+    if (!userTier || !['basic', 'pro', 'enterprise'].includes(userTier)) {
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: 'Insufficient subscription tier or invalid user'
+      });
+    }
+
+    // Log API usage
+    await ApiUsageService.logUsage(apiKey, 'trust-score-tier', userTier);
+
+    // Get trust score for specific tier (using existing getTrustScore method)
+    const trustScore = await TrustScoreService.getTrustScore(userId, tier);
+
+    if (!trustScore) {
+      return res.status(404).json({
+        error: 'Not Found',
+        message: 'User not found or trust score unavailable for specified tier'
+      });
+    }
+
+    res.json({
+      score: trustScore.score,
+      tier: tier,
+      calculatedAt: trustScore.calculatedAt,
+      metadata: {
+        version: '2.0.0',
+        endpoint: '/api/v1/trust-score/tier'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching tier trust score:', error);
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'Failed to retrieve tier trust score'
+    });
+  }
+});
+
 // Get trust score history
 router.get('/api/v1/trust-score/:userId/history', async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const apiKey = req.headers['x-api-key'];
-    const { limit = 10, offset = 0 } = req.query;
+    const limit = qp(req.query.limit) || '10';
+    const offset = qp(req.query.offset) || '0';
     
     // Validate API key and tier
     if (!apiKey || !await authenticateApiKey(apiKey)) {
@@ -250,10 +406,10 @@ router.get('/api/v1/trust-score/:userId/history', async (req: Request, res: Resp
 
     // Get trust score history
     const history = await TrustScoreService.getTrustScoreHistory(
-      userId, 
-      userTier, 
-      parseInt(limit as string), 
-      parseInt(offset as string)
+      userId,
+      userTier,
+      parseInt(limit),
+      parseInt(offset)
     );
 
     const response = {
@@ -261,8 +417,8 @@ router.get('/api/v1/trust-score/:userId/history', async (req: Request, res: Resp
       history: history.scores,
       pagination: {
         total: history.total,
-        limit: parseInt(limit as string),
-        offset: parseInt(offset as string),
+        limit: parseInt(limit),
+        offset: parseInt(offset),
         hasMore: history.hasMore
       },
       monetization: {

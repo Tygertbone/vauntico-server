@@ -1,6 +1,18 @@
 import { Router, Request, Response } from 'express';
 import { authenticateApiKey } from '../middleware/auth';
 import ApiUsageService from '../services/apiUsageService';
+import { normalizeQueryParam } from '../utils/queryParams';
+
+// Query parameter helper function
+const qp = (param: any): string => {
+  if (Array.isArray(param)) {
+    return param[0] || '';
+  }
+  return param?.toString() || '';
+};
+
+// AuthedRequest type for authenticated routes
+type AuthedRequest = Request & { user: NonNullable<Request['user']> };
 
 const router = Router();
 
@@ -171,7 +183,7 @@ router.post('/api/v1/metrics/widget-usage', async (req: Request, res: Response) 
       timestamp: new Date().toISOString(),
       metrics: phase2Metrics,
       monetization: {
-        tier: usageData.tier || 'unknown',
+        tier: normalizeQueryParam(usageData.tier) || '',
         creditsUsed: usageData.action === 'refresh' ? 1 : 0, // Refresh uses 1 credit
         widgetUsageCount: metrics.totalUsage || 1
       },
@@ -186,6 +198,53 @@ router.post('/api/v1/metrics/widget-usage', async (req: Request, res: Response) 
     res.status(500).json({
       error: 'Internal Server Error',
       message: 'Failed to track widget usage'
+    });
+  }
+});
+
+// Additional endpoint for widget-specific data
+router.get('/api/v1/widget/data', async (req: Request, res: Response) => {
+  try {
+    const widgetId: string = qp(req.query.widgetId);
+    const userId: string = qp(req.query.userId);
+    const apiKey = req.headers['x-api-key'];
+    
+    // Validate API key
+    if (!apiKey || !await authenticateApiKey(apiKey)) {
+      return res.status(401).json({
+        error: 'Unauthorized',
+        message: 'Invalid or missing API key'
+      });
+    }
+
+    // Validate required parameters
+    if (!widgetId || !userId) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        message: 'widgetId and userId parameters are required'
+      });
+    }
+
+    // Log API usage
+    await ApiUsageService.logUsage(apiKey, 'widget-data', 'basic');
+
+    // Get widget data (using existing getWidgetMetrics method)
+    const widgetMetrics = await ApiUsageService.getWidgetMetrics(apiKey);
+
+    res.json({
+      widgetId,
+      userId,
+      data: widgetMetrics,
+      metadata: {
+        version: '2.0.0',
+        endpoint: '/api/v1/widget/data'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching widget data:', error);
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'Failed to retrieve widget data'
     });
   }
 });
@@ -279,13 +338,13 @@ router.get('/api/v1/metrics/widget-analytics', async (req: Request, res: Respons
       });
     }
 
-    const timeframe = typeof req.query.timeframe === 'string' ? req.query.timeframe : '24h';
-    const tier = typeof req.query.tier === 'string' ? req.query.tier : 'all';
+    const timeframe = qp(req.query.timeframe) || '24h';
+    const tier = qp(req.query.tier) || 'all';
     
-    // Get comprehensive analytics
+    // Get comprehensive analytics (using existing getWidgetAnalytics method)
     const analytics = await ApiUsageService.getWidgetAnalytics(apiKey, {
-      timeframe,
-      tier
+      timeframe: timeframe,
+      tier: tier
     });
 
     // Phase 2 monetization context
@@ -333,6 +392,54 @@ router.get('/api/v1/metrics/widget-analytics', async (req: Request, res: Respons
     res.status(500).json({
       error: 'Internal Server Error',
       message: 'Failed to retrieve widget analytics'
+    });
+  }
+});
+
+// Additional endpoint for tier-specific widget data
+router.get('/api/v1/widget/tier', async (req: Request, res: Response) => {
+  try {
+    const tier: string = qp(req.query.tier);
+    const apiKey = req.headers['x-api-key'];
+    
+    // Validate API key
+    if (!apiKey || !await authenticateApiKey(apiKey)) {
+      return res.status(401).json({
+        error: 'Unauthorized',
+        message: 'Invalid or missing API key'
+      });
+    }
+
+    // Validate tier
+    if (!tier || !['basic', 'pro', 'enterprise'].includes(tier)) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        message: 'Invalid tier. Must be one of: basic, pro, enterprise'
+      });
+    }
+
+    // Log API usage
+    await ApiUsageService.logUsage(apiKey, 'widget-tier', tier);
+
+    // Get tier-specific widget data (using existing getWidgetAnalytics method)
+    const tierData = await ApiUsageService.getWidgetAnalytics(apiKey, {
+      timeframe: '24h',
+      tier: tier
+    });
+
+    res.json({
+      tier,
+      data: tierData,
+      metadata: {
+        version: '2.0.0',
+        endpoint: '/api/v1/widget/tier'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching tier widget data:', error);
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'Failed to retrieve tier widget data'
     });
   }
 });

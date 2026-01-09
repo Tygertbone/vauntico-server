@@ -4,30 +4,32 @@ import { featureFlagManager, FeatureFlagType } from '../utils/featureFlags';
 import { ProofVault } from '../services/ProofVault';
 import { query } from '../db/pool';
 import { logger } from '../utils/logger';
+import { normalizeQueryParam } from '../utils/queryParams';
 
 const router = Router();
 
 // Middleware to check if user is admin (simplified for now)
-const requireAdmin = (req: Request, res: Response, next: any) => {
+const requireAdmin = (req: Request, res: Response, next: any): void => {
   // In production, you'd check JWT token and user role
   // For now, we'll just check for an admin header
   const adminKey = req.headers['x-admin-key'];
   const expectedKey = process.env.ADMIN_ACCESS_KEY;
 
   if (!adminKey || adminKey !== expectedKey) {
-    return res.status(403).json({
+    res.status(403).json({
       error: 'Admin access required',
       message: 'You do not have permission to access admin endpoints'
     });
+    return;
   }
 
   next();
 };
 
 // GET /admin/security/stats - Security monitoring statistics
-router.get('/security/stats', requireAdmin, async (req: Request, res: Response) => {
+router.get('/security/stats', requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
-    const hours = parseInt(req.query.hours as string) || 24;
+    const hours = parseInt(normalizeQueryParam(req.query.hours) ?? '') || 24;
     const stats = securityMonitor.getSecurityStats(hours);
 
     res.json({
@@ -48,9 +50,9 @@ router.get('/security/stats', requireAdmin, async (req: Request, res: Response) 
 });
 
 // GET /admin/security/events - Recent security events
-router.get('/security/events', requireAdmin, async (req: Request, res: Response) => {
+router.get('/security/events', requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
-    const limit = Math.min(parseInt(req.query.limit as string) || 50, 200); // Max 200
+    const limit = Math.min(parseInt(normalizeQueryParam(req.query.limit) ?? '') || 50, 200); // Max 200
     const events = securityMonitor.getRecentEvents(limit);
 
     res.json({
@@ -71,10 +73,10 @@ router.get('/security/events', requireAdmin, async (req: Request, res: Response)
 });
 
 // GET /admin/security/events/:type - Events by security event type
-router.get('/security/events/:type', requireAdmin, async (req: Request, res: Response) => {
+router.get('/security/events/:type', requireAdmin, async (req: Request<{ type: string }>, res: Response): Promise<void> => {
   try {
     const { type } = req.params;
-    const hours = parseInt(req.query.hours as string) || 24;
+    const hours = parseInt(normalizeQueryParam(req.query.hours) ?? '') || 24;
     const events = securityMonitor.getEventsByType(type as any, hours);
 
     res.json({
@@ -97,10 +99,10 @@ router.get('/security/events/:type', requireAdmin, async (req: Request, res: Res
 });
 
 // GET /admin/security/ip/:ip - Events for specific IP
-router.get('/security/ip/:ip', requireAdmin, async (req: Request, res: Response) => {
+router.get('/security/ip/:ip', requireAdmin, async (req: Request<{ ip: string }>, res: Response): Promise<void> => {
   try {
     const { ip } = req.params;
-    const hours = parseInt(req.query.hours as string) || 24;
+    const hours = parseInt(normalizeQueryParam(req.query.hours) ?? '') || 24;
     const events = securityMonitor.getEventsByIP(ip, hours);
 
     res.json({
@@ -123,28 +125,29 @@ router.get('/security/ip/:ip', requireAdmin, async (req: Request, res: Response)
 });
 
 // POST /admin/security/block-ip - Block an IP (placeholder for future implementation)
-router.post('/security/block-ip', requireAdmin, async (req: Request, res: Response) => {
+router.post('/security/block-ip', requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
     const { ip, reason, duration } = req.body;
 
     if (!ip) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: 'IP address is required'
       });
+      return;
     }
 
     // In a real implementation, you'd add to a blocklist/iptables/firewall
     // For now, just log the action
-    console.log(`Admin requested to block IP ${ip} for reason: ${reason || 'No reason provided'}`);
+    console.log(`Admin requested to block IP ${ip} for reason: ${reason ?? 'No reason provided'}`);
 
     res.json({
       success: true,
       message: `Block request logged for IP ${ip}`,
       data: {
         ip,
-        reason: reason || 'No reason provided',
-        duration: duration || 'permanent',
+        reason: reason ?? 'No reason provided',
+        duration: duration ?? 'permanent',
         timestamp: new Date().toISOString()
       }
     });
@@ -158,14 +161,14 @@ router.post('/security/block-ip', requireAdmin, async (req: Request, res: Respon
 });
 
 // GET /admin/system/info - Basic system information
-router.get('/system/info', requireAdmin, async (req: Request, res: Response) => {
+router.get('/system/info', requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
     const info = {
       uptime: process.uptime(),
       memory: process.memoryUsage(),
       nodeVersion: process.version,
       platform: process.platform,
-      environment: process.env.NODE_ENV || 'development',
+      environment: process.env.NODE_ENV ?? 'development',
       timestamp: new Date().toISOString()
     };
 
@@ -183,7 +186,7 @@ router.get('/system/info', requireAdmin, async (req: Request, res: Response) => 
 });
 
 // GET /admin/features - List all feature flags
-router.get('/features', requireAdmin, async (req: Request, res: Response) => {
+router.get('/features', requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
     const flags = await featureFlagManager.listFeatureFlags();
 
@@ -205,7 +208,7 @@ router.get('/features', requireAdmin, async (req: Request, res: Response) => {
 });
 
 // GET /admin/features/analytics - Feature flag analytics
-router.get('/features/analytics', requireAdmin, async (req: Request, res: Response) => {
+router.get('/features/analytics', requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
     const analytics = await featureFlagManager.getAnalytics();
 
@@ -223,16 +226,17 @@ router.get('/features/analytics', requireAdmin, async (req: Request, res: Respon
 });
 
 // GET /admin/features/:key - Get specific feature flag
-router.get('/features/:key', requireAdmin, async (req: Request, res: Response) => {
+router.get('/features/:key', requireAdmin, async (req: Request<{ key: string }>, res: Response): Promise<void> => {
   try {
     const { key } = req.params;
     const flag = await featureFlagManager.getFeatureFlag(key);
 
     if (!flag) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         error: 'Feature flag not found'
       });
+      return;
     }
 
     res.json({
@@ -249,7 +253,7 @@ router.get('/features/:key', requireAdmin, async (req: Request, res: Response) =
 });
 
 // POST /admin/features - Create/update feature flag
-router.post('/features', requireAdmin, async (req: Request, res: Response) => {
+router.post('/features', requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
     const {
       key,
@@ -262,24 +266,26 @@ router.post('/features', requireAdmin, async (req: Request, res: Response) => {
     } = req.body;
 
     if (!key || !type) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: 'Feature flag key and type are required'
       });
+      return;
     }
 
     if (!Object.values(FeatureFlagType).includes(type)) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: 'Invalid feature flag type',
         validTypes: Object.values(FeatureFlagType)
       });
+      return;
     }
 
     const success = await featureFlagManager.setFeatureFlag({
       key,
       type,
-      enabled: enabled || false,
+      enabled: enabled ?? false,
       description,
       percentage: type === FeatureFlagType.PERCENTAGE ? percentage : undefined,
       userIds: type === FeatureFlagType.USER_TARGETING ? userIds : undefined,
@@ -288,10 +294,11 @@ router.post('/features', requireAdmin, async (req: Request, res: Response) => {
     });
 
     if (!success) {
-      return res.status(500).json({
+      res.status(500).json({
         success: false,
         error: 'Failed to create/update feature flag'
       });
+      return;
     }
 
     const flag = await featureFlagManager.getFeatureFlag(key);
@@ -311,17 +318,18 @@ router.post('/features', requireAdmin, async (req: Request, res: Response) => {
 });
 
 // DELETE /admin/features/:key - Delete feature flag
-router.delete('/features/:key', requireAdmin, async (req: Request, res: Response) => {
+router.delete('/features/:key', requireAdmin, async (req: Request<{ key: string }>, res: Response): Promise<void> => {
   try {
     const { key } = req.params;
 
     const success = await featureFlagManager.deleteFeatureFlag(key);
 
     if (!success) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         error: 'Feature flag not found or could not be deleted'
       });
+      return;
     }
 
     res.json({
@@ -338,7 +346,7 @@ router.delete('/features/:key', requireAdmin, async (req: Request, res: Response
 });
 
 // POST /admin/features/emergency-disable - Emergency disable all feature flags
-router.post('/features/emergency-disable', requireAdmin, async (req: Request, res: Response) => {
+router.post('/features/emergency-disable', requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
     await featureFlagManager.emergencyDisableAll();
 
@@ -357,15 +365,15 @@ router.post('/features/emergency-disable', requireAdmin, async (req: Request, re
 });
 
 // GET /admin/features/:key/check - Check if feature is enabled for current context
-router.get('/features/:key/check', requireAdmin, async (req: Request, res: Response) => {
+router.get('/features/:key/check', requireAdmin, async (req: Request<{ key: string }>, res: Response): Promise<void> => {
   try {
     const { key } = req.params;
     const { userId, userEmail } = req.query;
 
     const context = {
       key,
-      userId: userId as string,
-      userEmail: userEmail as string
+      userId: normalizeQueryParam(userId),
+      userEmail: normalizeQueryParam(userEmail)
     };
 
     const enabled = await featureFlagManager.isEnabled(key, context);
@@ -389,7 +397,7 @@ router.get('/features/:key/check', requireAdmin, async (req: Request, res: Respo
 });
 
 // GET /admin/proofs/:userId - Get subscription proofs for a user
-router.get('/proofs/:userId', requireAdmin, async (req: Request, res: Response) => {
+router.get('/proofs/:userId', requireAdmin, async (req: Request<{ userId: string }>, res: Response): Promise<void> => {
   try {
     const { userId } = req.params;
     const proofs = await ProofVault.getProofs(userId);

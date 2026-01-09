@@ -94,9 +94,9 @@ router.get('/api/v1/trust-score', async (req: Request, res: Response): Promise<v
   try {
     const userId: string = qp(req.query.userId);
     const apiKey = req.headers['x-api-key'];
-    
+
     // Validate API key
-    if (!apiKey || !await authenticateApiKey(apiKey)) {
+    if (!apiKey || !await authenticateApiKey(apiKey as string)) {
       res.status(401).json({
         error: 'Unauthorized',
         message: 'Invalid or missing API key'
@@ -114,7 +114,7 @@ router.get('/api/v1/trust-score', async (req: Request, res: Response): Promise<v
     }
 
     // Get user's subscription tier for quota validation
-    const userTier = await validateSubscriptionTier(apiKey, userId);
+    const userTier = await validateSubscriptionTier(apiKey as string, userId);
     
     // Check API access based on tier
     if (!userTier || !['basic', 'pro', 'enterprise'].includes(userTier)) {
@@ -175,7 +175,7 @@ router.post('/api/v1/trust-score', async (req: Request, res: Response) => {
     const apiKey = req.headers['x-api-key'];
     
     // Validate API key
-    if (!apiKey || !await authenticateApiKey(apiKey)) {
+    if (!apiKey || !await authenticateApiKey(apiKey as string)) {
       return res.status(401).json({
         error: 'Unauthorized',
         message: 'Invalid or missing API key'
@@ -191,7 +191,7 @@ router.post('/api/v1/trust-score', async (req: Request, res: Response) => {
     }
 
     // Get user's subscription tier for quota validation
-    const userTier = await validateSubscriptionTier(apiKey, userId);
+    const userTier = await validateSubscriptionTier(apiKey as string, userId);
 
     // Check if user has calculation quota available
     const quotaCheck = await TrustScoreService.checkCalculationQuota(userId, userTier);
@@ -246,7 +246,7 @@ router.get('/api/v1/trust-score/timeframe', async (req: Request, res: Response) 
     const apiKey = req.headers['x-api-key'];
     
     // Validate API key
-    if (!apiKey || !await authenticateApiKey(apiKey)) {
+    if (!apiKey || !await authenticateApiKey(apiKey as string)) {
       return res.status(401).json({
         error: 'Unauthorized',
         message: 'Invalid or missing API key'
@@ -262,7 +262,7 @@ router.get('/api/v1/trust-score/timeframe', async (req: Request, res: Response) 
     }
 
     // Get user's subscription tier for quota validation
-    const userTier = await validateSubscriptionTier(apiKey, userId);
+    const userTier = await validateSubscriptionTier(apiKey as string, userId);
     
     // Check API access based on tier
     if (!userTier || !['basic', 'pro', 'enterprise'].includes(userTier)) {
@@ -312,7 +312,7 @@ router.get('/api/v1/trust-score/tier', async (req: Request, res: Response) => {
     const apiKey = req.headers['x-api-key'];
     
     // Validate API key
-    if (!apiKey || !await authenticateApiKey(apiKey)) {
+    if (!apiKey || !await authenticateApiKey(apiKey as string)) {
       return res.status(401).json({
         error: 'Unauthorized',
         message: 'Invalid or missing API key'

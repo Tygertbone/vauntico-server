@@ -10,7 +10,7 @@ router.post('/engage', apiAuthMiddleware, async (req, res) => {
   try {
     const engagementData = {
       ...req.body,
-      userId: req.user?.id
+      userId: req.user?.userId
     };
 
     const engagement = await communityEngagementService.recordEngagement(engagementData);
@@ -33,7 +33,7 @@ router.post('/love-loops', apiAuthMiddleware, async (req, res) => {
   try {
     const loopData = {
       ...req.body,
-      creatorId: req.user?.id
+      creatorId: req.user?.userId
     };
 
     const loveLoop = await communityEngagementService.createLoveLoop(loopData);
@@ -55,7 +55,7 @@ router.post('/love-loops/:id/respond', apiAuthMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const { responseMessage } = req.body;
-    const responderId = req.user?.id;
+    const responderId = req.user?.userId;
 
     const loveLoop = await communityEngagementService.respondToLoveLoop(id, responderId, responseMessage);
     res.json({
@@ -77,7 +77,7 @@ router.post('/legacy-tree', apiAuthMiddleware, async (req, res) => {
   try {
     const entryData = {
       ...req.body,
-      creatorId: req.user?.id
+      creatorId: req.user?.userId
     };
 
     const legacyEntry = await communityEngagementService.addLegacyEntry(entryData);
@@ -100,7 +100,7 @@ router.post('/echo-chamber', apiAuthMiddleware, async (req, res) => {
   try {
     const storyData = {
       ...req.body,
-      authorId: req.user?.id
+      authorId: req.user?.userId
     };
 
     const story = await communityEngagementService.createEchoChamberStory(storyData);
@@ -121,7 +121,7 @@ router.post('/echo-chamber', apiAuthMiddleware, async (req, res) => {
 router.post('/echo-chamber/:id/publish', apiAuthMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
-    const authorId = req.user?.id;
+    const authorId = req.user?.userId;
 
     const story = await communityEngagementService.publishEchoChamberStory(id, authorId);
     res.json({

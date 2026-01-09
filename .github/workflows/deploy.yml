@@ -353,55 +353,35 @@ jobs:
           DEPLOYMENT_ID="deploy-$(date +%Y%m%d-%H%M%S)-${{ github.sha }}"
           echo "deployment-id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
           
-          # Check if Railway token is available
-          if [ -n "${{ secrets.RAILWAY_TOKEN }}" ]; then
-            echo "📡 Deploying to Railway..."
+          echo "🏗️ Deploying to OCI (using bastion method)..."
+          
+          # Check if OCI bastion secrets are available
+          if [ -n "${{ secrets.OCI_BASTION_CONFIG }}" ] && [ -n "${{ secrets.OCI_BASTION_CIDR }}" ]; then
+            echo '${{ secrets.OCI_BASTION_CONFIG }}' > bastion-config.json
+            echo '${{ secrets.OCI_BASTION_CIDR }}' > bastion-cidr.json
             
-            # Install Railway CLI
-            npm install -g @railway/cli
+            # Make scripts executable
+            chmod +x scripts/deploy-via-bastion.sh scripts/validate-deployment.sh
             
-            # Deploy to Railway with timeout
-            if timeout 300 railway deploy --service=backend; then
+            # Deploy via bastion with timeout
+            if timeout 300 ./scripts/deploy-via-bastion.sh deploy; then
               echo "success=true" >> $GITHUB_OUTPUT
               echo "url=https://api.vauntico.com" >> $GITHUB_OUTPUT
-              echo "✅ Railway deployment successful"
+              echo "✅ OCI deployment via bastion successful"
               echo "🏷️  Deployment ID: $DEPLOYMENT_ID"
             else
               echo "success=false" >> $GITHUB_OUTPUT
-              echo "❌ Railway deployment failed or timed out"
+              echo "❌ OCI deployment via bastion failed or timed out"
               exit 1
             fi
           else
-            echo "🏗️ Deploying to OCI (using bastion method)..."
-            
-            # Check if OCI bastion secrets are available
-            if [ -n "${{ secrets.OCI_BASTION_CONFIG }}" ] && [ -n "${{ secrets.OCI_BASTION_CIDR }}" ]; then
-              echo '${{ secrets.OCI_BASTION_CONFIG }}' > bastion-config.json
-              echo '${{ secrets.OCI_BASTION_CIDR }}' > bastion-cidr.json
-              
-              # Make scripts executable
-              chmod +x scripts/deploy-via-bastion.sh scripts/validate-deployment.sh
-              
-              # Deploy via bastion with timeout
-              if timeout 300 ./scripts/deploy-via-bastion.sh deploy; then
-                echo "success=true" >> $GITHUB_OUTPUT
-                echo "url=https://api.vauntico.com" >> $GITHUB_OUTPUT
-                echo "✅ OCI deployment via bastion successful"
-                echo "🏷️  Deployment ID: $DEPLOYMENT_ID"
-              else
-                echo "success=false" >> $GITHUB_OUTPUT
-                echo "❌ OCI deployment via bastion failed or timed out"
-                exit 1
-              fi
-            else
-              echo "❌ No deployment method available"
-              echo "Missing secrets:"
-              [ -z "${{ secrets.RAILWAY_TOKEN }}" ] && echo "- RAILWAY_TOKEN"
-              [ -z "${{ secrets.OCI_BASTION_CONFIG }}" ] && echo "- OCI_BASTION_CONFIG"
-              [ -z "${{ secrets.OCI_BASTION_CIDR }}" ] && echo "- OCI_BASTION_CIDR"
-              echo "success=false" >> $GITHUB_OUTPUT
-              exit 1
-            fi
+            echo "❌ No deployment method available"
+            echo "Missing secrets:"
+            [ -z "${{ secrets.OCI_BASTION_CONFIG }}" ] && echo "- OCI_BASTION_CONFIG"
+            [ -z "${{ secrets.OCI_BASTION_CIDR }}" ] && echo "- OCI_BASTION_CIDR"
+            echo "success=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
           fi
         env:
           OCI_CLI_AUTH: api_key
@@ -746,4 +726,4 @@ jobs:
           echo "::notice::🔗 Platform dependency: Multi-platform scoring, fallback scores, manual verification"
           echo "::notice::🎮 Algorithm gaming: Anomaly detection, decay functions, manual audits ($99 review)"
           echo "::notice::🛡️  Commoditization: Sacred features + Ubuntu Echo community, move to predictions"
-          echo "::notice::📖 Reference: memories.md contains the canonical monetization roadmap"
+          echo "::notice::📖 Reference: memories.md contains the canonical monetization roadmap"  # Governance reminder job

@@ -13,32 +13,38 @@ API_KEYS.set('enterprise_key_def789', { tier: 'enterprise', usageCount: 0, lastU
 // Rate limiting storage
 const RATE_LIMITS = new Map<string, { count: number; resetTime: Date }>();
 
-export const authenticateApiKey = async (apiKey: string): Promise<boolean> => {
+export const authenticateApiKey = async (apiKey: string | string[]): Promise<boolean> => {
   if (!apiKey) return false;
   
-  const keyData = API_KEYS.get(apiKey);
+  // Handle string array case for headers
+  const apiKeyStr = Array.isArray(apiKey) ? apiKey[0] : apiKey;
+  const keyData = API_KEYS.get(apiKeyStr);
   if (!keyData) return false;
   
   // Update usage tracking
   keyData.usageCount++;
   keyData.lastUsed = new Date();
-  API_KEYS.set(apiKey, keyData);
+  API_KEYS.set(apiKeyStr, keyData);
   
   return true;
 };
 
-export const validateSubscriptionTier = async (apiKey: string, userId: string): Promise<string | null> => {
-  const keyData = API_KEYS.get(apiKey);
+export const validateSubscriptionTier = async (apiKey: string | string[], userId: string): Promise<string | null> => {
+  // Handle string array case for headers
+  const apiKeyStr = Array.isArray(apiKey) ? apiKey[0] : apiKey;
+  const keyData = API_KEYS.get(apiKeyStr);
   if (!keyData) return null;
   
   return keyData.tier;
 };
 
-export const checkRateLimit = async (apiKey: string, endpoint: string): Promise<{ allowed: boolean; message?: string }> => {
-  const keyData = API_KEYS.get(apiKey);
+export const checkRateLimit = async (apiKey: string | string[], endpoint: string): Promise<{ allowed: boolean; message?: string }> => {
+  // Handle string array case for headers
+  const apiKeyStr = Array.isArray(apiKey) ? apiKey[0] : apiKey;
+  const keyData = API_KEYS.get(apiKeyStr);
   if (!keyData) return { allowed: false, message: 'Invalid API key' };
   
-  const rateLimitKey = `${apiKey}:${endpoint}`;
+  const rateLimitKey = `${apiKeyStr}:${endpoint}`;
   const now = new Date();
   const currentLimit = RATE_LIMITS.get(rateLimitKey);
   
@@ -70,7 +76,7 @@ export const checkRateLimit = async (apiKey: string, endpoint: string): Promise<
 };
 
 // Middleware for API key authentication and rate limiting
-export const apiAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const apiAuthMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const apiKey = req.headers['x-api-key'];
   
   if (!apiKey) {
@@ -80,7 +86,9 @@ export const apiAuthMiddleware = (req: Request, res: Response, next: NextFunctio
     });
   }
   
-  if (!await authenticateApiKey(apiKey)) {
+  // Handle string array case for headers
+  const apiKeyStr = Array.isArray(apiKey) ? apiKey[0] : apiKey;
+  if (!await authenticateApiKey(apiKeyStr)) {
     return res.status(401).json({
       error: 'Unauthorized',
       message: 'Invalid API key'
@@ -88,8 +96,12 @@ export const apiAuthMiddleware = (req: Request, res: Response, next: NextFunctio
   }
   
   // Add user and tier info to request for later use
-  const keyData = API_KEYS.get(apiKey);
-  req.user = { tier: keyData?.tier || 'basic' };
+  const keyData = API_KEYS.get(apiKeyStr);
+  req.user = { 
+    userId: apiKeyStr, 
+    email: `${apiKeyStr}@api-user.com`, // Placeholder email for API key users
+    subscriptionTier: keyData?.tier || 'basic' 
+  };
   
   next();
 };

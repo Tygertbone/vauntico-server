@@ -132,8 +132,12 @@ class MockTrustScoreDatabase {
         
         // Calculate new score (simple demo logic)
         const currentScore = this.trustScores.get(userId);
+        if (!currentScore) {
+          console.error(`No current score found for user ${userId}`);
+          return;
+        }
         const newScore = Math.floor(Math.random() * 20) + 70; // Random improvement
-        
+
         // Update trust score
         this.trustScores.set(userId, {
           ...currentScore,
@@ -155,7 +159,7 @@ class MockTrustScoreDatabase {
         calculation.status = 'failed';
         console.error('Calculation failed:', error);
       }
-    }, calculation.estimatedTime * 1000);
+    }, (calculation.estimatedTime || 60) * 1000);
 
     return calculation;
   }
@@ -232,25 +236,34 @@ class MockTrustScoreDatabase {
   }
 }
 
-export class TrustScoreService extends MockTrustScoreDatabase {
+export class TrustScoreService {
+  private static instance: MockTrustScoreDatabase;
+
+  private static getInstance(): MockTrustScoreDatabase {
+    if (!TrustScoreService.instance) {
+      TrustScoreService.instance = new MockTrustScoreDatabase();
+    }
+    return TrustScoreService.instance;
+  }
+
   static async getTrustScore(userId: string, tier: string): Promise<TrustScore | null> {
-    return await super.prototype.getTrustScore(userId, tier);
+    return await TrustScoreService.getInstance().getTrustScore(userId, tier);
   }
 
   static async calculateTrustScore(userId: string, tier: string): Promise<CalculationRequest> {
-    return await super.prototype.calculateTrustScore(userId, tier);
+    return await TrustScoreService.getInstance().calculateTrustScore(userId, tier);
   }
 
   static async checkCalculationQuota(userId: string, tier: string): Promise<QuotaCheck> {
-    return await super.prototype.checkCalculationQuota(userId, tier);
+    return await TrustScoreService.getInstance().checkCalculationQuota(userId, tier);
   }
 
   static async getTrustScoreHistory(
-    userId: string, 
-    tier: string, 
-    limit: number, 
+    userId: string,
+    tier: string,
+    limit: number,
     offset: number
   ): Promise<TrustScoreHistory> {
-    return await super.prototype.getTrustScoreHistory(userId, tier, limit, offset);
+    return await TrustScoreService.getInstance().getTrustScoreHistory(userId, tier, limit, offset);
   }
 }

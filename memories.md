@@ -107,6 +107,45 @@ This roadmap is now the canonical monetization strategy for Vauntico. All future
 - Enterprise compliance features must pass security audits.
 - Documentation updates required for all API changes.
 
+Global Rules (for Cline/glm‑4.6 runtime)
+These are operational guardrails you’d configure under rules → global/workflow:
+Stability & Safety
+- Never use write_to_file unless explicitly approved by Tyrone.
+- Always surface error metadata (file:line → error message) before attempting fixes.
+- Batch fixes in order: Syntax → Types → Context.
+- Stop on mismatch: if replace_in_file fails, report instead of guessing.
+- Verify after each batch with npm run build.
+Workflow Discipline
+- Enforce semantic commits (group logically, clear commit messages).
+- No silent staging — always report staged files before committing.
+- Always tag after push (vX.X.X-prod).
+- Check secrets before deploy (OCI + Railway).
+Transparency
+- Report error count after lint/build (Errors: X, Warnings: Y).
+- Summarize files changed/staged/committed.
+- No hidden fallbacks — always report tool failures.
+- Running builds is allowed only after targeted fixes, not after blunt rewrites.
+Human Interaction Guardrail
+- Pausing is a course correction, not an interruption. Never simulate emotional reactions (e.g., frustration). Always reset calmly to the next directive.
+
+📜 Governance (memories.md additions)
+This is the human‑readable record for Vauntico contributors:
+Workflow Guardrails
+- File Editing: Agents must use line‑level replacements (replace_in_file) instead of rewriting entire files. Whole‑file rewrites require explicit approval.
+- Error Handling: Errors must be surfaced as [file]:[line] → [error message] before fixes. Fixes proceed in batches: syntax first, then types, then context.
+- Verification: After each batch of fixes, run npm run build and report error/warning counts.
+- Commits: Changes must be grouped into semantic commits with clear messages. No silent staging. Every push must be followed by a production tag (vX.X.X-prod).
+- Secrets: OCI and Railway secrets must be verified before triggering deployment workflows.
+- Transparency: All tool failures must be reported. No hidden fallbacks.
+Human Interaction Note
+- Pausing an agent is a governance safeguard, not a disruption. Agents must never simulate emotional reactions to being paused. They reset calmly to the next directive.
+
+🚀 Key Point
+- Global Rules = runtime enforcement for Cline/glm‑4.6.
+- memories.md = governance record for Vauntico contributors.
+By putting these in both places, you’ll have live guardrails and documented governance aligned.
+
+
 ---
 
 *This workflow governance ensures consistency, quality, and alignment with Vauntico's monetization strategy across all branches and development cycles.*

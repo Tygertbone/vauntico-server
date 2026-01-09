@@ -65,7 +65,8 @@ router.post('/request', authenticate, paymentRequestValidation, async (req: Requ
     });
   }
 
-  const typedUserId: string = userId;
+  // Non-null assertion is safe here since we've checked userId above
+  const typedUserId: string = userId!;
 
     const { amount, currency, requestType, bankAccount, notes } = req.body;
 

@@ -63,32 +63,267 @@
             "placement": "bottom"
           }
         }
-      }
-    },
-    {
-      "id": "sponsorships",
-      "title": "Sponsorship Analytics",
-      "type": "row",
-      "gridPos": {
-        "h": 11,
-        "w": 13
       },
-      "targets": [
-        {
-          "expr": "sum(rate(vauntico_sponsorship_revenue_rate))",
-          "legendFormat": "Revenue Rate"
+      {
+        "id": "sponsorships",
+        "title": "Sponsorship Analytics",
+        "type": "row",
+        "gridPos": {
+          "h": 11,
+          "w": 13
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(vauntico_sponsorship_revenue_rate))",
+            "legendFormat": "Revenue Rate"
           },
-        {
-          "expr": "avg(rate(vauntico_sponsorship_revenue_rate))",
-          "legendFormat": "Avg Revenue Rate"
+          {
+            "expr": "avg(rate(vauntico_sponsorship_revenue_rate))",
+            "legendFormat": "Avg Revenue Rate"
           },
-        {
-          "expr": "sum(rate(vauntico_sponsorship_roi_score))",
-          "legendFormat": "ROI Score"
+          {
+            "expr": "sum(rate(vauntico_sponsorship_roi_score))",
+            "legendFormat": "ROI Score"
           },
-        {
-          "expr": "count(rate(vauntico_sponsorship_conversion))",
-          "legendFormat": "Conversions"
+          {
+            "expr": "count(rate(vauntico_sponsorship_conversion))",
+            "legendFormat": "Conversions"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "displayMode": "list"
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": false,
+          "sparkline": {
+            "fillOpacity": 0.1,
+            "lineWidth": 2
+          },
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          }
+        }
+      },
+      {
+        "id": "marketplace",
+        "title": "Marketplace Performance",
+        "type": "row",
+        "gridPos": {
+          "h": 11,
+          "w": 13
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(vauntico_marketplace_revenue_total))",
+            "legendFormat": "Total Revenue"
+          },
+          {
+            "expr": "sum(rate(vauntico_marketplace_items_sold_total))",
+            "legendFormat": "Items Sold"
+          },
+          {
+            "expr": "avg(rate(vauntico_marketplace_item_price))",
+            "legendFormat": "Avg Item Price"
+          },
+          {
+            "expr": "sum(rate(vauntico_marketplace_compliance_passed))",
+            "legendFormat": "Compliance Passed"
+          },
+          {
+            "expr": "sum(rate(vauntico_marketplace_active_items))",
+            "legendFormat": "Active Items"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "displayMode": "list"
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": false,
+          "sparkline": {
+            "fillOpacity": 0.1,
+            "lineWidth": 2
+          },
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          }
+        }
+      },
+      {
+        "id": "community-engagement",
+        "title": "Community Engagement Metrics",
+        "type": "row",
+        "gridPos": {
+          "h": 11,
+          "w": 13
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(vauntico_love_loops_created_total))",
+            "legendFormat": "Love Loops Created"
+          },
+          {
+            "expr": "sum(rate(vauntico_love_loops_responded_total))",
+            "legendFormat": "Love Loops Responded"
+          },
+          {
+            "expr": "sum(rate(vauntico_legacy_tree_entries_total))",
+            "legendFormat": "Legacy Entries"
+          },
+          {
+            "expr": "sum(rate(vauntico_echo_chamber_stories_published_total))",
+            "legendFormat": "Stories Published"
+          },
+          {
+            "expr": "sum(rate(vauntico_leaderboard_entries_monthly_total))",
+            "legendFormat": "Leaderboard Entries"
+          },
+          {
+            "expr": "sum(rate(vauntico_community_engagement_activities_total))",
+            "legendFormat": "Engagement Activities"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "displayMode": "list"
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": false,
+          "sparkline": {
+            "fillOpacity": 0.1,
+            "lineWidth": 2
+          },
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          }
+        }
+      },
+      {
+        "id": "monetization",
+        "title": "Monetization & Revenue",
+        "type": "row",
+        "gridPos": {
+          "h": 11,
+          "w": 13
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(vauntico_total_revenue_phase4))",
+            "legendFormat": "Phase 4 Total Revenue"
+          },
+          {
+            "expr": "sum(rate(vauntico_sponsorship_revenue_total)) + sum(rate(vauntico_marketplace_revenue_total))",
+            "legendFormat": "Creator Revenue"
+          },
+          {
+            "expr": "avg(rate(vauntico_monthly_revenue_per_creator))",
+            "legendFormat": "Avg Revenue/Creator"
+          },
+          {
+            "expr": "sum(rate(vauntico_credits_purchased_phase4))",
+            "legendFormat": "Credits Purchased"
+          },
+          {
+            "expr": "sum(rate(vauntico_active_creators_phase4))",
+            "legendFormat": "Active Creators"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "displayMode": "list"
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "options": {
+          "reduceOptions": false,
+          "sparkline": {
+            "fillOpacity": 0.1,
+            "lineWidth": 2
+          },
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          }
+        }
+      },
+      {
+        "id": "credits-economy",
+        "title": "Vauntico Credits Economy",
+        "type": "row",
+        "gridPos": {
+          "h": 11,
+          "w": 13
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(vauntico_credits_earned_total))",
+            "legendFormat": "Credits Earned"
+          },
+          {
+            "expr": "sum(rate(vauntico_credits_redeemed_total))",
+            "legendFormat": "Credits Redeemed"
+          },
+          {
+            "expr": "avg(rate(vauntico_credits_per_active_user))",
+            "legendFormat": "Avg Credits/User"
+          },
+          {
+            "expr": "sum(rate(vauntico_credit_transactions_total))",
+            "legendFormat": "Credit Transactions"
           }
         ],
         "fieldConfig": {
@@ -120,344 +355,65 @@
           }
         }
       }
-    },
-    {
-      "id": "marketplace",
-      "title": "Marketplace Performance",
-      "type": "row",
-      "gridPos": {
-        "h": 11,
-        "w": 13
-      },
-      "targets": [
-        {
-          "expr": "sum(rate(vauntico_marketplace_revenue_total))",
-          "legendFormat": "Total Revenue"
-          },
-        {
-          "expr": "sum(rate(vauntico_marketplace_items_sold_total))",
-          "legendFormat": "Items Sold"
-          },
-        {
-          "expr": "avg(rate(vauntico_marketplace_item_price))",
-          "legendFormat": "Avg Item Price"
-          },
-        {
-          "expr": "sum(rate(vauntico_marketplace_compliance_passed))",
-          "legendFormat": "Compliance Passed"
-          },
-        {
-          "expr": "sum(rate(vauntico_marketplace_active_items))",
-          "legendFormat": "Active Items"
-          }
-        ],
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "displayMode": "list"
-            },
-            "mappings": []
-          },
-          "overrides": []
-        },
-        "options": {
-          "reduceOptions": false,
-          "sparkline": {
-            "fillOpacity": 0.1,
-            "lineWidth": 2
-          },
-          "legend": {
-            "displayMode": "list",
-            "placement": "bottom"
-          }
-        }
-      }
-    },
-    {
-      "id": "community-engagement",
-      "title": "Community Engagement Metrics",
-      "type": "row",
-      "gridPos": {
-        "h": 11,
-        "w": 13
-      },
-      "targets": [
-        {
-          "expr": "sum(rate(vauntico_love_loops_created_total))",
-          "legendFormat": "Love Loops Created"
-          },
-        {
-          "expr": "sum(rate(vauntico_love_loops_responded_total))",
-          "legendFormat": "Love Loops Responded"
-          },
-        {
-          "expr": "sum(rate(vauntico_legacy_tree_entries_total))",
-          "legendFormat": "Legacy Entries"
-          },
-        {
-          "expr": "sum(rate(vauntico_echo_chamber_stories_published_total))",
-          "legendFormat": "Stories Published"
-          },
-        {
-          "expr": "sum(rate(vauntico_leaderboard_entries_monthly_total))",
-          "legendFormat": "Leaderboard Entries"
-          },
-        {
-          "expr": "sum(rate(vauntico_community_engagement_activities_total))",
-          "legendFormat": "Engagement Activities"
-          }
-        ],
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "displayMode": "list"
-            },
-            "mappings": []
-          },
-          "overrides": []
-        },
-        "options": {
-          "reduceOptions": false,
-          "sparkline": {
-            "fillOpacity": 0.1,
-            "lineWidth": 2
-          },
-          "legend": {
-            "displayMode": "list",
-            "placement": "bottom"
-          }
-        }
-      }
-    },
-    {
-      "id": "monetization",
-      "title": "Monetization & Revenue",
-      "type": "row",
-      "gridPos": {
-        "h": 11,
-        "w": 13
-      },
-      "targets": [
-        {
-          "expr": "sum(rate(vauntico_total_revenue_phase4))",
-          "legendFormat": "Phase 4 Total Revenue"
-          },
-        {
-          "expr": "sum(rate(vauntico_sponsorship_revenue_total)) + sum(rate(vauntico_marketplace_revenue_total))",
-          "legendFormat": "Creator Revenue"
-          },
-        {
-          "expr": "avg(rate(vauntico_monthly_revenue_per_creator))",
-          "legendFormat": "Avg Revenue/Creator"
-          },
-        {
-          "expr": "sum(rate(vauntico_credits_purchased_phase4))",
-          "legendFormat": "Credits Purchased"
-          },
-        {
-          "expr": "sum(rate(vauntico_active_creators_phase4))",
-          "legendFormat": "Active Creators"
-          }
-        ],
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "displayMode": "list"
-            },
-            "mappings": []
-          },
-          "overrides": []
-        },
-        "options": {
-          "reduceOptions": false,
-          "sparkline": {
-            "fillOpacity": 0.1,
-            "lineWidth": 2
-          },
-          "legend": {
-            "displayMode": "list",
-            "placement": "bottom"
-          }
-        }
-      }
-    },
-    {
-      "id": "credits-economy",
-      "title": "Vauntico Credits Economy",
-      "type": "row",
-      "gridPos": {
-        "h": 11,
-        "w": 13
-      },
-      "targets": [
-        {
-          "expr": "sum(rate(vauntico_credits_earned_total))",
-          "legendFormat": "Credits Earned"
-          },
-        {
-          "expr": "sum(rate(vauntico_credits_redeemed_total))",
-          "legendFormat": "Credits Redeemed"
-          },
-        {
-          "expr": "avg(rate(vauntico_credits_per_active_user))",
-          "legendFormat": "Avg Credits/User"
-          },
-        {
-          "expr": "sum(rate(vauntico_credit_transactions_total))",
-          "legendFormat": "Credit Transactions"
-          }
-        ],
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "displayMode": "list"
-            },
-            "mappings": []
-          },
-          "overrides": []
-        },
-        "options": {
-          "reduceOptions": false,
-          "sparkline": {
-            "fillOpacity": 0.1,
-            "lineWidth": 2
-          },
-          "legend": {
-            "displayMode": "list",
-            "placement": "bottom"
-          }
-        }
-      }
-    }
     ],
     "time": {
       "from": "now-6h",
       "to": "now"
     },
     "timepicker": {},
-    "refresh": "30s"
-  },
-  "templating": {
-    "list": {
-      "type": "conduit",
-      "datasource": "prometheus",
-      "step": 20
+    "refresh": "30s",
+    "templating": {
+      "list": [],
+      "enable": true
     },
-      "options": {
-        "series": [
-          {
-            "alias": "Sponsorships",
-            "datasource": "prometheus",
-            "measurement": "vauntico_sponsorships_active_total",
-            "refId": "A"
-          },
-          {
-            "alias": "Marketplace Items",
-            "datasource": "prometheus",
-            "measurement": "vauntico_marketplace_items_active_total",
-            "refId": "B"
-          },
-          {
-            "alias": "Love Loops",
-            "datasource": "prometheus",
-            "measurement": "vauntico_love_loops_total",
-            "refId": "C"
-          },
-          {
-            "alias": "Echo Stories",
-            "datasource": "prometheus",
-            "measurement": "vauntico_echo_chamber_stories_total",
-            "refId": "D"
-          },
-          {
-            "alias": "Engagement Activities",
-            "datasource": "prometheus",
-            "measurement": "vauntico_community_engagement_activities_total",
-            "refId": "E"
-          }
-        ]
-      },
-      "annotations": {
-        "list": [
-          {
-            "datasource": "prometheus",
-            "enable": true,
-            "expr": "up(vauntico_sponsorships_active_total)",
-            "text": "Active Sponsorships",
-            "title": "Number of active sponsorships",
-            "colorMode": "value",
-            "icon": "pulse"
-          },
-          {
-            "datasource": "prometheus",
-            "enable": true,
-            "expr": "up(vauntico_marketplace_items_active_total)",
-            "text": "Active Marketplace Items",
-            "title": "Number of active marketplace items",
-            "colorMode": "value",
-            "icon": "package"
-          },
-          {
-            "datasource": "prometheus",
-            "enable": true,
-            "expr": "up(vauntico_love_loops_total)",
-            "text": "Total Love Loops",
-            "title": "Total number of love loops created",
-            "colorMode": "value",
-            "icon": "heart"
-          },
-          {
-            "datasource": "prometheus",
-            "enable": true,
-            "expr": "up(vauntico_echo_chamber_stories_total)",
-            "text": "Published Echo Stories",
-            "title": "Number of published echo chamber stories",
-            "colorMode": "value",
-            "icon": "edit"
-          },
-          {
-            "datasource": "prometheus",
-            "enable": true,
-            "expr": "up(vauntico_community_engagement_activities_total)",
-            "text": "Engagement Activities",
-            "title": "Total community engagement activities",
-            "colorMode": "value",
-            "icon": "activity"
-          }
-        ]
-      }
+    "annotations": {
+      "list": [
+        {
+          "datasource": "prometheus",
+          "enable": true,
+          "expr": "up(vauntico_sponsorships_active_total)",
+          "text": "Active Sponsorships",
+          "title": "Number of active sponsorships",
+          "colorMode": "value",
+          "icon": "pulse"
+        },
+        {
+          "datasource": "prometheus",
+          "enable": true,
+          "expr": "up(vauntico_marketplace_items_active_total)",
+          "text": "Active Marketplace Items",
+          "title": "Number of active marketplace items",
+          "colorMode": "value",
+          "icon": "package"
+        },
+        {
+          "datasource": "prometheus",
+          "enable": true,
+          "expr": "up(vauntico_love_loops_total)",
+          "text": "Total Love Loops",
+          "title": "Total number of love loops created",
+          "colorMode": "value",
+          "icon": "heart"
+        },
+        {
+          "datasource": "prometheus",
+          "enable": true,
+          "expr": "up(vauntico_echo_chamber_stories_total)",
+          "text": "Published Echo Stories",
+          "title": "Number of published echo chamber stories",
+          "colorMode": "value",
+          "icon": "edit"
+        },
+        {
+          "datasource": "prometheus",
+          "enable": true,
+          "expr": "up(vauntico_community_engagement_activities_total)",
+          "text": "Engagement Activities",
+          "title": "Total community engagement activities",
+          "colorMode": "value",
+          "icon": "activity"
+        }
+      ]
     }
   }
 }

@@ -45,7 +45,7 @@ router.post('/items', apiAuthMiddleware, async (req, res) => {
   try {
     const itemData = {
       ...req.body,
-      creatorId: req.user?.id
+      creatorId: req.user?.userId
     };
 
     // Validate required fields
@@ -81,7 +81,7 @@ router.put('/items/:id', apiAuthMiddleware, async (req, res) => {
     const updates = req.body;
 
     // Check if user is the creator of this item
-    const items = await marketplaceService.getMarketplaceItems({ creatorId: req.user?.id });
+    const items = await marketplaceService.getMarketplaceItems({ creatorId: req.user?.userId });
     const userItem = items.items.find(item => item.id === id);
     
     if (!userItem) {
@@ -110,7 +110,7 @@ router.put('/items/:id', apiAuthMiddleware, async (req, res) => {
 router.post('/items/:id/purchase', apiAuthMiddleware, async (req, res) => {
   try {
     const id = req.params.id;
-    const buyerId = req.user?.id;
+    const buyerId = req.user?.userId;
 
     const purchase = await marketplaceService.purchaseItem(id, buyerId);
     res.status(201).json({
@@ -133,7 +133,7 @@ router.get('/purchases', apiAuthMiddleware, async (req, res) => {
     const { limit = 50, offset = 0 } = req.query;
     
     const items = await marketplaceService.getMarketplaceItems({
-      creatorId: req.user?.id,
+      creatorId: req.user?.userId,
       limit: parseInt(limit as string),
       offset: parseInt(offset as string)
     });
@@ -224,7 +224,7 @@ router.get('/my-items', apiAuthMiddleware, async (req, res) => {
     const { type, status, tags, minPrice, maxPrice, limit = 50, offset = 0 } = req.query;
     
     const filters: any = {
-      creatorId: req.user?.id,
+      creatorId: req.user?.userId,
       limit: parseInt(limit as string),
       offset: parseInt(offset as string)
     };

@@ -256,7 +256,13 @@ router.post('/',
       media_urls = [],
     } = req.body;
 
-    const creator_id = req.user!.userId;
+    const creator_id = req.user?.userId;
+    if (!creator_id) {
+      return res.status(401).json({
+        error: 'Unauthorized',
+        message: 'Authentication required',
+      });
+    }
 
     // Insert product
     const insertQuery = `

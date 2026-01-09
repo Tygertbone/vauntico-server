@@ -322,7 +322,7 @@ class CommunityEngagementService {
     }
   }
 
-  async updateLeaderboardEntry(entryData: Omit<LeaderboardEntry, 'id' | 'userId' | 'achievedAt'>): Promise<LeaderboardEntry> {
+  async updateLeaderboardEntry(id: string, entryData: Omit<LeaderboardEntry, 'id' | 'userId' | 'achievedAt'>): Promise<LeaderboardEntry> {
     try {
       const query = `
         UPDATE leaderboard_entries 
@@ -333,7 +333,7 @@ class CommunityEngagementService {
         RETURNING *
       `;
 
-      const result = await pool.query(query, [entryData.score, entryData.badge, entryData.id]);
+      const result = await pool.query(query, [id, entryData.score, entryData.badge]);
 
       if (result.rows.length === 0) {
         throw new Error('Leaderboard entry not found');

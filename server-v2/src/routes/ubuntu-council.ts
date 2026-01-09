@@ -84,7 +84,7 @@ router.post('/proposals', apiAuthMiddleware, async (req, res) => {
   try {
     const proposalData = {
       ...req.body,
-      createdBy: req.user?.id
+      createdBy: req.user?.userId
     };
 
     // Validate required fields
@@ -118,7 +118,7 @@ router.post('/votes', apiAuthMiddleware, async (req, res) => {
   try {
     const voteData = {
       ...req.body,
-      userId: req.user?.id
+      userId: req.user?.userId
     };
 
     // Validate required fields

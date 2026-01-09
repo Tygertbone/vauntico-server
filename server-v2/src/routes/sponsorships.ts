@@ -156,7 +156,7 @@ router.get('/my-sponsorships', apiAuthMiddleware, async (req, res) => {
     const { status, tier, limit = 50, offset = 0 } = req.query;
     
     const filters: any = {
-      sponsorId: req.user?.id,
+      sponsorId: req.user?.userId,
       limit: parseInt(limit as string),
       offset: parseInt(offset as string)
     };
@@ -190,7 +190,7 @@ router.get('/my-creator-sponsorships', apiAuthMiddleware, async (req, res) => {
     const { status, tier, limit = 50, offset = 0 } = req.query;
     
     const filters: any = {
-      creatorId: req.user?.id,
+      creatorId: req.user?.userId,
       limit: parseInt(limit as string),
       offset: parseInt(offset as string)
     };

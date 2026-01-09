@@ -75,7 +75,7 @@ router.get('/config', requirePermission('sacred_features:admin'), async (req: Re
     const { includeSecrets, environment } = queryResult.params;
 
     // Sacred features configuration
-    const config = {
+    const config: any = {
       environment,
       features: {
         advancedAnalytics: true,

@@ -25,11 +25,11 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
 
     // Attach user to request
     req.user = {
-      id: (decoded as any).id || decoded.sub || '',
+      id: (decoded as any).id || (decoded as any).sub || '',
       email: (decoded as any).email || '',
       role: (decoded as any).role || 'user',
       permissions: (decoded as any).permissions || []
-    };
+    } as any;
 
     next();
   } catch (error) {

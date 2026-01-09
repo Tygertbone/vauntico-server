@@ -32,18 +32,7 @@ jest.mock('pg', () => ({
   Pool: jest.fn().mockImplementation(() => mockPool),
 }));
 
-// Mock database configuration
-jest.mock('../src/config/database', () => ({
-  DATABASE_URL: process.env.DATABASE_URL,
-  JWT_SECRET: process.env.JWT_SECRET,
-  SESSION_SECRET: process.env.JWT_SECRET,
-  RESEND_API_KEY: process.env.RESEND_API_KEY,
-  PAYSTACK_SECRET_KEY: process.env.PAYSTACK_SECRET_KEY,
-  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
-  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
-  MONETIZATION_PHASE: process.env.MONETIZATION_PHASE,
-  FEATURE_DESCRIPTION: process.env.FEATURE_DESCRIPTION,
-}));
+// Environment variables are already set above, no need to mock config module
 
 // Mock external services
 jest.mock('@upstash/redis', () => ({

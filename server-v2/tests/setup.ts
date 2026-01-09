@@ -48,11 +48,11 @@ jest.mock('../src/config/database', () => ({
 // Mock external services
 jest.mock('@upstash/redis', () => ({
   Redis: jest.fn().mockImplementation(() => ({
-    get: jest.fn().mockResolvedValue(null as any),
-    set: jest.fn().mockResolvedValue('OK' as any),
-    del: jest.fn().mockResolvedValue(1 as any),
-    exists: jest.fn().mockResolvedValue(0 as any),
-    ping: jest.fn().mockResolvedValue('PONG' as any),
+    get: jest.fn(() => Promise.resolve(null)),
+    set: jest.fn(() => Promise.resolve('OK')),
+    del: jest.fn(() => Promise.resolve(1)),
+    exists: jest.fn(() => Promise.resolve(0)),
+    ping: jest.fn(() => Promise.resolve('PONG')),
   })),
 }));
 

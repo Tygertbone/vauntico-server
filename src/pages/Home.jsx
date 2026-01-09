@@ -206,10 +206,10 @@ const Home = () => {
                     </li>
                   ))}
                 </ul>
-                
-                  <button className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
-                  tier.highlighted 
-                    ? 'bg-purple-600 hover:bg-purple-700 text-white' 
+
+                <button className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
+                  tier.highlighted
+                    ? 'bg-purple-600 hover:bg-purple-700 text-white'
                     : 'bg-gray-700 hover:bg-gray-600 text-white'
                 }`}>
                   {tier.name === 'Enterprise' ? 'Contact Sales' : tier.name === 'Starter' ? 'Start Free Trial' : 'Get Started'}

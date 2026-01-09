@@ -33,24 +33,46 @@ const TrustScoreCalculator = () => {
   });
 
   const calculateScore = () => {
+    // Track calculator started event
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'calculator_started', {
+        event_category: 'engagement',
+        event_label: 'trust_score_calculator'
+      });
+    }
+
     setIsCalculating(true);
     let currentScore = 0;
-    
+
     setTimeout(() => {
-      const score = Math.round(
+      const finalScore = Math.round(
         (metrics.authenticity * 0.35) +
         (metrics.consistency * 0.25) +
         (metrics.engagement * 5) +
         (Math.log10(metrics.followers) * 10) +
         (metrics.growth * 0.5)
       );
-      
+
       const interval = setInterval(() => {
         currentScore += 2;
-        setScore(Math.min(currentScore, score));
-        if (currentScore >= score) {
+        setScore(Math.min(currentScore, finalScore));
+        if (currentScore >= finalScore) {
           clearInterval(interval);
           setIsCalculating(false);
+
+          // Track calculator completed event
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'calculator_completed', {
+              event_category: 'engagement',
+              event_label: 'trust_score_calculator',
+              value: finalScore,
+              custom_parameters: {
+                score_level: getScoreLevel(finalScore).level,
+                followers: metrics.followers,
+                engagement_rate: metrics.engagement
+              }
+            });
+          }
         }
       }, 30);
     }, 1500);

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { CheckIcon, CloudIcon, ShieldCheckIcon, CogIcon, DocumentTextIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
 import WaitlistSystem from '../components/WaitlistSystem';
 
@@ -142,7 +142,7 @@ const Home = () => {
               Comprehensive infrastructure and creator tools designed for scale and reliability
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {services.map((service, index) => (
               <div key={index} className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300">
@@ -172,7 +172,7 @@ const Home = () => {
               Choose the perfect plan for your creator business needs
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {pricingTiers.map((tier, index) => (
               <div key={index} className={`relative bg-gray-800 rounded-2xl p-8 border ${tier.highlighted ? 'border-purple-500 ring-2 ring-purple-500/20' : 'border-gray-700'} hover:border-purple-400 transition-all duration-300`}>
@@ -182,8 +182,8 @@ const Home = () => {
                       {tier.cta}
                     </span>
                   </div>
-                }
-                
+                )}
+
                 <div className="text-center mb-6">
                   <h3 className="text-2xl font-bold text-white mb-2">{tier.name}</h3>
                   <div className="flex items-baseline justify-center">
@@ -191,9 +191,9 @@ const Home = () => {
                     <span className="text-gray-400 ml-1">{tier.period}</span>
                   </div>
                 </div>
-                
+
                 <p className="text-gray-300 mb-6">{tier.description}</p>
-                
+
                 <ul className="space-y-3 mb-8">
                   {tier.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start">
@@ -202,10 +202,10 @@ const Home = () => {
                     </li>
                   ))}
                 </ul>
-                
-                  <button className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
-                  tier.highlighted 
-                    ? 'bg-purple-600 hover:bg-purple-700 text-white' 
+
+                <button className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
+                  tier.highlighted
+                    ? 'bg-purple-600 hover:bg-purple-700 text-white'
                     : 'bg-gray-700 hover:bg-gray-600 text-white'
                 }`}>
                   {tier.name === 'Enterprise' ? 'Contact Sales' : tier.name === 'Starter' ? 'Start Free Trial' : 'Get Started'}

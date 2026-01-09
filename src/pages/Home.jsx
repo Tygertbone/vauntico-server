@@ -5,6 +5,30 @@ import WaitlistSystem from '../components/WaitlistSystem';
 const Home = () => {
   const services = [
     {
+      icon: ShieldCheckIcon,
+      title: "Credibility Ledger",
+      description: "Enterprise-grade trust scoring system that quantifies and tracks creator credibility across platforms.",
+      features: ["Real-time trust metrics", "Cross-platform verification", "Historical credibility tracking", "Enterprise compliance"]
+    },
+    {
+      icon: CogIcon,
+      title: "Engagement Cycles",
+      description: "Automated engagement optimization that analyzes audience patterns and maximizes creator-business interactions.",
+      features: ["Audience analytics", "Engagement optimization", "Automated scheduling", "Performance insights"]
+    },
+    {
+      icon: DocumentTextIcon,
+      title: "Narrative Engine",
+      description: "AI-powered content narrative generation that creates compelling stories from trust data and engagement metrics.",
+      features: ["AI content generation", "Narrative optimization", "Brand storytelling", "Content strategy"]
+    },
+    {
+      icon: CloudIcon,
+      title: "Collective Insight Hub",
+      description: "Centralized platform for aggregating and analyzing collective creator intelligence and market trends.",
+      features: ["Market intelligence", "Trend analysis", "Creator insights", "Competitive analysis"]
+    },
+    {
       icon: CloudIcon,
       title: "Enterprise-grade Cloud Migrations",
       description: "Seamless migration of your infrastructure to enterprise-grade cloud platforms with zero downtime.",
@@ -17,31 +41,7 @@ const Home = () => {
       features: ["IaC automation", "Policy enforcement", "Compliance scanning", "Multi-cloud support"]
     },
     {
-      icon: CogIcon,
-      title: "Contributor Onboarding Workflows",
-      description: "Streamlined contributor workflows with automated onboarding and access management.",
-      features: ["Automated onboarding", "Access management", "Role-based permissions", "Audit trails"]
-    },
-    {
-      icon: DocumentTextIcon,
-      title: "SSL Lifecycle Automation",
-      description: "Automated SSL certificate management with proactive renewal and deployment.",
-      features: ["Auto-renewal", "Multi-provider support", "Certificate monitoring", "Compliance reporting"]
-    },
-    {
-      icon: CloudIcon,
-      title: "OCI Bastion Secure Backend Deployment",
-      description: "Secure backend deployment through OCI Bastion with enhanced security controls.",
-      features: ["Bastion access", "Secure tunnels", "Audit logging", "Access controls"]
-    },
-    {
       icon: CheckIcon,
-      title: "Cloudflare CDN Integration",
-      description: "Global CDN integration with DDoS protection and performance optimization.",
-      features: ["Global CDN", "DDoS protection", "Performance optimization", "Analytics integration"]
-    },
-    {
-      icon: ShieldCheckIcon,
       title: "Monitoring & Alerting",
       description: "Comprehensive monitoring with Sentry integration and Slack alerting.",
       features: ["Sentry error tracking", "Slack notifications", "Performance metrics", "Uptime monitoring"]
@@ -114,12 +114,8 @@ const Home = () => {
       <section className="relative overflow-hidden py-20 px-6">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-            Vauntico: Enterprise Creator Platform
+            Vauntico's enterprise suite transforms trust into measurable, portable assets for creators and businesses.
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto">
-            Professional-grade infrastructure automation, cloud migration, and creator tools for modern content businesses.
-            Built by creators, for creators.
-          </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <div className="flex items-center">
               <CheckIcon className="h-6 w-6 text-green-400 mr-2" />

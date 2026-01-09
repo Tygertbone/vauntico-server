@@ -61,15 +61,15 @@ jest.mock('stripe', () => ({
   __esModule: true,
   default: jest.fn().mockImplementation(() => ({
     webhooks: {
-      constructEvent: jest.fn().mockReturnValue({ type: 'payment_intent.succeeded', data: {} } as any),
+      constructEvent: jest.fn(() => Promise.resolve({ type: 'payment_intent.succeeded', data: {} })),
     },
     customers: {
-      create: jest.fn().mockResolvedValue({ id: 'cus_test123', email: 'test@example.com' } as any),
-      retrieve: jest.fn().mockResolvedValue({ id: 'cus_test123', email: 'test@example.com' } as any),
+      create: jest.fn(() => Promise.resolve({ id: 'cus_test123', email: 'test@example.com' })),
+      retrieve: jest.fn(() => Promise.resolve({ id: 'cus_test123', email: 'test@example.com' })),
     },
     paymentIntents: {
-      create: jest.fn().mockResolvedValue({ id: 'pi_test123', status: 'succeeded' } as any),
-      confirm: jest.fn().mockResolvedValue({ id: 'pi_test123', status: 'succeeded' } as any),
+      create: jest.fn(() => Promise.resolve({ id: 'pi_test123', status: 'succeeded' })),
+      confirm: jest.fn(() => Promise.resolve({ id: 'pi_test123', status: 'succeeded' })),
     },
   })),
 }));
@@ -79,11 +79,11 @@ jest.mock('paystack', () => ({
   __esModule: true,
   default: jest.fn().mockImplementation(() => ({
     transaction: {
-      initialize: jest.fn().mockResolvedValue({ data: { authorization_url: 'https://test.paystack.co' } } as any),
-      verify: jest.fn().mockResolvedValue({ data: { status: 'success' } } as any),
+      initialize: jest.fn(() => Promise.resolve({ data: { authorization_url: 'https://test.paystack.co' } })),
+      verify: jest.fn(() => Promise.resolve({ data: { status: 'success' } })),
     },
     customer: {
-      create: jest.fn().mockResolvedValue({ data: { id: 'cus_test123', email: 'test@example.com' } } as any),
+      create: jest.fn(() => Promise.resolve({ data: { id: 'cus_test123', email: 'test@example.com' } })),
     },
   })),
 }));
@@ -92,7 +92,7 @@ jest.mock('paystack', () => ({
 jest.mock('resend', () => ({
   Resend: jest.fn().mockImplementation(() => ({
     emails: {
-      send: jest.fn().mockResolvedValue({ id: 'email_test123' } as any),
+      send: jest.fn(() => Promise.resolve({ id: 'email_test123' })),
     },
   })),
 }));

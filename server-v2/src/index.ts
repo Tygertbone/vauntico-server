@@ -52,7 +52,7 @@ import plansRoutes from './routes/plans';
 import monitoringRoutes from './routes/monitoring';
 import productRoutes from './routes/products';
 
-const app = express();
+const app: express.Application = express();
 
 // Trust proxy for Vercel
 app.set('trust proxy', 1);

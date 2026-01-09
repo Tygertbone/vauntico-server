@@ -13,7 +13,7 @@ import { query, transaction } from '../db/pool';
 import { logger } from '../utils/logger';
 import { authenticate } from '../middleware/authenticate';
 
-const router = Router();
+const router: Router = Router();
 
 // Input validation middleware
 const registrationValidation = [

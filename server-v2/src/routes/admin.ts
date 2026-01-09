@@ -6,7 +6,7 @@ import { query } from '../db/pool';
 import { logger } from '../utils/logger';
 import { normalizeQueryParam } from '../utils/queryParams';
 
-const router = Router();
+const router: Router = Router();
 
 // Middleware to check if user is admin (simplified for now)
 const requireAdmin = (req: Request, res: Response, next: any): void => {

@@ -503,6 +503,50 @@ class CommunityEngagementService {
     };
   }
 
+  async getLoveLoopsForUser(userId: string): Promise<LoveLoop[]> {
+    try {
+      const query = `
+        SELECT ll.*, u.username as creator_username, s.username as supporter_username
+        FROM love_loops ll
+        JOIN users u ON ll.creator_id = u.id
+        JOIN users s ON ll.supporter_id = s.id
+        WHERE ll.creator_id = $1 OR ll.supporter_id = $1
+        ORDER BY ll.created_at DESC
+      `;
+
+      const result = await pool.query(query, [userId]);
+      return result.rows.map(this.mapLoveLoop);
+    } catch (error) {
+      logger.error('Error fetching love loops for user:', error);
+      throw error;
+    }
+  }
+
+  async getEchoChamberStoriesForUser(userId: string): Promise<EchoChamberStory[]> {
+    try {
+      const query = `
+        SELECT ecs.*,
+               (SELECT COUNT(*) FROM echo_chamber_likes ecl WHERE ecl.story_id = ecs.id) as likes,
+               (SELECT COUNT(*) FROM echo_chamber_shares ecs2 WHERE ecs2.story_id = ecs.id) as shares
+        FROM echo_chamber ecs
+        WHERE ecs.author_id = $1 OR ecs.id IN (
+          SELECT story_id FROM echo_chamber_collaborators ecc WHERE ecc.user_id = $1
+        )
+        ORDER BY ecs.created_at DESC
+      `;
+
+      const result = await pool.query(query, [userId]);
+      return result.rows.map(row => ({
+        ...this.mapEchoChamberStory(row),
+        likes: parseInt(row.likes || 0),
+        shares: parseInt(row.shares || 0)
+      }));
+    } catch (error) {
+      logger.error('Error fetching echo chamber stories for user:', error);
+      throw error;
+    }
+  }
+
   private generateId(): string {
     return `community_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }

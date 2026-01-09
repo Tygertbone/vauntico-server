@@ -1,6 +1,8 @@
 import React from 'react';
 import { CheckIcon, CloudIcon, ShieldCheckIcon, CogIcon, DocumentTextIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
 import WaitlistSystem from '../components/WaitlistSystem';
+import TrustScoreCalculator from '../components/TrustScoreCalculator';
+import SacredFeaturesShowcase from '../components/SacredFeaturesShowcase';
 
 const Home = () => {
   const services = [
@@ -111,23 +113,47 @@ const Home = () => {
   return (
     <main className="relative min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 px-6">
+      <section className="relative overflow-hidden py-20 px-6 bg-gradient-to-br from-purple-50 via-white to-blue-50">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-            Vauntico's enterprise suite transforms trust into measurable, portable assets for creators and businesses.
+          <h1 className="text-5xl md:text-7xl font-black mb-6">
+            Know Your <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Creator Trust Score</span>
           </h1>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <div className="flex items-center">
-              <CheckIcon className="h-6 w-6 text-green-400 mr-2" />
-              <span className="text-lg text-gray-300">Enterprise Security</span>
+          <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            Calculate credibility in 60 seconds. Build trust, automate workflows, monetize faster.
+          </p>
+          
+          {/* Trust Score Calculator CTA */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <a
+              href="#trust-calculator"
+              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all"
+            >
+              Calculate Your Score
+            </a>
+            <a
+              href="#api-docs"
+              className="px-8 py-4 border-2 border-gray-600 text-white rounded-lg font-semibold hover:bg-gray-800 transition-all"
+            >
+              Explore API
+            </a>
+          </div>
+
+          {/* Supporting Bullets */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+            <div className="text-center">
+              <ShieldCheckIcon className="h-10 w-10 text-purple-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Free & Instant</h3>
+              <p className="text-gray-600">No signup required. Get your trust score in 60 seconds.</p>
             </div>
-            <div className="flex items-center">
-              <CheckIcon className="h-6 w-6 text-green-400 mr-2" />
-              <span className="text-lg text-gray-300">100% Uptime SLA</span>
+            <div className="text-center">
+              <CloudIcon className="h-10 w-10 text-purple-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">AI-Powered</h3>
+              <p className="text-gray-600">Advanced algorithms analyze your creator presence and credibility.</p>
             </div>
-            <div className="flex items-center">
-              <CheckIcon className="h-6 w-6 text-green-400 mr-2" />
-              <span className="text-lg text-gray-300">24/7 Support</span>
+            <div className="text-center">
+              <DocumentTextIcon className="h-10 w-10 text-purple-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Shareable Results</h3>
+              <p className="text-gray-600">Easily share your score with brands and collaborators.</p>
             </div>
           </div>
         </div>
@@ -217,7 +243,7 @@ const Home = () => {
       </section>
 
       {/* Trust Score Calculator */}
-      <section className="py-20 px-6 bg-gray-800/50">
+      <section id="trust-calculator" className="py-20 px-6 bg-gray-800/50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Calculate Your Creator Trust Score</h2>
@@ -226,7 +252,22 @@ const Home = () => {
             </p>
           </div>
           <div className="max-w-2xl mx-auto">
-            <WaitlistSystem />
+            <TrustScoreCalculator />
+          </div>
+        </div>
+      </section>
+
+      {/* Sacred Features Showcase */}
+      <section className="py-20 px-6 bg-gray-800/50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4">Sacred Technology Features</h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Built with Ubuntu philosophy. We live by what we give.
+            </p>
+          </div>
+          <div className="max-w-6xl mx-auto">
+            <SacredFeaturesShowcase />
           </div>
         </div>
       </section>

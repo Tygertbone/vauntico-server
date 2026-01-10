@@ -44,8 +44,6 @@ jest.mock('stripe', () => ({
   })),
 }));
 
-
-
 jest.mock('resend', () => ({
   Resend: jest.fn().mockImplementation(() => ({
     emails: {
@@ -99,6 +97,10 @@ const testData = {
 jest.mock('../src/app', () => {
   const express = require('express');
   const app = express();
+
+  // Add Express middleware for parsing JSON bodies
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
   // Add basic routes for testing
   app.get('/health', (req: any, res: any) => {

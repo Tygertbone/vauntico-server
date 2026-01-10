@@ -1,11 +1,12 @@
 import { Router, Request, Response } from 'express';
+import type { Router as ExpressRouter } from 'express';
 import { body, validationResult } from 'express-validator';
 import { authenticate, requireAdmin } from '../middleware/authenticate';
 import { query, transaction } from '../db/pool';
 import { logger } from '../utils/logger';
 import { sendSlackAlert } from '../utils/slack-alerts';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // Generate a random verification token
 function generateVerificationToken(): string {
@@ -219,7 +220,7 @@ router.get('/status/:id', authenticate, async (req: Request, res: Response) => {
 // GET /verify/directory - List verified creators (public or authenticated)
 router.get('/directory', async (req: Request, res: Response) => {
   try {
-    const { page = 1, limit = 20, category = 'all' } = req.query;
+    const { page = 1, limit = 20, category = 'all' } = req.query as Record<string, string | string[] | undefined>;
     
     let whereClause = 'WHERE v.verification_status = $1';
     let queryParams: any[] = ['verified'];
@@ -417,8 +418,8 @@ router.post('/approve/:id', requireAdmin, async (req: Request, res: Response) =>
       adminUserId,
       verificationId: verification.id,
       platform: verification.platform,
-      creatorId: verification.creator_id,
       trustScoreImpact,
+      creatorId: verification.creator_id,
     });
 
     // Send Slack alert for approval

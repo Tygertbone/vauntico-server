@@ -266,7 +266,7 @@ const widget = new VaunticoTrustWidget(container, {
 
 // ❌ Bad: Hardcoded API key in client code
 const widget = new VaunticoTrustWidget(container, {
-    apiKey: 'sk_live_your_stripe_secret_key_here', // Never expose secret keys
+    apiKey: 'sk_live_YOUR_STRIPE_SECRET_KEY_HERE', // Never expose secret keys
     userId: 'user-123'
 });
 ```

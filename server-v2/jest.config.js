@@ -1,7 +1,4 @@
-const { defaults } = require('jest-config-defaults');
-
 module.exports = {
-  ...defaults,
   testEnvironment: 'node',
   roots: ['<rootDir>/src', '<rootDir>/tests'],
   testMatch: [

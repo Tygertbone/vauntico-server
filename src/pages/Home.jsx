@@ -117,10 +117,10 @@ const Home = () => {
       <section className="relative overflow-hidden py-20 px-6 bg-gradient-to-br from-purple-50 via-white to-blue-50">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-5xl md:text-7xl font-black mb-6">
-            Know Your <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Creator Trust Score</span>
+            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Trust is now portable</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Calculate credibility in 60 seconds. Build trust, automate workflows, monetize faster.
+            Enterprise-grade trust scoring for the creator economy. Build credibility, automate workflows, monetize faster.
           </p>
           
           {/* Trust Score Calculator CTA */}

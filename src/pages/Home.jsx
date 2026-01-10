@@ -3,6 +3,7 @@ import { CheckIcon, CloudIcon, ShieldCheckIcon, CogIcon, DocumentTextIcon, Curre
 import WaitlistSystem from '../components/WaitlistSystem';
 import TrustScoreCalculator from '../components/TrustScoreCalculator';
 import SacredFeaturesShowcase from '../components/SacredFeaturesShowcase';
+import Testimonials from '../components/Testimonials';
 
 const Home = () => {
   const services = [
@@ -239,6 +240,19 @@ const Home = () => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 px-6 bg-gray-900/50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Trusted by Creators Worldwide</h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Join thousands of creators who have transformed their businesses with Vauntico
+            </p>
+          </div>
+          <Testimonials variant="grid" limit={3} />
         </div>
       </section>
 

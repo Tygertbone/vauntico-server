@@ -4,6 +4,12 @@ process.env.NODE_ENV = 'test';
 process.env.AIRTABLE_API_KEY = 'test-key';
 process.env.AIRTABLE_BASE_ID = 'test-base';
 process.env.RESEND_API_KEY = 'test-key';
+process.env.ANTHROPIC_API_KEY = 'test-anthropic-key';
+process.env.PAYSTACK_SECRET_KEY = 'test-paystack-key';
+process.env.SENTRY_DSN = 'test-sentry-dsn';
+process.env.SLACK_WEBHOOK_URL = 'test-slack-webhook';
+process.env.SERVICE_API_KEY = 'test-service-api-key';
+process.env.SENDER_EMAIL = 'test@example.com';
 
 // Mock external services
 jest.mock('airtable', () => ({

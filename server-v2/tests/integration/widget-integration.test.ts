@@ -343,7 +343,7 @@ describe('Widget Integration Tests - Phase 2', () => {
       
       // At least one should be rate limited
       const rateLimitedResponse = responses.find(
-        (result): result is PromiseFulfilledResponse<any> => result.status === 429
+        (result): result is PromiseFulfilledResult<any> => result.status === 'fulfilled' && result.value.status === 429
       );
 
       if (rateLimitedResponse) {

@@ -53,11 +53,11 @@ jest.mock('@upstash/redis', () => ({
     del: jest.fn().mockResolvedValue(1),
     exists: jest.fn().mockResolvedValue(0),
     ping: jest.fn().mockResolvedValue('PONG'),
-  }),
+  })),
 }));
 
 // Mock Stripe with comprehensive error scenarios
-jest.mock('stripe', () => {
+jest.mock('stripe', () => ({
   __esModule: true,
   default: jest.fn().mockImplementation(() => ({
     webhooks: {
@@ -65,16 +65,12 @@ jest.mock('stripe', () => {
         type: 'payment_intent.succeeded',
         data: { id: 'pi_test_123' }
       }),
-      constructEvent: jest.fn().mockImplementation(() => {
-        throw new Error('Invalid webhook signature');
-      }),
     },
     customers: {
       create: jest.fn().mockResolvedValue({
         id: 'cus_test123',
         email: 'test@example.com'
       }),
-      create: jest.fn().mockRejectedValue(new Error('API limit exceeded')),
       retrieve: jest.fn().mockImplementation(() => {
         throw new Error('Customer not found');
       }),
@@ -86,7 +82,7 @@ jest.mock('stripe', () => {
       }),
       confirm: jest.fn().mockRejectedValue(new Error('Payment failed')),
     },
-  }),
+  })),
 }));
 
 // Mock Paystack with error handling
@@ -100,12 +96,8 @@ jest.mock('paystack', () => ({
           reference: 'ref_test_123'
         }
       }),
-      initialize: jest.fn().mockRejectedValue(new Error('Invalid parameters')),
       verify: jest.fn().mockResolvedValue({
         data: { status: 'success' }
-      }),
-      verify: jest.fn().mockImplementation(() => {
-        throw new Error('Transaction not found');
       }),
     },
     customer: {
@@ -116,7 +108,6 @@ jest.mock('paystack', () => ({
           customer_code: 'CUS_001'
         }
       }),
-      create: jest.fn().mockRejectedValue(new Error('Duplicate customer')),
     },
   })),
 }));
@@ -127,10 +118,6 @@ jest.mock('resend', () => ({
     emails: {
       send: jest.fn().mockResolvedValue({
         id: 'email_test_123'
-      }),
-      send: jest.fn().mockRejectedValue(new Error('Rate limit exceeded')),
-      send: jest.fn().mockImplementation(() => {
-        throw new Error('Invalid email format');
       }),
     },
   })),

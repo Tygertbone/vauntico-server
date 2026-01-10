@@ -1,4 +1,4 @@
-name: Deploy Vauntico Backend
+name: Backend Build & Deploy (OCI)
 
 on:
   push:
@@ -68,7 +68,7 @@ jobs:
             "Phase 2: B2B API Licensing")
               echo "phase-target=500K MRR from businesses" >> $GITHUB_OUTPUT
               echo "kpi-metrics=api_calls,license_tier_upgrades,white_label_integrations" >> $GITHUB_OUTPUT
-              echo "blind-spots=commoditization,platform_dependency" >> $GITHUB_OUTPUT
+              echo "blind-spots=commodification,platform_dependency" >> $GITHUB_OUTPUT
               ;;
             "Phase 3: Enterprise Compliance")
               echo "phase-target=300K MRR from enterprise" >> $GITHUB_OUTPUT
@@ -78,12 +78,12 @@ jobs:
             "Phase 4: Creator Economy")
               echo "phase-target=200K MRR from creator features" >> $GITHUB_OUTPUT
               echo "kpi-metrics=ubuntu_council_commissions,legacy_sponsorships,marketplace_transactions" >> $GITHUB_OUTPUT
-              echo "blind-spots=algorithm_gaming,commoditization" >> $GITHUB_OUTPUT
+              echo "blind-spots=algorithm_gaming,commodification" >> $GITHUB_OUTPUT
               ;;
             "Phase 5: Vauntico Credits")
               echo "phase-target=100K MRR from credits" >> $GITHUB_OUTPUT
               echo "kpi-metrics=credits_earned,credits_redeemed,bundle_sales,gift_transactions" >> $GITHUB_OUTPUT
-              echo "blind-spots=algorithm_gaming,commoditization" >> $GITHUB_OUTPUT
+              echo "blind-spots=algorithm_gaming,commodification" >> $GITHUB_OUTPUT
               ;;
             *)
               echo "phase-target=Unknown" >> $GITHUB_OUTPUT
@@ -340,7 +340,7 @@ jobs:
           # Force API key authentication
           export OCI_CLI_AUTH=api_key
 
-      - name: Deploy to Railway (fallback)
+      - name: Deploy to OCI
         id: deploy
         run: |
           MONETIZATION_PHASE="${{ github.event.inputs.monetization_phase || 'Phase 1: Foundation' }}"
@@ -382,7 +382,6 @@ jobs:
             echo "success=false" >> $GITHUB_OUTPUT
             exit 1
           fi
-          fi
         env:
           OCI_CLI_AUTH: api_key
           OCI_TENANCY_OCID: ${{ secrets.OCI_TENANCY_OCID }}
@@ -392,7 +391,6 @@ jobs:
           OCI_PRIVATE_KEY: ${{ secrets.OCI_PRIVATE_KEY }}
           OCI_BASTION_CONFIG: ${{ secrets.OCI_BASTION_CONFIG }}
           OCI_BASTION_CIDR: ${{ secrets.OCI_BASTION_CIDR }}
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
   # Job 4: Validate deployment
   validate-deployment:
@@ -430,11 +428,11 @@ jobs:
                 echo "✅ API health endpoint is properly configured"
                 exit 0
               else
-                echo "⚠️ API responded but health format unexpected"
+                echo "⚠️  API responded but health format unexpected"
               fi
               break
             else
-              echo "⚠️ Health check failed, retrying in 10 seconds with backoff..."
+              echo "⚠️  Health check failed, retrying in 10 seconds with backoff..."
               sleep 10
             fi
           done
@@ -452,7 +450,7 @@ jobs:
           if timeout 10 curl -f -s "$API_URL/" >/dev/null; then
             echo "✅ Basic API endpoint accessible"
           else
-            echo "⚠️ Basic API endpoint not accessible, but deployment may still be valid"
+            echo "⚠️  Basic API endpoint not accessible, but deployment may still be valid"
           fi
           
           echo "🎉 Deployment validation completed"
@@ -474,7 +472,7 @@ jobs:
           if timeout 10 curl -f -s "$API_URL/api/v1/metrics/kpi" >/dev/null; then
             echo "✅ KPI aggregation endpoint accessible"
           else
-            echo "⚠️ KPI aggregation endpoint not available (expected for early phases)"
+            echo "⚠️  KPI aggregation endpoint not available (expected for early phases)"
             KPI_ENDPOINTS_AVAILABLE=false
           fi
           
@@ -485,7 +483,7 @@ jobs:
               if timeout 10 curl -f -s "$API_URL/api/v1/subscriptions/health" >/dev/null; then
                 echo "✅ Subscription health endpoint accessible"
               else
-                echo "⚠️ Subscription health endpoint not available"
+                echo "⚠️  Subscription health endpoint not available"
               fi
               ;;
             "Phase 2: B2B API Licensing")
@@ -493,7 +491,31 @@ jobs:
               if timeout 10 curl -f -s "$API_URL/api/v1/api-licenses/health" >/dev/null; then
                 echo "✅ API licensing health endpoint accessible"
               else
-                echo "⚠️ API licensing health endpoint not available"
+                echo "⚠️  API licensing health endpoint not available"
+              fi
+              ;;
+            "Phase 3: Enterprise Compliance")
+              # Test compliance suite sales endpoints with timeout
+              if timeout 10 curl -f -s "$API_URL/api/v1/compliance-suite-sales/health" >/dev/null; then
+                echo "✅ Compliance suite sales health endpoint accessible"
+              else
+                echo "⚠️  Compliance suite sales health endpoint not available"
+              fi
+              ;;
+            "Phase 4: Creator Economy")
+              # Test Ubuntu Council commissions endpoints with timeout
+              if timeout 10 curl -f -s "$API_URL/api/v1/ubuntu-council/commissions/health" >/dev/null; then
+                echo "✅ Ubuntu Council commissions health endpoint accessible"
+              else
+                echo "⚠️  Ubuntu Council commissions health endpoint not available"
+              fi
+              ;;
+            "Phase 5: Vauntico Credits")
+              # Test credits earned endpoints with timeout
+              if timeout 10 curl -f -s "$API_URL/api/v1/credits/earned/health" >/dev/null; then
+                echo "✅ Credits earned health endpoint accessible"
+              else
+                echo "⚠️  Credits earned health endpoint not available"
               fi
               ;;
           esac
@@ -547,7 +569,7 @@ jobs:
             "$API_URL/api/v1/metrics/deployment-tracking" >/dev/null 2>&1; then
             echo "✅ KPI deployment tracking data sent successfully"
           else
-            echo "⚠️ KPI tracking endpoint not available (expected for early phases)"
+            echo "⚠️  KPI tracking endpoint not available (expected for early phases)"
           fi
           
           # Log to GitHub Actions for audit trail
@@ -583,7 +605,7 @@ jobs:
           fi
           
           # Check for commoditization mitigations
-          if [[ "$BLIND_SPOTS" == *"commoditization"* ]]; then
+          if [[ "$BLIND_SPOTS" == *"commodification"* ]]; then
             echo "🛡️  Validating commoditization mitigations..."
             echo "✅ Sacred features as competitive moat"
             echo "✅ Ubuntu Echo community engagement"
@@ -613,7 +635,7 @@ jobs:
               curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
                 -H 'Content-type: application/json' \
                 -d "{
-                  \"text\": \"🚀 Vauntico deployment successful! 🎯 $PHASE 📊 Target: $TARGET 🏷️ ID: $DEPLOY_ID 📡 API: ${{ needs.deploy-services.outputs.deployment-url }}\\n\\n📝 Feature: $FEATURE_DESCRIPTION\\n📈 KPIs: ${{ needs.extract-monetization-context.outputs.kpi-metrics }}\",
+                  \"text\": \"🚀 Vauntico deployment successful! 🎯 $PHASE 📊 Target: $TARGET 🏷️  ID: $DEPLOY_ID 📡 API: ${{ needs.deploy-services.outputs.deployment-url }}\\n\\n📝 Feature: $FEATURE_DESCRIPTION\\n📈 KPIs: ${{ needs.extract-monetization-context.outputs.kpi-metrics }}\\n⚠️  Blind Spots: ${{ needs.extract-monetization-context.outputs.blind-spots }}\\n✅ Deployment validated and KPI monitoring enabled.\\n📊 Monetization roadmap alignment confirmed.\",
                   \"blocks\": [
                     {
                       \"type\": \"header\",
@@ -647,7 +669,7 @@ jobs:
                       \"type\": \"section\",
                       \"text\": {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"📝 *Feature:* $FEATURE_DESCRIPTION\\n📈 *KPIs:* ${{ needs.extract-monetization-context.outputs.kpi-metrics }}\\n⚠️ *Blind Spots:* ${{ needs.extract-monetization-context.outputs.blind-spots }}\\n\\n✅ Deployment validated and KPI monitoring enabled.\\n📊 Monetization roadmap alignment confirmed.\"
+                        \"text\": \"📝 *Feature:* $FEATURE_DESCRIPTION\\n📈 *KPIs:* ${{ needs.extract-monetization-context.outputs.kpi-metrics }}\\n⚠️  Blind Spots:* ${{ needs.extract-monetization-context.outputs.blind-spots }}\\n✅ Deployment validated and KPI monitoring enabled.\\n📊 Monetization roadmap alignment confirmed.\"
                       }
                     }
                   ]
@@ -657,13 +679,13 @@ jobs:
               curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
                 -H 'Content-type: application/json' \
                 -d "{
-                  \"text\": \"⚠️ Vauntico deployment completed with validation issues. 🎯 $PHASE 📊 Target: $TARGET 🏷️ ID: $DEPLOY_ID\\n\\nPlease check the API: ${{ needs.deploy-services.outputs.deployment-url }}\",
+                  \"text\": \"⚠️  Vauntico deployment completed with validation issues. 🎯 $PHASE 📊 Target: $TARGET 🏷️  ID: $DEPLOY_ID\\n📡 API: ${{ needs.deploy-services.outputs.deployment-url }}\\n📝 Feature: $FEATURE_DESCRIPTION\\n⚠️ Some validation checks failed. Please review deployment logs.\",
                   \"blocks\": [
                     {
                       \"type\": \"section\",
                       \"text\": {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"⚠️ *Deployment completed with validation issues*\\n\\n🎯 *Phase:* $PHASE\\n📊 *Target:* $TARGET\\n🏷️ *ID:* $DEPLOY_ID\\n📡 *API:* ${{ needs.deploy-services.outputs.deployment-url }}\\n\\n📝 *Feature:* $FEATURE_DESCRIPTION\\n\\n⚠️ Some validation checks failed. Please review deployment logs.\"
+                        \"text\": \"⚠️ *Deployment completed with validation issues*\\n🎯 *Phase:*\\n$PHASE\\n📊 *Target:*\\n$TARGET\\n🏷️ *ID:*\\n$DEPLOY_ID\\n📡 *API:*\\n${{ needs.deploy-services.outputs.deployment-url }}\\n📝 *Feature:* $FEATURE_DESCRIPTION\\n⚠️ Some validation checks failed. Please review deployment logs.\"
                       }
                     }
                   ]
@@ -671,15 +693,14 @@ jobs:
                 --max-time 30
             else
               curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
-                -H 'Content-type: application/json' \
                 -d "{
-                  \"text\": \"❌ Vauntico deployment failed. 🎯 $PHASE 📊 Target: $TARGET\\n\\nPlease check GitHub Actions logs for deployment ID: $DEPLOY_ID\",
+                  \"text\": \"❌ Vauntico deployment failed. 🎯 $PHASE 📊 Target: $TARGET\\nPlease check GitHub Actions logs for deployment ID: $DEPLOY_ID\",
                   \"blocks\": [
                     {
                       \"type\": \"section\",
                       \"text\": {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"❌ *Deployment Failed*\\n\\n🎯 *Phase:* $PHASE\\n📊 *Target:* $TARGET\\n🏷️ *ID:* $DEPLOY_ID\\n📝 *Feature:* $FEATURE_DESCRIPTION\\n\\nPlease check GitHub Actions logs for detailed error information.\"
+                        \"text\": \"❌ *Deployment Failed*\\n🎯 *Phase:*\\n$PHASE\\n📊 *Target:*\\n$TARGET\\n🏷️ *ID:*\\n$DEPLOY_ID\\n📝 *Feature:* $FEATURE_DESCRIPTION\\nPlease check GitHub Actions logs for detailed error information.\"
                       }
                     }
                   ]
@@ -726,4 +747,4 @@ jobs:
           echo "::notice::🔗 Platform dependency: Multi-platform scoring, fallback scores, manual verification"
           echo "::notice::🎮 Algorithm gaming: Anomaly detection, decay functions, manual audits ($99 review)"
           echo "::notice::🛡️  Commoditization: Sacred features + Ubuntu Echo community, move to predictions"
-          echo "::notice::📖 Reference: memories.md contains the canonical monetization roadmap"  # Governance reminder job
+          echo "::notice::📖 Reference: memories.md contains the canonical monetization roadmap"

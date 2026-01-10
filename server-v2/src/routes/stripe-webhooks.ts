@@ -1,10 +1,10 @@
-import { Router, Request, Response } from 'express';
+import { Router, type Router as ExpressRouter, Request, Response } from 'express';
 import { pool } from '../db/pool';
 import { logger } from '../utils/logger';
 import { subscriptionManager } from '../utils/subscriptions';
 import Stripe from 'stripe';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // Initialize Stripe client only if STRIPE_SECRET_KEY is available
 let stripe: Stripe;

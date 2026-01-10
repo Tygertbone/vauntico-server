@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, type Router as ExpressRouter, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { authenticate, requireAdmin } from '../middleware/authenticate';
 import { query, transaction } from '../db/pool';
@@ -7,7 +7,7 @@ import { sendSlackAlert } from '../utils/slack-alerts';
 import { paystackService } from '../services/paystackService';
 import { securityMonitor, SecurityEventType } from '../middleware/security';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // Input validation for payment requests
 const paymentRequestValidation = [

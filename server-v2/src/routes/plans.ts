@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, type Router as ExpressRouter, Request, Response } from 'express';
 import { logger } from '../utils/logger';
 
 // Define currency exchange rates (these would typically come from an external API)
@@ -49,7 +49,7 @@ const PLAN_CONFIGS = {
   }
 } as const;
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // GET /api/plans - Returns pricing in multiple currencies
 router.get('/', async (req: Request, res: Response) => {

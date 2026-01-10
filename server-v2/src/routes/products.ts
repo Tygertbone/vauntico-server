@@ -1,10 +1,10 @@
-import { Router, Request, Response } from 'express';
+import { Router, type Router as ExpressRouter, Request, Response } from 'express';
 import { authenticate } from '../middleware/authenticate';
 import { apiRateLimit } from '../middleware/rateLimit';
 import { logger } from '../utils/logger';
 import { pool } from '../db/pool';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // Product validation middleware
 const validateProductData = (req: Request, res: Response, next: Function) => {

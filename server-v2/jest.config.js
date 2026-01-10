@@ -1,5 +1,7 @@
+const { defaults } = require('jest-config-defaults');
+
 module.exports = {
-  preset: 'ts-jest',
+  ...defaults,
   testEnvironment: 'node',
   roots: ['<rootDir>/src', '<rootDir>/tests'],
   testMatch: [
@@ -22,11 +24,5 @@ module.exports = {
   testTimeout: 30000,
   detectOpenHandles: true,
   forceExit: true,
-  verbose: true,
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.json'
-    }
-  },
-  setupFiles: ['<rootDir>/tests/setup.ts']
+  verbose: true
 };

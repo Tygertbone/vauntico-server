@@ -1,9 +1,9 @@
-import express from 'express';
+import { Router, type Router as ExpressRouter } from 'express';
 import { ubuntuCouncilService } from '../services/ubuntuCouncilService';
 import { apiAuthMiddleware } from '../middleware/auth';
 import logger from '../utils/logger';
 
-const router = express.Router();
+const router: ExpressRouter = Router();
 
 // Get all council members
 router.get('/members', apiAuthMiddleware, async (req, res) => {

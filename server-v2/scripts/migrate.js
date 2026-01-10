@@ -66,24 +66,41 @@ async function migrate() {
     // Run migration
     logger.info('Running database migration...');
     const migrationStart = Date.now();
-    await client.query('BEGIN');
     
-    try {
-      await client.query(migrationSQL);
-      await client.query('COMMIT');
+    // Check if schema already exists by testing for users table
+    const schemaCheck = await client.query(`
+      SELECT EXISTS (
+        SELECT FROM information_schema.tables
+        WHERE table_schema = 'public'
+        AND table_name = 'users'
+      ) as exists
+    `);
+    
+    if (schemaCheck.rows[0].exists) {
+      logger.warn('Schema already exists, skipping migration...');
+      logger.success('Database schema validation completed');
       const migrationTime = Date.now() - migrationStart;
-      logger.success(`Migration completed successfully in ${migrationTime}ms`);
-    } catch (migrationError) {
-      await client.query('ROLLBACK');
+      logger.success(`Schema validation completed in ${migrationTime}ms`);
+    } else {
+      await client.query('BEGIN');
       
-      // Check if it's just an "already exists" error
-      if (migrationError.message && migrationError.message.includes('already exists')) {
-        logger.warn('Schema already exists, continuing...');
-        logger.success('Database schema validation completed');
+      try {
+        await client.query(migrationSQL);
+        await client.query('COMMIT');
         const migrationTime = Date.now() - migrationStart;
-        logger.success(`Schema validation completed in ${migrationTime}ms`);
-      } else {
-        throw migrationError;
+        logger.success(`Migration completed successfully in ${migrationTime}ms`);
+      } catch (migrationError) {
+        await client.query('ROLLBACK');
+        
+        // Check if it's just an "already exists" error (race condition)
+        if (migrationError.message && migrationError.message.includes('already exists')) {
+          logger.warn('Schema already exists (race condition), continuing...');
+          logger.success('Database schema validation completed');
+          const migrationTime = Date.now() - migrationStart;
+          logger.success(`Schema validation completed in ${migrationTime}ms`);
+        } else {
+          throw migrationError;
+        }
       }
     }
 

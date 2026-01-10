@@ -1,7 +1,9 @@
-require('dotenv').config();
-const fs = require('fs');
-const path = require('path');
-const { Pool } = require('pg');
+import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+import { Pool } from 'pg';
+
+dotenv.config();
 
 async function migrate() {
   const dbConfig = {

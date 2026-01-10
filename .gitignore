@@ -267,3 +267,5 @@ coverage/
 .netlify/
 set-oci-secrets.ps1
 .vercel/
+.vercel
+.env*.local

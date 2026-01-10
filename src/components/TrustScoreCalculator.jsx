@@ -444,6 +444,7 @@ const TrustScoreCalculator = () => {
                 </button>
               </div>
             </div>
+          </div>
         )}
 
         {/* Trust Score Info */}
@@ -493,7 +494,7 @@ const TrustScoreCalculator = () => {
           </div>
         </div>
 
-              {/* Ubuntu Philosophy Footer */}
+        {/* Ubuntu Philosophy Footer */}
         <div className="text-center mt-12">
           <div className="inline-flex items-center space-x-4 px-6 py-3 bg-purple-50 rounded-full border border-purple-200">
             <span className="text-sm text-purple-700 font-medium">Ubuntu Philosophy:</span>

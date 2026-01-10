@@ -1,4 +1,4 @@
-const axios = require('axios');
+// ES Module - no axios needed for this validation script
 
 async function validateHealthEndpoints() {
   console.log('🔍 Vauntico Production Readiness Validation\n');

@@ -10,6 +10,7 @@ import { securityLogger, suspiciousActivityDetector } from './middleware/securit
 import { authRateLimit, apiRateLimit } from './middleware/rateLimit';
 import { correlationMiddleware } from './middleware/correlation';
 import { enterpriseComplianceMiddleware } from './middleware/enterprise-compliance';
+import { routeAliasMiddleware, trackRouteAliasUsage } from './middleware/routeAliasMiddleware';
 
 // Initialize Sentry
 Sentry.init({
@@ -51,6 +52,7 @@ import monitoringRoutes from './routes/monitoring';
 import productRoutes from './routes/products';
 import widgetRoutes from './routes/widget';
 import enterpriseComplianceRoutes from './routes/enterprise-compliance';
+import sacredFeaturesRoutes from './routes/sacred-features';
 
 const app: express.Application = express();
 
@@ -120,6 +122,10 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(securityLogger);
 app.use(suspiciousActivityDetector);
 
+// Route alias middleware for dual-personality platform
+app.use(routeAliasMiddleware);
+app.use(trackRouteAliasUsage);
+
 // Enterprise compliance middleware for POPIA/GDPR
 app.use('/api/v1/enterprise', enterpriseComplianceMiddleware);
 
@@ -138,6 +144,7 @@ app.use('/subscriptions', subscriptionRoutes);
 app.use('/api/plans', plansRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/v1/enterprise', enterpriseComplianceRoutes);
+app.use('/', sacredFeaturesRoutes); // Sacred features routes (includes both sacred and enterprise aliases)
 app.use('/monitoring', monitoringRoutes);
 app.use('/', widgetRoutes);
 

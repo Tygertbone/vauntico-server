@@ -2,6 +2,7 @@
   "name": "vauntico-trust-score-backend",
   "version": "2.0.0",
   "description": "Vauntico Trust Score backend - FREE stack (Neon + Upstash + Render)",
+  "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

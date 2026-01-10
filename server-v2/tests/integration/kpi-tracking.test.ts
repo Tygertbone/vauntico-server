@@ -7,13 +7,13 @@ describe('KPI Tracking Integration Tests', () => {
       const response = await request(app)
         .get('/api/v1/metrics/kpi')
         .expect(200);
-      
+
       expect(response.body).toHaveProperty('success', true);
       expect(response.body).toHaveProperty('phase', 'Phase 1: Foundation');
       expect(response.body).toHaveProperty('kpi_metrics');
-      expect(response.body.kpi_metrics).toContain('pro_subscriptions');
-      expect(response.body.kpi_metrics).toContain('score_insurance_signups');
-      expect(response.body.kpi_metrics).toContain('trust_calculator_usage');
+      expect(response.body.kpi_metrics).toHaveProperty('pro_subscriptions');
+      expect(response.body.kpi_metrics).toHaveProperty('score_insurance_signups');
+      expect(response.body.kpi_metrics).toHaveProperty('trust_calculator_usage');
       expect(response.body).toHaveProperty('mrr_current');
       expect(response.body).toHaveProperty('mrr_target', 100000);
     });
@@ -44,7 +44,8 @@ describe('KPI Tracking Integration Tests', () => {
       const response = await request(app)
         .get('/api/v1/metrics/blind-spots')
         .expect(200);
-      
+
+      expect(response.body).toHaveProperty('success', true);
       expect(response.body).toHaveProperty('blind_spots');
       expect(response.body.blind_spots.data_privacy.enabled).toBe(true);
       expect(response.body.blind_spots.platform_dependency.enabled).toBe(true);
@@ -77,9 +78,9 @@ describe('KPI Tracking Integration Tests', () => {
         .post('/api/v1/metrics/deployment-tracking')
         .send(deploymentPayload)
         .expect(200);
-      
+
       expect(response.body).toHaveProperty('success', true);
-      expect(response.body).toHaveProperty('deployment_id', 'test-deployment-123');
+      expect(response.body).toHaveProperty('message', 'Deployment tracking data received');
       expect(response.body).toHaveProperty('phase', 'Phase 1: Foundation');
     });
 

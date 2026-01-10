@@ -1,28 +1,64 @@
-# Ignore local installers and binaries
-*.exe
-*.node
-
-# Ignore Terraform providers
-.terraform/
-
-# Ignore node_modules (Vercel installs dependencies itself)
+# Dependencies
 node_modules/
+npm-debug.log*
 
-# Ignore staging artifacts
-vauntico-staging/
+# Backend services (not needed for frontend)
+server-v2/
+vauntico-fulfillment-engine/
+legacy-server/
+vault-landing/
 
-# Ignore large files and build artifacts that shouldn't be deployed
-*.log
-*.sql
-backup_*.sql
+# Docker
+docker-compose.yml
+Dockerfile*
+.dockerignore
 
-# Ignore monitoring and local files
-logs/
+# Development
+.env.local
+.env.development
+
+# Build
+dist/
+build/
+
+# Monitoring
 monitoring/
-temp/
-tmp/
 
-# Ignore Oracle Cloud and infrastructure files
-terraform-mcp-server/
-oci-*.sh
+# Scripts
+scripts/
+
+# Tests
+**/__tests__/
+*.test.js
+*.test.ts
+
+# Documentation (keep only essential)
+docs/
+*.md
+!README.md
+!DEPLOYMENT_GUIDE.md
+!CONTRIBUTOR_ONBOARDING.md
+!SECURITY_OPERATIONS.md
+
+# Configuration files
+configs/
+tools/
+bastion-*.json
 *.pem
+*.ps1
+
+# CI/CD
+.github/
+.git/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log

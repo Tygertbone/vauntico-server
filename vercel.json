@@ -1,8 +1,8 @@
 {
   "version": 2,
+  "framework": "nextjs",
   "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "framework": "vite",
+  "outputDirectory": ".next",
   "installCommand": "npm install",
   "rewrites": [
     {

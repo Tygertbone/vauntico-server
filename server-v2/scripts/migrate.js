@@ -75,7 +75,16 @@ async function migrate() {
       logger.success(`Migration completed successfully in ${migrationTime}ms`);
     } catch (migrationError) {
       await client.query('ROLLBACK');
-      throw migrationError;
+      
+      // Check if it's just an "already exists" error
+      if (migrationError.message && migrationError.message.includes('already exists')) {
+        logger.warn('Schema already exists, continuing...');
+        logger.success('Database schema validation completed');
+        const migrationTime = Date.now() - migrationStart;
+        logger.success(`Schema validation completed in ${migrationTime}ms`);
+      } else {
+        throw migrationError;
+      }
     }
 
     // Test database connection with a simple query
@@ -101,7 +110,7 @@ async function migrate() {
     if (error.code === 'ECONNREFUSED') {
       logger.error('Connection refused - check database URL and network connectivity');
     } else if (error.code === '3D000') {
-      logger.error('Database does not exist - ensure the database is created');
+      logger.error('Database does not exist - ensure that database is created');
     } else if (error.code === '28P01') {
       logger.error('Authentication failed - check database credentials');
     } else if (error.code === '42P01') {

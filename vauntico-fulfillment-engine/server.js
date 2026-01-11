@@ -22,20 +22,24 @@ if (missing.length > 0) {
 
 // 2. Initialize Sentry for error reporting
 let Sentry;
-try {
-  Sentry = require('@sentry/node');
-  Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    environment: process.env.NODE_ENV || 'production',
-    tracesSampleRate: 1.0,
-    beforeSend: (event) => {
-      console.log('📊 Error captured by Sentry:', event.exception?.values?.[0]?.value);
-      return event;
-    }
-  });
-  console.log('✅ Sentry initialized');
-} catch (e) {
-  console.warn('⚠️ Sentry not available:', e.message);
+if (process.env.SENTRY_DSN && process.env.SENTRY_DSN.startsWith('https://')) {
+  try {
+    Sentry = require('@sentry/node');
+    Sentry.init({
+      dsn: process.env.SENTRY_DSN,
+      environment: process.env.NODE_ENV || 'production',
+      tracesSampleRate: 1.0,
+      beforeSend: (event) => {
+        console.log('📊 Error captured by Sentry:', event.exception?.values?.[0]?.value);
+        return event;
+      }
+    });
+    console.log('✅ Sentry initialized');
+  } catch (e) {
+    console.warn('⚠️ Sentry initialization failed:', e.message);
+  }
+} else {
+  console.log('⚠️ Sentry DSN not valid or not provided, skipping initialization');
 }
 
 // 3. Initialize Express
@@ -84,8 +88,31 @@ app.get('/health', (req, res) => {
   return res.status(200).json({ status: "ok" });
 });
 
-// 6. Global error handler
-app.use((error, req, res) => {
+// 6. 404 handler (must be after other routes)
+app.use((req, res) => {
+  try {
+    console.log(`❓ 404 - Route not found: ${req.originalUrl}`);
+
+    return res.status(404).json({
+      error: 'Not Found',
+      message: `Route ${req.originalUrl} not implemented`,
+      availableRoutes: [
+        'GET /',
+        'GET /health'
+      ],
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('❌ 404 handler error:', error);
+    return res.status(500).json({
+      status: 'error',
+      message: 'Internal server error'
+    });
+  }
+});
+
+// 7. Global error handler
+app.use((error, req, res, next) => {
   console.error('💥 Global error handler:', error);
 
   // Send error to Sentry
@@ -143,29 +170,6 @@ app.use((error, req, res) => {
     message: 'Internal server error',
     timestamp: new Date().toISOString()
   });
-});
-
-// 7. 404 handler (must be after other routes)
-app.use('*', (req, res) => {
-  try {
-    console.log(`❓ 404 - Route not found: ${req.originalUrl}`);
-
-    return res.status(404).json({
-      error: 'Not Found',
-      message: `Route ${req.originalUrl} not implemented`,
-      availableRoutes: [
-        'GET /',
-        'GET /health'
-      ],
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    console.error('❌ 404 handler error:', error);
-    return res.status(500).json({
-      status: 'error',
-      message: 'Internal server error'
-    });
-  }
 });
 
 // Export for Vercel serverless function compatibility

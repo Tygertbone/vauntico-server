@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   preset: 'ts-jest',
   testEnvironment: 'node',
   roots: ['<rootDir>/src', '<rootDir>/tests'],
@@ -7,7 +7,7 @@ module.exports = {
     '**/*.(test|spec).+(ts|tsx|js)'
   ],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest'
+    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.json' }]
   },
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
@@ -23,10 +23,5 @@ module.exports = {
   detectOpenHandles: true,
   forceExit: true,
   verbose: true,
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.json'
-    }
-  },
   setupFiles: ['<rootDir>/tests/setup.ts']
 };

@@ -3,7 +3,7 @@ import { sponsorshipService } from '../services/sponsorshipService';
 import { apiAuthMiddleware } from '../middleware/auth';
 import logger from '../utils/logger';
 
-const router = express.Router();
+const router: express.Router = express.Router();
 
 // Get sponsorships with optional filters
 router.get('/', apiAuthMiddleware, async (req, res) => {

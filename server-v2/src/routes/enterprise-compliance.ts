@@ -1,10 +1,9 @@
-import express from 'express';
 import { Router, Request, Response } from 'express';
 import { enterpriseComplianceManager, ComplianceFramework, DataCategory, ProcessingPurpose } from '../middleware/enterprise-compliance';
 import { enterpriseIntegrationService } from '../services/enterpriseIntegrations';
 import { authenticate } from '../middleware/authenticate';
 
-const router = Router();
+const router: Router = Router();
 
 // Apply authentication to all enterprise routes
 router.use(authenticate);

@@ -3,7 +3,8 @@ name: Phase 3 Enterprise Compliance & Integration
 on:
   push:
     branches: [feature/phase3-enterprise-compliance]
-    pull_request:
+  pull_request:
+    types: [opened, synchronize, reopened]
     branches: [feature/phase3-enterprise-compliance]
 
 env:

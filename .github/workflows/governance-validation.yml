@@ -93,23 +93,23 @@ jobs:
           KPI_ENDPOINTS_FOUND=true
           
           # Check for pro subscriptions tracking
-          if grep -r "pro_subscriptions" src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
+          if grep -r "pro_subscriptions" server-v2/src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
             echo "✅ Pro subscriptions tracking found"
           else
             echo "⚠️ Pro subscriptions tracking not found"
             KPI_ENDPOINTS_FOUND=false
           fi
-          
+
           # Check for score insurance signups
-          if grep -r "score_insurance_signups" src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
+          if grep -r "score_insurance_signups" server-v2/src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
             echo "✅ Score insurance signups tracking found"
           else
             echo "⚠️ Score insurance signups tracking not found"
             KPI_ENDPOINTS_FOUND=false
           fi
-          
+
           # Check for trust calculator usage
-          if grep -r "trust_calculator_usage" src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
+          if grep -r "trust_calculator_usage" server-v2/src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
             echo "✅ Trust calculator usage tracking found"
           else
             echo "⚠️ Trust calculator usage tracking not found"
@@ -133,28 +133,28 @@ jobs:
           
           # Check for data privacy mitigations
           PRIVACY_MITIGATIONS_FOUND=true
-          if ! grep -r "data_privacy" src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
+          if ! grep -r "data_privacy" server-v2/src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
             echo "⚠️ Data privacy mitigations not found"
             PRIVACY_MITIGATIONS_FOUND=false
           fi
-          
+
           # Check for platform dependency mitigations
           PLATFORM_MITIGATIONS_FOUND=true
-          if ! grep -r "platform_dependency" src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
+          if ! grep -r "platform_dependency" server-v2/src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
             echo "⚠️ Platform dependency mitigations not found"
             PLATFORM_MITIGATIONS_FOUND=false
           fi
-          
+
           # Check for algorithm gaming mitigations
           GAMING_MITIGATIONS_FOUND=true
-          if ! grep -r "algorithm_gaming" src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
+          if ! grep -r "algorithm_gaming" server-v2/src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
             echo "⚠️ Algorithm gaming mitigations not found"
             GAMING_MITIGATIONS_FOUND=false
           fi
-          
+
           # Check for commoditization mitigations
           COMMODITIZATION_MITIGATIONS_FOUND=true
-          if ! grep -r "commoditization" src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
+          if ! grep -r "commoditization" server-v2/src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
             echo "⚠️ Commoditization mitigations not found"
             COMMODITIZATION_MITIGATIONS_FOUND=false
           fi

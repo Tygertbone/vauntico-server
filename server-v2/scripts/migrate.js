@@ -47,6 +47,25 @@ async function migrate() {
     client = await pool.connect();
     logger.success('Database connection established');
 
+    // Check if migration has already been applied by checking if 'users' table exists
+    logger.info('Checking if migration has already been applied...');
+    const tableCheckResult = await client.query(`
+      SELECT EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public' AND table_name = 'users'
+      ) as table_exists;
+    `);
+    const tableExists = tableCheckResult.rows[0].table_exists;
+
+    if (tableExists) {
+      logger.success('Migration has already been applied (users table exists). Skipping migration.');
+      const totalTime = Date.now() - startTime;
+      logger.success(`Migration check completed successfully in ${totalTime}ms`);
+      return;
+    }
+
+    logger.info('Migration not yet applied. Proceeding with migration...');
+
     // Check if migration file exists
     const migrationPath = path.join(__dirname, '..', 'migrations', '001_create_schema.sql');
     if (!fs.existsSync(migrationPath)) {

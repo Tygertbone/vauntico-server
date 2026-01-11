@@ -334,7 +334,7 @@ function generateThread(content, maxTweets = 15) {
   });
 
   // Content tweets
-  let remaining = sections.slice(1);
+  const remaining = sections.slice(1);
   let tweetNumber = 2;
 
   while (remaining.length > 0 && tweetNumber <= maxTweets) {
@@ -442,7 +442,7 @@ function extractKeywords(content) {
 
 function generateMetaDescription(content) {
   return content
-    .replace(/[#*_\[\]]/g, '')
+    .replace(new RegExp('[#*_\\[\\]]', 'g'), '')
     .split('\n')
     .filter(line => line.trim())
     .slice(1, 3)

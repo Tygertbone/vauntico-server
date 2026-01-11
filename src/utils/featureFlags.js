@@ -66,7 +66,7 @@ export function isFeatureEnabled(featureName) {
 
   // Handle legacy boolean flags
   return flag || false;
-};
+}
 
 /**
  * Check if a feature is enabled for a specific user (with rollout percentage)
@@ -97,7 +97,7 @@ export function isFeatureEnabledForUser(featureName, userId, audience = null) {
 
   // Handle legacy boolean flags
   return flag || false;
-};
+}
 
 /**
  * Set feature flag value
@@ -105,20 +105,20 @@ export function isFeatureEnabledForUser(featureName, userId, audience = null) {
  * @param {boolean} enabled - Enable/disable the feature
  */
 export function setFeatureFlag(featureName, enabled) {
-  if (featureFlags.hasOwnProperty(featureName)) {
-    featureFlags[featureName] = enabled;
-  } else {
-    console.warn(`Feature flag '${featureName}' does not exist`);
-  }
-};
+   if (Object.hasOwn(featureFlags, featureName)) {
+     featureFlags[featureName] = enabled;
+   } else {
+     console.warn(`Feature flag '${featureName}' does not exist`);
+   }
+}
 
 /**
  * Get all feature flags
  * @returns {Object} - All feature flags and their status
  */
 export function getAllFeatureFlags() {
-  return { ...featureFlags };
-};
+   return { ...featureFlags };
+}
 
 /**
  * Check if user is in A/B test group
@@ -134,7 +134,7 @@ export function isUserInTestGroup(userId, testName, percentage = 50) {
   // Simple hash-based determination for consistent grouping
   const hash = simpleHash(`${userId}-${testName}`);
   return hash % 100 < percentage;
-};
+}
 
 /**
  * Simple hash function for consistent A/B testing
@@ -149,7 +149,7 @@ function simpleHash(str) {
     hash = hash & hash; // Convert to 32bit integer
   }
   return Math.abs(hash);
-};
+}
 
 /**
  * Feature flag context for React components
@@ -161,7 +161,7 @@ export function getFeatureFlagContext() {
     isUserInTestGroup,
     featureFlags: getAllFeatureFlags()
   };
-};
+}
 
 // Export for CommonJS compatibility
 module.exports = {

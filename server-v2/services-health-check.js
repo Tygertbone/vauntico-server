@@ -108,7 +108,7 @@ async function checkSentry() {
   }
 
   // Parse DSN to validate format
-  const dsnMatch = dsn.match(/https:\/\/([^@]+)@([^\/]+)\/(\d+)/);
+  const dsnMatch = dsn.match(/https:\/\/([^@]+)@([^/]+)\/(\d+)/);
   if (!dsnMatch) {
     throw new Error('Invalid SENTRY_DSN format');
   }

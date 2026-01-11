@@ -178,7 +178,7 @@ async function validateDatabaseConnection() {
     return client;
     
   } catch (error) {
-    let errorMessage = error.message;
+    const errorMessage = error.message;
     let guidance = '';
     
     switch (error.code) {

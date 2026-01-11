@@ -72,7 +72,6 @@ export const loadStripe = async () => {
   }
 
   stripeInstance = window.Stripe(STRIPE_PUBLIC_KEY)
-  console.log('✅ Stripe initialized')
   return stripeInstance
 }
 
@@ -102,7 +101,6 @@ export const checkoutCreatorPass = async (tier, billingCycle = 'monthly', userEm
     
     if (priceId.startsWith('price_')) {
       // TODO: Replace with actual Stripe price ID
-      console.warn('⚠️  Stripe price ID not configured. Set up products in Stripe Dashboard.')
       alert('Payment system not yet configured. Please contact support.')
       return
     }
@@ -239,11 +237,9 @@ export const checkoutAuditService = async (plan, userEmail = null) => {
     })
 
     if (error) {
-      console.error('Stripe checkout error:', error)
       alert('Payment failed. Please try again.')
     }
   } catch (error) {
-    console.error('Checkout error:', error)
     alert('Something went wrong. Please try again.')
   }
 }
@@ -268,7 +264,7 @@ export const mockCheckout = async (product, tier = null, billingCycle = null) =>
 
   // Update local storage based on product
   switch (product) {
-    case 'creator_pass':
+    case 'creator_pass': {
       localStorage.setItem('vauntico_creator_pass', 'true')
       if (tier) {
         localStorage.setItem('vauntico_creator_pass_tier', tier)
@@ -277,6 +273,7 @@ export const mockCheckout = async (product, tier = null, billingCycle = null) =>
       const prices = { starter: 17, pro: 59, legacy: 170 }
       trackSubscriptionSuccess(tier, billingCycle, prices[tier], 'USD')
       break
+    }
 
     case 'workshop_kit':
       localStorage.setItem('vauntico_workshop_kit', 'true')

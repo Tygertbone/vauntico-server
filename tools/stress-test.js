@@ -4,6 +4,8 @@
  * Uses k6 for load testing
  */
 
+/* globals __VU */
+
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 

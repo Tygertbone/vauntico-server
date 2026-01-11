@@ -93,11 +93,11 @@ jobs:
           path: |
             coverage/
             enterprise-test-results.json
-          src/openapi/v3-enterprise.yaml
-          server-v2/src/middleware/enterprise-compliance.ts
-          server-v2/tests/integration/enterprise-integration.test.ts
-          docs/enterprise-compliance.md
-          enterprise-compliance-report.md
+            src/openapi/v3-enterprise.yaml
+            server-v2/src/middleware/enterprise-compliance.ts
+            server-v2/tests/integration/enterprise-integration.test.ts
+            docs/enterprise-compliance.md
+            enterprise-compliance-report.md
           retention-days: 30
 
   # Job 3: Enterprise Dashboard Integration
@@ -246,6 +246,3 @@ jobs:
           echo "📊 ENTERPRISE TARGET: $ENTERPRISE_MRR_TARGET"
           echo "⭐ SLA TARGET: $SLA_TARGET%"
           echo "🏆 Ready for Phase 3 production deployment"
-
-  summary:
-    Phase 3 Enterprise Compliance & Integration

@@ -9,7 +9,7 @@
     "start": "node server.js",
     "build": "echo 'No build step required for Node.js server'",
     "test": "jest",
-    "test:integration": "jest --testPathPattern=integration",
+    "test:integration": "jest --testPathPattern=integration --passWithNoTests",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"

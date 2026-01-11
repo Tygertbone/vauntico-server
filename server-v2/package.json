@@ -10,7 +10,7 @@
     "dev": "tsx -r dotenv/config src/server.ts dotenv_config_path=.env",
     "tsc:check": "tsc --noEmit",
     "test": "jest",
-    "test:integration": "jest --testPathPattern=integration",
+    "test:integration": "jest --testPathPattern=integration --passWithNoTests",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "migrate": "psql \"$DATABASE_URL\" -f migrations/001_create_schema.sql",

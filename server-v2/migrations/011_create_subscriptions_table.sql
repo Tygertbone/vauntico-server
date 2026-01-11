@@ -1,7 +1,7 @@
 -- Vauntico Subscriptions Table
 -- Foundation for revenue generation with premium feature gating
 
-CREATE TABLE subscriptions (
+CREATE TABLE IF NOT EXISTS subscriptions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     stripe_customer_id VARCHAR(255), -- Stripe customer ID
@@ -38,12 +38,13 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
+DROP TRIGGER IF EXISTS sync_user_tier_on_subscription_change ON subscriptions;
 CREATE TRIGGER sync_user_tier_on_subscription_change
     AFTER INSERT OR UPDATE ON subscriptions
     FOR EACH ROW EXECUTE FUNCTION sync_user_subscription_tier();
 
 -- Premium feature usage tracking
-CREATE TABLE feature_usage (
+CREATE TABLE IF NOT EXISTS feature_usage (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     feature_key VARCHAR(100) NOT NULL, -- 'vaults_created', 'ai_generations_used', 'storage_used_gb'
@@ -57,11 +58,11 @@ CREATE TABLE feature_usage (
 );
 
 -- Indexes for performance
-CREATE INDEX idx_subscriptions_user_id ON subscriptions(user_id);
-CREATE INDEX idx_subscriptions_status ON subscriptions(status);
-CREATE INDEX idx_subscriptions_tier ON subscriptions(tier);
-CREATE INDEX idx_subscriptions_current_period_end ON subscriptions(current_period_end);
-CREATE INDEX idx_feature_usage_user_feature ON feature_usage(user_id, feature_key);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_status ON subscriptions(status);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_tier ON subscriptions(tier);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_current_period_end ON subscriptions(current_period_end);
+CREATE INDEX IF NOT EXISTS idx_feature_usage_user_feature ON feature_usage(user_id, feature_key);
 
 -- Function to check if user has premium access
 CREATE OR REPLACE FUNCTION user_has_premium_access(user_uuid UUID, feature_key TEXT DEFAULT NULL)
@@ -124,5 +125,7 @@ FROM users
 WHERE id NOT IN (SELECT user_id FROM subscriptions);
 
 -- Update trigger for feature usage timestamps
+DROP TRIGGER IF EXISTS update_feature_usage_updated_at ON feature_usage;
 CREATE TRIGGER update_feature_usage_updated_at BEFORE UPDATE ON feature_usage FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+DROP TRIGGER IF EXISTS update_subscriptions_updated_at ON subscriptions;
 CREATE TRIGGER update_subscriptions_updated_at BEFORE UPDATE ON subscriptions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

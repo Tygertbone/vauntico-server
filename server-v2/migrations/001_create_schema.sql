@@ -3,7 +3,7 @@
 -- All tables designed for maximum efficiency
 
 -- Users table (main user data)
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE users (
 );
 
 -- OAuth connections (encrypted storage for API credentials)
-CREATE TABLE oauth_connections (
+CREATE TABLE IF NOT EXISTS oauth_connections (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     platform VARCHAR(50) NOT NULL, -- 'google_analytics', 'youtube', 'stripe'
@@ -38,7 +38,7 @@ CREATE TABLE oauth_connections (
 );
 
 -- Content items (posts, videos, etc.)
-CREATE TABLE content_items (
+CREATE TABLE IF NOT EXISTS content_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     platform VARCHAR(50) NOT NULL, -- 'youtube', 'substack', 'blog'
@@ -53,7 +53,7 @@ CREATE TABLE content_items (
 );
 
 -- Content metrics (performance data with UEI calculation)
-CREATE TABLE content_metrics (
+CREATE TABLE IF NOT EXISTS content_metrics (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     content_item_id UUID NOT NULL REFERENCES content_items(id) ON DELETE CASCADE,
     date_recorded DATE NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE content_metrics (
 );
 
 -- Trust scores (5 components + overall score)
-CREATE TABLE trust_scores (
+CREATE TABLE IF NOT EXISTS trust_scores (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     overall_score DECIMAL(5,2) NOT NULL, -- 0.00-100.00
@@ -92,7 +92,7 @@ CREATE TABLE trust_scores (
 );
 
 -- Anomaly flags (8 detection rules)
-CREATE TABLE anomaly_flags (
+CREATE TABLE IF NOT EXISTS anomaly_flags (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     content_item_id UUID REFERENCES content_items(id) ON DELETE CASCADE,
@@ -109,7 +109,7 @@ CREATE TABLE anomaly_flags (
 );
 
 -- User stats cache (performance optimization for dashboard)
-CREATE TABLE user_stats_cache (
+CREATE TABLE IF NOT EXISTS user_stats_cache (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     stat_type VARCHAR(50) NOT NULL, -- 'monthly_views', 'total_followers', 'revenue_trend'
@@ -123,36 +123,36 @@ CREATE TABLE user_stats_cache (
 
 -- OPTIMIZED INDEXES (minimal set for 512MB limit)
 -- Users table indexes
-CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_users_created_at ON users(created_at);
-CREATE INDEX idx_users_active ON users(is_active) WHERE is_active = TRUE;
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_created_at ON users(created_at);
+CREATE INDEX IF NOT EXISTS idx_users_active ON users(is_active) WHERE is_active = TRUE;
 
 -- OAuth connections indexes
-CREATE INDEX idx_oauth_user_platform ON oauth_connections(user_id, platform);
-CREATE INDEX idx_oauth_status ON oauth_connections(connection_status);
+CREATE INDEX IF NOT EXISTS idx_oauth_user_platform ON oauth_connections(user_id, platform);
+CREATE INDEX IF NOT EXISTS idx_oauth_status ON oauth_connections(connection_status);
 
 -- Content items indexes (most frequently queried)
-CREATE INDEX idx_content_user_platform ON content_items(user_id, platform);
-CREATE INDEX idx_content_published_at ON content_items(published_at DESC);
-CREATE INDEX idx_content_user_created ON content_items(user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_content_user_platform ON content_items(user_id, platform);
+CREATE INDEX IF NOT EXISTS idx_content_published_at ON content_items(published_at DESC);
+CREATE INDEX IF NOT EXISTS idx_content_user_created ON content_items(user_id, created_at DESC);
 
 -- Content metrics indexes (most critical for performance)
-CREATE INDEX idx_metrics_content_date ON content_metrics(content_item_id, date_recorded DESC);
-CREATE INDEX idx_metrics_date ON content_metrics(date_recorded DESC);
-CREATE INDEX idx_metrics_uei ON content_metrics(uei_score DESC) WHERE uei_score IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_metrics_content_date ON content_metrics(content_item_id, date_recorded DESC);
+CREATE INDEX IF NOT EXISTS idx_metrics_date ON content_metrics(date_recorded DESC);
+CREATE INDEX IF NOT EXISTS idx_metrics_uei ON content_metrics(uei_score DESC) WHERE uei_score IS NOT NULL;
 
 -- Trust scores indexes
-CREATE INDEX idx_trust_user_calculated ON trust_scores(user_id, calculated_at DESC);
-CREATE INDEX idx_trust_overall_score ON trust_scores(overall_score DESC);
-CREATE INDEX idx_trust_next_calc ON trust_scores(next_calculation);
+CREATE INDEX IF NOT EXISTS idx_trust_user_calculated ON trust_scores(user_id, calculated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_trust_overall_score ON trust_scores(overall_score DESC);
+CREATE INDEX IF NOT EXISTS idx_trust_next_calc ON trust_scores(next_calculation);
 
 -- Anomaly flags indexes
-CREATE INDEX idx_anomalies_user_created ON anomaly_flags(user_id, created_at DESC);
-CREATE INDEX idx_anomalies_unresolved ON anomaly_flags(is_resolved, created_at DESC) WHERE is_resolved = FALSE;
+CREATE INDEX IF NOT EXISTS idx_anomalies_user_created ON anomaly_flags(user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_anomalies_unresolved ON anomaly_flags(is_resolved, created_at DESC) WHERE is_resolved = FALSE;
 
 -- Stats cache indexes
-CREATE INDEX idx_stats_user_type ON user_stats_cache(user_id, stat_type);
-CREATE INDEX idx_stats_expires ON user_stats_cache(expires_at);
+CREATE INDEX IF NOT EXISTS idx_stats_user_type ON user_stats_cache(user_id, stat_type);
+CREATE INDEX IF NOT EXISTS idx_stats_expires ON user_stats_cache(expires_at);
 
 -- FUNCTIONS AND TRIGGERS
 
@@ -166,9 +166,13 @@ END;
 $$ language 'plpgsql';
 
 -- Apply update triggers to relevant tables
+DROP TRIGGER IF EXISTS update_users_updated_at ON users;
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+DROP TRIGGER IF EXISTS update_oauth_updated_at ON oauth_connections;
 CREATE TRIGGER update_oauth_updated_at BEFORE UPDATE ON oauth_connections FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+DROP TRIGGER IF EXISTS update_content_updated_at ON content_items;
 CREATE TRIGGER update_content_updated_at BEFORE UPDATE ON content_items FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+DROP TRIGGER IF EXISTS update_anomalies_updated_at ON anomaly_flags;
 CREATE TRIGGER update_anomalies_updated_at BEFORE UPDATE ON anomaly_flags FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- Function to calculate UEI score on insert/update
@@ -192,6 +196,7 @@ END;
 $$ language 'plpgsql';
 
 -- Apply UEI calculation trigger
+DROP TRIGGER IF EXISTS calculate_content_metrics_uei ON content_metrics;
 CREATE TRIGGER calculate_content_metrics_uei
     BEFORE INSERT OR UPDATE ON content_metrics
     FOR EACH ROW EXECUTE FUNCTION calculate_uei_score();

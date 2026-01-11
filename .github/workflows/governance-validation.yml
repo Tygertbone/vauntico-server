@@ -50,10 +50,10 @@ jobs:
       - name: Validate Commit Convention Compliance
         run: |
           echo "🔍 Validating commit convention compliance..."
-          
+
           # Get recent commits for this PR
           COMMITS=$(git log --oneline --since="${{ github.event.pull_request.base.sha }}" --format="%s")
-          
+
           # Check each commit for proper format
           while IFS= read -r commit; do
             if [[ ! "$commit" =~ ^(Phase [1-5]): (feat|fix|docs|style|refactor|test|chore): .+ ]]; then
@@ -61,8 +61,8 @@ jobs:
               echo "::error::Commit must follow 'phase: type: description' format"
               exit 1
             fi
-          done
-          
+          done <<< "$COMMITS"
+
           echo "✅ Commit convention validation passed"
 
       - name: Validate KPI Impact Assessment

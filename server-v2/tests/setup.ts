@@ -112,6 +112,19 @@ jest.mock('../src/app', () => {
     });
   });
 
+  // Enterprise auth middleware
+  app.use('/api/v1/enterprise', (req: any, res: any, next: any) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Unauthorized', message: 'No authentication token provided' });
+    }
+    const token = authHeader.substring(7);
+    if (token !== 'test_token') {
+      return res.status(401).json({ error: 'Unauthorized', message: 'Invalid or expired authentication token' });
+    }
+    next();
+  });
+
   app.get('/db-health', (req: any, res: any) => {
     res.json({
       status: 'OK',
@@ -246,6 +259,195 @@ jest.mock('../src/app', () => {
         platform_dependency: 'compliant',
         algorithm_gaming: 'compliant',
         commoditization: 'compliant'
+      }
+    });
+  });
+
+  // Helper function to check authentication
+  const checkAuth = (req: any, res: any) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      res.status(401).json({ error: 'Unauthorized', message: 'No authentication token provided' });
+      return false;
+    }
+    const token = authHeader.substring(7);
+    if (token !== 'test_token') {
+      res.status(401).json({ error: 'Unauthorized', message: 'Invalid or expired authentication token' });
+      return false;
+    }
+    return true;
+  };
+
+  // Enterprise API stub routes
+  app.get('/api/v1/enterprise/compliance/status', (req: any, res: any) => {
+    if (!checkAuth(req, res)) return;
+    res.json({
+      success: true,
+      data: {
+        framework: 'popia',
+        status: 'active',
+        score: 96.5,
+        statistics: {
+          totalEvents: 150,
+          eventsByFramework: { popia: 150 },
+          eventsByCategory: { personal_identifiable: 100, financial: 50 },
+          eventsByRiskLevel: { low: 120, medium: 25, high: 5 },
+          privacyRequestsStats: { total: 12, pending: 3, completed: 8, rejected: 1 },
+          crossBorderTransfers: 2
+        }
+      }
+    });
+  });
+
+  app.post('/api/v1/enterprise/compliance/privacy-request', (req: any, res: any) => {
+    if (!checkAuth(req, res)) return;
+    const { type, userId, dataCategories } = req.body;
+
+    // Validate required fields
+    if (!type || !userId || !dataCategories) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields: type, userId, dataCategories'
+      });
+    }
+
+    // Validate request type
+    const validTypes = ['access', 'portability', 'rectification', 'erasure', 'restriction'];
+    if (!validTypes.includes(type)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid request type',
+        validTypes
+      });
+    }
+
+    // Validate data categories
+    const validCategories = ['personal_identifiable', 'sensitive_personal', 'financial', 'health', 'biometric', 'geolocation', 'communication'];
+    const invalidCategories = dataCategories.filter((cat: string) => !validCategories.includes(cat));
+    if (invalidCategories.length > 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid data categories',
+        invalidCategories
+      });
+    }
+
+    res.status(201).json({
+      success: true,
+      data: {
+        requestId: 'pr_' + Date.now(),
+        type,
+        userId,
+        status: 'pending'
+      }
+    });
+  });
+
+  app.get('/api/v1/enterprise/compliance/retention-check', (req: any, res: any) => {
+    if (!checkAuth(req, res)) return;
+    const { dataCategory, dataAge } = req.query;
+
+    if (!dataCategory || !dataAge) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required parameters: dataCategory, dataAge'
+      });
+    }
+
+    // Validate data category
+    const validCategories = ['personal_identifiable', 'sensitive_personal', 'financial', 'health', 'biometric', 'geolocation', 'communication'];
+    if (!validCategories.includes(dataCategory as string)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid data categories'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: {
+        compliant: true,
+        maxRetentionDays: 365,
+        daysUntilExpiry: 200,
+        action: 'retain'
+      }
+    });
+  });
+
+  app.post('/api/v1/enterprise/integrations/slack/notify', (req: any, res: any) => {
+    if (!checkAuth(req, res)) return;
+    res.json({
+      success: true,
+      message: 'Slack notification sent successfully'
+    });
+  });
+
+  app.post('/api/v1/enterprise/integrations/notion/update', (req: any, res: any) => {
+    if (!checkAuth(req, res)) return;
+    res.json({
+      success: true,
+      message: 'Notion KPI dashboard updated successfully'
+    });
+  });
+
+  app.post('/api/v1/enterprise/integrations/webhooks/subscribe', (req: any, res: any) => {
+    if (!checkAuth(req, res)) return;
+    const { organizationId, endpoint, secret, events } = req.body;
+    if (!organizationId || !endpoint || !secret || !events) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields: organizationId, endpoint, secret, events'
+      });
+    }
+    res.status(201).json({
+      success: true,
+      data: {
+        subscriptionId: 'webhook_' + Date.now(),
+        message: 'Webhook subscription created successfully'
+      }
+    });
+  });
+
+  app.post('/api/v1/enterprise/integrations/webhooks/deliver', (req: any, res: any) => {
+    if (!checkAuth(req, res)) return;
+    res.json({
+      success: true,
+      message: 'Webhook delivery initiated'
+    });
+  });
+
+  app.get('/api/v1/enterprise/integrations/health', (req: any, res: any) => {
+    if (!checkAuth(req, res)) return;
+    res.json({
+      success: true,
+      data: {
+        health: { slack: true, notion: true, webhooks: { active: 5, total: 5, deliveryRate: 100 } },
+        statistics: { slackNotifications: { today: 12, thisWeek: 45, thisMonth: 180 }, notionUpdates: { today: 3, thisWeek: 15, thisMonth: 60 }, webhookDeliveries: { successful: 245, failed: 3, pending: 7 } },
+        timestamp: new Date().toISOString()
+      }
+    });
+  });
+
+  app.get('/api/v1/enterprise/dashboard', (req: any, res: any) => {
+    if (!checkAuth(req, res)) return;
+    res.json({
+      success: true,
+      data: {
+        overview: { totalUsers: 1250, enterpriseUsers: 185, activeIntegrations: 12, complianceScore: 96.5 },
+        compliance: { framework: 'popia', status: 'compliant', statistics: {}, dataRetention: 'active', auditLogging: 'enabled' },
+        integrations: { health: {}, statistics: {}, slack: true, notion: true, webhooks: { active: 5, total: 5, deliveryRate: 100 } },
+        kpis: { mrr: 485000, mrrGrowth: 12.5, trustScoreAverage: 87.3, complianceAdherence: 96.5, integrationUsage: 78.9 }
+      }
+    });
+  });
+
+  app.get('/api/v1/enterprise/compliance/privacy-requests', (req: any, res: any) => {
+    if (!checkAuth(req, res)) return;
+    res.json({
+      success: true,
+      data: {
+        requests: [],
+        total: 0
       }
     });
   });

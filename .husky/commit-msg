@@ -1,0 +1,14 @@
+#!/bin/sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+COMMITS=$(cat $1)
+
+while read line; do
+  if ! echo "$line" | grep -qE '^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: .{1,}'; then
+    echo "❌ Commit message does not follow conventional commit format"
+    echo "Expected format: type(scope): description"
+    echo "Example: feat: add new feature"
+    exit 1
+  fi
+  break
+done <<< "$COMMITS"

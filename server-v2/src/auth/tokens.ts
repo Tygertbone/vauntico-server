@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { logger } from '../utils/logger';
 import { cache } from '../queue/upstash';
+import { TokenPayload, RefreshTokenPayload } from '../types/database';
 
 // JWT configuration
 const JWT_CONFIG = {
@@ -15,18 +16,11 @@ const JWT_CONFIG = {
   cronSecret: process.env.CRON_SECRET || 'fallback-cron-secret-change-in-production',
 };
 
-// Types for JWT payloads
-export interface JWTPayload {
-  userId: string;
-  email: string;
-  subscriptionTier: string;
-  iat?: number;
-  exp?: number;
-}
+// Re-export TokenPayload for backward compatibility
+export { TokenPayload, RefreshTokenPayload };
 
-export interface RefreshTokenPayload extends JWTPayload {
-  tokenVersion: number;
-}
+// Legacy JWTPayload alias for backward compatibility
+export interface JWTPayload extends TokenPayload {}
 
 // Generate access token
 export function generateAccessToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): string {

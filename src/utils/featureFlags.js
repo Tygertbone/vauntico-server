@@ -105,7 +105,7 @@ export function isFeatureEnabledForUser(featureName, userId, audience = null) {
  * @param {boolean} enabled - Enable/disable the feature
  */
 export function setFeatureFlag(featureName, enabled) {
-  if (Object.hasOwn(featureFlags, featureName)) {
+  if (Object.prototype.hasOwnProperty.call(featureFlags, featureName)) {
     featureFlags[featureName] = enabled;
   } else {
     console.warn(`Feature flag '${featureName}' does not exist`);

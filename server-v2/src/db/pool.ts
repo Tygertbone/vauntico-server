@@ -1,5 +1,6 @@
-import { Pool, PoolConfig } from 'pg';
+import { Pool, PoolConfig, PoolClient } from 'pg';
 import { logger } from '../utils/logger';
+import { DatabasePool, DatabaseConnection } from '../types/database';
 
 // Neon PostgreSQL connection configuration
 const dbConfig: PoolConfig = {
@@ -16,21 +17,21 @@ const dbConfig: PoolConfig = {
 };
 
 // Create connection pool
-const pool = new Pool(dbConfig);
+const pool: DatabasePool = new Pool(dbConfig);
 
 // Connection event handlers
-pool.on('connect', (client: any) => {
+pool.on('connect', (client: DatabaseConnection) => {
   logger.info('New database connection established');
 });
 
-pool.on('error', (err: Error, client: any) => {
+pool.on('error', (err: Error, client: DatabaseConnection) => {
   logger.error('Unexpected error on idle database client', {
     error: err.message,
     stack: err.stack,
   });
 });
 
-pool.on('remove', (client: any) => {
+pool.on('remove', (client: DatabaseConnection) => {
   logger.info('Database connection removed from pool');
 });
 
@@ -86,9 +87,14 @@ export async function query<T = any>(
   );
 }
 
+// Create pool function with proper typing
+export function createPool(): DatabasePool {
+  return pool;
+}
+
 // Transaction helper
 export async function transaction<T>(
-  callback: (client: any) => Promise<T>
+  callback: (client: DatabaseConnection) => Promise<T>
 ): Promise<T> {
   const client = await pool.connect();
 

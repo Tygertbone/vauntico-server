@@ -52,8 +52,21 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "ecmaFeatures": {
+          "jsx": true
+        }
+      },
+      "plugins": ["@typescript-eslint"],
       "rules": {
-        "no-unused-vars": "off"
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-console": "warn",
+        "@typescript-eslint/prefer-const": "error",
+        "no-unused-vars": "off",
+        "no-console": "off"
       }
     },
     {

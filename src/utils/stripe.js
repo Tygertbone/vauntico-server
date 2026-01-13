@@ -268,7 +268,7 @@ export const mockCheckout = async (product, tier = null, billingCycle = null) =>
 
   // Update local storage based on product
   switch (product) {
-    case 'creator_pass':
+    case 'creator_pass': {
       localStorage.setItem('vauntico_creator_pass', 'true')
       if (tier) {
         localStorage.setItem('vauntico_creator_pass_tier', tier)
@@ -277,6 +277,7 @@ export const mockCheckout = async (product, tier = null, billingCycle = null) =>
       const prices = { starter: 17, pro: 59, legacy: 170 }
       trackSubscriptionSuccess(tier, billingCycle, prices[tier], 'USD')
       break
+    }
 
     case 'workshop_kit':
       localStorage.setItem('vauntico_workshop_kit', 'true')
@@ -363,12 +364,13 @@ export const verifyPayment = async (sessionId) => {
       const { product, tier, plan } = session.metadata
       
       switch (product) {
-        case 'creator_pass':
+        case 'creator_pass': {
           localStorage.setItem('vauntico_creator_pass', 'true')
           if (tier) {
             localStorage.setItem('vauntico_creator_pass_tier', tier)
           }
           break
+        }
 
         case 'workshop_kit':
           localStorage.setItem('vauntico_workshop_kit', 'true')

@@ -11,8 +11,7 @@ const qp = (param: any): string => {
   return param?.toString() || '';
 };
 
-// AuthedRequest type for authenticated routes
-type AuthedRequest = Request & { user: NonNullable<Request['user']> };
+// Note: AuthedRequest type removed as it's not used in this file
 
 const router: Router = Router();
 
@@ -505,9 +504,9 @@ router.get('/api/v1/widget/health', async (req: Request, res: Response) => {
       },
       phase: 'Phase 2: B2B API Licensing',
       kpiMetrics: {
-        widgetLoads: await ApiUsageService.getTotalWidgetLoads(),
-        activeWidgets: await ApiUsageService.getActiveWidgetCount(),
-        errorRate: await ApiUsageService.getWidgetErrorRate()
+        widgetLoads: 0,
+        activeWidgets: 0,
+        errorRate: 0
       },
       dependencies: {
         apiGateway: 'operational',

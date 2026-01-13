@@ -1,3 +1,8 @@
+// Mock variables before jest.mock calls
+const mockGetWidgetMetrics = jest.fn();
+const mockGetWidgetAnalytics = jest.fn();
+const mockLogWidgetUsage = jest.fn();
+
 import request from 'supertest';
 import express from 'express';
 import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from '@jest/globals';
@@ -5,7 +10,14 @@ import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from
 import widgetRoutes from '../../src/routes/widget';
 import ApiUsageService from '../../src/services/apiUsageService';
 
-// Mock the authenticateApiKey function
+// Mock ApiUsageService class methods
+jest.mock('../../src/services/apiUsageService', () => ({
+  getWidgetMetrics: mockGetWidgetMetrics,
+  getWidgetAnalytics: mockGetWidgetAnalytics,
+  logWidgetUsage: mockLogWidgetUsage
+}));
+
+// Mock authenticateApiKey function
 jest.mock('../../src/middleware/auth', () => ({
   authenticateApiKey: jest.fn().mockResolvedValue(true)
 }));
@@ -34,6 +46,37 @@ describe('Widget Integration Tests - Phase 2', () => {
     app.use('/', widgetRoutes);
     
     server = app.listen(0); // Use port 0 for testing
+    
+    // Reset mocks and setup default return values
+    mockGetWidgetMetrics.mockResolvedValue({
+      actionCounts: { load: 5, refresh: 2, error: 0, config_change: 1, interaction: 3 },
+      activeWidgets: 3,
+      tierDistribution: { basic: 1, pro: 2, enterprise: 0 },
+      averageScore: 85,
+      errorRate: 0,
+      totalUsage: 11
+    });
+
+    mockGetWidgetAnalytics.mockResolvedValue({
+      totalUsage: 25,
+      actionBreakdown: { load: 15, refresh: 8, error: 1, config_change: 1 },
+      tierDistribution: { basic: 8, pro: 15, enterprise: 2 },
+      averageScore: 87,
+      errorRate: 0.04,
+      refreshRate: 0.53,
+      uptimePercentage: 98.5,
+      totalCreditsUsed: 8,
+      widgetUptime: 1500000,
+      activeIntegrations: 3,
+      revenuePerWidget: 45.50,
+      currentMRR: 1250,
+      licenseRevenue: 850,
+      enterpriseCount: 2,
+      proCount: 15,
+      basicCount: 8
+    });
+
+    mockLogWidgetUsage.mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -353,6 +396,10 @@ describe('Widget Integration Tests - Phase 2', () => {
     });
 
     it('should handle invalid API keys gracefully', async () => {
+      // Mock authentication to fail for invalid API key
+      const { authenticateApiKey } = require('../../src/middleware/auth');
+      authenticateApiKey.mockResolvedValueOnce(false);
+
       const response = await request(app)
         .post('/api/v1/metrics/widget-usage')
         .set('X-API-Key', 'invalid_api_key')

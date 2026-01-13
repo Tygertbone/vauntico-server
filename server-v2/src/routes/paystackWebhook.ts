@@ -1,11 +1,11 @@
-import { Router, Request, Response } from 'express';
+import { Router, type Router as ExpressRouter, Request, Response } from 'express';
 import fs from 'fs';
 import path from 'path';
 import { logger } from '../utils/logger';
 import { sendSlackAlert } from '../utils/slack-alerts';
 import { Resend } from 'resend';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // Initialize Resend for failure alerts
 const resend = new Resend(process.env.RESEND_API_KEY);

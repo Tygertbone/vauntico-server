@@ -221,27 +221,27 @@ async function runHealthChecks() {
         break;
     }
 
-    console.log(`🔍 Checking ${service}...`);
+    // Removed console.log for production
     const result = await checkService(service, checkFunction);
     results.push(result);
 
     if (result.status === 'ok') {
-      console.log(`✅ ${service}: ${result.message}`);
+      // Removed console.log for production
     } else {
-      console.log(`❌ ${service}: ${result.message}`);
+      // Removed console.log for production
     }
   }
 
   // Check Stripe separately as it's disabled/scaffolded
-  console.log(`🔍 Checking Stripe (scaffolded)...`);
+  // Removed console.log for production
   try {
     const stripeResult = await checkService('Stripe', checkStripe);
     results.push(stripeResult);
 
     if (stripeResult.status === 'ok') {
-      console.log(`✅ Stripe: ${stripeResult.message}`);
+      // Removed console.log for production
     } else {
-      console.log(`⚠️  Stripe: ${stripeResult.message} (expected if scaffolded)`);
+      // Removed console.log for production
     }
   } catch (error) {
     results.push({
@@ -249,7 +249,7 @@ async function runHealthChecks() {
       status: 'error',
       message: 'Stripe is disabled or not properly configured (expected for scaffolded service)'
     });
-    console.log(`⚠️  Stripe: ${results[results.length - 1].message}`);
+    // Removed console.log for production
   }
 
   // Determine overall status
@@ -261,21 +261,15 @@ async function runHealthChecks() {
     services: results
   };
 
-  console.log(`\n🏥 Overall Status: ${overallStatus.toUpperCase()}`);
-  console.log(`📊 Services Checked: ${results.length}`);
-  console.log(`✅ Healthy: ${results.filter(r => r.status === 'ok').length}`);
-  console.log(`❌ Issues: ${results.filter(r => r.status === 'error').length}`);
-
-  // Output JSON for consumption
-  console.log('\n📤 JSON Output:');
-  console.log(JSON.stringify(output, null, 2));
+  // Removed console.log statements for production
 
   return output;
 }
 
-// Run the health checks
+// Run as script only when called directly
 if (require.main === module) {
   runHealthChecks().catch(error => {
+    // eslint-disable-next-line no-console
     console.error('❌ Health check runner failed:', error);
     process.exit(1);
   });

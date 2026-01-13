@@ -269,3 +269,5 @@ set-oci-secrets.ps1
 .vercel/
 .vercel
 .env*.local
+SECRETS_CONFIGURATION_ANALYSIS.md
+VAUNTICO_LIGHTWEIGHT_AUDIT_SUMMARY.md

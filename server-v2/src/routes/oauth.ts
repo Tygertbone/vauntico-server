@@ -1,8 +1,8 @@
-import { Router, Request, Response } from 'express';
+import { Router, type Router as ExpressRouter, Request, Response } from 'express';
 import { authenticate } from '../middleware/authenticate';
 import { logger } from '../utils/logger';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // All routes require authentication
 router.use(authenticate);

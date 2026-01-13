@@ -14,7 +14,7 @@ import { routeAliasMiddleware, trackRouteAliasUsage } from './middleware/routeAl
 
 // Initialize Sentry
 Sentry.init({
-  dsn: process.env.SENTRY_DSN,
+  dsn: process.env.SENTRY_DSN || '',
   environment: process.env.NODE_ENV || 'development',
   integrations: [
     // HTTP integration for outgoing requests

@@ -1,9 +1,8 @@
-import express from 'express';
-import { Router, Request, Response } from 'express';
+import { Router, type Router as ExpressRouter, Request, Response } from 'express';
 import { enterpriseComplianceManager, ComplianceFramework, DataCategory, ProcessingPurpose } from '../middleware/enterprise-compliance';
 import { enterpriseIntegrationService } from '../services/enterpriseIntegrations';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // GET /api/v1/enterprise/compliance/status - Get compliance status
 router.get('/compliance/status', async (req: Request, res: Response) => {

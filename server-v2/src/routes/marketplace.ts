@@ -1,9 +1,9 @@
-import express from 'express';
+import { Router, type Router as ExpressRouter } from 'express';
 import { marketplaceService } from '../services/marketplaceService';
 import { apiAuthMiddleware } from '../middleware/auth';
 import logger from '../utils/logger';
 
-const router = express.Router();
+const router: ExpressRouter = Router();
 
 // Get marketplace items with filters
 router.get('/items', apiAuthMiddleware, async (req, res) => {

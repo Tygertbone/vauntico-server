@@ -1,7 +1,6 @@
-import express from 'express';
-import { Router } from 'express';
+import { Router, type Router as ExpressRouter } from 'express';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // Phase 1 KPI Metrics
 const PHASE_1_KPIS = {

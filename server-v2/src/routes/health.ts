@@ -1,7 +1,7 @@
-import { Router } from "express";
+import { Router, type Router as ExpressRouter } from "express";
 import { pool } from "../db/pool";
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 router.get("/health", async (req, res) => {
   try {

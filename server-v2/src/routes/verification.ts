@@ -222,7 +222,7 @@ router.get('/directory', async (req: Request, res: Response) => {
     const { page = 1, limit = 20, category = 'all' } = req.query;
     
     let whereClause = 'WHERE v.verification_status = $1';
-    let queryParams: any[] = ['verified'];
+    const queryParams: any[] = ['verified'];
     
     const isAuth = req.user?.userId;
 

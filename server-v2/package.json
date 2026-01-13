@@ -15,7 +15,8 @@
     "test:coverage": "jest --coverage",
     "migrate": "psql \"$DATABASE_URL\" -f migrations/001_create_schema.sql",
     "smoke-test:stripe-webhooks": "curl -X POST \"https://$DOMAIN/api/stripe/webhooks\" -H \"Content-Type: application/json\" -d '{}' --write-out \"Status: %{http_code}\n\" --silent --output /dev/null",
-    "lint": "eslint src --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.9.1",

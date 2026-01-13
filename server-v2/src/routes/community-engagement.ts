@@ -1,9 +1,9 @@
-import express from 'express';
+import { Router, type Router as ExpressRouter } from 'express';
 import { communityEngagementService } from '../services/communityEngagementService';
 import { apiAuthMiddleware } from '../middleware/auth';
 import logger from '../utils/logger';
 
-const router: express.Router = express.Router();
+const router: ExpressRouter = Router();
 
 // Record any community engagement activity
 router.post('/engage', apiAuthMiddleware, async (req, res) => {

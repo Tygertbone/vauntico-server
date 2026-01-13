@@ -1,9 +1,9 @@
-import express from 'express';
+import { Router, type Router as ExpressRouter } from 'express';
 import { marketplaceService } from '../services/marketplaceService';
 import { apiAuthMiddleware } from '../middleware/auth';
 import logger from '../utils/logger';
 
-const router: express.Router = express.Router();
+const router: ExpressRouter = Router();
 
 // Get marketplace items with filters
 router.get('/items', apiAuthMiddleware, async (req, res) => {
@@ -80,7 +80,7 @@ router.put('/items/:id', apiAuthMiddleware, async (req, res) => {
     const id = req.params.id;
     const updates = req.body;
 
-    // Check if user is the creator of this item
+    // Check if user is creator of this item
     const items = await marketplaceService.getMarketplaceItems({ creatorId: req.user?.userId });
     const userItem = items.items.find(item => item.id === id);
     

@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, type Router as ExpressRouter, Request, Response } from 'express';
 import { pool } from '../db/pool';
 import { logger } from '../utils/logger';
 import { authenticate } from '../middleware/authenticate';
@@ -24,7 +24,7 @@ const PAYSTACK_PRICING = {
   [SubscriptionTier.ENTERPRISE]: 990000, // ₦9,900
 } as const;
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // Create checkout session for subscription (Paystack primary, Stripe scaffolded)
 router.post('/checkout', authenticate, fraudDetectionService.createPaymentFraudMiddleware(), async (req: Request, res: Response) => {

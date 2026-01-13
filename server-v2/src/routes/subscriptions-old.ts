@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, type Router as ExpressRouter, Request, Response } from 'express';
 import { pool } from '../db/pool';
 import { logger } from '../utils/logger';
 import { authenticate } from '../middleware/authenticate';
@@ -6,7 +6,7 @@ import { subscriptionManager } from '../utils/subscriptions';
 import { fraudDetectionService } from '../services/fraudDetectionService';
 import Stripe from 'stripe';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // Initialize Stripe with secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {

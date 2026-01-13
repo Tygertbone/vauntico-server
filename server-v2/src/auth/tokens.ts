@@ -272,7 +272,7 @@ export async function decryptOAuthToken(encryptedToken: string): Promise<string>
     }
 
     logger.debug('OAuth token decrypted');
-    return parts[1];
+    return parts[1] || '';
   } catch (error) {
     logger.error('OAuth token decryption failed', {
       error: error instanceof Error ? error.message : 'Unknown error',

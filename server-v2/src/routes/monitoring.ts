@@ -1,11 +1,11 @@
-import { Router, Request, Response } from 'express';
+import { Router, type Router as ExpressRouter, Request, Response } from 'express';
 import { authenticate } from '../middleware/authenticate';
 import { alertManager, AlertSeverity } from '../utils/slack-alerts';
 import { securityMonitor } from '../middleware/security';
 import { subscriptionManager } from '../utils/subscriptions';
 import { logger } from '../utils/logger';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // Automated health monitoring endpoint (for CI/CD and uptime monitors)
 router.get('/health-detailed', async (req: Request, res: Response) => {

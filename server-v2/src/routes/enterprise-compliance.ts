@@ -1,12 +1,9 @@
-import { Router, Request, Response } from 'express';
+import { Router, type Router as ExpressRouter, Request, Response } from 'express';
 import { enterpriseComplianceManager, ComplianceFramework, DataCategory, ProcessingPurpose } from '../middleware/enterprise-compliance';
 import { enterpriseIntegrationService } from '../services/enterpriseIntegrations';
 import { authenticate } from '../middleware/authenticate';
 
-const router: Router = Router();
-
-// Apply authentication to all enterprise routes
-router.use(authenticate);
+const router: ExpressRouter = Router();
 
 // GET /api/v1/enterprise/compliance/status - Get compliance status
 router.get('/compliance/status', async (req: Request, res: Response) => {

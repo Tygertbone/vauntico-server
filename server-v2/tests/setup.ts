@@ -16,42 +16,6 @@ process.env.STRIPE_WEBHOOK_SECRET = 'whsec_dummy_stripe_webhook_for_testing';
 process.env.MONETIZATION_PHASE = 'Phase 1: Foundation';
 process.env.FEATURE_DESCRIPTION = 'Test deployment and validation';
 
-// Mock external services FIRST (before any imports)
-jest.mock('@upstash/redis', () => ({
-  Redis: jest.fn().mockImplementation(() => ({
-    get: jest.fn(),
-    set: jest.fn(),
-    del: jest.fn(),
-    exists: jest.fn(),
-    ping: jest.fn(),
-  })),
-}));
-
-jest.mock('stripe', () => ({
-  __esModule: true,
-  default: jest.fn().mockImplementation(() => ({
-    webhooks: {
-      constructEvent: jest.fn(),
-    },
-    customers: {
-      create: jest.fn(),
-      retrieve: jest.fn(),
-    },
-    paymentIntents: {
-      create: jest.fn(),
-      confirm: jest.fn(),
-    },
-  })),
-}));
-
-jest.mock('resend', () => ({
-  Resend: jest.fn().mockImplementation(() => ({
-    emails: {
-      send: jest.fn(),
-    },
-  })),
-}));
-
 // Mock database pool to prevent ECONNREFUSED errors
 const mockPool = {
   query: jest.fn().mockResolvedValue({ rows: [], rowCount: 0 }),
@@ -63,12 +27,61 @@ const mockPool = {
   on: jest.fn().mockReturnValue({} as any),
 };
 
+// Mock external services FIRST (before any imports)
+jest.mock('@upstash/redis', () => ({
+  Redis: jest.fn().mockImplementation(() => ({
+    get: jest.fn().mockResolvedValue(null),
+    set: jest.fn().mockResolvedValue('OK'),
+    del: jest.fn().mockResolvedValue(1),
+    exists: jest.fn().mockResolvedValue(0),
+    ping: jest.fn().mockResolvedValue('PONG'),
+  })),
+}));
+
+jest.mock('stripe', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => ({
+    webhooks: {
+      constructEvent: jest.fn().mockReturnValue({
+        type: 'payment_intent.succeeded',
+        data: { id: 'pi_test_123' }
+      }),
+    },
+    customers: {
+      create: jest.fn().mockResolvedValue({
+        id: 'cus_test123',
+        email: 'test@example.com'
+      }),
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new Error('Customer not found');
+      }),
+    },
+    paymentIntents: {
+      create: jest.fn().mockResolvedValue({
+        id: 'pi_test123',
+        status: 'succeeded'
+      }),
+      confirm: jest.fn().mockRejectedValue(new Error('Payment failed')),
+    },
+  })),
+}));
+
+jest.mock('resend', () => ({
+  Resend: jest.fn().mockImplementation(() => ({
+    emails: {
+      send: jest.fn().mockResolvedValue({
+        id: 'email_test_123'
+      }),
+    },
+  })),
+}));
+
 // Mock pg module
 jest.mock('pg', () => ({
   Pool: jest.fn().mockImplementation(() => mockPool),
 }));
 
-// Mock database configuration - using the actual pool module
+// Mock database configuration - using actual pool module
 jest.mock('../src/db/pool', () => ({
   pool: mockPool,
   query: jest.fn().mockResolvedValue({ rows: [], rowCount: 0 }),

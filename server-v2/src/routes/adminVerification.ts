@@ -1,8 +1,8 @@
-import { Router } from 'express';
+import { Router, type Router as ExpressRouter } from 'express';
 import { requireAdmin } from '../middleware/authenticate';
 import { pool } from '../db/pool';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // Get all verification requests
 router.get('/requests', requireAdmin, async (req, res) => {

@@ -1,9 +1,9 @@
-import express from 'express';
+import { Router, type Router as ExpressRouter } from 'express';
 import { sponsorshipService } from '../services/sponsorshipService';
 import { apiAuthMiddleware } from '../middleware/auth';
 import logger from '../utils/logger';
 
-const router: express.Router = express.Router();
+const router: ExpressRouter = Router();
 
 // Get sponsorships with optional filters
 router.get('/', apiAuthMiddleware, async (req, res) => {

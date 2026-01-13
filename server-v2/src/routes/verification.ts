@@ -1,11 +1,12 @@
 import { Router, Request, Response } from 'express';
+import type { Router as ExpressRouter } from 'express';
 import { body, validationResult } from 'express-validator';
 import { authenticate, requireAdmin } from '../middleware/authenticate';
 import { query, transaction } from '../db/pool';
 import { logger } from '../utils/logger';
 import { sendSlackAlert } from '../utils/slack-alerts';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 // Generate a random verification token
 function generateVerificationToken(): string {
@@ -55,7 +56,7 @@ const paginationValidation = [
 ];
 
 // POST /verify/submit - Submit platform verification request
-router.post('/submit', authenticate, verificationRequestValidation, async (req: Request, res: Response) => {
+router.post('/submit', authenticate, verificationRequestValidation, async (req: Request, res: Response): Promise<Response> => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -119,7 +120,7 @@ router.post('/submit', authenticate, verificationRequestValidation, async (req: 
       }
     );
 
-    res.status(201).json({
+    return res.status(201).json({
       message: 'Verification request submitted successfully',
       verification: {
         id: verification.rows[0].id,
@@ -139,7 +140,7 @@ router.post('/submit', authenticate, verificationRequestValidation, async (req: 
       platform,
     });
 
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Internal Server Error',
       message: 'Failed to submit verification request',
     });
@@ -147,7 +148,7 @@ router.post('/submit', authenticate, verificationRequestValidation, async (req: 
 });
 
 // GET /verify/status/:id - Check verification status
-router.get('/status/:id', authenticate, async (req: Request, res: Response) => {
+router.get('/status/:id', authenticate, async (req: Request, res: Response): Promise<Response> => {
   try {
     const userId = req.user?.userId;
     const { id } = req.params;
@@ -186,7 +187,7 @@ router.get('/status/:id', authenticate, async (req: Request, res: Response) => {
       `, [verification.id]);
     }
 
-    res.json({
+    return res.json({
       message: 'Verification status retrieved',
       verification: {
         id: verification.id,
@@ -209,7 +210,7 @@ router.get('/status/:id', authenticate, async (req: Request, res: Response) => {
       userId,
     });
 
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Internal Server Error',
       message: 'Failed to get verification status',
     });
@@ -217,9 +218,9 @@ router.get('/status/:id', authenticate, async (req: Request, res: Response) => {
 });
 
 // GET /verify/directory - List verified creators (public or authenticated)
-router.get('/directory', async (req: Request, res: Response) => {
+router.get('/directory', async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { page = 1, limit = 20, category = 'all' } = req.query;
+    const { page = 1, limit = 20, category = 'all' } = req.query as Record<string, string | string[] | undefined>;
     
     let whereClause = 'WHERE v.verification_status = $1';
     let queryParams: any[] = ['verified'];
@@ -274,7 +275,7 @@ router.get('/directory', async (req: Request, res: Response) => {
       isAuthenticated: !!isAuth,
     });
 
-    res.json({
+    return res.json({
       message: 'Creator directory retrieved',
       verifications,
       pagination: {
@@ -289,7 +290,7 @@ router.get('/directory', async (req: Request, res: Response) => {
       error: error instanceof Error ? error.message : 'Unknown error',
     });
     
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Internal Server Error',
       message: 'Failed to retrieve creator directory',
     });
@@ -297,7 +298,7 @@ router.get('/directory', async (req: Request, res: Response) => {
 });
 
 // POST /verify/approve/:id - Admin: Approve verification request
-router.post('/approve/:id', requireAdmin, async (req: Request, res: Response) => {
+router.post('/approve/:id', requireAdmin, async (req: Request, res: Response): Promise<Response> => {
   try {
     const adminUserId = req.user?.userId;
     const { id } = req.params;
@@ -417,8 +418,8 @@ router.post('/approve/:id', requireAdmin, async (req: Request, res: Response) =>
       adminUserId,
       verificationId: verification.id,
       platform: verification.platform,
-      creatorId: verification.creator_id,
       trustScoreImpact,
+      creatorId: verification.creator_id,
     });
 
     // Send Slack alert for approval
@@ -435,7 +436,7 @@ router.post('/approve/:id', requireAdmin, async (req: Request, res: Response) =>
       }
     );
 
-    res.json({
+    return res.json({
       message: 'Verification approved successfully',
       verification: {
         id: verification.id,
@@ -455,7 +456,7 @@ router.post('/approve/:id', requireAdmin, async (req: Request, res: Response) =>
       adminUserId,
     });
 
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Internal Server Error',
       message: 'Failed to approve verification',
     });

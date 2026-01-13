@@ -61,10 +61,10 @@
         }
       },
       "plugins": ["@typescript-eslint"],
+      "extends": ["plugin:react/recommended", "plugin:@typescript-eslint/recommended"],
       "env": {
         "browser": true,
-        "es2022": true,
-        "react": true
+        "es2022": true
       },
       "rules": {
         "@typescript-eslint/no-unused-vars": "warn",
@@ -85,7 +85,21 @@
       }
     },
     {
-      "files": ["scripts/**/*.js", "tools/**/*.js", "**/*.config.js"],
+      "files": ["tools/**/*.js"],
+      "env": {
+        "node": true,
+        "k6": true
+      },
+      "globals": {
+        "__VU": "readonly",
+        "__ITER": "readonly"
+      },
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["scripts/**/*.js", "**/*.config.js"],
       "rules": {
         "no-console": "off"
       }

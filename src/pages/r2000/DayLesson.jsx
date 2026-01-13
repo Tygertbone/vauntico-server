@@ -38,7 +38,7 @@ export default function DayLesson() {
   const handleComplete = () => {
     const day = parseInt(dayNumber)
     const savedProgress = localStorage.getItem('r2k_progress')
-    let progressArray = savedProgress ? JSON.parse(savedProgress) : []
+    const progressArray = savedProgress ? JSON.parse(savedProgress) : []
     
     if (!progressArray.includes(day)) {
       progressArray.push(day)

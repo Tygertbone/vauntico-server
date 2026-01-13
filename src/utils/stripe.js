@@ -279,17 +279,19 @@ export const mockCheckout = async (product, tier = null, billingCycle = null) =>
       break
     }
 
-    case 'workshop_kit':
+    case 'workshop_kit': {
       localStorage.setItem('vauntico_workshop_kit', 'true')
       break
+    }
 
-    case 'audit_service':
+    case 'audit_service': {
       localStorage.setItem('vauntico_audit_subscription', JSON.stringify({
         status: 'active',
         plan: tier,
         isActive: true
       }))
       break
+    }
   }
 
   // Show success message
@@ -372,17 +374,19 @@ export const verifyPayment = async (sessionId) => {
           break
         }
 
-        case 'workshop_kit':
+        case 'workshop_kit': {
           localStorage.setItem('vauntico_workshop_kit', 'true')
           break
+        }
 
-        case 'audit_service':
+        case 'audit_service': {
           localStorage.setItem('vauntico_audit_subscription', JSON.stringify({
             status: 'active',
             plan: plan,
             isActive: true
           }))
           break
+        }
       }
 
       return { success: true, session }

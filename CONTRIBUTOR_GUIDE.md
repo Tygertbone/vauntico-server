@@ -365,6 +365,70 @@ When performing lint stabilization, follow this systematic approach:
   # Monitor GitHub Actions for any lint-related failures
   ```
 
+## 🚨 Phase 2: TypeScript Error Triage Plan
+
+### Error Categories for Quick vs Structural Fixes
+
+Based on current lint analysis (391 errors), we categorize as:
+
+#### 🟢 Quick Fixes (~50 errors - Immediate)
+- **Unused variables** (`no-unused-vars`): Remove unused imports and declarations
+- **Console statements** (`no-console`): Acceptable in dev files, fix critical ones
+- **Simple type issues**: Add missing types for function parameters
+- **Escape characters** (`no-useless-escape`): Fix unnecessary escapes
+
+#### 🟡 Must-Fix Errors (~20 errors - Blockers)  
+- **Widget rule definitions**: TypeScript ESLint rules not loading in widget
+- **Type mismatches**: Critical type errors preventing compilation
+- **Missing imports**: Required imports not found
+
+#### 🟠 Structural Refactors (~320 errors - Deferred)
+- **Widget `any` types**: Replace all `any` with proper TypeScript types
+- **Complex type inference**: Improve type safety throughout codebase
+- **Rule enforcement gaps**: Missing ESLint rules for stricter type checking
+
+### Quick Fix Strategy
+
+**Priority 1**: Remove unused variables in tools and test files
+**Priority 2**: Add simple type annotations to reduce implicit any
+**Priority 3**: Fix console statements in critical production code
+
+### Structural Refactor Roadmap
+
+**Widget Modernization**:
+1. Create proper TypeScript interfaces for all widget props
+2. Implement strict typing for event handlers
+3. Replace `any` types with union types and interfaces
+4. Set up proper ESLint configuration for widget
+
+**Type Safety Enhancement**:
+1. Implement proper error handling with typed responses
+2. Add type guards for runtime type checking
+3. Improve type inference for complex objects
+4. Standardize type naming conventions
+
+### Fix Commit Guidelines
+
+#### Quick Fixes
+```bash
+# Example commit for quick fixes
+git commit -m "fix(ts): resolve quick TypeScript lint errors (unused vars, implicit any)"
+```
+
+#### Structural Documentation
+```bash
+# Example commit for roadmap
+git commit -m "docs(contrib): add roadmap for TypeScript strictness hardening"
+```
+
+### Verification Checklist
+
+- [ ] Quick fixes reduce error count by 30-50 errors
+- [ ] Structural roadmap documented with clear milestones
+- [ ] Widget type safety plan established
+- [ ] Final lint run shows significant error reduction
+- [ ] All changes pushed and GitHub Actions rerun successfully
+
 ---
 
 Thank you for contributing to Vauntico!

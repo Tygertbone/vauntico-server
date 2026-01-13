@@ -72,7 +72,7 @@ export const loadStripe = async () => {
   }
 
   stripeInstance = window.Stripe(STRIPE_PUBLIC_KEY)
-  console.log('✅ Stripe initialized')
+  // Stripe initialized - no console log in production
   return stripeInstance
 }
 
@@ -102,7 +102,7 @@ export const checkoutCreatorPass = async (tier, billingCycle = 'monthly', userEm
     
     if (priceId.startsWith('price_')) {
       // TODO: Replace with actual Stripe price ID
-      console.warn('⚠️  Stripe price ID not configured. Set up products in Stripe Dashboard.')
+      // Stripe price ID not configured. Set up products in Stripe Dashboard.
       alert('Payment system not yet configured. Please contact support.')
       return
     }
@@ -137,13 +137,11 @@ export const checkoutCreatorPass = async (tier, billingCycle = 'monthly', userEm
     })
 
     if (error) {
-      console.error('Stripe checkout error:', error)
       alert('Payment failed. Please try again.')
     }
   } catch (error) {
-    console.error('Checkout error:', error)
     alert('Something went wrong. Please try again.')
-  }
+    }
 }
 
 /**
@@ -155,7 +153,7 @@ export const checkoutWorkshopKit = async (userEmail = null) => {
     const priceId = STRIPE_PRICE_IDS.WORKSHOP_KIT.oneTime
     
     if (priceId.startsWith('price_')) {
-      console.warn('⚠️  Stripe price ID not configured')
+      // Stripe price ID not configured
       alert('Payment system not yet configured. Please contact support.')
       return
     }
@@ -184,13 +182,11 @@ export const checkoutWorkshopKit = async (userEmail = null) => {
     })
 
     if (error) {
-      console.error('Stripe checkout error:', error)
       alert('Payment failed. Please try again.')
     }
   } catch (error) {
-    console.error('Checkout error:', error)
     alert('Something went wrong. Please try again.')
-  }
+    }
 }
 
 /**
@@ -209,7 +205,6 @@ export const checkoutAuditService = async (plan, userEmail = null) => {
     const priceId = STRIPE_PRICE_IDS.AUDIT_SERVICE[plan]
     
     if (priceId.startsWith('price_')) {
-      console.warn('⚠️  Stripe price ID not configured')
       alert('Payment system not yet configured. Please contact support.')
       return
     }
@@ -239,13 +234,11 @@ export const checkoutAuditService = async (plan, userEmail = null) => {
     })
 
     if (error) {
-      console.error('Stripe checkout error:', error)
       alert('Payment failed. Please try again.')
     }
   } catch (error) {
-    console.error('Checkout error:', error)
     alert('Something went wrong. Please try again.')
-  }
+    }
 }
 
 // ============================================================================
@@ -258,10 +251,6 @@ export const checkoutAuditService = async (plan, userEmail = null) => {
  * USE ONLY FOR DEVELOPMENT - Remove in production
  */
 export const mockCheckout = async (product, tier = null, billingCycle = null) => {
-  console.log('🧪 MOCK CHECKOUT - This is for testing only')
-  console.log(`Product: ${product}`)
-  if (tier) console.log(`Tier: ${tier}`)
-  if (billingCycle) console.log(`Billing: ${billingCycle}`)
 
   // Simulate payment processing delay
   await new Promise(resolve => setTimeout(resolve, 2000))
@@ -324,7 +313,6 @@ export const openCustomerPortal = async () => {
     const session = await response.json()
     window.location.href = session.url
   } catch (error) {
-    console.error('Portal error:', error)
     alert('Unable to open billing portal. Please try again.')
   }
 }
@@ -394,7 +382,6 @@ export const verifyPayment = async (sessionId) => {
 
     return { success: false, error: 'Payment not completed' }
   } catch (error) {
-    console.error('Verification error:', error)
     return { success: false, error: error.message }
   }
 }
@@ -408,12 +395,9 @@ export const STRIPE_DEV = {
    * Test checkout flow with mock data
    */
   testCheckout: (product = 'creator_pass', tier = 'pro', billingCycle = 'monthly') => {
-    console.log('🧪 Testing Stripe checkout...')
     if (isStripeConfigured()) {
-      console.log('✅ Stripe is configured')
-      console.log('Real checkout would redirect to Stripe')
+      // Real checkout would redirect to Stripe
     } else {
-      console.log('⚠️  Stripe not configured - using mock checkout')
       mockCheckout(product, tier, billingCycle)
     }
   },
@@ -422,18 +406,13 @@ export const STRIPE_DEV = {
    * Log Stripe configuration status
    */
   logStatus: () => {
-    console.log('=== Stripe Configuration ===')
-    console.log('Public Key:', isStripeConfigured() ? '✅ Configured' : '❌ Not configured')
-    console.log('Price IDs:', STRIPE_PRICE_IDS)
-    console.log('===========================')
+    // Stripe configuration status - use in development if needed
   }
 }
 
 // Expose dev utilities in development
 if (import.meta.env.DEV) {
   window.VaunticoStripe = STRIPE_DEV
-  console.log('💳 Stripe Dev Utils: window.VaunticoStripe')
-  console.log('Status:', isStripeConfigured() ? '✅ Configured' : '⚠️  Not configured (using mock)')
 }
 
 // ============================================================================

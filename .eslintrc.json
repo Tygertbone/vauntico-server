@@ -18,7 +18,7 @@
   },
   "rules": {
     "no-unused-vars": "warn",
-    "no-console": "warn",
+    "no-console": "off",
     "prefer-const": "error"
   },
   "overrides": [
@@ -43,5 +43,12 @@
         "no-unused-vars": "off"
       }
     }
+  ],
+  "ignorePatterns": [
+    "dist/",
+    "node_modules/",
+    "*.min.js",
+    "coverage/",
+    "server-v2/dist/"
   ]
 }

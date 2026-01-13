@@ -8,9 +8,9 @@ on:
     branches: [feature/phase3-enterprise-compliance]
 
 env:
-  MONETIZATION_PHASE: 'Phase 3: Enterprise Compliance'
+  MONETIZATION_PHASE: "Phase 3: Enterprise Compliance"
   ENTERPRISE_MRR_TARGET: 5000K
-  COMPLIANCE_REGION: 'global'
+  COMPLIANCE_REGION: "global"
   SLA_TARGET: 99.9%
 
 jobs:
@@ -25,31 +25,31 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
 
       - name: Validate enterprise requirements
         run: |
           echo "🔍 Validating Phase 3 enterprise compliance requirements..."
-          
+
           # Check for required enterprise files
           if [ ! -f "src/openapi/v3-enterprise.yaml" ]; then
             echo "❌ Phase 3 Enterprise OpenAPI spec not found"
             exit 1
           fi
-          
+
           # Validate enterprise documentation
           if [ ! -f "docs/enterprise-compliance.md" ]; then
             echo "❌ Enterprise compliance documentation not found"
             exit 1
           fi
-          
+
           # Check for enterprise middleware
           if [ ! -f "server-v2/src/middleware/enterprise-compliance.ts" ]; then
             echo "❌ Enterprise compliance middleware not found"
             exit 1
           fi
-          
+
           echo "✅ Enterprise compliance validation passed"
 
       - name: Upload compliance validation report
@@ -70,8 +70,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
 
       - name: Install dependencies
         working-directory: ./server-v2
@@ -112,8 +112,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
 
       - name: Test Grafana dashboard integration
         working-directory: ./monitoring/grafana/dashboards
@@ -123,7 +123,7 @@ jobs:
             echo "❌ Enterprise dashboard not found"
             exit 1
           fi
-          
+
           echo "✅ Enterprise dashboard configuration validated"
 
       - name: Upload dashboard validation report
@@ -144,13 +144,13 @@ jobs:
       - name: Validate compliance metrics
         run: |
           echo "📊 Monitoring enterprise compliance KPI metrics..."
-          
+
           # Check compliance dashboard
           if [ ! -f "monitoring/grafana/dashboards/vauntico-phase3-enterprise.json" ]; then
             echo "❌ Enterprise compliance dashboard not configured"
             exit 1
           fi
-          
+
           echo "✅ Compliance monitoring configured"
 
   # Job 5: Enterprise Security Validation
@@ -164,13 +164,13 @@ jobs:
       - name: Run security scans
         run: |
           echo "🛡️ Running enterprise security validation..."
-          
+
           # Check for security vulnerabilities
           npm audit --audit-level=moderate
-          
+
           # Run SAST scan
           npm run security:check || true
-          
+
           echo "✅ Enterprise security validation completed"
 
       - name: Upload security report
@@ -192,17 +192,17 @@ jobs:
       - name: Validate deployment readiness
         run: |
           echo "🚀 Validating enterprise deployment readiness..."
-          
+
           # Check all enterprise components
           ENTERPRISE_READY=true
-          
+
           if [ "$ENTERPRISE_READY" == "true" ]; then
             echo "✅ Enterprise components validated for deployment"
           else
             echo "❌ Enterprise components not ready for deployment"
             exit 1
           fi
-          
+
           # Validate deployment configuration
           echo "✅ Enterprise deployment configuration validated"
 
@@ -215,7 +215,7 @@ jobs:
           echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> enterprise-deployment-report.md
           echo "========================" >> enterprise-deployment-report.md
           echo "" >> enterprise-deployment-report.md
-          
+
           echo "✅ COMPONENTS VALIDATED" >> enterprise-deployment-report.md
           echo "🔧 ENTERPRISE FEATURES:" >> enterprise-deployment-report.md
           echo "- Advanced trust score calculations" >> enterprise-deployment-report.md
@@ -236,7 +236,14 @@ jobs:
 
   # Job 7: Enterprise Success Notification
   notify-enterprise-success:
-    needs: [validate-enterprise-compliance, test-enterprise-integration, monitor-enterprise-compliance, validate-enterprise-security, validate-enterprise-deployment]
+    needs:
+      [
+        validate-enterprise-compliance,
+        test-enterprise-integration,
+        monitor-enterprise-compliance,
+        validate-enterprise-security,
+        validate-enterprise-deployment,
+      ]
     if: ${{ success() }}
     runs-on: ubuntu-latest
     steps:

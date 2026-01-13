@@ -3,70 +3,70 @@ name: OCI Authentication Test
 on:
   workflow_dispatch:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test-oci-auth:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Install OCI CLI
-      run: |
-        python3 -m pip install oci-cli
-        echo "/home/runner/bin" >> $GITHUB_PATH
-        
-    - name: Verify OCI CLI Installation
-      run: |
-        oci --version
-        
-    - name: Configure OCI CLI
-      env:
-        OCI_TENANCY_OCID: ${{ secrets.OCI_TENANCY_OCID }}
-        OCI_USER_OCID: ${{ secrets.OCI_USER_OCID }}
-        OCI_REGION: ${{ secrets.OCI_REGION }}
-        OCI_KEY_FINGERPRINT: ${{ secrets.OCI_KEY_FINGERPRINT }}
-        OCI_KEY_FILE: ${{ secrets.OCI_KEY_FILE }}
-      run: |
-        mkdir -p ~/.oci
-        echo "$OCI_KEY_FILE" | base64 -d > ~/.oci/oci_api_key.pem
-        chmod 600 ~/.oci/oci_api_key.pem
-        
-        cat > ~/.oci/config << EOF
-        [DEFAULT]
-        user=$OCI_USER_OCID
-        tenancy=$OCI_TENANCY_OCID
-        region=$OCI_REGION
-        fingerprint=$OCI_KEY_FINGERPRINT
-        key_file=~/.oci/oci_api_key.pem
-        EOF
-        
-        chmod 600 ~/.oci/config
-        
-    - name: Test OCI Authentication - List Regions
-      env:
-        OCI_CLI_AUTH: security_token
-      run: |
-        oci iam region list
-        
-    - name: Test OCI Authentication - Get Current User
-      env:
-        OCI_CLI_AUTH: security_token
-      run: |
-        oci iam user get --user-id "$OCI_USER_OCID"
-        
-    - name: Test OCI Authentication - List Compartments
-      env:
-        OCI_CLI_AUTH: security_token
-      run: |
-        oci iam compartment list --all
-        
-    - name: Cleanup
-      if: always()
-      run: |
-        rm -f ~/.oci/oci_api_key.pem
-        rm -f ~/.oci/config
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install OCI CLI
+        run: |
+          python3 -m pip install oci-cli
+          echo "/home/runner/bin" >> $GITHUB_PATH
+
+      - name: Verify OCI CLI Installation
+        run: |
+          oci --version
+
+      - name: Configure OCI CLI
+        env:
+          OCI_TENANCY_OCID: ${{ secrets.OCI_TENANCY_OCID }}
+          OCI_USER_OCID: ${{ secrets.OCI_USER_OCID }}
+          OCI_REGION: ${{ secrets.OCI_REGION }}
+          OCI_KEY_FINGERPRINT: ${{ secrets.OCI_KEY_FINGERPRINT }}
+          OCI_KEY_FILE: ${{ secrets.OCI_KEY_FILE }}
+        run: |
+          mkdir -p ~/.oci
+          echo "$OCI_KEY_FILE" | base64 -d > ~/.oci/oci_api_key.pem
+          chmod 600 ~/.oci/oci_api_key.pem
+
+          cat > ~/.oci/config << EOF
+          [DEFAULT]
+          user=$OCI_USER_OCID
+          tenancy=$OCI_TENANCY_OCID
+          region=$OCI_REGION
+          fingerprint=$OCI_KEY_FINGERPRINT
+          key_file=~/.oci/oci_api_key.pem
+          EOF
+
+          chmod 600 ~/.oci/config
+
+      - name: Test OCI Authentication - List Regions
+        env:
+          OCI_CLI_AUTH: security_token
+        run: |
+          oci iam region list
+
+      - name: Test OCI Authentication - Get Current User
+        env:
+          OCI_CLI_AUTH: security_token
+        run: |
+          oci iam user get --user-id "$OCI_USER_OCID"
+
+      - name: Test OCI Authentication - List Compartments
+        env:
+          OCI_CLI_AUTH: security_token
+        run: |
+          oci iam compartment list --all
+
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -f ~/.oci/oci_api_key.pem
+          rm -f ~/.oci/config

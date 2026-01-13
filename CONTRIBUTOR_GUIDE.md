@@ -107,6 +107,21 @@ Files in `tools/` directory have special globals for k6 testing:
 - `__VU`: Virtual user count (readonly)
 - `__ITER`: Iteration number (readonly)
 
+#### TypeScript ESLint Version Alignment
+Ensure TypeScript ESLint packages have matching versions:
+```bash
+# Check versions match
+npm ls @typescript-eslint/eslint-plugin @typescript-eslint/parser
+
+# If versions don't match, align them:
+npm install @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest
+```
+
+Common issues when versions are misaligned:
+- Rule definition not found errors
+- Type-aware rules not working
+- Parser configuration errors
+
 ### Commit Standards
 Use semantic commit messages:
 ```bash

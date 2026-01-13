@@ -85,8 +85,8 @@ router.get('/', apiRateLimit, async (req: Request, res: Response) => {
     } = req.query;
 
     const offset = (Number(page) - 1) * Number(limit);
-    let whereConditions = ['p.is_active = true', 'p.moderation_status = \'approved\''];
-    let params: any[] = [];
+    const whereConditions = ['p.is_active = true', 'p.moderation_status = \'approved\''];
+    const params: any[] = [];
     let paramIndex = 1;
 
     // Build WHERE conditions

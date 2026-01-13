@@ -15,12 +15,12 @@ declare global {
       };
       requestId?: string;
       user?: { userId?: string };
-    };
+    }
     interface Response {
       locals: any;
       statusCode?: number;
       statusMessage?: string;
-    };
+    }
   }
 }
 

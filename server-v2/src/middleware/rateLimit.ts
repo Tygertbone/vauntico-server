@@ -3,7 +3,7 @@ import { logger } from '../utils/logger';
 import { SecurityMonitor, SecurityEventType } from './security';
 
 // Store for rate limiting - falls back to memory if Redis is unavailable
-let rateLimitStore: Map<string, { hits: number; resetTime: number }> = new Map();
+const rateLimitStore: Map<string, { hits: number; resetTime: number }> = new Map();
 
 // Clear expired entries every minute
 setInterval(() => {

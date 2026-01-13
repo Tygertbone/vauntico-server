@@ -51,14 +51,41 @@
       }
     },
     {
-      "files": ["*.ts", "*.tsx"],
+      "files": ["server-v2/**/*.ts", "server-v2/**/*.tsx"],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module",
         "ecmaFeatures": {
           "jsx": true
-        }
+        },
+        "project": "./server-v2/tsconfig.json"
+      },
+      "plugins": ["@typescript-eslint"],
+      "extends": ["plugin:react/recommended", "plugin:@typescript-eslint/recommended"],
+      "env": {
+        "browser": true,
+        "es2022": true,
+        "node": true
+      },
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-console": "warn",
+        "@typescript-eslint/prefer-const": "error",
+        "no-unused-vars": "off",
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["widget/**/*.ts", "widget/**/*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "ecmaFeatures": {
+          "jsx": true
+        },
+        "project": "./widget/tsconfig.json"
       },
       "plugins": ["@typescript-eslint"],
       "extends": ["plugin:react/recommended", "plugin:@typescript-eslint/recommended"],

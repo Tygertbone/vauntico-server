@@ -44,17 +44,6 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "eslintConfig": {
-    "extends": [
-      "eslint:recommended",
-      "@typescript-eslint/recommended"
-    ],
-    "rules": {
-      "@typescript-eslint/no-console": "warn",
-      "@typescript-eslint/prefer-const": "warn",
-      "@typescript-eslint/no-explicit-any": "warn"
-    }
-  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",

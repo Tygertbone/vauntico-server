@@ -1,11 +1,8 @@
 import { query } from './pool';
+import { HealthCheckResult } from '../types/database';
 
 // Health check function for database - simple SELECT NOW() test
-export async function checkDatabaseHealth(): Promise<{
-  isHealthy: boolean;
-  timestamp?: string;
-  error?: string;
-}> {
+export async function checkDatabaseHealth(): Promise<HealthCheckResult> {
   try {
     const result = await query('SELECT NOW()');
     return {

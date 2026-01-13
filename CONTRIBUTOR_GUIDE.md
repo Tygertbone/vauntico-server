@@ -67,6 +67,17 @@ npm run lint:fix
 npm run lint src/utils/stripe.js
 npm run lint server-v2/src/
 ```
+## 🧹 Lint Sweep Checklist
+
+Before declaring lint stabilization complete, contributors must run through this checklist:
+
+- [ ] **Case block audit**  
+  Search all `switch` statements for `case` blocks with lexical declarations (`const`, `let`, `class`, `function`).  
+  Wrap each offending case in braces.  
+  Commit with:  
+  ```bash
+  git commit -m "fix(stripe): wrap all case block lexical declarations in braces"
+
 
 ### Manual Fixes Required
 Some ESLint issues require manual intervention:
@@ -306,5 +317,54 @@ Request code review for:
 2. Respond to feedback promptly
 3. Help with testing if needed
 4. Celebrate your contribution! 🎉
+
+## 🧹 Lint Sweep Checklist
+
+When performing lint stabilization, follow this systematic approach:
+
+- [ ] **Case block audit**: Wrap all lexical declarations (`const`, `let`, `class`, `function`) in case blocks with braces
+  ```javascript
+  // ❌ WRONG
+  switch (product) {
+    case 'creator_pass':
+      const prices = { starter: 17, pro: 59 }
+      break
+  }
+  
+  // ✅ CORRECT
+  switch (product) {
+    case 'creator_pass': {
+      const prices = { starter: 17, pro: 59 }
+      break
+    }
+  }
+  ```
+
+- [ ] **ESLint plugin verification**: Ensure `parserOptions.project` points to correct tsconfig.json files and versions align
+  ```bash
+  # Check versions match
+  npm ls @typescript-eslint/eslint-plugin @typescript-eslint/parser
+  
+  # Align versions if needed
+  npm install @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest
+  ```
+
+- [ ] **Contributor documentation**: Update guide with lint setup and semantic commit examples
+  - Document case block fixes
+  - Include version alignment procedures
+  - Add common rule explanations
+
+- [ ] **Final verification**: Run `npm run lint` and confirm remaining warnings are acceptable
+  - Console statements in development files (acceptable)
+  - Unused variables in test files (acceptable)
+  - k6 globals in tools directory (acceptable)
+
+- [ ] **GitHub Actions rerun**: Push changes and rerun all workflows to ensure CI/CD stability
+  ```bash
+  git push origin main
+  # Monitor GitHub Actions for any lint-related failures
+  ```
+
+---
 
 Thank you for contributing to Vauntico!

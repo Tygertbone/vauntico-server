@@ -25,11 +25,13 @@ $ npm run check-types
 Most unit tests are in the `test` directory, some others are in `www/test`.
 
 Run all tests:
+
 ```sh
 $ npm run test
 ```
 
 Run a specific test file:
+
 ```sh
 $ npm run test -- path/to/TestFile.spec.tsx
 ```
@@ -208,7 +210,9 @@ Running `npm run build` generates the following folders:
 - `build` - output of `tsc` build - we don't use this for anything at all I think
 
 Running `npm run test-coverage` generates:
+
 - `coverage` - code coverage report
 
 Running `npm run test-mutation` generates:
+
 - `reports` - mutation testing report

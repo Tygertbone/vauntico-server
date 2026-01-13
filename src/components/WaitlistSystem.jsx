@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import { Mail, Users, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import React, { useState } from "react";
+import { Mail, Users, Clock, CheckCircle, AlertCircle } from "lucide-react";
 
 const WaitlistSystem = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [position, setPosition] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError('');
+    setError("");
 
     try {
-      const response = await fetch('/api/waitlist', {
-        method: 'POST',
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email }),
       });
@@ -27,12 +27,12 @@ const WaitlistSystem = () => {
       if (data.success) {
         setIsSubmitted(true);
         setPosition(data.position);
-        setEmail('');
+        setEmail("");
       } else {
-        setError(data.message || 'Something went wrong. Please try again.');
+        setError(data.message || "Something went wrong. Please try again.");
       }
     } catch (err) {
-      setError('Network error. Please try again.');
+      setError("Network error. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -44,7 +44,9 @@ const WaitlistSystem = () => {
         <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
           <CheckCircle className="w-8 h-8 text-white" />
         </div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">You're on the list!</h3>
+        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+          You're on the list!
+        </h3>
         <p className="text-gray-600 mb-4">
           Welcome to the Vauntico beta program. Your queue position is:
         </p>
@@ -53,7 +55,8 @@ const WaitlistSystem = () => {
         </div>
         <p className="text-sm text-gray-500 mb-2">Queue Position</p>
         <p className="text-gray-600 text-sm">
-          We'll send you an invitation as soon as a spot opens up. Keep an eye on your inbox!
+          We'll send you an invitation as soon as a spot opens up. Keep an eye
+          on your inbox!
         </p>
         <div className="mt-6 flex items-center justify-center text-sm text-gray-500">
           <Clock className="w-4 h-4 mr-2" />
@@ -71,13 +74,18 @@ const WaitlistSystem = () => {
         </div>
         <div>
           <h3 className="text-xl font-bold text-gray-900">Join the Waitlist</h3>
-          <p className="text-gray-600 text-sm">Be first to access Vauntico beta</p>
+          <p className="text-gray-600 text-sm">
+            Be first to access Vauntico beta
+          </p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             Email Address
           </label>
           <div className="relative">
@@ -108,7 +116,7 @@ const WaitlistSystem = () => {
           disabled={isSubmitting || !email}
           className="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? 'Joining...' : 'Join Waitlist'}
+          {isSubmitting ? "Joining..." : "Join Waitlist"}
         </button>
       </form>
 

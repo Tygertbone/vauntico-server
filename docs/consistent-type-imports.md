@@ -1,5 +1,5 @@
 ---
-description: 'Enforce consistent usage of type imports.'
+description: "Enforce consistent usage of type imports."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -23,8 +23,8 @@ This option defines the expected import kind for type-only imports. Valid values
 Examples of **correct** code with `{prefer: 'type-imports'}`, and **incorrect** code with `{prefer: 'no-type-imports'}`.
 
 ```ts option='{ "prefer": "type-imports" }' showPlaygroundButton
-import type { Foo } from 'Foo';
-import type Bar from 'Bar';
+import type { Foo } from "Foo";
+import type Bar from "Bar";
 type T = Foo;
 const x: Bar = 1;
 ```
@@ -32,8 +32,8 @@ const x: Bar = 1;
 Examples of **incorrect** code with `{prefer: 'type-imports'}`, and **correct** code with `{prefer: 'no-type-imports'}`.
 
 ```ts option='{ "prefer": "type-imports" }' showPlaygroundButton
-import { Foo } from 'Foo';
-import Bar from 'Bar';
+import { Foo } from "Foo";
+import Bar from "Bar";
 type T = Foo;
 const x: Bar = 1;
 ```
@@ -43,15 +43,15 @@ const x: Bar = 1;
 This option defines the expected type modifier to be added when an import is detected as used only in the type position. Valid values for `fixStyle` are:
 
 - `separate-type-imports` will add the type keyword after the import keyword `import type { A } from '...'`. It is the default.
-- `inline-type-imports` will inline the type keyword `import { type A } from '...'` and is only available in TypeScript 4.5 and onwards. See [documentation here](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names 'TypeScript 4.5 documentation on type modifiers and import names').
+- `inline-type-imports` will inline the type keyword `import { type A } from '...'` and is only available in TypeScript 4.5 and onwards. See [documentation here](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names "TypeScript 4.5 documentation on type modifiers and import names").
 
 <!--tabs-->
 
 #### ❌ Incorrect
 
 ```ts
-import { Foo } from 'Foo';
-import Bar from 'Bar';
+import { Foo } from "Foo";
+import Bar from "Bar";
 type T = Foo;
 const x: Bar = 1;
 ```
@@ -59,8 +59,8 @@ const x: Bar = 1;
 #### ✅ With `separate-type-imports`
 
 ```ts option='{ "fixStyle": "separate-type-imports" }'
-import type { Foo } from 'Foo';
-import type Bar from 'Bar';
+import type { Foo } from "Foo";
+import type Bar from "Bar";
 type T = Foo;
 const x: Bar = 1;
 ```
@@ -68,8 +68,8 @@ const x: Bar = 1;
 #### ✅ With `inline-type-imports`
 
 ```ts option='{ "fixStyle": "inline-type-imports" }'
-import { type Foo } from 'Foo';
-import type Bar from 'Bar';
+import { type Foo } from "Foo";
+import type Bar from "Bar";
 type T = Foo;
 const x: Bar = 1;
 ```
@@ -84,8 +84,8 @@ Default is `true`.
 Examples of **incorrect** code with `{disallowTypeAnnotations: true}`:
 
 ```ts option='{ "disallowTypeAnnotations": true }' showPlaygroundButton
-type T = import('Foo').Foo;
-const x: import('Bar') = 1;
+type T = import("Foo").Foo;
+const x: import("Bar") = 1;
 ```
 
 ## Usage with `emitDecoratorMetadata`

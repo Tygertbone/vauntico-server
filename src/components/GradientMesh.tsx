@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export default function GradientMesh() {
   return (
@@ -19,7 +19,7 @@ export default function GradientMesh() {
             rgba(10, 16, 24, 0.95) 100%
           )
         `,
-        filter: 'saturate(140%) blur(0.3px)',
+        filter: "saturate(140%) blur(0.3px)",
       }}
     />
   );

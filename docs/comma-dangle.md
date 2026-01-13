@@ -1,5 +1,5 @@
 ---
-description: 'Require or disallow trailing commas.'
+description: "Require or disallow trailing commas."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

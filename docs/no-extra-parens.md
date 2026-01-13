@@ -1,5 +1,5 @@
 ---
-description: 'Disallow unnecessary parentheses.'
+description: "Disallow unnecessary parentheses."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

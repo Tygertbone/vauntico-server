@@ -31,6 +31,7 @@ objective: "Execute the proven strategy to land your first paying customer"
 ## 📱 Step 1: The Value Post (Seed Your Offer)
 
 **Post video that:**
+
 - Solves a problem
 - Teases bigger solution
 - Invites DMs
@@ -62,6 +63,7 @@ Quick question: What's your main fitness goal right now?
 **They say:** "I want to lose 10kg but can't afford a gym"
 
 **You say:**
+
 ```
 I totally get that! That's exactly why I created [Your Product/Service].
 
@@ -164,12 +166,15 @@ Thanks for trusting me! If you love this, I'd appreciate if you shared your expe
 **If you haven't sold yet, do this:**
 
 ### **Morning:**
+
 Post a value video. End with: "Need help? DM me!"
 
 ### **Midday:**
+
 Post to Stories: "Opening 5 spots for [service/product]. DM me if interested!"
 
 ### **Evening:**
+
 Post: "3 spots left! DM me now!"
 
 **Create urgency. People buy when there's scarcity.**
@@ -181,11 +186,13 @@ Post: "3 spots left! DM me now!"
 **Thabo** (Fitness, 420 followers)
 
 **Day 1:**
+
 - Posted: "3 home exercises for bigger arms"
 - CTA: "Want my full 30-day plan? DM me ARMS"
 - 7 people DM'd
 
 **Day 2:**
+
 - Responded to all 7 DMs
 - Explained his plan (R400)
 - 2 people said "Let me think"
@@ -193,6 +200,7 @@ Post: "3 spots left! DM me now!"
 - 2 people said "YES"
 
 **Day 3:**
+
 - Followed up with "let me think" people
 - 1 more said YES
 - **3 sales × R400 = R1,200**
@@ -206,6 +214,7 @@ Post: "3 spots left! DM me now!"
 **If you need your first sale ASAP:**
 
 **Post to WhatsApp status:**
+
 ```
 Hey everyone! 🙌
 

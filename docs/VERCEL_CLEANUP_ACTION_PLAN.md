@@ -1,6 +1,7 @@
 # 🚀 VERCEL CLEANUP & DOMAIN CONSOLIDATION - ACTION PLAN
 
 ## 🎯 OBJECTIVE
+
 Consolidate 5 Vercel deployments into ONE production site at `vauntico.com` with proper redirects and SEO configuration.
 
 ---
@@ -8,22 +9,19 @@ Consolidate 5 Vercel deployments into ONE production site at `vauntico.com` with
 ## 📊 CURRENT STATE
 
 ### Active Deployments
+
 1. ✅ **vauntico-mvp-cursur-build** (PRODUCTION - Keep this)
    - URL: vauntico-mvp-cursur-build.vercel.app
    - Status: Live, verified, optimized
    - Build: 279KB, 9s deployment
-   
 2. ⚠️ **vauntico-mvp** → www.vauntico.com
    - Currently pointing to custom domain
    - Needs to be retired/redirected
-   
 3. ❌ **vauntico-mvp1** → vault.vauntico.com
    - Subdomain deployment
    - Archive unless vault feature requires separate deployment
-   
 4. ❌ **vauntico_mvp_1.0** → vauntico-mvp10.vercel.app
    - Old version, archive
-   
 5. ❌ **vauntico_mvp_ignite** → vaunticomvpignite.vercel.app
    - Old version, archive
 
@@ -32,6 +30,7 @@ Consolidate 5 Vercel deployments into ONE production site at `vauntico.com` with
 ## 🎬 PHASE 1: DOMAIN CONFIGURATION (30 minutes)
 
 ### Step 1: Access Vercel Dashboard
+
 ```bash
 # Open browser
 https://vercel.com/dashboard
@@ -53,6 +52,7 @@ vercel list
 6. Copy the DNS instructions provided
 
 **Via Vercel CLI (Alternative):**
+
 ```bash
 cd /path/to/vauntico-mvp
 vercel link
@@ -69,6 +69,7 @@ vercel domains add vauntico.com
 **Add these DNS records:**
 
 #### For Apex Domain (vauntico.com)
+
 ```
 Type: A
 Name: @
@@ -84,6 +85,7 @@ TTL: 3600
 ```
 
 #### For WWW Subdomain (www.vauntico.com)
+
 ```
 Type: CNAME
 Name: www
@@ -92,6 +94,7 @@ TTL: 3600
 ```
 
 #### Delete Old Records
+
 - Remove any existing A/CNAME records pointing to old Vercel deployments
 - Remove vault.vauntico.com CNAME (unless keeping it)
 
@@ -113,6 +116,7 @@ curl -I https://vauntico.com
 ```
 
 **Expected Results:**
+
 - `vauntico.com` → Points to Vercel IPs
 - `www.vauntico.com` → CNAME to Vercel
 - HTTPS certificate auto-issued (may take 10 minutes)
@@ -156,9 +160,7 @@ curl -I https://vauntico.com
       "permanent": true
     }
   ],
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
-  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
   "headers": [
     {
       "source": "/(.*)",
@@ -239,12 +241,14 @@ curl https://www.vauntico.com  # Should redirect to apex
    - Click **Delete**
 
 **Projects to Delete:**
+
 - ❌ `vauntico-mvp` (if not in use)
 - ❌ `vauntico-mvp1`
 - ❌ `vauntico_mvp_1.0`
 - ❌ `vauntico_mvp_ignite`
 
 **Keep:**
+
 - ✅ `vauntico-mvp-cursur-build` (production)
 
 ---
@@ -269,6 +273,7 @@ curl https://www.vauntico.com  # Should redirect to apex
 ### Step 3: Update Social Media Links
 
 **Update these platforms:**
+
 - Twitter/X bio
 - LinkedIn company page
 - GitHub README
@@ -279,6 +284,7 @@ curl https://www.vauntico.com  # Should redirect to apex
 ## ✅ PHASE 5: VERIFICATION CHECKLIST
 
 ### Domain & Redirects
+
 - [ ] `https://vauntico.com` loads correctly
 - [ ] `https://www.vauntico.com` redirects to apex
 - [ ] HTTPS certificate is valid (green padlock)
@@ -286,6 +292,7 @@ curl https://www.vauntico.com  # Should redirect to apex
 - [ ] All pages work (/pricing, /about, /lore, etc.)
 
 ### SEO
+
 - [ ] Page title shows new positioning
 - [ ] Meta description updated
 - [ ] OG tags correct in source code
@@ -293,11 +300,13 @@ curl https://www.vauntico.com  # Should redirect to apex
 - [ ] Google Search Console verified
 
 ### Analytics
+
 - [ ] GA4 tracking works (check Real-Time)
 - [ ] Page views recorded
 - [ ] Events firing correctly
 
 ### Performance
+
 - [ ] Lighthouse score > 90
 - [ ] Page load < 3s
 - [ ] No console errors
@@ -310,17 +319,20 @@ curl https://www.vauntico.com  # Should redirect to apex
 **If something breaks:**
 
 ### Option 1: Revert DNS
+
 1. Go to domain registrar
 2. Change A record back to old Vercel deployment
 3. Wait 5-10 minutes for propagation
 
 ### Option 2: Revert Git Commit
+
 ```bash
 git revert HEAD
 git push origin main
 ```
 
 ### Option 3: Vercel Rollback
+
 1. Go to Vercel Dashboard
 2. Deployments tab
 3. Find previous working deployment
@@ -331,6 +343,7 @@ git push origin main
 ## 📊 SUCCESS METRICS
 
 **You'll know it worked when:**
+
 - ✅ Only ONE Vercel project remains
 - ✅ vauntico.com is your primary URL
 - ✅ All old URLs redirect properly
@@ -342,25 +355,27 @@ git push origin main
 
 ## 🎯 ESTIMATED TIMELINE
 
-| Phase | Task | Time |
-|-------|------|------|
-| 1 | Domain Configuration | 30 min |
-| 2 | Set Up Redirects | 15 min |
-| 3 | Archive Old Deployments | 15 min |
-| 4 | SEO & Analytics Update | 10 min |
-| 5 | Verification | 10 min |
-| **TOTAL** | | **80 min (1h 20m)** |
+| Phase     | Task                    | Time                |
+| --------- | ----------------------- | ------------------- |
+| 1         | Domain Configuration    | 30 min              |
+| 2         | Set Up Redirects        | 15 min              |
+| 3         | Archive Old Deployments | 15 min              |
+| 4         | SEO & Analytics Update  | 10 min              |
+| 5         | Verification            | 10 min              |
+| **TOTAL** |                         | **80 min (1h 20m)** |
 
 ---
 
 ## 📞 SUPPORT
 
 **If you get stuck:**
+
 - Vercel Docs: https://vercel.com/docs/concepts/projects/domains
 - DNS Checker: https://dnschecker.org
 - HTTPS Checker: https://www.ssllabs.com/ssltest/
 
 **Common Issues:**
+
 - **DNS not propagating**: Wait 30 min, try `dig vauntico.com`
 - **HTTPS certificate pending**: Vercel auto-issues, wait 10 min
 - **Redirects not working**: Clear browser cache, test in incognito
@@ -380,8 +395,8 @@ git push origin main
 
 **Status:** Ready to Execute  
 **Risk Level:** Low (easy rollback)  
-**Confidence:** High ✅  
+**Confidence:** High ✅
 
-**Start Time:** ___________  
-**Completion Time:** ___________  
-**Verified By:** ___________
+**Start Time:** ****\_\_\_****  
+**Completion Time:** ****\_\_\_****  
+**Verified By:** ****\_\_\_****

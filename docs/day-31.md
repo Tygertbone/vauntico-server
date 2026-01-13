@@ -21,6 +21,7 @@ objective: "Create your professional rate card to confidently quote prices"
 **Rate card = Document listing your services and prices**
 
 **Why you need one:**
+
 - ✅ Looks professional (brands take you seriously)
 - ✅ Saves time (no negotiating from scratch every time)
 - ✅ Sets clear boundaries (you control pricing)
@@ -35,11 +36,13 @@ objective: "Create your professional rate card to confidently quote prices"
 **(Followers ÷ 100) × Engagement Rate × 10 = Base Rate**
 
 **Example:**
+
 - 800 followers
 - 6% engagement rate
 - (800 ÷ 100) × 6 × 10 = R480 base rate
 
 **Adjust based on:**
+
 - Platform (Instagram pays more than TikTok)
 - Content type (video > static post)
 - Usage rights (can they repost? Adds 30-50%)
@@ -57,15 +60,18 @@ objective: "Create your professional rate card to confidently quote prices"
 ### **SOCIAL MEDIA PACKAGES:**
 
 **Instagram Reel/TikTok Video:**
+
 - 1 video: R[500-800]
 - 3 videos: R[1,300-2,000] (save R200!)
 - 5 videos: R[2,000-3,500] (save R500!)
 
 **Instagram Story (24 hours):**
+
 - 3 slides: R[200-400]
 - 5 slides + swipe-up: R[400-600]
 
 **Instagram Static Post:**
+
 - 1 post: R[400-600]
 - 3 posts: R[1,000-1,500]
 
@@ -74,16 +80,19 @@ objective: "Create your professional rate card to confidently quote prices"
 ### **ADD-ONS:**
 
 **Usage Rights** (brand can repost your content):
+
 - 30 days: +R200
 - 90 days: +R400
 - 1 year: +R800
 - Forever: +R1,500
 
 **Exclusivity** (can't promote competitors):
+
 - 30 days: +R500
 - 90 days: +R1,000
 
 **Content Creation Only** (you create, they post):
+
 - Per video: R[400-800]
 
 ---
@@ -91,17 +100,20 @@ objective: "Create your professional rate card to confidently quote prices"
 ### **MONTHLY RETAINERS:**
 
 **Bronze Package: R[1,500]/month**
+
 - 2 Instagram Reels
 - 4 Instagram Stories
 - Monthly analytics report
 
 **Silver Package: R[3,000]/month**
+
 - 4 Instagram Reels/TikToks
 - 8 Instagram Stories
 - Monthly meet-up (if local)
 - Analytics report
 
 **Gold Package: R[5,000]/month**
+
 - 8 videos (mix of Reels/TikToks)
 - Daily Stories (when featuring brand)
 - Exclusive partnership (no competitors)
@@ -130,18 +142,22 @@ objective: "Create your professional rate card to confidently quote prices"
 ## 💡 Pricing by Follower Count (Guidelines)
 
 ### **100-500 followers:**
+
 - Single post: R300-600
 - Monthly retainer: R800-1,500
 
 ### **500-2,000 followers:**
+
 - Single post: R500-1,200
 - Monthly retainer: R1,500-3,000
 
 ### **2,000-5,000 followers:**
+
 - Single post: R1,000-2,500
 - Monthly retainer: R3,000-6,000
 
 ### **5,000-10,000 followers:**
+
 - Single post: R2,000-5,000
 - Monthly retainer: R5,000-10,000
 
@@ -152,18 +168,22 @@ objective: "Create your professional rate card to confidently quote prices"
 ## 📱 How to Share Your Rate Card
 
 ### **Option #1: PDF (Professional)**
+
 - Create in Canva
 - Export as PDF
 - Send via email
 
 ### **Option #2: Google Doc (Easy)**
+
 - Share link
 - They can view instantly
 
 ### **Option #3: Text Format (Quick)**
+
 Copy-paste your rates in email/DM
 
 ### **Option #4: Website Page (Advanced)**
+
 If you have a website, create a "Work With Me" page
 
 ---
@@ -202,11 +222,13 @@ If you have a website, create a "Work With Me" page
 **Amara** (Finance niche, 1,200 followers, Nigeria)
 
 **Month 2: No rate card**
+
 - Brands asked: "What do you charge?"
 - She said: "Um... R300?"
 - Closed deal: R300
 
 **Month 3: Created rate card**
+
 - Same brand asked again
 - She sent professional rate card showing R800 for 1 video
 - Brand said: "Great, let's do it"
@@ -215,6 +237,7 @@ If you have a website, create a "Work With Me" page
 **Same work. R500 more. Just by having clear rates.**
 
 **Month 4:**
+
 - Brand asked for 4 videos/month
 - She offered Silver Package (R3,000/month)
 - They accepted
@@ -227,18 +250,21 @@ If you have a website, create a "Work With Me" page
 ## 📊 Rate Card Design Tips
 
 ### **Keep it simple:**
+
 - Clear pricing
 - Easy to scan
 - Professional font (Arial, Helvetica)
 - Your branding colors
 
 ### **Include:**
+
 - Your photo (humanizes it)
 - Key stats (followers, engagement, niche)
 - Contact info
 - Payment terms
 
 ### **Avoid:**
+
 - Too much text
 - Confusing packages
 - Outdated stats (update quarterly!)

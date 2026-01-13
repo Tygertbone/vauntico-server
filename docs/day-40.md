@@ -23,22 +23,26 @@ objective: "Celebrate R2,000/month achievement and prepare for Phase 3: Scale & 
 ### **Monthly Income Breakdown:**
 
 **Affiliate Income:**
-- Monthly total: R_____
-- % of income: _____%
+
+- Monthly total: R**\_**
+- % of income: **\_**%
 
 **Digital Product Income:**
-- Monthly total: R_____
-- % of income: _____%
+
+- Monthly total: R**\_**
+- % of income: **\_**%
 
 **Service Income:**
-- Monthly total: R_____
-- % of income: _____%
+
+- Monthly total: R**\_**
+- % of income: **\_**%
 
 **Brand Deal Income:**
-- Monthly total: R_____
-- % of income: _____%
 
-**TOTAL MONTHLY INCOME: R_____**
+- Monthly total: R**\_**
+- % of income: **\_**%
+
+**TOTAL MONTHLY INCOME: R**\_****
 
 ---
 
@@ -47,6 +51,7 @@ objective: "Celebrate R2,000/month achievement and prepare for Phase 3: Scale & 
 ### ✅ **YES - YOU'RE A LEGEND!**
 
 **What this means:**
+
 - You're in the top 1% of people who actually DO what they say
 - You've built multiple income streams
 - You have systems that work
@@ -69,6 +74,7 @@ Today you have R2,000+/month.
 You're SO CLOSE. Here's the push:
 
 **Week 41-42 action plan:**
+
 - Send 20 brand pitches (land 1-2 deals = R800-1,600)
 - Launch one higher-ticket offer (R500-1,000 service)
 - Optimize your funnels (Day 36 review)
@@ -83,6 +89,7 @@ You're SO CLOSE. Here's the push:
 You've PROVEN you can make money online. Now scale:
 
 **Focus:**
+
 - Double down on your best-performing stream
 - Raise your prices (Day 39)
 - Add ONE more income stream
@@ -97,6 +104,7 @@ You've PROVEN you can make money online. Now scale:
 **First: You're not behind.** Some people need longer to build foundation.
 
 **Action:**
+
 - Review Days 21-27 (monetization basics)
 - Pick ONE stream, master it
 - Launch properly (stop "preparing," START selling)
@@ -109,12 +117,15 @@ You've PROVEN you can make money online. Now scale:
 ## 📊 Phase 2 Key Lessons (Days 21-40)
 
 ### **Week 4 (Days 21-27): First Money**
+
 **Lesson:** You don't need 10K followers to monetize. Start NOW.
 
 ### **Week 5 (Days 28-34): Brand Partnerships**
+
 **Lesson:** Brands are actively looking for creators like you. Just ask.
 
 ### **Week 6 (Days 35-40): Optimization & Scale**
+
 **Lesson:** Small tweaks = BIG income gains. Always optimize.
 
 ---
@@ -122,11 +133,13 @@ You've PROVEN you can make money online. Now scale:
 ## 🦄 What You've Accomplished in 40 Days
 
 **Content Skills:**
+
 - ✅ Professional filming, editing, posting
 - ✅ Strategic content planning
 - ✅ Audience growth tactics
 
 **Business Skills:**
+
 - ✅ Affiliate marketing
 - ✅ Product creation
 - ✅ Service packaging
@@ -137,6 +150,7 @@ You've PROVEN you can make money online. Now scale:
 - ✅ Upselling strategies
 
 **Mindset:**
+
 - ✅ From employee to entrepreneur
 - ✅ From consumer to creator
 - ✅ From broke to earning
@@ -154,6 +168,7 @@ You've PROVEN you can make money online. Now scale:
 ---
 
 ### **Week 7 (Days 41-47): Automation & Systems**
+
 - Day 41: Time Management (2 hours/day for R2K)
 - Day 42: Repurposing Content (1 video → 10 posts)
 - Day 43: Hiring Your First VA
@@ -165,6 +180,7 @@ You've PROVEN you can make money online. Now scale:
 ---
 
 ### **Week 8 (Days 48-54): Advanced Monetization**
+
 - Day 48: Course Creation Basics
 - Day 49: Membership Models
 - Day 50: Sponsorship Packages
@@ -176,6 +192,7 @@ You've PROVEN you can make money online. Now scale:
 ---
 
 ### **Week 9 (Days 55-60): Long-Term Success**
+
 - Day 55: Sustaining R2,000+ Long-Term
 - Day 56: Scaling to R5,000+
 - Day 57: The Creator Business Model
@@ -190,10 +207,12 @@ You've PROVEN you can make money online. Now scale:
 ## 💪 The Transformation
 
 **Day 1:**
+
 - "Can I really make R2,000/month from my phone?"
 - Doubt, fear, uncertainty
 
 **Day 40:**
+
 - "I'm making R2,000+/month from my phone!"
 - Proof, confidence, momentum
 
@@ -204,21 +223,25 @@ You've PROVEN you can make money online. Now scale:
 ## 🌍 What Others Achieved by Day 40
 
 ### **Amara** (Finance, Nigeria):
+
 - Day 40 income: R3,200/month
 - Quit her job by Day 55
 - Now makes R12,000+/month
 
 ### **Thabo** (Fitness, SA):
+
 - Day 40 income: R2,800/month
 - Left toxic job by Day 48
 - Now makes R8,500+/month
 
 ### **Wanjiku** (Finance, Kenya):
+
 - Day 40 income: R2,400/month
 - Paid off R15,000 debt in 6 months
 - Now makes R6,200+/month
 
 ### **Kofi** (Tech, Ghana):
+
 - Day 40 income: R4,100/month
 - Traveled Africa while working 10 hours/week
 - Now makes R18,000+/month
@@ -241,6 +264,7 @@ You've PROVEN you can make money online. Now scale:
 ## 🎉 Phase 2 Graduation
 
 **YOU ARE NOW:**
+
 - ✅ A R2,000/month creator (or on track!)
 - ✅ A multi-stream income earner
 - ✅ A professional brand partner
@@ -255,8 +279,9 @@ You've PROVEN you can make money online. Now scale:
 ## 💬 Share Your Phase 2 Journey
 
 Post in the community:
+
 ```
-🎉 PHASE 2 = CRUSHED! 
+🎉 PHASE 2 = CRUSHED!
 
 Day 1: R0/month
 Day 40: R[X]/month
@@ -283,6 +308,7 @@ Who else finished Phase 2? Let's celebrate! 🦄💪
 **You've come this far. Don't stop now.**
 
 **Days 41-60 are about:**
+
 - Making R2,000 SUSTAINABLE (not a one-time thing)
 - Scaling beyond R2,000 (R5K+ path)
 - Building a BUSINESS, not just a side hustle
@@ -298,6 +324,7 @@ Who else finished Phase 2? Let's celebrate! 🦄💪
 Phase 3 starts tomorrow.
 
 **You'll learn:**
+
 - How to maintain R2K working just 10-15 hours/week
 - Time-blocking strategies
 - The 80/20 of creator income

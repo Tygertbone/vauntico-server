@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface Proof {
   id: string;
@@ -15,19 +15,19 @@ interface ProofCardProps {
 
 export function ProofCard({ proof }: ProofCardProps) {
   const formatCurrency = (amount: number, currency: string) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
       currency: currency.toUpperCase(),
     }).format(amount);
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -42,13 +42,13 @@ export function ProofCard({ proof }: ProofCardProps) {
           <div className="text-lg font-semibold text-green-600">
             {formatCurrency(proof.amount, proof.currency)}
           </div>
-          <div className="text-xs text-gray-500 uppercase">{proof.currency}</div>
+          <div className="text-xs text-gray-500 uppercase">
+            {proof.currency}
+          </div>
         </div>
       </div>
 
-      <div className="text-xs text-gray-500">
-        {formatDate(proof.createdAt)}
-      </div>
+      <div className="text-xs text-gray-500">{formatDate(proof.createdAt)}</div>
 
       <div className="mt-2 text-xs font-mono text-gray-400">
         ID: {proof.id.slice(0, 8)}...

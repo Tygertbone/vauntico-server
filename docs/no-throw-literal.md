@@ -1,5 +1,5 @@
 ---
-description: 'Disallow throwing literals as exceptions.'
+description: "Disallow throwing literals as exceptions."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -20,7 +20,7 @@ This rule is aimed at maintaining consistency when throwing exception by disallo
 ### ❌ Incorrect
 
 ```ts
-throw 'error';
+throw "error";
 
 throw 0;
 
@@ -29,21 +29,21 @@ throw undefined;
 throw null;
 
 const err = new Error();
-throw 'an ' + err;
+throw "an " + err;
 
 const err = new Error();
 throw `${err}`;
 
-const err = '';
+const err = "";
 throw err;
 
 function err() {
-  return '';
+  return "";
 }
 throw err();
 
 const foo = {
-  bar: '',
+  bar: "",
 };
 throw foo.bar;
 ```
@@ -53,13 +53,13 @@ throw foo.bar;
 ```ts
 throw new Error();
 
-throw new Error('error');
+throw new Error("error");
 
-const e = new Error('error');
+const e = new Error("error");
 throw e;
 
 try {
-  throw new Error('error');
+  throw new Error("error");
 } catch (e) {
   throw e;
 }

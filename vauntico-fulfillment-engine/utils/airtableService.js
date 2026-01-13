@@ -1,13 +1,13 @@
 // Airtable Service for Product Catalog Management
-const Airtable = require('airtable');
+const Airtable = require("airtable");
 
 class AirtableService {
   constructor() {
     this.base = new Airtable({
-      apiKey: process.env.AIRTABLE_API_KEY
+      apiKey: process.env.AIRTABLE_API_KEY,
     }).base(process.env.AIRTABLE_BASE_ID);
 
-    this.tableName = process.env.AIRTABLE_TABLE_NAME || 'Products';
+    this.tableName = process.env.AIRTABLE_TABLE_NAME || "Products";
   }
 
   /**
@@ -16,16 +16,18 @@ class AirtableService {
    */
   async getAllProducts() {
     try {
-      const records = await this.base(this.tableName).select({
-        view: 'Grid view' // Adjust view name as needed
-      }).all();
+      const records = await this.base(this.tableName)
+        .select({
+          view: "Grid view", // Adjust view name as needed
+        })
+        .all();
 
-      return records.map(record => ({
+      return records.map((record) => ({
         recordId: record.id,
-        ...record.fields
+        ...record.fields,
       }));
     } catch (error) {
-      console.error('Error fetching products from Airtable:', error);
+      console.error("Error fetching products from Airtable:", error);
       throw error;
     }
   }
@@ -53,7 +55,10 @@ class AirtableService {
    */
   async updateProductStatus(recordId, updates) {
     try {
-      const updatedRecord = await this.base(this.tableName).update(recordId, updates);
+      const updatedRecord = await this.base(this.tableName).update(
+        recordId,
+        updates,
+      );
       return { recordId: updatedRecord.id, ...updatedRecord.fields };
     } catch (error) {
       console.error(`Error updating product ${recordId}:`, error);

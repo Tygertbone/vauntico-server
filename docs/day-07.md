@@ -34,10 +34,10 @@ Let's review what you accomplished:
 
 Open your video and check:
 
-**Views:** ______ (anything above 50 = good start!)  
-**Likes:** ______ (2-5% of views = normal)  
-**Comments:** ______ (any comment = engagement win!)  
-**Followers gained:** ______ (even 1 = success!)
+**Views:** **\_\_** (anything above 50 = good start!)  
+**Likes:** **\_\_** (2-5% of views = normal)  
+**Comments:** **\_\_** (any comment = engagement win!)  
+**Followers gained:** **\_\_** (even 1 = success!)
 
 **What the numbers mean:**
 
@@ -45,7 +45,8 @@ Open your video and check:
 - **50-500 views:** Great! Algorithm is testing you. Keep posting.
 - **500+:** VIRAL POTENTIAL! Analyze what worked, do more of that.
 
-**Low numbers? DON'T QUIT.**  
+**Low numbers? DON'T QUIT.**
+
 - Amara's first video: 23 views
 - Thabo's first video: 11 views
 - Wanjiku's first video: 47 views
@@ -84,6 +85,7 @@ Now that you know HOW to create, we focus on WHAT to create:
 ## 🎉 Week 1 Graduation
 
 **YOU ARE NOW:**
+
 - ✅ A niche-focused creator
 - ✅ A phone-only content producer
 - ✅ A published creator with real content
@@ -95,6 +97,7 @@ Now that you know HOW to create, we focus on WHAT to create:
 ## 💬 Share Your Journey
 
 Post in the community:
+
 ```
 ✅ WEEK 1 COMPLETE! 🦄
 

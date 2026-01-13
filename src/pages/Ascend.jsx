@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { getCreatorPassTier } from '../utils/pricing'
-import { trackAscendPageView, trackSoulStackUnlock } from '../utils/analytics'
-
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { getCreatorPassTier } from "../utils/pricing";
+import { trackAscendPageView, trackSoulStackUnlock } from "../utils/analytics";
 
 /**
  * Ascend Page - Soul Stack Progression Map
@@ -11,109 +10,125 @@ import { trackAscendPageView, trackSoulStackUnlock } from '../utils/analytics'
 
 const SOUL_STACK_TIERS = [
   {
-    id: 'foundation',
-    name: 'Foundation Layer',
-    emoji: '🏗️',
-    description: 'Master the fundamentals of your craft',
-    requiredTier: 'free',
-    scrolls: ['01-landing-page-hero', '02-pricing-tiers', '06-core-features-scroll'],
-    achievements: ['first_scroll', 'lore_explorer'],
-    skills: ['Content Creation', 'Brand Voice', 'Value Proposition'],
-    unlocked: true
+    id: "foundation",
+    name: "Foundation Layer",
+    emoji: "🏗️",
+    description: "Master the fundamentals of your craft",
+    requiredTier: "free",
+    scrolls: [
+      "01-landing-page-hero",
+      "02-pricing-tiers",
+      "06-core-features-scroll",
+    ],
+    achievements: ["first_scroll", "lore_explorer"],
+    skills: ["Content Creation", "Brand Voice", "Value Proposition"],
+    unlocked: true,
   },
   {
-    id: 'amplification',
-    name: 'Amplification Layer',
-    emoji: '📣',
-    description: 'Scale your reach and impact',
-    requiredTier: 'starter',
-    scrolls: ['07-testimonial-social-proof', '08-content-calendar', '09-distribution-layer-scroll'],
-    achievements: ['cli_master', 'automation_unlocked'],
-    skills: ['Distribution', 'Social Proof', 'Content Systems'],
-    unlocked: false
+    id: "amplification",
+    name: "Amplification Layer",
+    emoji: "📣",
+    description: "Scale your reach and impact",
+    requiredTier: "starter",
+    scrolls: [
+      "07-testimonial-social-proof",
+      "08-content-calendar",
+      "09-distribution-layer-scroll",
+    ],
+    achievements: ["cli_master", "automation_unlocked"],
+    skills: ["Distribution", "Social Proof", "Content Systems"],
+    unlocked: false,
   },
   {
-    id: 'transformation',
-    name: 'Transformation Layer',
-    emoji: '✨',
-    description: 'Build systems that create lasting change',
-    requiredTier: 'pro',
-    scrolls: ['03-workshop-kit-scroll', '04-audit-service-scroll', '10-agency-scroll'],
-    achievements: ['workshop_completed', 'audit_master'],
-    skills: ['Workshop Design', 'Service Delivery', 'Agency Operations'],
-    unlocked: false
+    id: "transformation",
+    name: "Transformation Layer",
+    emoji: "✨",
+    description: "Build systems that create lasting change",
+    requiredTier: "pro",
+    scrolls: [
+      "03-workshop-kit-scroll",
+      "04-audit-service-scroll",
+      "10-agency-scroll",
+    ],
+    achievements: ["workshop_completed", "audit_master"],
+    skills: ["Workshop Design", "Service Delivery", "Agency Operations"],
+    unlocked: false,
   },
   {
-    id: 'legacy',
-    name: 'Legacy Layer',
-    emoji: '👑',
-    description: 'Create movements that outlive you',
-    requiredTier: 'legacy',
-    scrolls: ['creator-pass', 'dream-mover-cli', 'distribution-layer-index-entry'],
-    achievements: ['mythmaker', 'legacy_builder', 'movement_starter'],
-    skills: ['Vision Casting', 'Movement Building', 'Eternal Systems'],
-    unlocked: false
-  }
-]
+    id: "legacy",
+    name: "Legacy Layer",
+    emoji: "👑",
+    description: "Create movements that outlive you",
+    requiredTier: "legacy",
+    scrolls: [
+      "creator-pass",
+      "dream-mover-cli",
+      "distribution-layer-index-entry",
+    ],
+    achievements: ["mythmaker", "legacy_builder", "movement_starter"],
+    skills: ["Vision Casting", "Movement Building", "Eternal Systems"],
+    unlocked: false,
+  },
+];
 
 function Ascend() {
-  const [userTier, setUserTier] = useState(null)
-  const [progress, setProgress] = useState({})
-  const [selectedTier, setSelectedTier] = useState(null)
+  const [userTier, setUserTier] = useState(null);
+  const [progress, setProgress] = useState({});
+  const [selectedTier, setSelectedTier] = useState(null);
 
   useEffect(() => {
     // Get user's current tier
-    const tierData = getCreatorPassTier()
-    setUserTier(tierData?.tier || 'free')
+    const tierData = getCreatorPassTier();
+    setUserTier(tierData?.tier || "free");
 
     // Calculate progress
-    const progressData = calculateProgress(tierData?.tier || 'free')
-    setProgress(progressData)
+    const progressData = calculateProgress(tierData?.tier || "free");
+    setProgress(progressData);
 
     // Track page view
-    trackAscendPageView(progressData.percentage)
-  }, [])
+    trackAscendPageView(progressData.percentage);
+  }, []);
 
   const calculateProgress = (currentTier) => {
-    const tierOrder = ['free', 'starter', 'pro', 'legacy']
-    const currentIndex = tierOrder.indexOf(currentTier)
-    
-    const unlockedLayers = SOUL_STACK_TIERS.map(tier => {
-      const tierIndex = tierOrder.indexOf(tier.requiredTier)
+    const tierOrder = ["free", "starter", "pro", "legacy"];
+    const currentIndex = tierOrder.indexOf(currentTier);
+
+    const unlockedLayers = SOUL_STACK_TIERS.map((tier) => {
+      const tierIndex = tierOrder.indexOf(tier.requiredTier);
       return {
         ...tier,
-        unlocked: tierIndex <= currentIndex
-      }
-    })
+        unlocked: tierIndex <= currentIndex,
+      };
+    });
 
-    const totalLayers = SOUL_STACK_TIERS.length
-    const unlockedCount = unlockedLayers.filter(t => t.unlocked).length
-    const percentage = Math.round((unlockedCount / totalLayers) * 100)
+    const totalLayers = SOUL_STACK_TIERS.length;
+    const unlockedCount = unlockedLayers.filter((t) => t.unlocked).length;
+    const percentage = Math.round((unlockedCount / totalLayers) * 100);
 
     return {
       unlockedLayers,
       totalLayers,
       unlockedCount,
-      percentage
-    }
-  }
+      percentage,
+    };
+  };
 
   const handleTierClick = (tier) => {
-    setSelectedTier(selectedTier?.id === tier.id ? null : tier)
+    setSelectedTier(selectedTier?.id === tier.id ? null : tier);
     if (!tier.unlocked) {
-      trackSoulStackUnlock(tier.name, SOUL_STACK_TIERS.indexOf(tier))
+      trackSoulStackUnlock(tier.name, SOUL_STACK_TIERS.indexOf(tier));
     }
-  }
+  };
 
   const getTierIcon = (requiredTier) => {
     const icons = {
-      free: '📖',
-      starter: '⚔️',
-      pro: '🏰',
-      legacy: '👑'
-    }
-    return icons[requiredTier] || '📜'
-  }
+      free: "📖",
+      starter: "⚔️",
+      pro: "🏰",
+      legacy: "👑",
+    };
+    return icons[requiredTier] || "📜";
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-vault-dark via-purple-900 to-vault-dark text-white">
@@ -125,11 +140,11 @@ function Ascend() {
               🏔️
             </div>
           </div>
-          
+
           <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
             <span className="text-gradient">Ascend</span> the Soul Stack
           </h1>
-          
+
           <p className="text-xl md:text-2xl text-gray-300 mb-8 animate-fade-in animation-delay-200">
             Your journey from creator to mythmaker
           </p>
@@ -137,7 +152,7 @@ function Ascend() {
           {/* Progress Bar */}
           <div className="max-w-2xl mx-auto mb-12 animate-fade-in animation-delay-400">
             <div className="bg-white/10 backdrop-blur-sm rounded-full h-6 border border-white/20 overflow-hidden">
-              <div 
+              <div
                 className="h-full vault-gradient transition-all duration-1000 ease-out flex items-center justify-end px-4"
                 style={{ width: `${progress.percentage || 0}%` }}
               >
@@ -147,7 +162,8 @@ function Ascend() {
               </div>
             </div>
             <p className="text-sm text-gray-400 mt-3">
-              {progress.unlockedCount || 0} of {progress.totalLayers || 4} layers unlocked
+              {progress.unlockedCount || 0} of {progress.totalLayers || 4}{" "}
+              layers unlocked
             </p>
           </div>
 
@@ -155,8 +171,12 @@ function Ascend() {
           <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3 animate-fade-in animation-delay-600">
             <span className="text-2xl">{getTierIcon(userTier)}</span>
             <div className="text-left">
-              <p className="text-xs text-gray-400 uppercase tracking-wider">Current Tier</p>
-              <p className="text-lg font-bold capitalize">{userTier || 'Free'}</p>
+              <p className="text-xs text-gray-400 uppercase tracking-wider">
+                Current Tier
+              </p>
+              <p className="text-lg font-bold capitalize">
+                {userTier || "Free"}
+              </p>
             </div>
           </div>
         </div>
@@ -164,9 +184,7 @@ function Ascend() {
 
       {/* Quest System Section */}
       <section className="py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-
-        </div>
+        <div className="max-w-6xl mx-auto"></div>
       </section>
 
       {/* Soul Stack Visualization */}
@@ -177,19 +195,21 @@ function Ascend() {
           </h2>
           <div className="space-y-6">
             {SOUL_STACK_TIERS.map((tier, index) => {
-              const isUnlocked = progress.unlockedLayers?.[index]?.unlocked || false
-              const isSelected = selectedTier?.id === tier.id
+              const isUnlocked =
+                progress.unlockedLayers?.[index]?.unlocked || false;
+              const isSelected = selectedTier?.id === tier.id;
 
               return (
                 <div
                   key={tier.id}
                   className={`
                     group relative overflow-hidden rounded-2xl border-2 transition-all duration-500 cursor-pointer
-                    ${isUnlocked 
-                      ? 'bg-white/10 backdrop-blur-sm border-vault-purple hover:border-vault-gold hover:scale-102' 
-                      : 'bg-black/20 backdrop-blur-sm border-gray-700 opacity-60 hover:opacity-80'
+                    ${
+                      isUnlocked
+                        ? "bg-white/10 backdrop-blur-sm border-vault-purple hover:border-vault-gold hover:scale-102"
+                        : "bg-black/20 backdrop-blur-sm border-gray-700 opacity-60 hover:opacity-80"
                     }
-                    ${isSelected ? 'scale-102 ring-4 ring-vault-gold' : ''}
+                    ${isSelected ? "scale-102 ring-4 ring-vault-gold" : ""}
                     animate-fade-in
                   `}
                   style={{ animationDelay: `${index * 100}ms` }}
@@ -201,10 +221,12 @@ function Ascend() {
                       <div className="text-center">
                         <div className="text-6xl mb-4 animate-pulse">🔒</div>
                         <p className="text-white font-bold text-lg mb-2">
-                          Requires {getTierIcon(tier.requiredTier)} {tier.requiredTier.charAt(0).toUpperCase() + tier.requiredTier.slice(1)}
+                          Requires {getTierIcon(tier.requiredTier)}{" "}
+                          {tier.requiredTier.charAt(0).toUpperCase() +
+                            tier.requiredTier.slice(1)}
                         </p>
-                        <Link 
-                          to="/creator-pass" 
+                        <Link
+                          to="/creator-pass"
                           className="inline-block mt-4 px-6 py-2 bg-vault-gradient text-white font-bold rounded-lg hover:scale-105 transition-transform"
                         >
                           Unlock Layer →
@@ -217,11 +239,13 @@ function Ascend() {
                     <div className="flex items-start gap-6">
                       {/* Tier Icon */}
                       <div className="flex-shrink-0">
-                        <div className={`
+                        <div
+                          className={`
                           w-20 h-20 rounded-2xl flex items-center justify-center text-4xl transition-transform
-                          ${isUnlocked ? 'vault-gradient' : 'bg-gray-800'}
-                          ${isSelected ? 'scale-110' : 'group-hover:scale-110'}
-                        `}>
+                          ${isUnlocked ? "vault-gradient" : "bg-gray-800"}
+                          ${isSelected ? "scale-110" : "group-hover:scale-110"}
+                        `}
+                        >
                           {tier.emoji}
                         </div>
                       </div>
@@ -231,18 +255,22 @@ function Ascend() {
                         <div className="flex items-center gap-3 mb-3">
                           <h3 className="text-2xl font-bold">{tier.name}</h3>
                           {isUnlocked && (
-                            <span className="text-green-400 text-2xl animate-bounce">✓</span>
+                            <span className="text-green-400 text-2xl animate-bounce">
+                              ✓
+                            </span>
                           )}
                         </div>
-                        
+
                         <p className="text-gray-300 mb-6">{tier.description}</p>
 
                         {/* Skills */}
                         <div className="mb-4">
-                          <p className="text-sm text-gray-400 mb-2 uppercase tracking-wider">Skills</p>
+                          <p className="text-sm text-gray-400 mb-2 uppercase tracking-wider">
+                            Skills
+                          </p>
                           <div className="flex flex-wrap gap-2">
-                            {tier.skills.map(skill => (
-                              <span 
+                            {tier.skills.map((skill) => (
+                              <span
                                 key={skill}
                                 className="px-3 py-1 bg-white/10 rounded-full text-sm border border-white/20"
                               >
@@ -262,10 +290,15 @@ function Ascend() {
                                   📜 Available Scrolls
                                 </p>
                                 <ul className="space-y-2">
-                                  {tier.scrolls.map(scroll => (
-                                    <li key={scroll} className="text-sm text-gray-300 flex items-center gap-2">
+                                  {tier.scrolls.map((scroll) => (
+                                    <li
+                                      key={scroll}
+                                      className="text-sm text-gray-300 flex items-center gap-2"
+                                    >
                                       <span className="text-vault-gold">→</span>
-                                      {scroll.replace(/-/g, ' ').replace(/^\d+-/, '')}
+                                      {scroll
+                                        .replace(/-/g, " ")
+                                        .replace(/^\d+-/, "")}
                                     </li>
                                   ))}
                                 </ul>
@@ -277,10 +310,13 @@ function Ascend() {
                                   🏆 Achievements
                                 </p>
                                 <ul className="space-y-2">
-                                  {tier.achievements.map(achievement => (
-                                    <li key={achievement} className="text-sm text-gray-300 flex items-center gap-2">
+                                  {tier.achievements.map((achievement) => (
+                                    <li
+                                      key={achievement}
+                                      className="text-sm text-gray-300 flex items-center gap-2"
+                                    >
                                       <span className="text-vault-gold">✦</span>
-                                      {achievement.replace(/_/g, ' ')}
+                                      {achievement.replace(/_/g, " ")}
                                     </li>
                                   ))}
                                 </ul>
@@ -306,7 +342,7 @@ function Ascend() {
                     </div>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         </div>
@@ -317,14 +353,15 @@ function Ascend() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="bg-gradient-to-br from-vault-purple to-purple-900 rounded-3xl p-12 border-2 border-vault-gold">
             <h2 className="text-4xl font-bold mb-6">
-              Ready to {progress.percentage === 100 ? 'Build Your' : 'Ascend the'} Legacy?
+              Ready to{" "}
+              {progress.percentage === 100 ? "Build Your" : "Ascend the"}{" "}
+              Legacy?
             </h2>
-            
+
             <p className="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
-              {progress.percentage === 100 
-                ? 'You\'ve unlocked all layers. Now it\'s time to create systems that outlive you.' 
-                : 'Unlock all layers of the Soul Stack and transform from creator to mythmaker.'
-              }
+              {progress.percentage === 100
+                ? "You've unlocked all layers. Now it's time to create systems that outlive you."
+                : "Unlock all layers of the Soul Stack and transform from creator to mythmaker."}
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center">
@@ -336,10 +373,7 @@ function Ascend() {
                   >
                     View Creator Pass →
                   </Link>
-                  <Link
-                    to="/lore"
-                    className="btn-outline text-lg px-8 py-4"
-                  >
+                  <Link to="/lore" className="btn-outline text-lg px-8 py-4">
                     Explore Lore Vault
                   </Link>
                 </>
@@ -351,10 +385,7 @@ function Ascend() {
                   >
                     Launch Dream Mover →
                   </Link>
-                  <Link
-                    to="/lore"
-                    className="btn-outline text-lg px-8 py-4"
-                  >
+                  <Link to="/lore" className="btn-outline text-lg px-8 py-4">
                     Review Scrolls
                   </Link>
                 </>
@@ -369,18 +400,43 @@ function Ascend() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { label: 'Layers Unlocked', value: progress.unlockedCount || 0, icon: '🏔️' },
-              { label: 'Scrolls Available', value: (progress.unlockedLayers || []).reduce((acc, tier) => acc + (tier.unlocked ? tier.scrolls.length : 0), 0), icon: '📜' },
-              { label: 'Skills Mastered', value: (progress.unlockedLayers || []).reduce((acc, tier) => acc + (tier.unlocked ? tier.skills.length : 0), 0), icon: '✨' },
-              { label: 'Progress', value: `${progress.percentage || 0}%`, icon: '📈' }
+              {
+                label: "Layers Unlocked",
+                value: progress.unlockedCount || 0,
+                icon: "🏔️",
+              },
+              {
+                label: "Scrolls Available",
+                value: (progress.unlockedLayers || []).reduce(
+                  (acc, tier) =>
+                    acc + (tier.unlocked ? tier.scrolls.length : 0),
+                  0,
+                ),
+                icon: "📜",
+              },
+              {
+                label: "Skills Mastered",
+                value: (progress.unlockedLayers || []).reduce(
+                  (acc, tier) => acc + (tier.unlocked ? tier.skills.length : 0),
+                  0,
+                ),
+                icon: "✨",
+              },
+              {
+                label: "Progress",
+                value: `${progress.percentage || 0}%`,
+                icon: "📈",
+              },
             ].map((stat, index) => (
-              <div 
-                key={stat.label} 
+              <div
+                key={stat.label}
                 className="text-center p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 animate-fade-in"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="text-4xl mb-2">{stat.icon}</div>
-                <div className="text-3xl font-bold mb-1 text-gradient">{stat.value}</div>
+                <div className="text-3xl font-bold mb-1 text-gradient">
+                  {stat.value}
+                </div>
                 <div className="text-sm text-gray-400">{stat.label}</div>
               </div>
             ))}
@@ -388,7 +444,7 @@ function Ascend() {
         </div>
       </section>
     </div>
-  )
+  );
 }
 
-export default Ascend
+export default Ascend;

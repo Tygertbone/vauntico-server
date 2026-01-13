@@ -35,11 +35,13 @@ Reference to the parent node in the AST.
 The root node representing an entire CSS document.
 
 **Properties:**
+
 - `stylesheet.source` (optional): Source file path
 - `stylesheet.rules`: Array of top-level rules
 - `stylesheet.parsingErrors` (optional): Array of parse errors when `silent` option is used
 
 **Example:**
+
 ```json
 {
   "type": "stylesheet",
@@ -56,10 +58,12 @@ The root node representing an entire CSS document.
 A CSS rule with selectors and declarations.
 
 **Properties:**
+
 - `selectors`: Array of CSS selectors as strings
 - `declarations`: Array of declarations and comments
 
 **Example:**
+
 ```json
 {
   "type": "rule",
@@ -79,10 +83,12 @@ A CSS rule with selectors and declarations.
 A CSS property declaration.
 
 **Properties:**
+
 - `property`: The CSS property name
 - `value`: The CSS property value as a string
 
 **Example:**
+
 ```json
 {
   "type": "declaration",
@@ -96,9 +102,11 @@ A CSS property declaration.
 A CSS comment.
 
 **Properties:**
+
 - `comment`: The comment text (without `/*` and `*/`)
 
 **Example:**
+
 ```json
 {
   "type": "comment",
@@ -111,10 +119,12 @@ A CSS comment.
 A `@media` rule.
 
 **Properties:**
+
 - `media`: The media query string
 - `rules`: Array of rules within the media block
 
 **Example:**
+
 ```json
 {
   "type": "media",
@@ -130,11 +140,13 @@ A `@media` rule.
 A `@keyframes` rule.
 
 **Properties:**
+
 - `name`: The keyframes name
 - `vendor` (optional): Vendor prefix (e.g., "-webkit-")
 - `keyframes`: Array of keyframe rules and comments
 
 **Example:**
+
 ```json
 {
   "type": "keyframes",
@@ -160,6 +172,7 @@ A `@keyframes` rule.
 A keyframe within a `@keyframes` rule.
 
 **Properties:**
+
 - `values`: Array of keyframe selectors (e.g., `["from"]`, `["to"]`, `["50%"]`)
 - `declarations`: Array of declarations and comments
 
@@ -168,9 +181,11 @@ A keyframe within a `@keyframes` rule.
 An `@import` rule.
 
 **Properties:**
+
 - `import`: The import string (URL or media query)
 
 **Example:**
+
 ```json
 {
   "type": "import",
@@ -183,9 +198,11 @@ An `@import` rule.
 A `@charset` rule.
 
 **Properties:**
+
 - `charset`: The character encoding
 
 **Example:**
+
 ```json
 {
   "type": "charset",
@@ -198,9 +215,11 @@ A `@charset` rule.
 A `@namespace` rule.
 
 **Properties:**
+
 - `namespace`: The namespace declaration
 
 **Example:**
+
 ```json
 {
   "type": "namespace",
@@ -213,10 +232,12 @@ A `@namespace` rule.
 A `@supports` rule.
 
 **Properties:**
+
 - `supports`: The supports condition
 - `rules`: Array of rules within the supports block
 
 **Example:**
+
 ```json
 {
   "type": "supports",
@@ -232,6 +253,7 @@ A `@supports` rule.
 A `@document` rule.
 
 **Properties:**
+
 - `document`: The document condition
 - `vendor` (optional): Vendor prefix
 - `rules`: Array of rules within the document block
@@ -241,6 +263,7 @@ A `@document` rule.
 A `@page` rule.
 
 **Properties:**
+
 - `selectors`: Array of page selectors
 - `declarations`: Array of declarations and comments
 
@@ -249,6 +272,7 @@ A `@page` rule.
 A `@font-face` rule.
 
 **Properties:**
+
 - `declarations`: Array of font declarations and comments
 
 ### `host`
@@ -256,6 +280,7 @@ A `@font-face` rule.
 A `:host` rule.
 
 **Properties:**
+
 - `rules`: Array of rules within the host block
 
 ### `container`
@@ -263,6 +288,7 @@ A `:host` rule.
 A `@container` rule.
 
 **Properties:**
+
 - `container`: The container query
 - `rules`: Array of rules within the container block
 
@@ -271,6 +297,7 @@ A `@container` rule.
 A `@layer` rule.
 
 **Properties:**
+
 - `layer`: The layer name
 - `rules` (optional): Array of rules within the layer block
 
@@ -279,6 +306,7 @@ A `@layer` rule.
 A `@custom-media` rule.
 
 **Properties:**
+
 - `name`: The custom media query name
 - `media`: The media query definition
 
@@ -287,6 +315,7 @@ A `@custom-media` rule.
 A `@starting-style` rule.
 
 **Properties:**
+
 - `rules`: Array of rules within the starting-style block
 
 ## Type Hierarchy
@@ -302,16 +331,16 @@ The AST nodes are organized in the following hierarchy:
 ### Traversing Nodes
 
 ```typescript
-import { parse, CssStylesheetAST } from '@adobe/css-tools';
+import { parse, CssStylesheetAST } from "@adobe/css-tools";
 
-const ast: CssStylesheetAST = parse('body { color: red; }');
+const ast: CssStylesheetAST = parse("body { color: red; }");
 
 // Access top-level rules
-ast.stylesheet.rules.forEach(rule => {
-  if (rule.type === 'rule') {
-    console.log('Selectors:', rule.selectors);
-    rule.declarations.forEach(decl => {
-      if (decl.type === 'declaration') {
+ast.stylesheet.rules.forEach((rule) => {
+  if (rule.type === "rule") {
+    console.log("Selectors:", rule.selectors);
+    rule.declarations.forEach((decl) => {
+      if (decl.type === "declaration") {
         console.log(`${decl.property}: ${decl.value}`);
       }
     });
@@ -324,14 +353,14 @@ ast.stylesheet.rules.forEach(rule => {
 ```typescript
 // Add a new declaration
 const newDecl = {
-  type: 'declaration' as const,
-  property: 'font-size',
-  value: '16px'
+  type: "declaration" as const,
+  property: "font-size",
+  value: "16px",
 };
 
 // Find a rule and add the declaration
-ast.stylesheet.rules.forEach(rule => {
-  if (rule.type === 'rule' && rule.selectors.includes('body')) {
+ast.stylesheet.rules.forEach((rule) => {
+  if (rule.type === "rule" && rule.selectors.includes("body")) {
     rule.declarations.push(newDecl);
   }
 });
@@ -342,11 +371,11 @@ ast.stylesheet.rules.forEach(rule => {
 When parsing with the `silent` option, errors are collected in the AST:
 
 ```typescript
-const ast = parse('invalid css {', { silent: true });
+const ast = parse("invalid css {", { silent: true });
 
 if (ast.stylesheet.parsingErrors) {
-  ast.stylesheet.parsingErrors.forEach(error => {
-    console.error('Parse error:', error.message);
+  ast.stylesheet.parsingErrors.forEach((error) => {
+    console.error("Parse error:", error.message);
   });
 }
 ```
@@ -356,10 +385,11 @@ if (ast.stylesheet.parsingErrors) {
 Position information is available on most nodes and includes:
 
 - `start.line` and `start.column`: Beginning of the node
-- `end.line` and `end.column`: End of the node  
+- `end.line` and `end.column`: End of the node
 - `source`: Source file path (if provided during parsing)
 
 This is useful for:
+
 - Error reporting
 - Source mapping
 - Code analysis tools

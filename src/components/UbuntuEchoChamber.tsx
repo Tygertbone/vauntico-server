@@ -1,201 +1,221 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Heart, MessageCircle, Users, Sparkles, Send, Zap, Share2, Volume2 } from 'lucide-react'
-import { useHapticFeedback } from '../hooks/useHapticFeedback'
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Heart,
+  MessageCircle,
+  Users,
+  Sparkles,
+  Send,
+  Zap,
+  Share2,
+  Volume2,
+} from "lucide-react";
+import { useHapticFeedback } from "../hooks/useHapticFeedback";
 
 interface Echo {
-  id: string
-  author: string
-  message: string
-  timestamp: Date
-  likes: number
-  isUbuntu: boolean
-  sentiment: 'positive' | 'neutral' | 'ceremonial'
+  id: string;
+  author: string;
+  message: string;
+  timestamp: Date;
+  likes: number;
+  isUbuntu: boolean;
+  sentiment: "positive" | "neutral" | "ceremonial";
 }
 
 interface AbundanceMeter {
-  collective: number
-  individual: number
-  ripple: number
+  collective: number;
+  individual: number;
+  ripple: number;
 }
 
 interface UbuntuEchoChamberProps {
-  className?: string
+  className?: string;
 }
 
-const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' }) => {
-  const { triggerHaptic } = useHapticFeedback()
+const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({
+  className = "",
+}) => {
+  const { triggerHaptic } = useHapticFeedback();
   const [echoes, setEchoes] = useState<Echo[]>([
     {
-      id: '1',
-      author: 'Ubuntu Guide',
-      message: 'Together we rise, individually we flourish. The collective abundance grows with each shared wisdom.',
+      id: "1",
+      author: "Ubuntu Guide",
+      message:
+        "Together we rise, individually we flourish. The collective abundance grows with each shared wisdom.",
       timestamp: new Date(Date.now() - 3600000),
       likes: 42,
       isUbuntu: true,
-      sentiment: 'ceremonial'
+      sentiment: "ceremonial",
     },
     {
-      id: '2',
-      author: 'Sacred Creator',
-      message: 'My trust score increased by 15% after implementing the sanctification rituals. Pure magic!',
+      id: "2",
+      author: "Sacred Creator",
+      message:
+        "My trust score increased by 15% after implementing the sanctification rituals. Pure magic!",
       timestamp: new Date(Date.now() - 7200000),
       likes: 28,
       isUbuntu: false,
-      sentiment: 'positive'
+      sentiment: "positive",
     },
     {
-      id: '3',
-      author: 'Community Guardian',
-      message: 'Ubuntu blessing activated: May your code be secure and your heart be open.',
+      id: "3",
+      author: "Community Guardian",
+      message:
+        "Ubuntu blessing activated: May your code be secure and your heart be open.",
       timestamp: new Date(Date.now() - 10800000),
       likes: 36,
       isUbuntu: true,
-      sentiment: 'ceremonial'
-    }
-  ])
-  
-  const [newMessage, setNewMessage] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
+      sentiment: "ceremonial",
+    },
+  ]);
+
+  const [newMessage, setNewMessage] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const [abundanceMeter, setAbundanceMeter] = useState<AbundanceMeter>({
     collective: 75,
     individual: 60,
-    ripple: 85
-  })
-  const [ripples, setRipples] = useState<number[]>([])
+    ripple: 85,
+  });
+  const [ripples, setRipples] = useState<number[]>([]);
 
   const ceremonialResponses = [
-    'Ubuntu blessing activated: May your abundance overflow into the collective.',
-    'Sacred ritual completed: Your energy joins the eternal flow.',
-    'Collective wisdom received: We are stronger together.',
-    'Ancestral approval: Your path is blessed with prosperity.',
-    'Community resonance: Your vibration lifts all who surround you.'
-  ]
+    "Ubuntu blessing activated: May your abundance overflow into the collective.",
+    "Sacred ritual completed: Your energy joins the eternal flow.",
+    "Collective wisdom received: We are stronger together.",
+    "Ancestral approval: Your path is blessed with prosperity.",
+    "Community resonance: Your vibration lifts all who surround you.",
+  ];
 
   const ubuntuPhrases = [
-    'I am because we are',
-    'Together we flourish',
-    'Unity in diversity',
-    'Collective abundance',
-    'Shared prosperity',
-    'Community first'
-  ]
+    "I am because we are",
+    "Together we flourish",
+    "Unity in diversity",
+    "Collective abundance",
+    "Shared prosperity",
+    "Community first",
+  ];
 
   const generateEcho = useCallback(() => {
-    const isUbuntu = Math.random() > 0.5
-    const response = isUbuntu 
-      ? ceremonialResponses[Math.floor(Math.random() * ceremonialResponses.length)]
-      : `The ${ubuntuPhrases[Math.floor(Math.random() * ubuntuPhrases.length)]} principle guides us forward.`
-    
+    const isUbuntu = Math.random() > 0.5;
+    const response = isUbuntu
+      ? ceremonialResponses[
+          Math.floor(Math.random() * ceremonialResponses.length)
+        ]
+      : `The ${ubuntuPhrases[Math.floor(Math.random() * ubuntuPhrases.length)]} principle guides us forward.`;
+
     const newEcho: Echo = {
       id: Date.now().toString(),
-      author: isUbuntu ? 'Ubuntu Spirit' : 'Community Member',
+      author: isUbuntu ? "Ubuntu Spirit" : "Community Member",
       message: response,
       timestamp: new Date(),
       likes: Math.floor(Math.random() * 50),
       isUbuntu,
-      sentiment: isUbuntu ? 'ceremonial' : 'positive'
-    }
-    
-    setEchoes(prev => [newEcho, ...prev].slice(0, 10))
-    triggerHaptic({ intensity: 'light' })
-    
+      sentiment: isUbuntu ? "ceremonial" : "positive",
+    };
+
+    setEchoes((prev) => [newEcho, ...prev].slice(0, 10));
+    triggerHaptic({ intensity: "light" });
+
     // Update abundance meter
-    setAbundanceMeter(prev => ({
+    setAbundanceMeter((prev) => ({
       collective: Math.min(100, prev.collective + Math.random() * 5),
       individual: Math.min(100, prev.individual + Math.random() * 3),
-      ripple: Math.min(100, prev.ripple + Math.random() * 7)
-    }))
-  }, [triggerHaptic])
+      ripple: Math.min(100, prev.ripple + Math.random() * 7),
+    }));
+  }, [triggerHaptic]);
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
       const echo: Echo = {
         id: Date.now().toString(),
-        author: 'You',
+        author: "You",
         message: newMessage,
         timestamp: new Date(),
         likes: 0,
         isUbuntu: false,
-        sentiment: 'positive'
-      }
-      
-      setEchoes(prev => [echo, ...prev])
-      setNewMessage('')
-      triggerHaptic({ intensity: 'medium' })
-      
+        sentiment: "positive",
+      };
+
+      setEchoes((prev) => [echo, ...prev]);
+      setNewMessage("");
+      triggerHaptic({ intensity: "medium" });
+
       // Simulate community response
       setTimeout(() => {
-        setIsTyping(true)
+        setIsTyping(true);
         setTimeout(() => {
-          generateEcho()
-          setIsTyping(false)
-        }, 2000)
-      }, 1000)
+          generateEcho();
+          setIsTyping(false);
+        }, 2000);
+      }, 1000);
     }
-  }
+  };
 
   const handleLike = (echoId: string) => {
-    setEchoes(prev => 
-      prev.map(echo => 
-        echo.id === echoId 
-          ? { ...echo, likes: echo.likes + 1 }
-          : echo
-      )
-    )
-    triggerHaptic({ intensity: 'light' })
-    
+    setEchoes((prev) =>
+      prev.map((echo) =>
+        echo.id === echoId ? { ...echo, likes: echo.likes + 1 } : echo,
+      ),
+    );
+    triggerHaptic({ intensity: "light" });
+
     // Create ripple effect
-    setRipples(prev => [...prev, Date.now()])
+    setRipples((prev) => [...prev, Date.now()]);
     setTimeout(() => {
-      setRipples(prev => prev.slice(1))
-    }, 1000)
-  }
+      setRipples((prev) => prev.slice(1));
+    }, 1000);
+  };
 
   const shareEcho = (echo: Echo) => {
-    triggerHaptic({ intensity: 'medium' })
+    triggerHaptic({ intensity: "medium" });
     // Simulate share functionality
-    alert(`Sharing: "${echo.message.substring(0, 50)}..."`)
-  }
+    alert(`Sharing: "${echo.message.substring(0, 50)}..."`);
+  };
 
   const getSentimentColor = (sentiment: string) => {
     switch (sentiment) {
-      case 'ceremonial': return 'from-purple-500 to-gold-500'
-      case 'positive': return 'from-green-500 to-emerald-500'
-      default: return 'from-blue-500 to-indigo-500'
+      case "ceremonial":
+        return "from-purple-500 to-gold-500";
+      case "positive":
+        return "from-green-500 to-emerald-500";
+      default:
+        return "from-blue-500 to-indigo-500";
     }
-  }
+  };
 
   const getSentimentIcon = (sentiment: string) => {
     switch (sentiment) {
-      case 'ceremonial': return <Sparkles className="w-4 h-4" />
-      case 'positive': return <Heart className="w-4 h-4" />
-      default: return <MessageCircle className="w-4 h-4" />
+      case "ceremonial":
+        return <Sparkles className="w-4 h-4" />;
+      case "positive":
+        return <Heart className="w-4 h-4" />;
+      default:
+        return <MessageCircle className="w-4 h-4" />;
     }
-  }
+  };
 
   // Simulate live updates
   useEffect(() => {
     const interval = setInterval(() => {
       if (Math.random() > 0.7) {
-        generateEcho()
+        generateEcho();
       }
-    }, 8000)
-    
-    return () => clearInterval(interval)
-  }, [generateEcho])
+    }, 8000);
+
+    return () => clearInterval(interval);
+  }, [generateEcho]);
 
   return (
     <div className={`max-w-6xl mx-auto p-8 ${className}`}>
       <div className="text-center mb-12">
-        <motion.h1 
+        <motion.h1
           className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-gold-600 mb-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
           Ubuntu Echo Chamber
         </motion.h1>
-        <motion.p 
+        <motion.p
           className="text-xl text-gray-600 dark:text-gray-300"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -231,14 +251,16 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ delay: index * 0.1 }}
                     className={`p-4 rounded-lg border ${
-                      echo.isUbuntu 
-                        ? 'bg-gradient-to-r from-purple-50 to-gold-50 border-purple-200 dark:from-purple-900/20 dark:to-gold-900/20 dark:border-purple-700' 
-                        : 'bg-gray-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600'
+                      echo.isUbuntu
+                        ? "bg-gradient-to-r from-purple-50 to-gold-50 border-purple-200 dark:from-purple-900/20 dark:to-gold-900/20 dark:border-purple-700"
+                        : "bg-gray-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600"
                     }`}
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center space-x-2">
-                        <div className={`p-2 rounded-lg bg-gradient-to-r ${getSentimentColor(echo.sentiment)} text-white`}>
+                        <div
+                          className={`p-2 rounded-lg bg-gradient-to-r ${getSentimentColor(echo.sentiment)} text-white`}
+                        >
                           {getSentimentIcon(echo.sentiment)}
                         </div>
                         <div>
@@ -253,7 +275,7 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
                           </div>
                         </div>
                       </div>
-                      
+
                       <button
                         onClick={() => shareEcho(echo)}
                         className="text-gray-400 hover:text-purple-600 transition-colors"
@@ -261,11 +283,11 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
                         <Share2 className="w-4 h-4" />
                       </button>
                     </div>
-                    
+
                     <p className="text-gray-700 dark:text-gray-300 mb-3">
                       {echo.message}
                     </p>
-                    
+
                     <div className="flex items-center justify-between">
                       <button
                         onClick={() => handleLike(echo.id)}
@@ -274,7 +296,7 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
                         <Heart className="w-4 h-4" />
                         <span className="text-sm">{echo.likes}</span>
                       </button>
-                      
+
                       {echo.isUbuntu && (
                         <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
                           Ubuntu Blessing
@@ -284,7 +306,7 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
                   </motion.div>
                 ))}
               </AnimatePresence>
-              
+
               {isTyping && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -293,10 +315,18 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
                 >
                   <div className="flex space-x-1">
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                    <div
+                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.1s" }}
+                    />
+                    <div
+                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.2s" }}
+                    />
                   </div>
-                  <span className="text-gray-500">Ubuntu Spirit is responding...</span>
+                  <span className="text-gray-500">
+                    Ubuntu Spirit is responding...
+                  </span>
                 </motion.div>
               )}
             </div>
@@ -307,7 +337,7 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
                 type="text"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                 placeholder="Share your wisdom with the collective..."
                 className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
@@ -329,12 +359,16 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
               <Zap className="w-5 h-5 mr-2 text-yellow-500" />
               Abundance Meter
             </h3>
-            
+
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-gray-600 dark:text-gray-400">Collective</span>
-                  <span className="text-gray-900 dark:text-white font-medium">{Math.round(abundanceMeter.collective)}%</span>
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Collective
+                  </span>
+                  <span className="text-gray-900 dark:text-white font-medium">
+                    {Math.round(abundanceMeter.collective)}%
+                  </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                   <motion.div
@@ -345,11 +379,15 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
                   />
                 </div>
               </div>
-              
+
               <div>
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-gray-600 dark:text-gray-400">Individual</span>
-                  <span className="text-gray-900 dark:text-white font-medium">{Math.round(abundanceMeter.individual)}%</span>
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Individual
+                  </span>
+                  <span className="text-gray-900 dark:text-white font-medium">
+                    {Math.round(abundanceMeter.individual)}%
+                  </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                   <motion.div
@@ -360,11 +398,15 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
                   />
                 </div>
               </div>
-              
+
               <div>
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-gray-600 dark:text-gray-400">Ripple Effect</span>
-                  <span className="text-gray-900 dark:text-white font-medium">{Math.round(abundanceMeter.ripple)}%</span>
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Ripple Effect
+                  </span>
+                  <span className="text-gray-900 dark:text-white font-medium">
+                    {Math.round(abundanceMeter.ripple)}%
+                  </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                   <motion.div
@@ -384,23 +426,39 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
               <Users className="w-5 h-5 mr-2 text-purple-500" />
               Community Stats
             </h3>
-            
+
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-gray-600 dark:text-gray-400">Active Members</span>
-                <span className="text-gray-900 dark:text-white font-semibold">1,234</span>
+                <span className="text-gray-600 dark:text-gray-400">
+                  Active Members
+                </span>
+                <span className="text-gray-900 dark:text-white font-semibold">
+                  1,234
+                </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-600 dark:text-gray-400">Ubuntu Blessings</span>
-                <span className="text-gray-900 dark:text-white font-semibold">567</span>
+                <span className="text-gray-600 dark:text-gray-400">
+                  Ubuntu Blessings
+                </span>
+                <span className="text-gray-900 dark:text-white font-semibold">
+                  567
+                </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-600 dark:text-gray-400">Abundance Ripples</span>
-                <span className="text-gray-900 dark:text-white font-semibold">{ripples.length}</span>
+                <span className="text-gray-600 dark:text-gray-400">
+                  Abundance Ripples
+                </span>
+                <span className="text-gray-900 dark:text-white font-semibold">
+                  {ripples.length}
+                </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-600 dark:text-gray-400">Collective Energy</span>
-                <span className="text-gray-900 dark:text-white font-semibold">High</span>
+                <span className="text-gray-600 dark:text-gray-400">
+                  Collective Energy
+                </span>
+                <span className="text-gray-900 dark:text-white font-semibold">
+                  High
+                </span>
               </div>
             </div>
           </div>
@@ -411,7 +469,9 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
               Ubuntu Wisdom
             </h3>
             <p className="text-sm text-gray-700 dark:text-gray-300 italic">
-              "I am because we are. In this sacred chamber, every echo strengthens the collective and every individual voice contributes to our shared abundance."
+              "I am because we are. In this sacred chamber, every echo
+              strengthens the collective and every individual voice contributes
+              to our shared abundance."
             </p>
           </div>
         </div>
@@ -419,7 +479,7 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
 
       {/* Ripple Effects */}
       <AnimatePresence>
-        {ripples.map(ripple => (
+        {ripples.map((ripple) => (
           <motion.div
             key={ripple}
             initial={{ scale: 0, opacity: 1 }}
@@ -432,7 +492,7 @@ const UbuntuEchoChamber: React.FC<UbuntuEchoChamberProps> = ({ className = '' })
         ))}
       </AnimatePresence>
     </div>
-  )
-}
+  );
+};
 
-export default UbuntuEchoChamber
+export default UbuntuEchoChamber;

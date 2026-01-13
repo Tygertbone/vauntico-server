@@ -8,12 +8,12 @@ This guide covers the health check implementation for Vauntico services deployed
 
 ### Service Endpoints
 
-| Service | Health Endpoint | Expected Response | Infrastructure |
-|----------|------------------|-------------------|-----------------|
-| Frontend | `/api/health` | `{"status":"ok","timestamp":"<ISO_TIMESTAMP>","uptime":<SECONDS>}` | Vercel |
-| Backend API | `/health` | `{"status":"ok","service":"backend-api","timestamp":"<ISO_TIMESTAMP>"}` | OCI Compute |
-| Fulfillment Engine | `/fulfillment/health` | `{"status":"ok","service":"fulfillment-engine","timestamp":"<ISO_TIMESTAMP>"}` | OCI Compute |
-| Vault Landing | `/vault/health` | `{"status":"ok","service":"vault-landing","timestamp":"<ISO_TIMESTAMP>"}` | OCI Compute |
+| Service            | Health Endpoint       | Expected Response                                                              | Infrastructure |
+| ------------------ | --------------------- | ------------------------------------------------------------------------------ | -------------- |
+| Frontend           | `/api/health`         | `{"status":"ok","timestamp":"<ISO_TIMESTAMP>","uptime":<SECONDS>}`             | Vercel         |
+| Backend API        | `/health`             | `{"status":"ok","service":"backend-api","timestamp":"<ISO_TIMESTAMP>"}`        | OCI Compute    |
+| Fulfillment Engine | `/fulfillment/health` | `{"status":"ok","service":"fulfillment-engine","timestamp":"<ISO_TIMESTAMP>"}` | OCI Compute    |
+| Vault Landing      | `/vault/health`       | `{"status":"ok","service":"vault-landing","timestamp":"<ISO_TIMESTAMP>"}`      | OCI Compute    |
 
 ### Standard Response Format
 
@@ -45,7 +45,7 @@ router.get("/health", (req, res) => {
     service: "backend-api",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || "production"
+    environment: process.env.NODE_ENV || "production",
   });
 });
 
@@ -57,28 +57,28 @@ export default router;
 **File:** `vauntico-fulfillment-engine/health.js`
 
 ```javascript
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 // Main health endpoint
-router.get('/health', (req, res) => {
+router.get("/health", (req, res) => {
   res.status(200).json({
     status: "ok",
     service: "fulfillment-engine",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || "production"
+    environment: process.env.NODE_ENV || "production",
   });
 });
 
 // Alternative endpoint for nginx routing
-router.get('/fulfillment/health', (req, res) => {
+router.get("/fulfillment/health", (req, res) => {
   res.status(200).json({
     status: "ok",
     service: "fulfillment-engine",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || "production"
+    environment: process.env.NODE_ENV || "production",
   });
 });
 
@@ -90,28 +90,28 @@ module.exports = router;
 **File:** `vault-landing/health.js`
 
 ```javascript
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 // Main health endpoint
-router.get('/health', (req, res) => {
+router.get("/health", (req, res) => {
   res.status(200).json({
     status: "ok",
     service: "vault-landing",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || "production"
+    environment: process.env.NODE_ENV || "production",
   });
 });
 
 // Alternative endpoint for nginx routing
-router.get('/vault/health', (req, res) => {
+router.get("/vault/health", (req, res) => {
   res.status(200).json({
     status: "ok",
     service: "vault-landing",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || "production"
+    environment: process.env.NODE_ENV || "production",
   });
 });
 
@@ -123,15 +123,15 @@ module.exports = router;
 **File:** `homepage-redesign/app/api/health/route.ts`
 
 ```typescript
-import { NextResponse } from 'next/server'
+import { NextResponse } from "next/server";
 
 export async function GET() {
   return NextResponse.json({
-    status: 'ok',
+    status: "ok",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || 'development'
-  })
+    environment: process.env.NODE_ENV || "development",
+  });
 }
 ```
 
@@ -143,72 +143,72 @@ export async function GET() {
 
 ```yaml
 # OCI Backend API Health Check
-- job_name: 'oci-backend-api'
+- job_name: "oci-backend-api"
   static_configs:
-    - targets: ['api.vauntico.com']
+    - targets: ["api.vauntico.com"]
   metrics_path: /health
   scrape_interval: 60s
   scheme: https
   relabel_configs:
     - source_labels: [__address__]
       target_label: service
-      regex: '(.+)'
-      replacement: 'backend-api'
+      regex: "(.+)"
+      replacement: "backend-api"
     - source_labels: [__address__]
       target_label: instance
-      regex: '(.+)'
-      replacement: 'oci-backend-api'
+      regex: "(.+)"
+      replacement: "oci-backend-api"
 
 # OCI Fulfillment Engine Health Check
-- job_name: 'oci-fulfillment-engine'
+- job_name: "oci-fulfillment-engine"
   static_configs:
-    - targets: ['api.vauntico.com']
+    - targets: ["api.vauntico.com"]
   metrics_path: /fulfillment/health
   scrape_interval: 60s
   scheme: https
   relabel_configs:
     - source_labels: [__address__]
       target_label: service
-      regex: '(.+)'
-      replacement: 'fulfillment-engine'
+      regex: "(.+)"
+      replacement: "fulfillment-engine"
     - source_labels: [__address__]
       target_label: instance
-      regex: '(.+)'
-      replacement: 'oci-fulfillment-engine'
+      regex: "(.+)"
+      replacement: "oci-fulfillment-engine"
 
 # OCI Vault Landing Health Check
-- job_name: 'oci-vault-landing'
+- job_name: "oci-vault-landing"
   static_configs:
-    - targets: ['api.vauntico.com']
+    - targets: ["api.vauntico.com"]
   metrics_path: /vault/health
   scrape_interval: 60s
   scheme: https
   relabel_configs:
     - source_labels: [__address__]
       target_label: service
-      regex: '(.+)'
-      replacement: 'vault-landing'
+      regex: "(.+)"
+      replacement: "vault-landing"
     - source_labels: [__address__]
       target_label: instance
-      regex: '(.+)'
-      replacement: 'oci-vault-landing'
+      regex: "(.+)"
+      replacement: "oci-vault-landing"
 
 # Frontend Health Check (Vercel)
-- job_name: 'frontend-vercel'
+- job_name: "frontend-vercel"
   static_configs:
-    - targets: ['vauntico.com']
+    - targets: ["vauntico.com"]
   metrics_path: /api/health
   scrape_interval: 60s
   scheme: https
   relabel_configs:
     - source_labels: [__address__]
       target_label: service
-      regex: '(.+)'
-      replacement: 'frontend'
+      regex: "(.+)"
+      replacement: "frontend"
     - source_labels: [__address__]
       target_label: instance
-      regex: '(.+)'
-      replacement: 'vercel-frontend'
+      regex: "(.+)"
+      replacement: "vercel-frontend"
 ```
 
 ### Services Configuration
@@ -288,6 +288,7 @@ Generates comprehensive health reports for all Vauntico services:
 ```
 
 Features:
+
 - Tests all configured endpoints
 - Generates timestamped markdown reports
 - Validates JSON responses
@@ -432,12 +433,14 @@ curl -s https://api.vauntico.com/vault/health | jq
 ### Recovery Steps
 
 1. **Restart Services**
+
    ```bash
    docker-compose down
    docker-compose up -d
    ```
 
 2. **Force Update**
+
    ```bash
    docker-compose pull
    docker-compose up -d --force-recreate
@@ -454,6 +457,7 @@ curl -s https://api.vauntico.com/vault/health | jq
 ### Grafana Dashboards
 
 Key metrics to monitor:
+
 - HTTP response codes (2xx, 4xx, 5xx)
 - Response time trends
 - Service uptime percentages
@@ -462,6 +466,7 @@ Key metrics to monitor:
 ### Alerting Rules
 
 Configure alerts for:
+
 - Service downtime > 2 minutes
 - Response time > 5 seconds
 - Error rate > 5%

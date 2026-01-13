@@ -1,5 +1,5 @@
 ---
-description: 'Disallow unused variables.'
+description: "Disallow unused variables."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

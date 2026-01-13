@@ -1,5 +1,5 @@
 ---
-description: 'Disallow the use of variables before they are defined.'
+description: "Disallow the use of variables before they are defined."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

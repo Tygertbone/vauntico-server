@@ -1,5 +1,5 @@
 ---
-description: 'Disallow the declaration of empty interfaces.'
+description: "Disallow the declaration of empty interfaces."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

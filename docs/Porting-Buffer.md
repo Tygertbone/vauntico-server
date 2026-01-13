@@ -1,9 +1,10 @@
 # Porting to the Buffer.from/Buffer.alloc API
 
 <a id="overview"></a>
+
 ## Overview
 
-- [Variant 1: Drop support for Node.js ≤ 4.4.x and 5.0.0 — 5.9.x.](#variant-1) (*recommended*)
+- [Variant 1: Drop support for Node.js ≤ 4.4.x and 5.0.0 — 5.9.x.](#variant-1) (_recommended_)
 - [Variant 2: Use a polyfill](#variant-2)
 - [Variant 3: manual detection, with safeguards](#variant-3)
 
@@ -50,11 +51,12 @@ overriden e.g. with a polyfill, so recommended is a combination of this and some
 described above.
 
 <a id="variant-1"></a>
+
 ## Variant 1: Drop support for Node.js ≤ 4.4.x and 5.0.0 — 5.9.x.
 
 This is the recommended solution nowadays that would imply only minimal overhead.
 
-The Node.js 5.x release line has been unsupported since July 2016, and the Node.js 4.x release line reaches its End of Life in April 2018 (→ [Schedule](https://github.com/nodejs/Release#release-schedule)). This means that these versions of Node.js will *not* receive any updates, even in case of security issues, so using these release lines should be avoided, if at all possible.
+The Node.js 5.x release line has been unsupported since July 2016, and the Node.js 4.x release line reaches its End of Life in April 2018 (→ [Schedule](https://github.com/nodejs/Release#release-schedule)). This means that these versions of Node.js will _not_ receive any updates, even in case of security issues, so using these release lines should be avoided, if at all possible.
 
 What you would do in this case is to convert all `new Buffer()` or `Buffer()` calls to use `Buffer.alloc()` or `Buffer.from()`, in the following way:
 
@@ -82,6 +84,7 @@ the fix. That way, you will eradicate potential issues caused by unguarded Buffe
 your users will not observe a runtime deprecation warning when running your code on Node.js 10._
 
 <a id="variant-2"></a>
+
 ## Variant 2: Use a polyfill
 
 Utilize [safer-buffer](https://www.npmjs.com/package/safer-buffer) as a polyfill to support older
@@ -118,6 +121,7 @@ is recommended.
 _Don't forget to drop the polyfill usage once you drop support for Node.js < 4.5.0._
 
 <a id="variant-3"></a>
+
 ## Variant 3 — manual detection, with safeguards
 
 This is useful if you create Buffer instances in only a few places (e.g. one), or you have your own
@@ -143,7 +147,7 @@ var buf;
 if (Buffer.from && Buffer.from !== Uint8Array.from) {
   buf = Buffer.from(notNumber, encoding);
 } else {
-  if (typeof notNumber === 'number')
+  if (typeof notNumber === "number")
     throw new Error('The "size" argument must be of type number.');
   buf = new Buffer(notNumber, encoding);
 }
@@ -188,13 +192,14 @@ const buf = Buffer.alloc ? Buffer.alloc(number) : new Buffer(number).fill(0);
 ## Regarding Buffer.allocUnsafe
 
 Be extra cautious when using `Buffer.allocUnsafe`:
- * Don't use it if you don't have a good reason to
-   * e.g. you probably won't ever see a performance difference for small buffers, in fact, those
-     might be even faster with `Buffer.alloc()`,
-   * if your code is not in the hot code path — you also probably won't notice a difference,
-   * keep in mind that zero-filling minimizes the potential risks.
- * If you use it, make sure that you never return the buffer in a partially-filled state,
-   * if you are writing to it sequentially — always truncate it to the actuall written length
+
+- Don't use it if you don't have a good reason to
+  - e.g. you probably won't ever see a performance difference for small buffers, in fact, those
+    might be even faster with `Buffer.alloc()`,
+  - if your code is not in the hot code path — you also probably won't notice a difference,
+  - keep in mind that zero-filling minimizes the potential risks.
+- If you use it, make sure that you never return the buffer in a partially-filled state,
+  - if you are writing to it sequentially — always truncate it to the actuall written length
 
 Errors in handling buffers allocated with `Buffer.allocUnsafe` could result in various issues,
 ranged from undefined behaviour of your code to sensitive data (user input, passwords, certs)
@@ -204,15 +209,17 @@ _Note that the same applies to `new Buffer` usage without zero-filling, dependin
 version (and lacking type checks also adds DoS to the list of potential problems)._
 
 <a id="faq"></a>
+
 ## FAQ
 
 <a id="design-flaws"></a>
+
 ### What is wrong with the `Buffer` constructor?
 
 The `Buffer` constructor could be used to create a buffer in many different ways:
 
 - `new Buffer(42)` creates a `Buffer` of 42 bytes. Before Node.js 8, this buffer contained
-  *arbitrary memory* for performance reasons, which could include anything ranging from
+  _arbitrary memory_ for performance reasons, which could include anything ranging from
   program source code to passwords and encryption keys.
 - `new Buffer('abc')` creates a `Buffer` that contains the UTF-8-encoded version of
   the string `'abc'`. A second argument could specify another encoding: For example,
@@ -220,8 +227,8 @@ The `Buffer` constructor could be used to create a buffer in many different ways
   sequence of bytes that it represents.
 - There are several other combinations of arguments.
 
-This meant that, in code like `var buffer = new Buffer(foo);`, *it is not possible to tell
-what exactly the contents of the generated buffer are* without knowing the type of `foo`.
+This meant that, in code like `var buffer = new Buffer(foo);`, _it is not possible to tell
+what exactly the contents of the generated buffer are_ without knowing the type of `foo`.
 
 Sometimes, the value of `foo` comes from an external source. For example, this function
 could be exposed as a service on a web server, converting a UTF-8 string into its Base64 form:
@@ -235,11 +242,11 @@ function stringToBase64(req, res) {
 }
 ```
 
-Note that this code does *not* validate the type of `req.body.string`:
+Note that this code does _not_ validate the type of `req.body.string`:
 
 - `req.body.string` is expected to be a string. If this is the case, all goes well.
 - `req.body.string` is controlled by the client that sends the request.
-- If `req.body.string` is the *number* `50`, the `rawBytes` would be 50 bytes:
+- If `req.body.string` is the _number_ `50`, the `rawBytes` would be 50 bytes:
   - Before Node.js 8, the content would be uninitialized
   - After Node.js 8, the content would be `50` bytes with the value `0`
 
@@ -261,8 +268,9 @@ throw an exception instead, giving a controlled behaviour that can always be
 handled by the program.
 
 <a id="ecosystem-usage"></a>
+
 ### The `Buffer()` constructor has been deprecated for a while. Is this really an issue?
 
 Surveys of code in the `npm` ecosystem have shown that the `Buffer()` constructor is still
 widely used. This includes new code, and overall usage of such code has actually been
-*increasing*.
+_increasing_.

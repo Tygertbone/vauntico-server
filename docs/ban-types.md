@@ -1,5 +1,5 @@
 ---
-description: 'Disallow certain types.'
+description: "Disallow certain types."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -22,10 +22,10 @@ Examples of code with the default options:
 
 ```ts
 // use lower-case primitives for consistency
-const str: String = 'foo';
+const str: String = "foo";
 const bool: Boolean = true;
 const num: Number = 1;
-const symb: Symbol = Symbol('foo');
+const symb: Symbol = Symbol("foo");
 const bigInt: BigInt = 1n;
 
 // use a proper function type
@@ -33,20 +33,20 @@ const func: Function = () => 1;
 
 // use safer object types
 const lowerObj: Object = {};
-const capitalObj: Object = { a: 'string' };
+const capitalObj: Object = { a: "string" };
 
 const curly1: {} = 1;
-const curly2: {} = { a: 'string' };
+const curly2: {} = { a: "string" };
 ```
 
 ### ✅ Correct
 
 ```ts
 // use lower-case primitives for consistency
-const str: string = 'foo';
+const str: string = "foo";
 const bool: boolean = true;
 const num: number = 1;
-const symb: symbol = Symbol('foo');
+const symb: symbol = Symbol("foo");
 const bigInt: bigint = 1n;
 
 // use a proper function type
@@ -54,10 +54,10 @@ const func: () => number = () => 1;
 
 // use safer object types
 const lowerObj: object = {};
-const capitalObj: { a: string } = { a: 'string' };
+const capitalObj: { a: string } = { a: "string" };
 
 const curly1: number = 1;
-const curly2: Record<'a', string> = { a: 'string' };
+const curly2: Record<"a", string> = { a: "string" };
 ```
 
 ## Options

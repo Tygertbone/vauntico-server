@@ -1,5 +1,5 @@
 ---
-description: 'Require spacing around infix operators.'
+description: "Require spacing around infix operators."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -11,6 +11,6 @@ It adds support for enum members.
 
 ```ts
 enum MyEnum {
-  KEY = 'value',
+  KEY = "value",
 }
 ```

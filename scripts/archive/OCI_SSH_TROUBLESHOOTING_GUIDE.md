@@ -3,6 +3,7 @@
 ## 🚨 Common SSH Issues and Solutions
 
 Based on your feedback, you're encountering these specific issues:
+
 - Port 22 refused/timed out
 - SSH not reachable from external
 - chmod command not working (Windows vs Linux)
@@ -13,6 +14,7 @@ Based on your feedback, you're encountering these specific issues:
 ### 1. Check OCI Security Rules
 
 **In OCI Console:**
+
 1. Go to **Compute → Instances**
 2. Click on your instance
 3. Go to **Virtual Cloud Network → Subnet → Security Lists**
@@ -26,6 +28,7 @@ Protocol: TCP
 ```
 
 **If missing, add the rule:**
+
 ```bash
 # Using OCI CLI
 oci network security-list create \
@@ -38,6 +41,7 @@ oci network security-list create \
 ### 2. Verify SSH Daemon is Running
 
 **Use OCI Console Connection:**
+
 1. Go to **Compute → Instances**
 2. Click your instance name
 3. Click **Console Connection** → **Create Console Connection**
@@ -45,6 +49,7 @@ oci network security-list create \
 5. Follow instructions to connect
 
 **Once connected, check SSH status:**
+
 ```bash
 # Check if SSH is running
 sudo systemctl status ssh
@@ -63,6 +68,7 @@ sudo netstat -tlnp | grep :22
 ### 3. Check Network Security Groups (NSGs)
 
 **If using NSGs instead of Security Lists:**
+
 1. Go to **Networking → Network Security Groups**
 2. Find your instance's NSG
 3. Add inbound rule:
@@ -73,6 +79,7 @@ sudo netstat -tlnp | grep :22
 ### 4. Test SSH Connection
 
 **From your local machine:**
+
 ```bash
 # Test basic connectivity
 telnet YOUR_INSTANCE_IP 22
@@ -152,6 +159,7 @@ ls -la *.sh
 
 **Cause:** SSH daemon not running or firewall blocking
 **Solution:**
+
 ```bash
 # Check SSH status
 sudo systemctl status ssh
@@ -165,6 +173,7 @@ sudo systemctl enable ssh
 
 **Cause:** Security rules not allowing SSH
 **Solution:**
+
 ```bash
 # Check security list rules
 oci network security-list list --compartment-id YOUR_COMPARTMENT_ID
@@ -179,6 +188,7 @@ oci network security-list update \
 
 **Cause:** Running chmod on Windows instead of Linux
 **Solution:**
+
 ```bash
 # WRONG (Windows PowerShell):
 chmod +x script.sh
@@ -192,6 +202,7 @@ chmod +x script.sh
 
 **Cause:** Running scripts before SSH connection
 **Solution:**
+
 ```bash
 # WRONG (runs locally):
 ./backend-deploy-v2-optimized.sh
@@ -240,6 +251,7 @@ oci compute instance get --instance-id YOUR_INSTANCE_ID
 ### If SSH Still Fails:
 
 **Method 1: OCI Console Connection**
+
 1. Go to OCI Console
 2. Compute → Instances → Your Instance
 3. Console Connection → Create SSH Console Connection
@@ -247,12 +259,14 @@ oci compute instance get --instance-id YOUR_INSTANCE_ID
 5. Connect using provided command
 
 **Method 2: Serial Console**
+
 1. Go to Console Connection → Create Serial Console Connection
 2. Follow instructions for serial access
 3. Login with default credentials
 4. Debug SSH daemon issues
 
 **Method 3: Recreate Security Rules**
+
 ```bash
 # Completely recreate security rules
 # First, remove all existing rules
@@ -279,6 +293,7 @@ Before attempting deployment:
 ## 🎯 Quick Test Commands
 
 **From Local Machine:**
+
 ```bash
 # Test SSH connectivity
 ssh -o ConnectTimeout=10 ubuntu@84.8.135.161 'echo "SSH Works"'
@@ -287,6 +302,7 @@ ssh -o ConnectTimeout=10 ubuntu@84.8.135.161 'echo "SSH Works"'
 ```
 
 **From OCI Instance:**
+
 ```bash
 # Test deployment prerequisites
 which node || echo "Node.js not installed"

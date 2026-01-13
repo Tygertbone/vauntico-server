@@ -1,24 +1,24 @@
-import { pool } from '../db/pool';
-import { logger } from './logger';
-import { featureFlagManager, EMERGENCY_FLAGS } from './featureFlags';
-import { redis, RedisCache } from '../queue/upstash';
+import { pool } from "../db/pool";
+import { logger } from "./logger";
+import { featureFlagManager, EMERGENCY_FLAGS } from "./featureFlags";
+import { redis, RedisCache } from "../queue/upstash";
 
 export enum SubscriptionTier {
-  FREE = 'free',
-  CREATOR_PASS = 'creator_pass',
-  ENTERPRISE = 'enterprise'
+  FREE = "free",
+  CREATOR_PASS = "creator_pass",
+  ENTERPRISE = "enterprise",
 }
 
 export enum SubscriptionStatus {
-  ACTIVE = 'active',
-  PAST_DUE = 'past_due',
-  CANCELED = 'canceled',
-  INCOMPLETE = 'incomplete'
+  ACTIVE = "active",
+  PAST_DUE = "past_due",
+  CANCELED = "canceled",
+  INCOMPLETE = "incomplete",
 }
 
 export enum PaymentProvider {
-  PAYSTACK = 'paystack',
-  STRIPE = 'stripe'
+  PAYSTACK = "paystack",
+  STRIPE = "stripe",
 }
 
 export interface FeatureUsage {
@@ -59,7 +59,7 @@ export interface Subscription {
 }
 
 export class SubscriptionManager {
-  private cache = new RedisCache('subscriptions');
+  private cache = new RedisCache("subscriptions");
   private cacheTTL = 600; // 10 minutes cache
 
   // Check if user has premium subscription
@@ -76,14 +76,14 @@ export class SubscriptionManager {
       // Check emergency kill switch first
       const emergencyKill = await featureFlagManager.isEnabled(
         EMERGENCY_FLAGS.AI_FEATURES,
-        { key: EMERGENCY_FLAGS.AI_FEATURES, userId }
+        { key: EMERGENCY_FLAGS.AI_FEATURES, userId },
       );
 
       if (!emergencyKill) {
         // Check database
         const result = await pool.query(
-          'SELECT user_has_premium_access($1) as has_access',
-          [userId]
+          "SELECT user_has_premium_access($1) as has_access",
+          [userId],
         );
 
         const hasAccess = result.rows[0]?.has_access || false;
@@ -97,9 +97,9 @@ export class SubscriptionManager {
       // Emergency mode - cached result only
       return false;
     } catch (error) {
-      logger.error('Error checking premium access', {
+      logger.error("Error checking premium access", {
         userId,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : "Unknown error",
       });
 
       // Fail-safe: return false on error
@@ -113,7 +113,7 @@ export class SubscriptionManager {
       // Emergency kill switch check
       const emergencyKill = await featureFlagManager.isEnabled(featureKey, {
         key: featureKey,
-        userId
+        userId,
       });
       if (!emergencyKill) return false;
 
@@ -130,10 +130,10 @@ export class SubscriptionManager {
       // Check usage against limits
       return usage.usage_count < usage.usage_limit;
     } catch (error) {
-      logger.error('Error checking feature access', {
+      logger.error("Error checking feature access", {
         userId,
         featureKey,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : "Unknown error",
       });
 
       // Fail-safe: deny access on error
@@ -145,28 +145,32 @@ export class SubscriptionManager {
   async incrementFeatureUsage(
     userId: string,
     featureKey: string,
-    increment: number = 1
+    increment: number = 1,
   ): Promise<void> {
     try {
-      await pool.query(
-        'SELECT increment_feature_usage($1, $2, $3)',
-        [userId, featureKey, increment]
-      );
+      await pool.query("SELECT increment_feature_usage($1, $2, $3)", [
+        userId,
+        featureKey,
+        increment,
+      ]);
 
       // Clear cache
       await this.cache.del(`usage:${userId}:${featureKey}`);
     } catch (error) {
-      logger.error('Error incrementing feature usage', {
+      logger.error("Error incrementing feature usage", {
         userId,
         featureKey,
         increment,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   }
 
   // Get feature usage for a user
-  async getFeatureUsage(userId: string, featureKey: string): Promise<FeatureUsage | null> {
+  async getFeatureUsage(
+    userId: string,
+    featureKey: string,
+  ): Promise<FeatureUsage | null> {
     try {
       const cacheKey = `usage:${userId}:${featureKey}`;
       const cached = await this.cache.get<FeatureUsage>(cacheKey);
@@ -176,8 +180,8 @@ export class SubscriptionManager {
       }
 
       const result = await pool.query(
-        'SELECT * FROM feature_usage WHERE user_id = $1 AND feature_key = $2',
-        [userId, featureKey]
+        "SELECT * FROM feature_usage WHERE user_id = $1 AND feature_key = $2",
+        [userId, featureKey],
       );
 
       if (result.rows.length === 0) {
@@ -191,10 +195,10 @@ export class SubscriptionManager {
 
       return usage;
     } catch (error) {
-      logger.error('Error getting feature usage', {
+      logger.error("Error getting feature usage", {
         userId,
         featureKey,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return null;
     }
@@ -211,8 +215,8 @@ export class SubscriptionManager {
       }
 
       const result = await pool.query(
-        'SELECT * FROM subscriptions WHERE user_id = $1',
-        [userId]
+        "SELECT * FROM subscriptions WHERE user_id = $1",
+        [userId],
       );
 
       if (result.rows.length === 0) {
@@ -226,9 +230,9 @@ export class SubscriptionManager {
 
       return sub;
     } catch (error) {
-      logger.error('Error getting subscription', {
+      logger.error("Error getting subscription", {
         userId,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return null;
     }
@@ -237,7 +241,7 @@ export class SubscriptionManager {
   // Update subscription (for Stripe webhooks)
   async updateSubscription(
     userId: string,
-    updateData: Partial<Subscription>
+    updateData: Partial<Subscription>,
   ): Promise<boolean> {
     try {
       const fields: string[] = [];
@@ -257,7 +261,7 @@ export class SubscriptionManager {
 
       const query = `
         UPDATE subscriptions
-        SET ${fields.join(', ')}, updated_at = NOW()
+        SET ${fields.join(", ")}, updated_at = NOW()
         WHERE user_id = $${paramIndex}
       `;
 
@@ -267,12 +271,12 @@ export class SubscriptionManager {
       await this.cache.del(`sub:${userId}`);
       await this.cache.del(`premium:${userId}`);
 
-      logger.info('Subscription updated', { userId, fields: fields.length });
+      logger.info("Subscription updated", { userId, fields: fields.length });
       return true;
     } catch (error) {
-      logger.error('Error updating subscription', {
+      logger.error("Error updating subscription", {
         userId,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return false;
     }
@@ -296,11 +300,11 @@ export class SubscriptionManager {
         trialUsers: 0,
         revenue: { monthly: 0, annual: 0 },
         churnRate: 0,
-        conversionRate: 0
+        conversionRate: 0,
       };
     } catch (error) {
-      logger.error('Error getting subscription analytics', {
-        error: error instanceof Error ? error.message : 'Unknown error'
+      logger.error("Error getting subscription analytics", {
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return {
         freeUsers: 0,
@@ -308,7 +312,7 @@ export class SubscriptionManager {
         trialUsers: 0,
         revenue: { monthly: 0, annual: 0 },
         churnRate: 0,
-        conversionRate: 0
+        conversionRate: 0,
       };
     }
   }
@@ -323,15 +327,15 @@ export class SubscriptionManager {
         tier: SubscriptionTier.CREATOR_PASS,
         status: SubscriptionStatus.ACTIVE,
         trialStart: new Date(),
-        trialEnd: trialEnd
+        trialEnd: trialEnd,
       };
 
       return await this.updateSubscription(userId, updateData);
     } catch (error) {
-      logger.error('Error starting trial', {
+      logger.error("Error starting trial", {
         userId,
         trialDays,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return false;
     }
@@ -344,22 +348,22 @@ export const subscriptionManager = new SubscriptionManager();
 // Premium feature flag constants with revenue focus
 export const PREMIUM_FEATURES = {
   // Core premium features
-  UNLIMITED_VAULTS: 'unlimited_vaults',
-  UNLIMITED_AI_GENERATIONS: 'unlimited_ai_generations',
-  ADVANCED_ANALYTICS: 'advanced_analytics',
-  CUSTOM_BRANDING: 'custom_branding',
-  PRIORITY_SUPPORT: 'priority_support',
+  UNLIMITED_VAULTS: "unlimited_vaults",
+  UNLIMITED_AI_GENERATIONS: "unlimited_ai_generations",
+  ADVANCED_ANALYTICS: "advanced_analytics",
+  CUSTOM_BRANDING: "custom_branding",
+  PRIORITY_SUPPORT: "priority_support",
 
   // Revenue-generating features
-  EXPORT_DATA: 'export_data',
-  TEAM_COLLABORATION: 'team_collaboration',
-  API_ACCESS: 'api_access',
-  WHITE_LABEL: 'white_label',
+  EXPORT_DATA: "export_data",
+  TEAM_COLLABORATION: "team_collaboration",
+  API_ACCESS: "api_access",
+  WHITE_LABEL: "white_label",
 
   // Growth features
-  ADVANCED_SHARING: 'advanced_sharing',
-  SOCIAL_PROOF: 'social_proof',
-  INTEGRATION_WEBHOOKS: 'integration_webhooks'
+  ADVANCED_SHARING: "advanced_sharing",
+  SOCIAL_PROOF: "social_proof",
+  INTEGRATION_WEBHOOKS: "integration_webhooks",
 } as const;
 
 // Tier limits (matching pricing page)
@@ -368,18 +372,18 @@ export const TIER_LIMITS = {
     vaults: 3,
     aiGenerations: 50,
     storageGb: 1,
-    teamMembers: 1
+    teamMembers: 1,
   },
   [SubscriptionTier.CREATOR_PASS]: {
     vaults: -1, // unlimited
     aiGenerations: -1, // unlimited
     storageGb: 100,
-    teamMembers: 10
+    teamMembers: 10,
   },
   [SubscriptionTier.ENTERPRISE]: {
     vaults: -1, // unlimited
     aiGenerations: -1, // unlimited
     storageGb: -1, // unlimited
-    teamMembers: -1 // unlimited
-  }
+    teamMembers: -1, // unlimited
+  },
 };

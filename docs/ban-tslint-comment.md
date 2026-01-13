@@ -1,5 +1,5 @@
 ---
-description: 'Disallow `// tslint:<rule-flag>` comments.'
+description: "Disallow `// tslint:<rule-flag>` comments."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

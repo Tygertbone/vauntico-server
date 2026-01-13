@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom'
-import SEO from '../components/SEO'
+import { Link } from "react-router-dom";
+import SEO from "../components/SEO";
 
 function PaymentBridgeLanding() {
   return (
     <>
-      <SEO 
+      <SEO
         title="Payment Bridge - Cross-Border Payments for African Creators"
         description="Seamless cross-border payment solutions for African creators. Get paid globally with our 10% fee payment bridge service."
         canonical="/services/payment-bridge"
@@ -16,7 +16,8 @@ function PaymentBridgeLanding() {
             Payment <span className="text-gradient">Bridge</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Break down borders, not your bank account. Cross-border payments designed for African creators.
+            Break down borders, not your bank account. Cross-border payments
+            designed for African creators.
           </p>
         </div>
 
@@ -29,18 +30,24 @@ function PaymentBridgeLanding() {
               </div>
             </div>
             <div>
-              <h2 className="text-3xl font-bold mb-4">The African Creator Challenge</h2>
+              <h2 className="text-3xl font-bold mb-4">
+                The African Creator Challenge
+              </h2>
               <p className="text-gray-700 mb-4 leading-relaxed">
-                As an African creator, getting paid from international clients shouldn't feel like navigating a maze. 
-                High fees, complex regulations, and limited payment options stand between you and global opportunities.
+                As an African creator, getting paid from international clients
+                shouldn't feel like navigating a maze. High fees, complex
+                regulations, and limited payment options stand between you and
+                global opportunities.
               </p>
               <p className="text-gray-700 mb-4 leading-relaxed">
-                Traditional payment processors charge exorbitant fees (15-30%) and take weeks to process. 
-                Banks impose strict limits and endless paperwork. Your creativity deserves better.
+                Traditional payment processors charge exorbitant fees (15-30%)
+                and take weeks to process. Banks impose strict limits and
+                endless paperwork. Your creativity deserves better.
               </p>
               <p className="text-gray-700 leading-relaxed">
-                We've built the Payment Bridge to connect you directly with global brands, ensuring you get 
-                paid quickly, fairly, and without the headache.
+                We've built the Payment Bridge to connect you directly with
+                global brands, ensuring you get paid quickly, fairly, and
+                without the headache.
               </p>
             </div>
           </div>
@@ -54,25 +61,34 @@ function PaymentBridgeLanding() {
               <div className="text-5xl mb-4">📝</div>
               <h3 className="text-xl font-bold mb-3">1. Submit Request</h3>
               <p className="text-gray-600 mb-4">
-                Fill out your payment details with client information and amount. Our secure form captures everything needed.
+                Fill out your payment details with client information and
+                amount. Our secure form captures everything needed.
               </p>
-              <div className="text-sm text-vault-purple font-medium">Takes 2 minutes</div>
+              <div className="text-sm text-vault-purple font-medium">
+                Takes 2 minutes
+              </div>
             </div>
             <div className="card text-center">
               <div className="text-5xl mb-4">🔄</div>
               <h3 className="text-xl font-bold mb-3">2. We Process</h3>
               <p className="text-gray-600 mb-4">
-                Our team handles currency conversion, compliance checks, and routing through our global payment network.
+                Our team handles currency conversion, compliance checks, and
+                routing through our global payment network.
               </p>
-              <div className="text-sm text-vault-purple font-medium">24-48 hours</div>
+              <div className="text-sm text-vault-purple font-medium">
+                24-48 hours
+              </div>
             </div>
             <div className="card text-center">
               <div className="text-5xl mb-4">💰</div>
               <h3 className="text-xl font-bold mb-3">3. Get Paid</h3>
               <p className="text-gray-600 mb-4">
-                Funds appear directly in your local bank account. No hidden fees, no delays, no complications.
+                Funds appear directly in your local bank account. No hidden
+                fees, no delays, no complications.
               </p>
-              <div className="text-sm text-vault-purple font-medium">Instant access</div>
+              <div className="text-sm text-vault-purple font-medium">
+                Instant access
+              </div>
             </div>
           </div>
         </div>
@@ -80,7 +96,9 @@ function PaymentBridgeLanding() {
         {/* Pricing Section */}
         <div className="max-w-4xl mx-auto mb-20">
           <div className="vault-gradient rounded-2xl p-12 text-white text-center">
-            <h2 className="text-3xl font-bold mb-6">Simple, Transparent Pricing</h2>
+            <h2 className="text-3xl font-bold mb-6">
+              Simple, Transparent Pricing
+            </h2>
             <div className="mb-8">
               <div className="text-6xl font-bold mb-4">10%</div>
               <div className="text-xl opacity-90">Transaction Fee</div>
@@ -109,7 +127,8 @@ function PaymentBridgeLanding() {
             </div>
             <div className="mt-8 p-4 bg-white/10 rounded-lg">
               <p className="text-sm opacity-90">
-                <strong>Compare:</strong> Traditional processors charge 15-30% + hidden fees. We charge just 10% total.
+                <strong>Compare:</strong> Traditional processors charge 15-30% +
+                hidden fees. We charge just 10% total.
               </p>
             </div>
           </div>
@@ -117,7 +136,9 @@ function PaymentBridgeLanding() {
 
         {/* Features */}
         <div className="max-w-6xl mx-auto mb-20">
-          <h2 className="text-3xl font-bold text-center mb-12">Why Choose Payment Bridge?</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Why Choose Payment Bridge?
+          </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="card text-center">
               <div className="text-4xl mb-4">🌍</div>
@@ -137,7 +158,8 @@ function PaymentBridgeLanding() {
               <div className="text-4xl mb-4">🔒</div>
               <h3 className="text-lg font-bold mb-3">Bank-Level Security</h3>
               <p className="text-gray-600 text-sm">
-                End-to-end encryption and compliance with international standards
+                End-to-end encryption and compliance with international
+                standards
               </p>
             </div>
             <div className="card text-center">
@@ -153,18 +175,26 @@ function PaymentBridgeLanding() {
         {/* Trust Indicators */}
         <div className="max-w-4xl mx-auto mb-20">
           <div className="card bg-gradient-to-r from-vault-purple/10 to-vault-blue/10 border-2 border-vault-purple/20">
-            <h2 className="text-2xl font-bold mb-6 text-center">Trusted by African Creators</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              Trusted by African Creators
+            </h2>
             <div className="grid md:grid-cols-3 gap-8 text-center">
               <div>
-                <div className="text-3xl font-bold text-vault-purple mb-2">$2.5M+</div>
+                <div className="text-3xl font-bold text-vault-purple mb-2">
+                  $2.5M+
+                </div>
                 <div className="text-gray-600">Payments Processed</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-vault-purple mb-2">1,200+</div>
+                <div className="text-3xl font-bold text-vault-purple mb-2">
+                  1,200+
+                </div>
                 <div className="text-gray-600">Active Creators</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-vault-purple mb-2">45+</div>
+                <div className="text-3xl font-bold text-vault-purple mb-2">
+                  45+
+                </div>
                 <div className="text-gray-600">African Countries</div>
               </div>
             </div>
@@ -177,58 +207,78 @@ function PaymentBridgeLanding() {
             Ready to Get Paid <span className="text-gradient">Globally?</span>
           </h2>
           <p className="text-xl text-gray-600 mb-8">
-            Join thousands of African creators who've simplified their cross-border payments
+            Join thousands of African creators who've simplified their
+            cross-border payments
           </p>
           <div className="flex items-center justify-center gap-4">
             <Link to="/payment-bridge" className="btn-primary text-lg">
               Access Payment Bridge
             </Link>
-            <a href="mailto:payments@vauntico.com" className="btn-outline text-lg">
+            <a
+              href="mailto:payments@vauntico.com"
+              className="btn-outline text-lg"
+            >
               Ask Questions
             </a>
           </div>
           <p className="text-sm text-gray-500 mt-6">
-            Authentication required. Only available to verified Vauntico creators.
+            Authentication required. Only available to verified Vauntico
+            creators.
           </p>
         </div>
 
         {/* FAQ Section */}
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Frequently Asked Questions
+          </h2>
           <div className="space-y-6">
             <div className="card">
-              <h3 className="text-lg font-bold mb-3">How long does payment processing take?</h3>
+              <h3 className="text-lg font-bold mb-3">
+                How long does payment processing take?
+              </h3>
               <p className="text-gray-600">
-                Most payments are processed within 24-48 hours after submission. Complex cases may take up to 5 business days 
-                depending on the source country and currency.
+                Most payments are processed within 24-48 hours after submission.
+                Complex cases may take up to 5 business days depending on the
+                source country and currency.
               </p>
             </div>
             <div className="card">
-              <h3 className="text-lg font-bold mb-3">What countries do you support?</h3>
+              <h3 className="text-lg font-bold mb-3">
+                What countries do you support?
+              </h3>
               <p className="text-gray-600">
-                We support payouts to 45+ African countries including Nigeria, Kenya, South Africa, Ghana, Egypt, and more. 
-                Contact us if your country isn't listed.
+                We support payouts to 45+ African countries including Nigeria,
+                Kenya, South Africa, Ghana, Egypt, and more. Contact us if your
+                country isn't listed.
               </p>
             </div>
             <div className="card">
-              <h3 className="text-lg font-bold mb-3">Are there any minimum or maximum limits?</h3>
+              <h3 className="text-lg font-bold mb-3">
+                Are there any minimum or maximum limits?
+              </h3>
               <p className="text-gray-600">
-                Minimum payment amount is $50 USD. Maximum is $50,000 USD per transaction. Higher amounts can be arranged 
-                on a case-by-case basis.
+                Minimum payment amount is $50 USD. Maximum is $50,000 USD per
+                transaction. Higher amounts can be arranged on a case-by-case
+                basis.
               </p>
             </div>
             <div className="card">
-              <h3 className="text-lg font-bold mb-3">How does the 10% fee compare to alternatives?</h3>
+              <h3 className="text-lg font-bold mb-3">
+                How does the 10% fee compare to alternatives?
+              </h3>
               <p className="text-gray-600">
-                Traditional processors like PayPal charge 15-30% + currency conversion fees. Bank transfers can cost 20-40% 
-                with intermediary fees. Our 10% is all-inclusive with no hidden charges.
+                Traditional processors like PayPal charge 15-30% + currency
+                conversion fees. Bank transfers can cost 20-40% with
+                intermediary fees. Our 10% is all-inclusive with no hidden
+                charges.
               </p>
             </div>
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default PaymentBridgeLanding
+export default PaymentBridgeLanding;

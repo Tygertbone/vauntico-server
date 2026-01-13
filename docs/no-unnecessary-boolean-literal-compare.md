@@ -1,5 +1,5 @@
 ---
-description: 'Disallow unnecessary equality comparisons against boolean literals.'
+description: "Disallow unnecessary equality comparisons against boolean literals."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

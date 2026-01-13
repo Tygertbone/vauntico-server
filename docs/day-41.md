@@ -21,11 +21,13 @@ objective: "Master time management to maintain R2K income working just 10-15 hou
 ## 🎯 The Time Management Reality
 
 **Most creators:**
+
 - Work 40 hours/week
 - Make R2,000/month
 - Burn out in 6 months
 
 **You (after today):**
+
 - Work 10-15 hours/week
 - Make R2,000+/month
 - Sustainable for YEARS
@@ -67,13 +69,16 @@ objective: "Master time management to maintain R2K income working just 10-15 hou
 ## ⏰ The R2K Weekly Schedule
 
 ### **Monday (2 hours):**
+
 **9-10am:** Plan week's content (7 video ideas)  
 **10-11am:** Pitch 5 brands via email/DM
 
 ---
 
 ### **Tuesday (3 hours):**
+
 **9am-12pm:** BATCH DAY
+
 - Film all 7 videos
 - Edit all
 - Schedule for the week
@@ -81,24 +86,28 @@ objective: "Master time management to maintain R2K income working just 10-15 hou
 ---
 
 ### **Wednesday (2 hours):**
+
 **9-10am:** Respond to DMs (sales conversations)  
 **10-11am:** Follow up on brand pitches
 
 ---
 
 ### **Thursday (2 hours):**
+
 **9-10am:** Community engagement (comments, Stories)  
 **10-11am:** Create/update digital products
 
 ---
 
 ### **Friday (2 hours):**
+
 **9-10am:** Analytics review (what worked this week?)  
 **10-11am:** Invoicing, admin, planning next week
 
 ---
 
 ### **Saturday-Sunday:**
+
 **OFF!** Rest, live life, recharge.
 
 ---
@@ -123,6 +132,7 @@ Dedicating specific time slots to specific tasks. No multitasking.
 ### **Example: Monday 9-11am Block**
 
 **❌ Wrong way:**
+
 - 9:00am: Check emails
 - 9:15am: Scroll Instagram
 - 9:30am: Start planning content
@@ -134,6 +144,7 @@ Dedicating specific time slots to specific tasks. No multitasking.
 ---
 
 **✅ Right way:**
+
 - 9:00am: Set timer for 1 hour
 - 9:00-10:00am: ONLY plan content (phone on Do Not Disturb)
 - 10:00am: Break (5 min)
@@ -144,6 +155,7 @@ Dedicating specific time slots to specific tasks. No multitasking.
 ---
 
 **The power of time-blocking:**
+
 - Forces focus
 - Eliminates distraction
 - Gets more done in less time
@@ -153,6 +165,7 @@ Dedicating specific time slots to specific tasks. No multitasking.
 ## 📱 The "Deep Work" vs "Shallow Work" Split
 
 ### **Deep Work (Requires focus):**
+
 - Content creation
 - Writing sales copy
 - Strategy planning
@@ -162,6 +175,7 @@ Dedicating specific time slots to specific tasks. No multitasking.
 ---
 
 ### **Shallow Work (Low focus needed):**
+
 - Responding to DMs
 - Scheduling posts
 - Commenting on other posts
@@ -173,6 +187,7 @@ Dedicating specific time slots to specific tasks. No multitasking.
 ## ⚠️ Time Wasters to Eliminate
 
 ### **Time Waster #1: Perfectionism**
+
 "This video isn't perfect, let me re-film it 5 times"
 
 **Reality:** 80% quality posted > 100% quality never posted
@@ -182,6 +197,7 @@ Dedicating specific time slots to specific tasks. No multitasking.
 ---
 
 ### **Time Waster #2: "Research" Scrolling**
+
 "I'm studying the algorithm!" (scrolls for 2 hours)
 
 **Reality:** You're procrastinating.
@@ -191,6 +207,7 @@ Dedicating specific time slots to specific tasks. No multitasking.
 ---
 
 ### **Time Waster #3: Saying Yes to Everything**
+
 Every collab, every opportunity, every DM conversation.
 
 **Reality:** Your time = your most valuable asset.
@@ -200,6 +217,7 @@ Every collab, every opportunity, every DM conversation.
 ---
 
 ### **Time Waster #4: Unfocused DM Conversations**
+
 Chatting with followers for hours about random topics.
 
 **Reality:** Friendly, but not income-generating.
@@ -231,13 +249,13 @@ Chatting with followers for hours about random topics.
 
 **Track how you spend time THIS week:**
 
-| Activity | Time Spent | Income Generated? |
-|----------|------------|-------------------|
-| Creating content | 5 hours | Yes (views = sales) |
-| Scrolling social media | 8 hours | No |
-| Responding to DMs | 3 hours | Yes (leads to sales) |
-| Perfecting video editing | 4 hours | Minimal |
-| Pitching brands | 1 hour | Yes (future income) |
+| Activity                 | Time Spent | Income Generated?    |
+| ------------------------ | ---------- | -------------------- |
+| Creating content         | 5 hours    | Yes (views = sales)  |
+| Scrolling social media   | 8 hours    | No                   |
+| Responding to DMs        | 3 hours    | Yes (leads to sales) |
+| Perfecting video editing | 4 hours    | Minimal              |
+| Pitching brands          | 1 hour     | Yes (future income)  |
 
 **Total: 21 hours**  
 **Income-generating: 9 hours**  
@@ -252,16 +270,19 @@ Chatting with followers for hours about random topics.
 **Thabo** (Fitness, SA)
 
 **Month 2 (Before time management):**
+
 - Working 30 hours/week
 - Making R1,800/month
 - Burned out, stressed
 
 **Month 4 (After Day 41):**
+
 - Working 12 hours/week
 - Making R3,200/month
 - Happy, energized, sustainable
 
 **What changed:**
+
 - Batch filming (saved 10 hours/week)
 - Eliminated perfectionism (saved 4 hours/week)
 - Time-blocked high-value tasks (saved 4 hours/week)
@@ -290,6 +311,7 @@ Chatting with followers for hours about random topics.
 You're working less. Tomorrow: Get MORE from the content you create.
 
 **1 video can become:**
+
 - TikTok
 - Instagram Reel
 - YouTube Short

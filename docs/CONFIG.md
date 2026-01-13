@@ -5,7 +5,7 @@
 The `neon(...)` function returns a tagged-template query function:
 
 ```typescript
-import { neon } from '@neondatabase/serverless';
+import { neon } from "@neondatabase/serverless";
 const sql = neon(process.env.DATABASE_URL);
 
 const rows = await sql`SELECT * FROM posts WHERE id = ${postId}`;
@@ -22,14 +22,14 @@ const [post] = await sql`SELECT * FROM posts ${whereClause}`;
 If you need to pass SQL in a variable, not as a template-string literal, use the `query()` property of the template function and numbered placeholders (`$1`, `$2`, etc.):
 
 ```javascript
-const q = 'SELECT * FROM posts WHERE id = $1';
+const q = "SELECT * FROM posts WHERE id = $1";
 const [post] = await sql.query(q, [postId]);
 ```
 
 If you need to interpolate _trusted_ arbitrary strings, such as the names of columns or tables, use the `unsafe()` property of the template function:
 
 ```javascript
-const table = condition ? 'some_posts' : 'other_posts';
+const table = condition ? "some_posts" : "other_posts";
 const [post] =
   await sql`SELECT * FROM ${sql.unsafe(table)} WHERE id = ${postId}`;
 ```
@@ -41,7 +41,7 @@ By default, only the rows resulting from the provided SQL query are returned, an
 When `arrayMode` is true, rows are returned as an array of arrays instead of an array of objects:
 
 ```typescript
-import { neon } from '@neondatabase/serverless';
+import { neon } from "@neondatabase/serverless";
 const sql = neon(process.env.DATABASE_URL, { arrayMode: true });
 const rows = await sql`SELECT * FROM posts WHERE id = ${postId}`;
 // -> [[12, "My post", ...]]
@@ -50,9 +50,9 @@ const rows = await sql`SELECT * FROM posts WHERE id = ${postId}`;
 Or, with the same effect:
 
 ```typescript
-import { neon } from '@neondatabase/serverless';
+import { neon } from "@neondatabase/serverless";
 const sql = neon(process.env.DATABASE_URL);
-const rows = await sql.query('SELECT * FROM posts WHERE id = $1', [postId], {
+const rows = await sql.query("SELECT * FROM posts WHERE id = $1", [postId], {
   arrayMode: true,
 });
 // -> [[12, "My post", ...]]
@@ -63,7 +63,7 @@ const rows = await sql.query('SELECT * FROM posts WHERE id = $1', [postId], {
 When `fullResults` is true, additional metadata is returned alongside the result rows, which are then found in the `rows` property of the return value. The metadata matches what would be returned by node-postgres:
 
 ```typescript
-import { neon } from '@neondatabase/serverless';
+import { neon } from "@neondatabase/serverless";
 const sql = neon(process.env.DATABASE_URL, { fullResults: true });
 const results = await sql`SELECT * FROM posts WHERE id = ${postId}`;
 /* -> {
@@ -83,9 +83,9 @@ const results = await sql`SELECT * FROM posts WHERE id = ${postId}`;
 Or, with the same effect:
 
 ```typescript
-import { neon } from '@neondatabase/serverless';
+import { neon } from "@neondatabase/serverless";
 const sql = neon(process.env.DATABASE_URL);
-const results = await sql.query('SELECT * FROM posts WHERE id = $1', [postId], {
+const results = await sql.query("SELECT * FROM posts WHERE id = $1", [postId], {
   fullResults: true,
 });
 // -> { ... same as above ... }
@@ -98,9 +98,9 @@ The `fetchOptions` option can be passed to `neon(...)`, the `transaction` functi
 For example, to increase the priority of every database `fetch` request:
 
 ```typescript
-import { neon } from '@neondatabase/serverless';
+import { neon } from "@neondatabase/serverless";
 const sql = neon(process.env.DATABASE_URL, {
-  fetchOptions: { priority: 'high' },
+  fetchOptions: { priority: "high" },
 });
 const rows = await sql`SELECT * FROM posts WHERE id = ${postId}`;
 ```
@@ -108,12 +108,12 @@ const rows = await sql`SELECT * FROM posts WHERE id = ${postId}`;
 Or to implement a `fetch` timeout:
 
 ```typescript
-import { neon } from '@neondatabase/serverless';
+import { neon } from "@neondatabase/serverless";
 const sql = neon(process.env.DATABASE_URL);
 
 const abortController = new AbortController();
-const timeout = setTimeout(() => abortController.abort('timed out'), 10000);
-const rows = await sql.query('SELECT * FROM posts WHERE id = $1', [postId], {
+const timeout = setTimeout(() => abortController.abort("timed out"), 10000);
+const rows = await sql.query("SELECT * FROM posts WHERE id = $1", [postId], {
   fetchOptions: { signal: abortController.signal },
 }); // throws an error if no result received within 10s
 clearTimeout(timeout);
@@ -126,8 +126,8 @@ The `types` option can be passed to `neon(...)` to override the default PostgreS
 Example of usage:
 
 ```typescript
-import PgTypes from 'pg-types';
-import { neon } from '@neondatabase/serverless';
+import PgTypes from "pg-types";
+import { neon } from "@neondatabase/serverless";
 
 // Configure the Neon client with the custom `types` parser
 const sql = neon(process.env.DATABASE_URL, {
@@ -156,7 +156,7 @@ The `authToken` option can be passed to `neon(...)` to set the `Authorization` h
 For example:
 
 ```typescript
-import { neon } from '@neondatabase/serverless';
+import { neon } from "@neondatabase/serverless";
 
 // retrieve the JWT token (implementation depends on your auth system)
 const authToken = getAuthToken();
@@ -177,7 +177,7 @@ The first argument to `transaction()`, `queriesOrFn`, is either (1) an array of 
 The array-of-queries case looks like this:
 
 ```javascript
-import { neon } from '@neondatabase/serverless';
+import { neon } from "@neondatabase/serverless";
 const sql = neon(process.env.DATABASE_URL);
 const showLatestN = 10;
 
@@ -187,7 +187,7 @@ const [posts, tags] = await sql.transaction(
     sql`SELECT * FROM tags`,
   ],
   {
-    isolationLevel: 'RepeatableRead',
+    isolationLevel: "RepeatableRead",
     readOnly: true,
   },
 );
@@ -227,8 +227,8 @@ In most cases, there are two ways to set configuration options:
 For example:
 
 ```javascript
-import { Client, neonConfig } from '@neondatabase/serverless';
-import ws from 'ws';
+import { Client, neonConfig } from "@neondatabase/serverless";
+import ws from "ws";
 
 // set default option for all clients
 neonConfig.webSocketConstructor = ws;
@@ -247,8 +247,8 @@ Set this parameter if you're using the driver in an environment where the `WebSo
 For example:
 
 ```javascript
-import { neonConfig } from '@neondatabase/serverless';
-import ws from 'ws';
+import { neonConfig } from "@neondatabase/serverless";
+import ws from "ws";
 neonConfig.webSocketConstructor = ws;
 ```
 
@@ -293,7 +293,7 @@ If connecting to a non-Neon database, the `wsProxy` option should point to [your
 neonConfig.wsProxy = (host, port) =>
   `my-wsproxy.example.com/v1?address=${host}:${port}`;
 // or (with identical effect):
-neonConfig.wsProxy = 'my-wsproxy.example.com/v1';
+neonConfig.wsProxy = "my-wsproxy.example.com/v1";
 ```
 
 Default: `host => host + '/v2'`.
@@ -333,8 +333,8 @@ Default: `true`.
 **Only when using experimental pure-JS TLS encryption**, you must supply the [subtls](https://github.com/jawj/subtls) TLS library to the `subtls` option like so:
 
 ```typescript
-import { neonConfig } from '@neondatabase/serverless';
-import * as subtls from 'subtls';
+import { neonConfig } from "@neondatabase/serverless";
+import * as subtls from "subtls";
 neonConfig.subtls = subtls;
 ```
 

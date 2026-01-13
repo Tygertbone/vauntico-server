@@ -1,5 +1,5 @@
 ---
-description: 'Require that function overload signatures be consecutive.'
+description: "Require that function overload signatures be consecutive."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

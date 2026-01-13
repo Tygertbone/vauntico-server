@@ -1,5 +1,5 @@
 ---
-description: 'Require switch-case statements to be exhaustive.'
+description: "Require switch-case statements to be exhaustive."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -64,19 +64,19 @@ Here are some examples of code working with a union of literals:
 
 ```ts
 type Day =
-  | 'Monday'
-  | 'Tuesday'
-  | 'Wednesday'
-  | 'Thursday'
-  | 'Friday'
-  | 'Saturday'
-  | 'Sunday';
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
 
 declare const day: Day;
 let result = 0;
 
 switch (day) {
-  case 'Monday':
+  case "Monday":
     result = 1;
     break;
 }
@@ -86,37 +86,37 @@ switch (day) {
 
 ```ts
 type Day =
-  | 'Monday'
-  | 'Tuesday'
-  | 'Wednesday'
-  | 'Thursday'
-  | 'Friday'
-  | 'Saturday'
-  | 'Sunday';
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
 
 declare const day: Day;
 let result = 0;
 
 switch (day) {
-  case 'Monday':
+  case "Monday":
     result = 1;
     break;
-  case 'Tuesday':
+  case "Tuesday":
     result = 2;
     break;
-  case 'Wednesday':
+  case "Wednesday":
     result = 3;
     break;
-  case 'Thursday':
+  case "Thursday":
     result = 4;
     break;
-  case 'Friday':
+  case "Friday":
     result = 5;
     break;
-  case 'Saturday':
+  case "Saturday":
     result = 6;
     break;
-  case 'Sunday':
+  case "Sunday":
     result = 7;
     break;
 }
@@ -126,19 +126,19 @@ switch (day) {
 
 ```ts
 type Day =
-  | 'Monday'
-  | 'Tuesday'
-  | 'Wednesday'
-  | 'Thursday'
-  | 'Friday'
-  | 'Saturday'
-  | 'Sunday';
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
 
 declare const day: Day;
 let result = 0;
 
 switch (day) {
-  case 'Monday':
+  case "Monday":
     result = 1;
     break;
   default:
@@ -165,7 +165,7 @@ declare const fruit: Fruit;
 
 switch (fruit) {
   case Fruit.Apple:
-    console.log('an apple');
+    console.log("an apple");
     break;
 }
 ```
@@ -183,15 +183,15 @@ declare const fruit: Fruit;
 
 switch (fruit) {
   case Fruit.Apple:
-    console.log('an apple');
+    console.log("an apple");
     break;
 
   case Fruit.Banana:
-    console.log('a banana');
+    console.log("a banana");
     break;
 
   case Fruit.Cherry:
-    console.log('a cherry');
+    console.log("a cherry");
     break;
 }
 ```
@@ -209,11 +209,11 @@ declare const fruit: Fruit;
 
 switch (fruit) {
   case Fruit.Apple:
-    console.log('an apple');
+    console.log("an apple");
     break;
 
   default:
-    console.log('a fruit');
+    console.log("a fruit");
     break;
 }
 ```

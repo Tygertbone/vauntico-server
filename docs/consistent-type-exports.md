@@ -1,5 +1,5 @@
 ---
-description: 'Enforce consistent usage of type exports.'
+description: "Enforce consistent usage of type exports."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -23,7 +23,7 @@ interface ButtonProps {
 }
 
 class Button implements ButtonProps {
-  onClick = () => console.log('button!');
+  onClick = () => console.log("button!");
 }
 
 export { Button, ButtonProps };
@@ -37,7 +37,7 @@ interface ButtonProps {
 }
 
 class Button implements ButtonProps {
-  onClick = () => console.log('button!');
+  onClick = () => console.log("button!");
 }
 
 export { Button };
@@ -84,14 +84,14 @@ export { x };
 ### ❌ Incorrect
 
 ```ts option='{ "fixMixedExportsWithInlineTypeSpecifier": true }'
-export { Button } from 'some-library';
-export type { ButtonProps } from 'some-library';
+export { Button } from "some-library";
+export type { ButtonProps } from "some-library";
 ```
 
 ### ✅ Correct
 
 ```ts option='{ "fixMixedExportsWithInlineTypeSpecifier": true }'
-export { Button, type ButtonProps } from 'some-library';
+export { Button, type ButtonProps } from "some-library";
 ```
 
 ## When Not To Use It

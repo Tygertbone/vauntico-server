@@ -1,5 +1,5 @@
 ---
-description: 'Enforce consistent spacing before function parenthesis.'
+description: "Enforce consistent spacing before function parenthesis."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

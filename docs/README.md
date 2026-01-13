@@ -7,6 +7,7 @@ Welcome to **Vauntico**, the next-generation AI-powered content creation platfor
 **Status:** ✅ Production Ready | **Deploy Time:** ~2 minutes
 
 ### Quick Start
+
 ```bash
 npm run build && vercel --prod
 ```
@@ -14,6 +15,7 @@ npm run build && vercel --prod
 📖 **Documentation:** [PHASE_5_INDEX.md](PHASE_5_INDEX.md) | [Quick Start](PHASE_5_QUICK_START.md) | [🚀 Deploy Now](🚀_PHASE_5_READY_TO_DEPLOY.md)
 
 ### New Features
+
 - 📊 **Analytics System** - Track scroll views, upgrades, CLI usage (GA4, Plausible, Mixpanel)
 - 🔗 **Syndication Layer** - Shareable links, referral codes, embed snippets
 - 🏔️ **/ascend Page** - Soul stack progression map with tier unlock logic
@@ -24,6 +26,7 @@ npm run build && vercel --prod
 ## 🚀 Features
 
 ### Core Platform
+
 - **Dashboard**: Centralized hub for managing your content and vaults
 - **Creator Pass**: Three-tier subscription system (Starter, Pro, Legacy)
 - **Vaults**: Organize and manage your content collections efficiently
@@ -31,12 +34,14 @@ npm run build && vercel --prod
 - **Pricing**: Flexible plans with regional currency support (USD/ZAR)
 
 ### Lore Vault & Onboarding
+
 - **📚 Lore Vault**: Interactive scroll library with tier-based access
 - **⚡ CLI Onboarding**: Role-based terminal-style onboarding (Solo Creator, Agency, Team Lead)
 - **🏔️ /ascend Page**: Soul stack progression map with 4 unlockable tiers
 - **🎯 Achievement System**: Track progress through scrolls and challenges
 
 ### Growth & Syndication (Phase 5)
+
 - **📊 Analytics**: Event tracking for scrolls, upgrades, CLI usage
 - **🔗 Referral System**: Shareable links with commission tracking (5-15%)
 - **📤 Social Sharing**: Twitter/X, LinkedIn integration
@@ -130,18 +135,21 @@ vauntico-mvp/
 ## 🎨 Design System
 
 ### Colors
+
 - **Primary Purple**: `#6c5ce7` (vault-purple)
 - **Primary Blue**: `#0984e3` (vault-blue)
 - **Primary Cyan**: `#00cec9` (vault-cyan)
 - **Dark**: `#1a1a2e` (vault-dark)
 
 ### Typography
+
 - **Body Font**: Inter
 - **Display Font**: Plus Jakarta Sans
 
 ## 📄 Pages & Routes
 
 ### Core Pages
+
 - **/** - Dashboard with quick stats and navigation
 - **/creator-pass** - Three-tier subscription system (Starter/Pro/Legacy)
 - **/vaults** - Content management interface
@@ -149,6 +157,7 @@ vauntico-mvp/
 - **/pricing** - Comprehensive pricing with regional currency support
 
 ### Lore & Onboarding (Phases 2-4)
+
 - **/lore** - Interactive scroll library with tier-based access
   - Role selection (Solo Creator, Agency, Team Lead)
   - CLI onboarding system
@@ -157,6 +166,7 @@ vauntico-mvp/
   - Credit tracking
 
 ### Progression & Syndication (Phase 5)
+
 - **/ascend** - Soul stack progression map (NEW!)
   - 4-tier visual hierarchy
   - Progress tracking
@@ -167,6 +177,7 @@ vauntico-mvp/
 ## 🚀 Deployment
 
 ### Quick Deploy (2 minutes)
+
 ```bash
 # Install Vercel CLI
 npm install -g vercel
@@ -177,6 +188,7 @@ vercel --prod
 ```
 
 ### Configuration
+
 - ✅ Vercel auto-detects Vite configuration
 - ✅ Framework preset: Vite
 - ✅ Build command: `npm run build`
@@ -184,6 +196,7 @@ vercel --prod
 - ✅ SPA routing configured in `vercel.json`
 
 ### Post-Deploy
+
 1. Test all routes (/, /lore, /ascend, /creator-pass)
 2. Verify analytics tracking (browser console)
 3. Generate referral code: `window.VaunticoSyndication.getMyCode()`
@@ -195,18 +208,19 @@ vercel --prod
 ## 🔧 Development Tools
 
 ### Browser Console Utilities
+
 ```javascript
 // Analytics
-window.VaunticoAnalytics.logState()      // View analytics state
-window.VaunticoAnalytics.flush()         // Force flush events
+window.VaunticoAnalytics.logState(); // View analytics state
+window.VaunticoAnalytics.flush(); // Force flush events
 
 // Syndication
-window.VaunticoSyndication.getMyCode()   // Get referral code
-window.VaunticoSyndication.viewStats()   // View stats
+window.VaunticoSyndication.getMyCode(); // Get referral code
+window.VaunticoSyndication.viewStats(); // View stats
 
 // Pricing
-window.VaunticoDev.setCreatorPassTier('pro', 'yearly')
-window.VaunticoDev.logState()
+window.VaunticoDev.setCreatorPassTier("pro", "yearly");
+window.VaunticoDev.logState();
 ```
 
 ## 📊 Phase Completion Status
@@ -221,6 +235,7 @@ window.VaunticoDev.logState()
 ## 📖 Documentation
 
 ### Phase 5 (Current)
+
 - [🚀 Ready to Deploy](🚀_PHASE_5_READY_TO_DEPLOY.md) - Launch guide
 - [Master Index](PHASE_5_INDEX.md) - Navigation hub
 - [Quick Start](PHASE_5_QUICK_START.md) - 10-minute deployment
@@ -228,6 +243,7 @@ window.VaunticoDev.logState()
 - [Complete Summary](PHASE_5_COMPLETE.md) - Full feature documentation
 
 ### Previous Phases
+
 - [Phase 4 Summary](PHASE_4_COMPLETE_SUMMARY.md) - Enhanced scroll access
 - [Phase 3 Summary](PHASE_3_CLI_ONBOARDING_SUMMARY.md) - CLI onboarding
 - [Phase 2 Summary](PHASE_2_COMPLETE_EXECUTIVE_SUMMARY.md) - Scroll gating

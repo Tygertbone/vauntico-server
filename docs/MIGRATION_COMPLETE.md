@@ -9,16 +9,20 @@ Successfully migrated critical scrolls from `vauntico-mvp-cursur-build/scrolls/`
 ## 📜 Files Migrated
 
 ### Core Index
+
 - ✅ `00-index.md` - The Vauntico Scroll Index (Master directory of all scrolls)
 
 ### Agency & Business Scrolls
+
 - ✅ `10-agency-scroll.md` - The Agency Scroll (Complete agency partnership guide)
 - ✅ `AGENCY_CLI_QUICKSTART.md` - Agency CLI Quick Start Guide
 
 ### Product Scrolls
+
 - ✅ `creator-pass.md` - Creator Pass - Syndication Scroll (Premium subscription details)
 
 ### Configuration Files
+
 - ✅ `distribution-layer-index-entry.json` - Distribution Layer metadata
 
 ---
@@ -50,6 +54,7 @@ docs/
 ## 🎯 What This Enables
 
 ### The Lore Vault Purpose
+
 The **Lore Vault** (`docs/lore/`) serves as the canonical knowledge repository for Vauntico:
 
 1. **Sacred Documentation** - Core philosophy, architecture, and mythic identity
@@ -60,12 +65,14 @@ The **Lore Vault** (`docs/lore/`) serves as the canonical knowledge repository f
 ### Key Scrolls Overview
 
 **00-index.md** - The Master Scroll
+
 - Complete library navigation
 - Use case quick-starts
 - Success metrics tracking
 - Voice guidelines
 
 **10-agency-scroll.md** - The Agency Scroll
+
 - White-label partnership framework
 - Revenue models & pricing strategies
 - Real agency success stories
@@ -73,18 +80,21 @@ The **Lore Vault** (`docs/lore/`) serves as the canonical knowledge repository f
 - CLI command reference
 
 **creator-pass.md** - The Master Key
+
 - Premium subscription details
 - Complete feature breakdown
 - Pricing tiers & comparisons
 - Use cases & case studies
 
 **AGENCY_CLI_QUICKSTART.md** - Command Reference
+
 - Essential CLI commands
 - Client management workflows
 - Automation examples
 - Troubleshooting guide
 
 **distribution-layer-index-entry.json** - Metadata
+
 - Distribution Layer configuration
 - Pricing structure
 - Feature matrix
@@ -125,7 +135,8 @@ The **Lore Vault** (`docs/lore/`) serves as the canonical knowledge repository f
 ## 📖 The Vauntico Voice
 
 From the Agency Scroll:
-> *"These scrolls are not instructions. They are **incantations.** Speak them into existence: Copy becomes website. Frameworks become funnels. Stories become movements."*
+
+> _"These scrolls are not instructions. They are **incantations.** Speak them into existence: Copy becomes website. Frameworks become funnels. Stories become movements."_
 
 The lore vault preserves this mythic voice—ensuring every word survives, every framework endures, every invocation remains accessible to those who build with Vauntico.
 
@@ -133,10 +144,10 @@ The lore vault preserves this mythic voice—ensuring every word survives, every
 
 ## ✨ The Forge Remembers
 
-*"What was scattered is now gathered.*  
-*What was hidden is now enshrined.*  
-*The scrolls have found their home.*  
-*The lore vault is complete."*
+_"What was scattered is now gathered._  
+_What was hidden is now enshrined._  
+_The scrolls have found their home._  
+_The lore vault is complete."_
 
 ---
 

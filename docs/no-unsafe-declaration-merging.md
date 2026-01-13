@@ -1,5 +1,5 @@
 ---
-description: 'Disallow unsafe declaration merging.'
+description: "Disallow unsafe declaration merging."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

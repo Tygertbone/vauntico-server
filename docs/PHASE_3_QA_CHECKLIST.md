@@ -60,7 +60,7 @@
 - [ ] **Form Inputs**
   - [ ] Text inputs accept typing
   - [ ] Select dropdowns show options
-  - [ ] Required fields marked with *
+  - [ ] Required fields marked with \*
   - [ ] Placeholder text helpful
   - [ ] Input values persist during session
 
@@ -115,6 +115,7 @@
 ## 🎨 UI/UX Testing
 
 ### Visual Design
+
 - [ ] Gradient colors (purple → blue) consistent
 - [ ] Card borders and shadows correct
 - [ ] Typography hierarchy clear
@@ -123,6 +124,7 @@
 - [ ] Focus states visible for accessibility
 
 ### Responsive Design
+
 - [ ] **Desktop (1920x1080)**
   - [ ] Modal width appropriate
   - [ ] Two-column layouts side-by-side
@@ -140,6 +142,7 @@
   - [ ] Scrolling smooth
 
 ### Animations
+
 - [ ] Progress bar fills smoothly
 - [ ] Step transitions smooth
 - [ ] Toast notifications appear/disappear
@@ -171,6 +174,7 @@
 ## 🔗 Integration Testing
 
 ### LoreVault Page
+
 - [ ] OnboardingProgress card appears after role selection
 - [ ] Card positioned correctly in layout
 - [ ] "Start Onboarding" button triggers modal
@@ -178,12 +182,14 @@
 - [ ] Achievement awards on completion
 
 ### ScrollViewer Page
+
 - [ ] CLICommandGenerator appears for supported scrolls
 - [ ] Generator hidden for unsupported scrolls
 - [ ] Generator positioned above scroll content
 - [ ] Does not break markdown rendering
 
 ### DreamMover Page
+
 - [ ] CLI banner displays
 - [ ] "View CLI Guide" link works
 - [ ] Link navigates to /lore

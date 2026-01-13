@@ -25,6 +25,7 @@ CTA (27-30 seconds) → Tell them what to do next
 ```
 
 **Why this works:**
+
 - First 3 seconds = 80% of people decide to keep watching
 - Value = Why they watch till the end
 - CTA = Turns viewers into followers
@@ -95,6 +96,7 @@ Point 3: [Third tip/step]
 Hook: "Here's how to [solve problem] in [time] using just your phone"
 
 Example for budget niche:
+
 ```
 HOOK: "Here's how I save R500 per week using 3 free apps"
 
@@ -107,6 +109,7 @@ CTA: "Follow for more money-saving tips! Drop a 💰 if you're trying this"
 ```
 
 **YOUR SCRIPT 1:**
+
 ```
 HOOK: ________________________________
 
@@ -125,6 +128,7 @@ CTA: ________________________________
 Hook: "I wasted [money/time] before learning this about [your niche]"
 
 Example:
+
 ```
 HOOK: "I wasted R3,000 on [mistake] before learning this"
 
@@ -137,6 +141,7 @@ CTA: "Don't make my mistake! Follow for [niche] tips"
 ```
 
 **YOUR SCRIPT 2:**
+
 ```
 HOOK: ________________________________
 
@@ -155,6 +160,7 @@ CTA: ________________________________
 Hook: "Nobody tells you this about [your niche]..."
 
 Example:
+
 ```
 HOOK: "Nobody tells you this about making money as a Nigerian creator..."
 
@@ -167,6 +173,7 @@ CTA: "Save this! Most people never learn this. Follow for more secrets"
 ```
 
 **YOUR SCRIPT 3:**
+
 ```
 HOOK: ________________________________
 
@@ -197,6 +204,7 @@ CTA: ________________________________
 **"I have 3 viral-ready scripts!"**
 
 Post in community:
+
 ```
 ✅ Day 3 Complete!
 

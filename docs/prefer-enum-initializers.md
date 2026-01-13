@@ -1,5 +1,5 @@
 ---
-description: 'Require each enum member value to be explicitly initialized.'
+description: "Require each enum member value to be explicitly initialized."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -32,8 +32,8 @@ enum Direction {
 
 enum Color {
   Red,
-  Green = 'Green',
-  Blue = 'Blue',
+  Green = "Green",
+  Blue = "Blue",
 }
 ```
 
@@ -41,8 +41,8 @@ enum Color {
 
 ```ts
 enum Status {
-  Open = 'Open',
-  Close = 'Close',
+  Open = "Open",
+  Close = "Close",
 }
 
 enum Direction {
@@ -51,9 +51,9 @@ enum Direction {
 }
 
 enum Color {
-  Red = 'Red',
-  Green = 'Green',
-  Blue = 'Blue',
+  Red = "Red",
+  Green = "Green",
+  Blue = "Blue",
 }
 ```
 

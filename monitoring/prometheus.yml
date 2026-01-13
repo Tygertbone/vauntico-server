@@ -8,9 +8,9 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
   external_labels:
-    cluster: 'vauntico'
-    environment: '${ENVIRONMENT:-development}'
-    phase: 'phase1-foundation'
+    cluster: "vauntico"
+    environment: "${ENVIRONMENT:-development}"
+    phase: "phase1-foundation"
 
 rule_files:
   - "alert_rules.yml"
@@ -19,327 +19,327 @@ alerting:
   alertmanagers:
     - static_configs:
         - targets:
-          - alertmanager:9093
+            - alertmanager:9093
 
 scrape_configs:
   # =============================================================================
   # APPLICATION SERVICES
   # =============================================================================
-  
+
   # Trust Score Backend (server-v2)
-  - job_name: 'trust-score-backend'
+  - job_name: "trust-score-backend"
     static_configs:
-      - targets: ['trust-score-backend:8080']
-    metrics_path: '/metrics'
+      - targets: ["trust-score-backend:8080"]
+    metrics_path: "/metrics"
     scrape_interval: 30s
     scrape_timeout: 10s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'trust-score-backend'
+        replacement: "trust-score-backend"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'trust-score-backend'
+        replacement: "trust-score-backend"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
       - source_labels: [__address__]
         target_label: version
-        replacement: '${VERSION:-latest}'
+        replacement: "${VERSION:-latest}"
 
   # Vauntico Server
-  - job_name: 'vauntico-server'
+  - job_name: "vauntico-server"
     static_configs:
-      - targets: ['vauntico-server:8080']
-    metrics_path: '/metrics'
+      - targets: ["vauntico-server:8080"]
+    metrics_path: "/metrics"
     scrape_interval: 30s
     scrape_timeout: 10s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'vauntico-server'
+        replacement: "vauntico-server"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'vauntico-server'
+        replacement: "vauntico-server"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
       - source_labels: [__address__]
         target_label: version
-        replacement: '${VERSION:-latest}'
+        replacement: "${VERSION:-latest}"
 
   # Fulfillment Engine
-  - job_name: 'fulfillment-engine'
+  - job_name: "fulfillment-engine"
     static_configs:
-      - targets: ['fulfillment-engine:8080']
-    metrics_path: '/metrics'
+      - targets: ["fulfillment-engine:8080"]
+    metrics_path: "/metrics"
     scrape_interval: 30s
     scrape_timeout: 10s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'fulfillment-engine'
+        replacement: "fulfillment-engine"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'fulfillment-engine'
+        replacement: "fulfillment-engine"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
       - source_labels: [__address__]
         target_label: version
-        replacement: '${VERSION:-latest}'
+        replacement: "${VERSION:-latest}"
 
   # Legacy Server
-  - job_name: 'legacy-server'
+  - job_name: "legacy-server"
     static_configs:
-      - targets: ['legacy-server:8080']
-    metrics_path: '/metrics'
+      - targets: ["legacy-server:8080"]
+    metrics_path: "/metrics"
     scrape_interval: 30s
     scrape_timeout: 10s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'legacy-server'
+        replacement: "legacy-server"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'legacy-server'
+        replacement: "legacy-server"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
       - source_labels: [__address__]
         target_label: version
-        replacement: '${VERSION:-latest}'
+        replacement: "${VERSION:-latest}"
 
   # =============================================================================
   # INFRASTRUCTURE SERVICES
   # =============================================================================
 
   # PostgreSQL Database
-  - job_name: 'postgres'
+  - job_name: "postgres"
     static_configs:
-      - targets: ['postgres:5432']
-    metrics_path: '/metrics'
+      - targets: ["postgres:5432"]
+    metrics_path: "/metrics"
     scrape_interval: 30s
     scrape_timeout: 10s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'postgres'
+        replacement: "postgres"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'database'
+        replacement: "database"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
 
   # Redis Cache
-  - job_name: 'redis'
+  - job_name: "redis"
     static_configs:
-      - targets: ['redis:6379']
-    metrics_path: '/metrics'
+      - targets: ["redis:6379"]
+    metrics_path: "/metrics"
     scrape_interval: 30s
     scrape_timeout: 10s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'redis'
+        replacement: "redis"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'cache'
+        replacement: "cache"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
 
   # =============================================================================
   # KPI SPECIFIC METRICS
   # =============================================================================
 
   # KPI Tracking Endpoints
-  - job_name: 'vauntico-kpi'
+  - job_name: "vauntico-kpi"
     static_configs:
-      - targets: ['trust-score-backend:8080']
-    metrics_path: '/api/v1/metrics/kpi'
+      - targets: ["trust-score-backend:8080"]
+    metrics_path: "/api/v1/metrics/kpi"
     scrape_interval: 60s
     scrape_timeout: 15s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'trust-score-backend'
+        replacement: "trust-score-backend"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'kpi-tracking'
+        replacement: "kpi-tracking"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
 
   # Database Health Monitoring
-  - job_name: 'vauntico-db-health'
+  - job_name: "vauntico-db-health"
     static_configs:
-      - targets: ['trust-score-backend:8080']
-    metrics_path: '/db-health'
+      - targets: ["trust-score-backend:8080"]
+    metrics_path: "/db-health"
     scrape_interval: 30s
     scrape_timeout: 5s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'trust-score-backend'
+        replacement: "trust-score-backend"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'database-health'
+        replacement: "database-health"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
 
   # Blind Spot Monitoring
-  - job_name: 'vauntico-blind-spots'
+  - job_name: "vauntico-blind-spots"
     static_configs:
-      - targets: ['trust-score-backend:8080']
-    metrics_path: '/api/v1/metrics/blind-spots'
-    scrape_interval: 300s  # Every 5 minutes
+      - targets: ["trust-score-backend:8080"]
+    metrics_path: "/api/v1/metrics/blind-spots"
+    scrape_interval: 300s # Every 5 minutes
     scrape_timeout: 10s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'trust-score-backend'
+        replacement: "trust-score-backend"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'blind-spot-monitoring'
+        replacement: "blind-spot-monitoring"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
 
   # Deployment Tracking
-  - job_name: 'vauntico-deployment'
+  - job_name: "vauntico-deployment"
     static_configs:
-      - targets: ['trust-score-backend:8080']
-    metrics_path: '/api/v1/metrics/deployment-tracking'
-    scrape_interval: 600s  # Every 10 minutes
+      - targets: ["trust-score-backend:8080"]
+    metrics_path: "/api/v1/metrics/deployment-tracking"
+    scrape_interval: 600s # Every 10 minutes
     scrape_timeout: 15s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'trust-score-backend'
+        replacement: "trust-score-backend"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'deployment-tracking'
+        replacement: "deployment-tracking"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
 
   # =============================================================================
   # PHASE 3 ENTERPRISE COMPLIANCE METRICS
   # =============================================================================
 
   # Enterprise Compliance Status
-  - job_name: 'vauntico-enterprise-compliance'
+  - job_name: "vauntico-enterprise-compliance"
     static_configs:
-      - targets: ['trust-score-backend:8080']
-    metrics_path: '/api/v1/enterprise/compliance/status'
+      - targets: ["trust-score-backend:8080"]
+    metrics_path: "/api/v1/enterprise/compliance/status"
     scrape_interval: 60s
     scrape_timeout: 10s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'trust-score-backend'
+        replacement: "trust-score-backend"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'enterprise-compliance'
+        replacement: "enterprise-compliance"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
 
   # Enterprise Integration Health
-  - job_name: 'vauntico-enterprise-integrations'
+  - job_name: "vauntico-enterprise-integrations"
     static_configs:
-      - targets: ['trust-score-backend:8080']
-    metrics_path: '/api/v1/enterprise/integrations/health'
+      - targets: ["trust-score-backend:8080"]
+    metrics_path: "/api/v1/enterprise/integrations/health"
     scrape_interval: 30s
     scrape_timeout: 10s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'trust-score-backend'
+        replacement: "trust-score-backend"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'enterprise-integrations'
+        replacement: "enterprise-integrations"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
 
   # Enterprise Dashboard Overview
-  - job_name: 'vauntico-enterprise-dashboard'
+  - job_name: "vauntico-enterprise-dashboard"
     static_configs:
-      - targets: ['trust-score-backend:8080']
-    metrics_path: '/api/v1/enterprise/dashboard'
+      - targets: ["trust-score-backend:8080"]
+    metrics_path: "/api/v1/enterprise/dashboard"
     scrape_interval: 120s
     scrape_timeout: 15s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'trust-score-backend'
+        replacement: "trust-score-backend"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'enterprise-dashboard'
+        replacement: "enterprise-dashboard"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
 
   # =============================================================================
   # SYSTEM MONITORING
   # =============================================================================
 
   # Node Exporter - System Metrics
-  - job_name: 'node-exporter'
+  - job_name: "node-exporter"
     static_configs:
-      - targets: ['node-exporter:9100']
+      - targets: ["node-exporter:9100"]
     scrape_interval: 30s
     scrape_timeout: 10s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'host-system'
+        replacement: "host-system"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'system-metrics'
+        replacement: "system-metrics"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
 
   # cAdvisor - Container Metrics
-  - job_name: 'cadvisor'
+  - job_name: "cadvisor"
     static_configs:
-      - targets: ['cadvisor:8080']
-    metrics_path: '/metrics'
+      - targets: ["cadvisor:8080"]
+    metrics_path: "/metrics"
     scrape_interval: 30s
     scrape_timeout: 10s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'docker-host'
+        replacement: "docker-host"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'container-metrics'
+        replacement: "container-metrics"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
 
   # Uptime Kuma - Service Monitoring
-  - job_name: 'uptime-kuma'
+  - job_name: "uptime-kuma"
     static_configs:
-      - targets: ['uptime-kuma:3001']
-    metrics_path: '/metrics'
+      - targets: ["uptime-kuma:3001"]
+    metrics_path: "/metrics"
     scrape_interval: 60s
     scrape_timeout: 10s
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'uptime-kuma'
+        replacement: "uptime-kuma"
       - source_labels: [__address__]
         target_label: service
-        replacement: 'uptime-monitoring'
+        replacement: "uptime-monitoring"
       - source_labels: [__address__]
         target_label: environment
-        replacement: '${ENVIRONMENT:-development}'
+        replacement: "${ENVIRONMENT:-development}"
 
 # Monetization Phase 1 KPIs
 # Target: 100K MRR from creators
@@ -350,19 +350,19 @@ recording_rules:
       # Pro Subscriptions (Primary revenue driver)
       - record: vauntico:pro_subscriptions:current
         expr: increase(pro_subscriptions_total[5m])
-      
+
       # Score Insurance Signups (Secondary revenue)
       - record: vauntico:score_insurance_signups:current
         expr: increase(score_insurance_signups_total[5m])
-      
+
       # Trust Calculator Usage (Engagement metric)
       - record: vauntico:trust_calculator_usage:current
         expr: increase(trust_calculator_usage_total[5m])
-      
+
       # MRR Calculation
       - record: vauntico:mrr:current
         expr: (vauntico:pro_subscriptions:current * 99) + (vauntico:score_insurance_signups:current * 29)
-      
+
       # MRR Progress towards Phase 1 Target
       - record: vauntico:mrr:progress_percentage
         expr: (vauntico:mrr:current / 100000) * 100

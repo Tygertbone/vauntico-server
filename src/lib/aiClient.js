@@ -1,8 +1,9 @@
 // src/lib/aiClient.js – Vauntico AI Client for Claude Integration
 
 // Environment configuration with fallbacks
-const API_BASE_URL = import.meta.env?.VITE_API_BASE_URL ||
-                     (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
+const API_BASE_URL =
+  import.meta.env?.VITE_API_BASE_URL ||
+  (window.location.hostname === "localhost" ? "http://localhost:5000" : "");
 
 /**
  * Ask Claude AI a question via Vauntico backend
@@ -13,35 +14,40 @@ const API_BASE_URL = import.meta.env?.VITE_API_BASE_URL ||
  */
 export async function askClaude(prompt, maxTokens = 700) {
   // Input validation
-  if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
-    throw new Error('Valid non-empty prompt required for AI request');
+  if (!prompt || typeof prompt !== "string" || prompt.trim().length === 0) {
+    throw new Error("Valid non-empty prompt required for AI request");
   }
 
   // Cost control enforcement (frontend layer)
-  const enforcedMaxTokens = Math.min(maxTokens && Number(maxTokens) || 700, 1000);
+  const enforcedMaxTokens = Math.min(
+    (maxTokens && Number(maxTokens)) || 700,
+    1000,
+  );
 
   // Prepare API request
   const requestPayload = {
     prompt: prompt.trim(),
-    maxTokens: enforcedMaxTokens
+    maxTokens: enforcedMaxTokens,
   };
 
-  console.log(`🚀 Vauntico AI: Sending ${prompt.length} char prompt, maxTokens=${enforcedMaxTokens}`);
+  console.log(
+    `🚀 Vauntico AI: Sending ${prompt.length} char prompt, maxTokens=${enforcedMaxTokens}`,
+  );
 
   try {
     // Only log in development
     if (import.meta.env?.DEV) {
-      console.debug('Request payload:', requestPayload);
+      console.debug("Request payload:", requestPayload);
     }
 
     // Make secure API call
     const response = await fetch(`${API_BASE_URL}/api/claude/complete`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
-      credentials: 'same-origin', // For CSRF protection if needed
+      credentials: "same-origin", // For CSRF protection if needed
       body: JSON.stringify(requestPayload),
     });
 
@@ -54,7 +60,7 @@ export async function askClaude(prompt, maxTokens = 700) {
         errorMessage = errorData.error || errorMessage;
       } catch (parseError) {
         // Ignore parse errors - we already have a basic error message
-        console.warn('Failed to parse error response:', parseError);
+        console.warn("Failed to parse error response:", parseError);
       }
 
       throw new Error(errorMessage);
@@ -63,29 +69,30 @@ export async function askClaude(prompt, maxTokens = 700) {
     // Parse successful response
     const data = await response.json();
 
-    if (!data.success || typeof data.response === 'undefined') {
-      throw new Error('Invalid AI response format');
+    if (!data.success || typeof data.response === "undefined") {
+      throw new Error("Invalid AI response format");
     }
 
-    const responseText = data.response?.trim() || '';
+    const responseText = data.response?.trim() || "";
 
-    console.log(`✅ Vauntico AI: Received ${responseText.length} char response`);
+    console.log(
+      `✅ Vauntico AI: Received ${responseText.length} char response`,
+    );
 
     // Optional: Log usage in development
     if (import.meta.env?.DEV && data.usage) {
-      console.debug('AI Usage:', data.usage);
+      console.debug("AI Usage:", data.usage);
     }
 
     return responseText;
-
   } catch (error) {
     // Distinguish network vs API errors
-    if (error.name === 'TypeError' && error.message.includes('fetch')) {
-      console.error('❌ Network error - cannot reach AI service');
-      throw new Error('AI service unavailable. Please try again later.');
+    if (error.name === "TypeError" && error.message.includes("fetch")) {
+      console.error("❌ Network error - cannot reach AI service");
+      throw new Error("AI service unavailable. Please try again later.");
     }
 
-    console.error('❌ askClaude error:', error.message);
+    console.error("❌ askClaude error:", error.message);
     throw error; // Re-throw to let calling code handle UI feedback
   }
 }

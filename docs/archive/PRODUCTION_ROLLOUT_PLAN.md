@@ -1,6 +1,7 @@
 # Vauntico MVP Emergency Revenue Features - Production Rollout Plan
 
 ## Overview
+
 This document provides a comprehensive step-by-step guide for deploying the Vauntico MVP emergency revenue features to production. The rollout involves three critical phases: Database Migration, Backend Deployment, and Frontend Deployment.
 
 ---
@@ -8,6 +9,7 @@ This document provides a comprehensive step-by-step guide for deploying the Vaun
 ## Database Migration (Neon Dashboard)
 
 ### Prerequisites
+
 - PostgreSQL client (psql) installed locally
 - Access to Neon Dashboard with appropriate permissions
 - Database connection string available in `.env` file
@@ -15,6 +17,7 @@ This document provides a comprehensive step-by-step guide for deploying the Vaun
 ### Step-by-Step Migration Checklist
 
 #### 1. Pre-Migration Preparation
+
 ```bash
 # Navigate to project directory
 cd c:\Users\admin\vauntico-mvp\server-v2
@@ -27,6 +30,7 @@ ls migrations/019_create_emergency_revenue_tables.sql
 ```
 
 #### 2. Run Migration Script
+
 ```powershell
 # Option 1: Use existing PowerShell script
 .\run-migration.ps1
@@ -36,16 +40,17 @@ psql "$DATABASE_URL" -f migrations/019_create_emergency_revenue_tables.sql
 ```
 
 #### 3. SQL Verification Queries
+
 ```sql
 -- Verify 3 new tables exist
-SELECT table_name 
-FROM information_schema.tables 
-WHERE table_schema = 'public' 
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public'
 AND table_name IN ('creator_payment_requests', 'creator_verifications', 'content_recovery_cases')
 ORDER BY table_name;
 
 -- Verify indexes and constraints
-SELECT 
+SELECT
     tc.table_name,
     tc.constraint_name,
     tc.constraint_type
@@ -54,7 +59,7 @@ WHERE tc.table_name IN ('creator_payment_requests', 'creator_verifications', 'co
 ORDER BY tc.table_name, tc.constraint_type;
 
 -- Verify indexes
-SELECT 
+SELECT
     schemaname,
     tablename,
     indexname,
@@ -64,23 +69,23 @@ WHERE tablename IN ('creator_payment_requests', 'creator_verifications', 'conten
 ORDER BY tablename, indexname;
 
 -- Verify row counts (should be 0 initially)
-SELECT 
+SELECT
     'creator_payment_requests' as table_name,
     COUNT(*) as row_count
 FROM creator_payment_requests
 UNION ALL
-SELECT 
+SELECT
     'creator_verifications' as table_name,
     COUNT(*) as row_count
 FROM creator_verifications
 UNION ALL
-SELECT 
+SELECT
     'content_recovery_cases' as table_name,
     COUNT(*) as row_count
 FROM content_recovery_cases;
 
 -- Verify triggers and functions
-SELECT 
+SELECT
     routine_name,
     routine_type
 FROM information_schema.routines
@@ -88,7 +93,7 @@ WHERE routine_schema = 'public'
 AND routine_name IN ('generate_case_number', 'set_case_number', 'update_trust_score_on_verification');
 
 -- Verify views
-SELECT 
+SELECT
     table_name,
     table_type
 FROM information_schema.tables
@@ -98,6 +103,7 @@ AND table_name IN ('creator_verification_summary', 'active_recovery_cases', 'pay
 ```
 
 #### 4. Post-Migration Validation
+
 ```sql
 -- Test case number generation
 SELECT generate_case_number();
@@ -112,7 +118,9 @@ DELETE FROM content_recovery_cases WHERE title = 'Test Case';
 ```
 
 ### Rollback Strategy
+
 If migration fails:
+
 ```sql
 -- Drop created objects in reverse order
 DROP VIEW IF EXISTS payment_request_summary;
@@ -139,6 +147,7 @@ DROP TABLE IF EXISTS creator_payment_requests;
 ## Backend Deployment (OCI Server)
 
 ### Prerequisites
+
 - SSH access to OCI server
 - Node.js 18+ installed on server
 - PM2 process manager installed
@@ -147,6 +156,7 @@ DROP TABLE IF EXISTS creator_payment_requests;
 ### SSH Deployment Instructions
 
 #### 1. SSH Connection Setup
+
 ```bash
 # Connect to OCI server
 ssh -i ~/.ssh/your-oci-key.pem ubuntu@your-oci-server-ip
@@ -156,6 +166,7 @@ cd /var/www/vauntico-server
 ```
 
 #### 2. Code Deployment
+
 ```bash
 # Pull latest code
 git pull origin main
@@ -166,6 +177,7 @@ cd server-v2
 ```
 
 #### 3. Install Dependencies
+
 ```bash
 # Install Node.js dependencies
 npm ci --production
@@ -175,6 +187,7 @@ npm list --depth=0
 ```
 
 #### 4. Environment Configuration
+
 ```bash
 # Copy environment file (if not exists)
 cp .env.example .env
@@ -184,6 +197,7 @@ nano .env
 ```
 
 **Critical Environment Variables for Emergency Revenue Features:**
+
 ```env
 # Database
 DATABASE_URL=postgresql://neondb_owner:your-password@ep-sparkling-bush-ahi9wjg6-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require
@@ -212,6 +226,7 @@ SLACK_WEBHOOK_URL=https://hooks.slack.com/services/REDACTED
 ```
 
 #### 5. Build and Start Application
+
 ```bash
 # Build TypeScript
 npm run build
@@ -230,6 +245,7 @@ pm2 startup
 ```
 
 #### 6. Health Check Validation
+
 ```bash
 # Test health endpoint
 curl -I http://localhost:3000/health
@@ -243,29 +259,34 @@ curl -X GET http://localhost:3000/api/v1/recovery/status
 ```
 
 ### PM2 Configuration File (ecosystem.config.js)
+
 ```javascript
 module.exports = {
-  apps: [{
-    name: 'vauntico-backend',
-    script: 'dist/index.js',
-    instances: 'max',
-    exec_mode: 'cluster',
-    env: {
-      NODE_ENV: 'production',
-      PORT: 3000
+  apps: [
+    {
+      name: "vauntico-backend",
+      script: "dist/index.js",
+      instances: "max",
+      exec_mode: "cluster",
+      env: {
+        NODE_ENV: "production",
+        PORT: 3000,
+      },
+      error_file: "/var/log/vauntico/error.log",
+      out_file: "/var/log/vauntico/out.log",
+      log_file: "/var/log/vauntico/combined.log",
+      time: true,
+      max_memory_restart: "1G",
+      node_args: "--max-old-space-size=1024",
     },
-    error_file: '/var/log/vauntico/error.log',
-    out_file: '/var/log/vauntico/out.log',
-    log_file: '/var/log/vauntico/combined.log',
-    time: true,
-    max_memory_restart: '1G',
-    node_args: '--max-old-space-size=1024'
-  }]
+  ],
 };
 ```
 
 ### Rollback Strategy
+
 If deployment fails:
+
 ```bash
 # Rollback to previous commit
 git checkout previous-commit-hash
@@ -284,6 +305,7 @@ pm2 start vauntico-backend
 ## Frontend Deployment (Vercel)
 
 ### Prerequisites
+
 - Vercel account with project access
 - Vercel CLI installed locally
 - Frontend build configured correctly
@@ -291,6 +313,7 @@ pm2 start vauntico-backend
 ### Deployment Instructions
 
 #### Option 1: Vercel CLI Deployment
+
 ```bash
 # Install Vercel CLI (if not installed)
 npm i -g vercel
@@ -308,6 +331,7 @@ vercel --prod
 ```
 
 #### Option 2: Vercel Dashboard Deployment
+
 1. Push code to GitHub repository
 2. Connect Vercel project to GitHub repo
 3. Configure build settings:
@@ -316,6 +340,7 @@ vercel --prod
    - Install Command: `npm ci`
 
 ### Environment Variables Configuration
+
 In Vercel Dashboard → Settings → Environment Variables:
 
 ```env
@@ -336,6 +361,7 @@ NEXT_PUBLIC_MIXPANEL_TOKEN=your-mixpanel-token
 ```
 
 ### Verification Steps
+
 ```bash
 # Test new routes after deployment
 curl -I https://vauntico-mvp.vercel.app/payment-bridge
@@ -345,6 +371,7 @@ curl -I https://vauntico-mvp.vercel.app/services/verification
 ```
 
 ### Vercel Configuration (vercel.json)
+
 ```json
 {
   "version": 2,
@@ -382,7 +409,9 @@ curl -I https://vauntico-mvp.vercel.app/services/verification
 ```
 
 ### Rollback Strategy
+
 If deployment fails:
+
 ```bash
 # Rollback to previous deployment via Vercel CLI
 vercel rollback [deployment-url]
@@ -398,6 +427,7 @@ vercel rollback [deployment-url]
 ## Git Remote Setup
 
 ### Add Remotes for Frontend and Backend
+
 ```bash
 # Navigate to project root
 cd c:\Users\admin\vauntico-mvp
@@ -413,6 +443,7 @@ git remote -v
 ```
 
 ### Initial Commit/Push Workflow
+
 ```bash
 # Stage all changes
 git add .
@@ -428,6 +459,7 @@ git subtree push --prefix server-v2 backend main
 ```
 
 ### Branch Strategy
+
 ```bash
 # Create feature branch
 git checkout -b feature/emergency-revenue
@@ -449,6 +481,7 @@ git push origin --delete feature/emergency-revenue
 ## Verification Checklist
 
 ### Backend API Testing
+
 ```bash
 # Test payment bridge endpoint
 curl -X POST https://api.vauntico.com/api/v1/payment-bridge/request \
@@ -482,6 +515,7 @@ curl -X POST https://api.vauntico.com/api/v1/verify/submit \
 ```
 
 ### Frontend Form Testing
+
 1. **Payment Bridge Form:**
    - Navigate to `/payment-bridge`
    - Fill in all required fields
@@ -502,44 +536,46 @@ curl -X POST https://api.vauntico.com/api/v1/verify/submit \
    - Verify case number generation
 
 ### Database Verification
+
 ```sql
 -- Check test data in payment requests
-SELECT 
-    id, 
-    creator_id, 
-    amount_cents, 
-    status, 
+SELECT
+    id,
+    creator_id,
+    amount_cents,
+    status,
     created_at
-FROM creator_payment_requests 
-ORDER BY created_at DESC 
+FROM creator_payment_requests
+ORDER BY created_at DESC
 LIMIT 5;
 
 -- Check test data in verifications
-SELECT 
-    id, 
-    creator_id, 
-    platform, 
-    platform_username, 
-    verification_status, 
+SELECT
+    id,
+    creator_id,
+    platform,
+    platform_username,
+    verification_status,
     created_at
-FROM creator_verifications 
-ORDER BY created_at DESC 
+FROM creator_verifications
+ORDER BY created_at DESC
 LIMIT 5;
 
 -- Check test data in recovery cases
-SELECT 
-    id, 
-    user_id, 
-    case_number, 
-    title, 
-    status, 
+SELECT
+    id,
+    user_id,
+    case_number,
+    title,
+    status,
     created_at
-FROM content_recovery_cases 
-ORDER BY created_at DESC 
+FROM content_recovery_cases
+ORDER BY created_at DESC
 LIMIT 5;
 ```
 
 ### Slack Alerts Verification
+
 ```bash
 # Test Slack webhook
 curl -X POST https://hooks.slack.com/services/REDACTED \
@@ -550,6 +586,7 @@ curl -X POST https://hooks.slack.com/services/REDACTED \
 ```
 
 ### End-to-End Testing
+
 1. Create test user account
 2. Submit payment bridge request
 3. Submit verification request
@@ -564,6 +601,7 @@ curl -X POST https://hooks.slack.com/services/REDACTED \
 ## Error Handling
 
 ### Common SQL Constraint Violations
+
 ```sql
 -- Error: Check constraint violation on amount
 -- Fix: Ensure amount_cents > processing_fee_cents
@@ -576,6 +614,7 @@ VALUES ('user-id', 15000, 1000); -- OK
 ```
 
 ### SSH Permission Denied
+
 ```bash
 # Issue: SSH permission denied
 # Solution: Check key permissions and user
@@ -590,6 +629,7 @@ ssh -i ~/.ssh/your-oci-key.pem ubuntu@your-oci-server-ip
 ```
 
 ### Missing Environment Variables
+
 ```bash
 # Check missing env vars
 grep -r "process\.env\." server-v2/dist/ | grep -v "undefined"
@@ -602,6 +642,7 @@ pm2 restart vauntico-backend
 ```
 
 ### Build Failures
+
 ```bash
 # Common build issues and solutions
 
@@ -619,6 +660,7 @@ npm run build
 ```
 
 ### Payment Processing Errors
+
 ```bash
 # Paystack API errors
 curl -H "Authorization: Bearer sk_test_2bea0078ea794be853a7bbecc1e13b866837ff8b" \
@@ -629,6 +671,7 @@ curl -H "Authorization: Bearer sk_test_2bea0078ea794be853a7bbecc1e13b866837ff8b"
 ```
 
 ### Frontend Build Errors
+
 ```bash
 # Vite build issues
 npm run build
@@ -647,6 +690,7 @@ npm run preview
 ## Success Criteria
 
 ### Database Migration Success
+
 - [ ] All 3 tables created without errors
 - [ ] All indexes and constraints applied
 - [ ] All triggers and functions created
@@ -655,6 +699,7 @@ npm run preview
 - [ ] Verification queries return expected results
 
 ### Backend Deployment Success
+
 - [ ] Application starts without errors
 - [ ] Health endpoint returns 200 OK
 - [ ] All new API endpoints respond correctly
@@ -663,6 +708,7 @@ npm run preview
 - [ ] Database connections established
 
 ### Frontend Deployment Success
+
 - [ ] Build completes without errors
 - [ ] New routes accessible (200 OK)
 - [ ] Forms render correctly
@@ -671,6 +717,7 @@ npm run preview
 - [ ] No console errors in browser
 
 ### Integration Success
+
 - [ ] Payment bridge form submits successfully
 - [ ] Verification form processes requests
 - [ ] Content recovery form creates cases
@@ -680,6 +727,7 @@ npm run preview
 - [ ] Error handling works as expected
 
 ### Performance Success
+
 - [ ] API response times < 2 seconds
 - [ ] Frontend load time < 3 seconds
 - [ ] Database queries optimized
@@ -691,12 +739,14 @@ npm run preview
 ## Emergency Contacts and Resources
 
 ### Team Contacts
+
 - **Database Administrator:** [Contact Info]
 - **Backend Developer:** [Contact Info]
 - **Frontend Developer:** [Contact Info]
 - **DevOps Engineer:** [Contact Info]
 
 ### Critical Links
+
 - **Neon Dashboard:** https://console.neon.tech/
 - **OCI Console:** https://console.oracle-cloud.com/
 - **Vercel Dashboard:** https://vercel.com/dashboard
@@ -704,6 +754,7 @@ npm run preview
 - **GitHub Repository:** https://github.com/your-username/vauntico-mvp
 
 ### Monitoring and Alerts
+
 - **Sentry Error Tracking:** https://sentry.io/
 - **Slack Channel:** #vauntico-deployments
 - **Status Page:** https://status.vauntico.com/
@@ -713,6 +764,7 @@ npm run preview
 ## Post-Deployment Monitoring
 
 ### First 24 Hours Checklist
+
 - [ ] Monitor error rates in Sentry
 - [ ] Check PM2 process stability
 - [ ] Verify database performance
@@ -721,6 +773,7 @@ npm run preview
 - [ ] Review user feedback channels
 
 ### Ongoing Monitoring
+
 - Daily error report review
 - Weekly performance metrics
 - Monthly security scans
@@ -731,6 +784,7 @@ npm run preview
 ## Appendices
 
 ### A. Complete Migration SQL Validation Script
+
 ```sql
 -- Full validation script for migration 019
 DO $$
@@ -745,31 +799,31 @@ BEGIN
     FROM information_schema.tables
     WHERE table_schema = 'public'
     AND table_name IN ('creator_payment_requests', 'creator_verifications', 'content_recovery_cases');
-    
+
     RAISE NOTICE 'Tables created: %/3', table_count;
-    
+
     -- Count indexes
     SELECT COUNT(*) INTO index_count
     FROM pg_indexes
     WHERE tablename IN ('creator_payment_requests', 'creator_verifications', 'content_recovery_cases');
-    
+
     RAISE NOTICE 'Indexes created: %', index_count;
-    
+
     -- Count triggers
     SELECT COUNT(*) INTO trigger_count
     FROM information_schema.triggers
     WHERE trigger_schema = 'public';
-    
+
     RAISE NOTICE 'Triggers created: %', trigger_count;
-    
+
     -- Count views
     SELECT COUNT(*) INTO view_count
     FROM information_schema.tables
     WHERE table_schema = 'public' AND table_type = 'VIEW'
     AND table_name IN ('creator_verification_summary', 'active_recovery_cases', 'payment_request_summary');
-    
+
     RAISE NOTICE 'Views created: %/3', view_count;
-    
+
     IF table_count = 3 AND view_count = 3 THEN
         RAISE NOTICE '✅ Migration validation successful!';
     ELSE
@@ -779,6 +833,7 @@ END $$;
 ```
 
 ### B. Emergency Rollback Commands
+
 ```bash
 # Database rollback
 psql "$DATABASE_URL" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
@@ -794,6 +849,7 @@ vercel rollback [previous-deployment-url]
 ```
 
 ### C. Performance Testing Script
+
 ```bash
 # API load test
 ab -n 100 -c 10 https://api.vauntico.com/health

@@ -1,5 +1,5 @@
 ---
-description: 'Enforce using function types instead of interfaces with call signatures.'
+description: "Enforce using function types instead of interfaces with call signatures."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

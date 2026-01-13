@@ -1,14 +1,22 @@
-import axios from 'axios';
-import { enterpriseComplianceManager, ComplianceFramework } from '../middleware/enterprise-compliance';
+import axios from "axios";
+import {
+  enterpriseComplianceManager,
+  ComplianceFramework,
+} from "../middleware/enterprise-compliance";
 
 // Enterprise Integration Service
 // Handles Slack notifications, Notion dashboards, and webhook systems for enterprise partners
 
 export interface SlackNotification {
-  type: 'trust_score_update' | 'compliance_alert' | 'kpi_milestone' | 'security_incident' | 'integration_status';
+  type:
+    | "trust_score_update"
+    | "compliance_alert"
+    | "kpi_milestone"
+    | "security_incident"
+    | "integration_status";
   userId?: string;
   organization?: string;
-  severity: 'info' | 'warning' | 'error' | 'critical';
+  severity: "info" | "warning" | "error" | "critical";
   title: string;
   message: string;
   metadata?: Record<string, any>;
@@ -67,7 +75,8 @@ export class EnterpriseIntegrationService {
 
   static getInstance(): EnterpriseIntegrationService {
     if (!EnterpriseIntegrationService.instance) {
-      EnterpriseIntegrationService.instance = new EnterpriseIntegrationService();
+      EnterpriseIntegrationService.instance =
+        new EnterpriseIntegrationService();
     }
     return EnterpriseIntegrationService.instance;
   }
@@ -79,18 +88,20 @@ export class EnterpriseIntegrationService {
   }
 
   // Slack Integration
-  async sendSlackNotification(notification: SlackNotification): Promise<boolean> {
+  async sendSlackNotification(
+    notification: SlackNotification,
+  ): Promise<boolean> {
     try {
       if (!this.slackWebhookUrl) {
-        console.warn('Slack webhook URL not configured');
+        console.warn("Slack webhook URL not configured");
         return false;
       }
 
       const colorMap = {
-        'info': '#36a64f',
-        'warning': '#ff9500',
-        'error': '#ff0000',
-        'critical': '#8b0000'
+        info: "#36a64f",
+        warning: "#ff9500",
+        error: "#ff0000",
+        critical: "#8b0000",
       };
 
       const payload = {
@@ -101,64 +112,71 @@ export class EnterpriseIntegrationService {
             text: notification.message,
             fields: [
               {
-                title: 'Organization',
-                value: notification.organization || 'N/A',
-                short: true
+                title: "Organization",
+                value: notification.organization || "N/A",
+                short: true,
               },
               {
-                title: 'Severity',
+                title: "Severity",
                 value: notification.severity.toUpperCase(),
-                short: true
+                short: true,
               },
               {
-                title: 'Type',
-                value: notification.type.replace('_', ' ').toUpperCase(),
-                short: true
+                title: "Type",
+                value: notification.type.replace("_", " ").toUpperCase(),
+                short: true,
               },
               {
-                title: 'Timestamp',
-                value: notification.timestamp?.toISOString() || new Date().toISOString(),
-                short: true
-              }
+                title: "Timestamp",
+                value:
+                  notification.timestamp?.toISOString() ||
+                  new Date().toISOString(),
+                short: true,
+              },
             ],
-            footer: 'Vauntico Enterprise Platform',
-            ts: Math.floor((notification.timestamp?.getTime() || Date.now()) / 1000)
-          }
-        ]
+            footer: "Vauntico Enterprise Platform",
+            ts: Math.floor(
+              (notification.timestamp?.getTime() || Date.now()) / 1000,
+            ),
+          },
+        ],
       };
 
       if (notification.metadata) {
         payload.attachments[0].fields.push({
-          title: 'Additional Details',
-          value: '```json\n' + JSON.stringify(notification.metadata, null, 2) + '\n```',
-          short: false
+          title: "Additional Details",
+          value:
+            "```json\n" +
+            JSON.stringify(notification.metadata, null, 2) +
+            "\n```",
+          short: false,
         });
       }
 
       const response = await axios.post(this.slackWebhookUrl, payload, {
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        timeout: 10000
+        timeout: 10000,
       });
 
       if (response.status === 200) {
         // Log successful Slack notification
         enterpriseComplianceManager.logComplianceEvent({
           userId: notification.userId,
-          ipAddress: 'system',
-          userAgent: 'enterprise-integration-service',
+          ipAddress: "system",
+          userAgent: "enterprise-integration-service",
           framework: ComplianceFramework.POPIA,
-          dataCategory: 'communication' as any,
-          processingPurpose: 'legitimate_interests' as any,
-          action: 'share',
-          dataSubject: notification.userId || 'system',
-          riskLevel: 'low',
+          dataCategory: "communication" as any,
+          processingPurpose: "legitimate_interests" as any,
+          action: "share",
+          dataSubject: notification.userId || "system",
+          riskLevel: "low",
           metadata: {
-            integration: 'slack',
+            integration: "slack",
             notificationType: notification.type,
-            severity: notification.severity
-          }
+            severity: notification.severity,
+          },
         });
 
         return true;
@@ -166,7 +184,7 @@ export class EnterpriseIntegrationService {
 
       return false;
     } catch (error) {
-      console.error('Failed to send Slack notification:', error);
+      console.error("Failed to send Slack notification:", error);
       return false;
     }
   }
@@ -175,116 +193,120 @@ export class EnterpriseIntegrationService {
   async updateNotionKPIDashboard(kpiData: NotionKPIData): Promise<boolean> {
     try {
       if (!this.notionToken || !this.notionDatabaseId) {
-        console.warn('Notion integration not configured');
+        console.warn("Notion integration not configured");
         return false;
       }
 
       // Create new page in Notion database
       const pageData = {
         parent: {
-          database_id: this.notionDatabaseId
+          database_id: this.notionDatabaseId,
         },
         properties: {
-          'Organization': {
+          Organization: {
             title: [
               {
                 text: {
-                  content: kpiData.organization
-                }
-              }
-            ]
+                  content: kpiData.organization,
+                },
+              },
+            ],
           },
-          'Trust Score': {
-            number: kpiData.trustScore
+          "Trust Score": {
+            number: kpiData.trustScore,
           },
-          'Compliance Score': {
-            number: kpiData.complianceScore
+          "Compliance Score": {
+            number: kpiData.complianceScore,
           },
-          'MRR': {
-            number: kpiData.kpiMetrics.mrr
+          MRR: {
+            number: kpiData.kpiMetrics.mrr,
           },
-          'Active Users': {
-            number: kpiData.kpiMetrics.activeUsers
+          "Active Users": {
+            number: kpiData.kpiMetrics.activeUsers,
           },
-          'Integration Usage': {
-            number: kpiData.kpiMetrics.integrationUsage
+          "Integration Usage": {
+            number: kpiData.kpiMetrics.integrationUsage,
           },
-          'Compliance Adherence': {
-            number: kpiData.kpiMetrics.complianceAdherence
+          "Compliance Adherence": {
+            number: kpiData.kpiMetrics.complianceAdherence,
           },
-          'Trust Score Change': {
-            number: kpiData.trends.trustScoreChange
+          "Trust Score Change": {
+            number: kpiData.trends.trustScoreChange,
           },
-          'Compliance Score Change': {
-            number: kpiData.trends.complianceScoreChange
+          "Compliance Score Change": {
+            number: kpiData.trends.complianceScoreChange,
           },
-          'MRR Growth': {
-            number: kpiData.trends.mrrGrowth
+          "MRR Growth": {
+            number: kpiData.trends.mrrGrowth,
           },
-          'Last Updated': {
+          "Last Updated": {
             date: {
-              start: kpiData.timestamp.toISOString()
-            }
-          }
+              start: kpiData.timestamp.toISOString(),
+            },
+          },
         },
         children: [
           {
-            object: 'block',
-            type: 'heading_2',
+            object: "block",
+            type: "heading_2",
             heading_2: {
               text: [
                 {
-                  type: 'text',
+                  type: "text",
                   text: {
-                    content: '📊 Enterprise KPI Summary'
-                  }
-                }
-              ]
-            }
+                    content: "📊 Enterprise KPI Summary",
+                  },
+                },
+              ],
+            },
           },
           {
-            object: 'block',
-            type: 'paragraph',
+            object: "block",
+            type: "paragraph",
             paragraph: {
               text: [
                 {
-                  type: 'text',
+                  type: "text",
                   text: {
                     content: `Organization: ${kpiData.organization}\nTrust Score: ${kpiData.trustScore}\nCompliance Score: ${kpiData.complianceScore}\nMRR: $${kpiData.kpiMetrics.mrr.toLocaleString()}\nActive Users: ${kpiData.kpiMetrics.activeUsers.toLocaleString()}\nIntegration Usage: ${kpiData.kpiMetrics.integrationUsage}%\nCompliance Adherence: ${kpiData.kpiMetrics.complianceAdherence}%`,
-                  }
-                }
-              ]
-            }
-          }
-        ]
+                  },
+                },
+              ],
+            },
+          },
+        ],
       };
 
-      const response = await axios.post('https://api.notion.com/v1/pages', pageData, {
-        headers: {
-          'Authorization': `Bearer ${this.notionToken}`,
-          'Content-Type': 'application/json',
-          'Notion-Version': '2022-06-28'
+      const response = await axios.post(
+        "https://api.notion.com/v1/pages",
+        pageData,
+        {
+          headers: {
+            Authorization: `Bearer ${this.notionToken}`,
+            "Content-Type": "application/json",
+            "Notion-Version": "2022-06-28",
+          },
+          timeout: 15000,
         },
-        timeout: 15000
-      });
+      );
 
       if (response.status === 200) {
         // Log successful Notion update
         enterpriseComplianceManager.logComplianceEvent({
-          ipAddress: 'system',
-          userAgent: 'enterprise-integration-service',
+          ipAddress: "system",
+          userAgent: "enterprise-integration-service",
           framework: ComplianceFramework.POPIA,
-          dataCategory: 'financial' as any,
-          processingPurpose: 'contractual' as any,
-          action: 'store',
+          dataCategory: "financial" as any,
+          processingPurpose: "contractual" as any,
+          action: "store",
           dataSubject: kpiData.organization,
-          riskLevel: 'medium',
+          riskLevel: "medium",
           metadata: {
-            integration: 'notion',
+            integration: "notion",
             organization: kpiData.organization,
             trustScore: kpiData.trustScore,
-            complianceScore: kpiData.complianceScore
-          }
+            complianceScore: kpiData.complianceScore,
+          },
         });
 
         return true;
@@ -292,46 +314,58 @@ export class EnterpriseIntegrationService {
 
       return false;
     } catch (error) {
-      console.error('Failed to update Notion KPI dashboard:', error);
+      console.error("Failed to update Notion KPI dashboard:", error);
       return false;
     }
   }
 
   // Webhook System
-  async createWebhookSubscription(subscription: Omit<WebhookSubscription, 'id' | 'createdAt' | 'retryCount'>): Promise<string> {
+  async createWebhookSubscription(
+    subscription: Omit<WebhookSubscription, "id" | "createdAt" | "retryCount">,
+  ): Promise<string> {
     const id = `webhook_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const fullSubscription: WebhookSubscription = {
       ...subscription,
       id,
       createdAt: new Date(),
-      retryCount: 0
+      retryCount: 0,
     };
 
     this.webhookSubscriptions.set(id, fullSubscription);
 
     // Log webhook subscription creation
     enterpriseComplianceManager.logComplianceEvent({
-      ipAddress: 'system',
-      userAgent: 'enterprise-integration-service',
+      ipAddress: "system",
+      userAgent: "enterprise-integration-service",
       framework: ComplianceFramework.POPIA,
-      dataCategory: 'personal_identifiable' as any,
-      processingPurpose: 'consent' as any,
-      action: 'store',
+      dataCategory: "personal_identifiable" as any,
+      processingPurpose: "consent" as any,
+      action: "store",
       dataSubject: subscription.organizationId,
-      riskLevel: 'medium',
+      riskLevel: "medium",
       metadata: {
         webhookId: id,
         endpoint: subscription.endpoint,
-        events: subscription.events
-      }
+        events: subscription.events,
+      },
     });
 
     return id;
   }
 
-  async deliverWebhook(event: string, organization: string, data: any): Promise<void> {
-    const relevantSubscriptions = Array.from(this.webhookSubscriptions.values())
-      .filter(sub => sub.active && sub.organizationId === organization && sub.events.includes(event));
+  async deliverWebhook(
+    event: string,
+    organization: string,
+    data: any,
+  ): Promise<void> {
+    const relevantSubscriptions = Array.from(
+      this.webhookSubscriptions.values(),
+    ).filter(
+      (sub) =>
+        sub.active &&
+        sub.organizationId === organization &&
+        sub.events.includes(event),
+    );
 
     for (const subscription of relevantSubscriptions) {
       try {
@@ -341,40 +375,42 @@ export class EnterpriseIntegrationService {
           timestamp: new Date(),
           organization,
           data,
-          signature: this.generateSignature(data, subscription.secret)
+          signature: this.generateSignature(data, subscription.secret),
         };
 
         await axios.post(subscription.endpoint, payload, {
           headers: {
-            'Content-Type': 'application/json',
-            'X-Vauntico-Signature': payload.signature,
-            'X-Vauntico-Event': event
+            "Content-Type": "application/json",
+            "X-Vauntico-Signature": payload.signature,
+            "X-Vauntico-Event": event,
           },
-          timeout: 10000
+          timeout: 10000,
         });
 
         // Reset retry count on successful delivery
         subscription.retryCount = 0;
         subscription.lastDelivery = new Date();
-
       } catch (error) {
-        console.error(`Failed to deliver webhook to ${subscription.endpoint}:`, error);
+        console.error(
+          `Failed to deliver webhook to ${subscription.endpoint}:`,
+          error,
+        );
         subscription.retryCount++;
 
         // Disable subscription after 3 failed attempts
         if (subscription.retryCount >= 3) {
           subscription.active = false;
           await this.sendSlackNotification({
-            type: 'integration_status',
+            type: "integration_status",
             organization,
-            severity: 'warning',
-            title: 'Webhook Subscription Disabled',
+            severity: "warning",
+            title: "Webhook Subscription Disabled",
             message: `Webhook subscription for ${subscription.endpoint} has been disabled after 3 failed delivery attempts.`,
             metadata: {
               webhookId: subscription.id,
               endpoint: subscription.endpoint,
-              retryCount: subscription.retryCount
-            }
+              retryCount: subscription.retryCount,
+            },
           });
         }
       }
@@ -382,9 +418,9 @@ export class EnterpriseIntegrationService {
   }
 
   private generateSignature(data: any, secret: string): string {
-    const crypto = require('crypto');
+    const crypto = require("crypto");
     const payload = JSON.stringify(data);
-    return crypto.createHmac('sha256', secret).update(payload).digest('hex');
+    return crypto.createHmac("sha256", secret).update(payload).digest("hex");
   }
 
   // Integration Health Check
@@ -394,18 +430,24 @@ export class EnterpriseIntegrationService {
     webhooks: { active: number; total: number; deliveryRate: number };
   }> {
     const slackHealthy = this.slackWebhookUrl ? true : false;
-    const notionHealthy = this.notionToken && this.notionDatabaseId ? true : false;
-    
+    const notionHealthy =
+      this.notionToken && this.notionDatabaseId ? true : false;
+
     const webhookSubscriptions = Array.from(this.webhookSubscriptions.values());
-    const activeWebhooks = webhookSubscriptions.filter(sub => sub.active).length;
+    const activeWebhooks = webhookSubscriptions.filter(
+      (sub) => sub.active,
+    ).length;
     const totalWebhooks = webhookSubscriptions.length;
-    
+
     // Calculate delivery rate (webhooks delivered in last 24h / total attempts)
-    const recentDeliveries = webhookSubscriptions
-      .filter(sub => sub.lastDelivery && sub.lastDelivery > new Date(Date.now() - 24 * 60 * 60 * 1000))
-      .length;
-    
-    const deliveryRate = totalWebhooks > 0 ? (recentDeliveries / totalWebhooks) * 100 : 0;
+    const recentDeliveries = webhookSubscriptions.filter(
+      (sub) =>
+        sub.lastDelivery &&
+        sub.lastDelivery > new Date(Date.now() - 24 * 60 * 60 * 1000),
+    ).length;
+
+    const deliveryRate =
+      totalWebhooks > 0 ? (recentDeliveries / totalWebhooks) * 100 : 0;
 
     return {
       slack: slackHealthy,
@@ -413,8 +455,8 @@ export class EnterpriseIntegrationService {
       webhooks: {
         active: activeWebhooks,
         total: totalWebhooks,
-        deliveryRate
-      }
+        deliveryRate,
+      },
     };
   }
 
@@ -426,7 +468,9 @@ export class EnterpriseIntegrationService {
   } {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const thisWeek = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000));
+    const thisWeek = new Date(
+      today.getTime() - today.getDay() * 24 * 60 * 60 * 1000,
+    );
     const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
     // These would normally be tracked in a database
@@ -435,20 +479,21 @@ export class EnterpriseIntegrationService {
       slackNotifications: {
         today: 12,
         thisWeek: 45,
-        thisMonth: 180
+        thisMonth: 180,
       },
       notionUpdates: {
         today: 3,
         thisWeek: 15,
-        thisMonth: 60
+        thisMonth: 60,
       },
       webhookDeliveries: {
         successful: 245,
         failed: 3,
-        pending: 7
-      }
+        pending: 7,
+      },
     };
   }
 }
 
-export const enterpriseIntegrationService = EnterpriseIntegrationService.getInstance();
+export const enterpriseIntegrationService =
+  EnterpriseIntegrationService.getInstance();

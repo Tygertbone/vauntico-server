@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export interface PlanPricing {
   usd?: number;
@@ -20,8 +20,10 @@ export interface PlansData {
   enterprise: PlanData;
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
-const CURRENCY_ABSTRACTION_ENABLED = process.env.NEXT_PUBLIC_CURRENCY_ABSTRACTION_ENABLED === 'true';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+const CURRENCY_ABSTRACTION_ENABLED =
+  process.env.NEXT_PUBLIC_CURRENCY_ABSTRACTION_ENABLED === "true";
 
 export function usePlans(): PlansData | null {
   const [plans, setPlans] = useState<PlansData | null>(null);
@@ -42,8 +44,8 @@ export function usePlans(): PlansData | null {
         setPlans(response.data);
         setError(null);
       } catch (err: any) {
-        console.error('Failed to fetch plans:', err);
-        setError(err.message || 'Failed to fetch plans');
+        console.error("Failed to fetch plans:", err);
+        setError(err.message || "Failed to fetch plans");
       } finally {
         setLoading(false);
       }
@@ -56,45 +58,45 @@ export function usePlans(): PlansData | null {
     // Fallback to static pricing if feature is disabled
     return {
       creator: {
-        name: 'Creator Pass',
-        description: 'Premium tier for creators',
+        name: "Creator Pass",
+        description: "Premium tier for creators",
         features: [
-          'Unlimited AI generations',
-          'Advanced analytics dashboard',
-          'Custom branding',
-          'Priority email support',
-          'Unlimited vaults',
-          'Team collaboration tools',
-          'API access',
-          'White-label options'
+          "Unlimited AI generations",
+          "Advanced analytics dashboard",
+          "Custom branding",
+          "Priority email support",
+          "Unlimited vaults",
+          "Team collaboration tools",
+          "API access",
+          "White-label options",
         ],
         pricing: {
           usd: 29,
           zar: 500,
           ngn: 47000,
-          eur: 27
-        }
+          eur: 27,
+        },
       },
       enterprise: {
-        name: 'Enterprise',
-        description: 'Enterprise tier with full features',
+        name: "Enterprise",
+        description: "Enterprise tier with full features",
         features: [
-          'Everything in Creator Pass',
-          'Dedicated account manager',
-          'Custom integrations',
-          'Advanced security features',
-          'Compliance reporting',
-          'Priority phone support',
-          'Custom SLA',
-          'On-premise deployment option'
+          "Everything in Creator Pass",
+          "Dedicated account manager",
+          "Custom integrations",
+          "Advanced security features",
+          "Compliance reporting",
+          "Priority phone support",
+          "Custom SLA",
+          "On-premise deployment option",
         ],
         pricing: {
           usd: 99,
           zar: 1700,
           ngn: 160000,
-          eur: 92
-        }
-      }
+          eur: 92,
+        },
+      },
     };
   }
 

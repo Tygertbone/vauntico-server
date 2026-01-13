@@ -9,9 +9,11 @@ This guide helps new contributors get started quickly and effectively with the V
 ## 🏗️ Project Overview
 
 ### What is Vauntico?
+
 Vauntico is positioned as **trust infrastructure for the creator economy** - our distinctive opportunity as "Stripe for creator credibility" with moats in AI trust scoring, sacred features, Ubuntu philosophy, and African market focus.
 
 ### Technology Stack
+
 - **Frontend**: React 18 + Vite 5 + TypeScript
 - **Backend**: Node.js + Express + TypeScript
 - **Database**: PostgreSQL (Neon)
@@ -25,39 +27,46 @@ Vauntico is positioned as **trust infrastructure for the creator economy** - our
 **📖 memories.md is the authoritative source** - All features must align with the canonical monetization roadmap.
 
 ### Phase-Based Development
+
 All new features, branches, and PRs must be tagged with their monetization phase:
 
 #### Phase 1: Foundation (Months 1-6)
+
 - **Target**: $100K MRR from creators
 - **KPIs**: Pro subscriptions, Score Insurance signups, Trust Calculator usage
 - **Features**: Free trust score calculator, $49/month Pro subscription, $19/month Score Insurance
 - **Blind Spots**: Data privacy, Platform dependency
 
 #### Phase 2: B2B API Licensing (Months 7-12)
+
 - **Target**: $500K MRR from businesses
 - **KPIs**: API calls, License tier upgrades, White-label integrations
 - **Features**: Trust Score API tiers ($99-$2,999/month), White-label widgets, Brand partnerships
 - **Blind Spots**: Commoditization, Platform dependency
 
 #### Phase 3: Enterprise Compliance (Months 13-18)
+
 - **Target**: $300K MRR from enterprise
 - **KPIs**: Compliance suite sales, Slack/Notion integrations, Agency white-labels
 - **Features**: African compliance suite ($2K-$10K/month), Enterprise integrations
 - **Blind Spots**: Data privacy, Platform dependency
 
 #### Phase 4: Creator Economy (Months 19-24)
+
 - **Target**: $200K MRR from creator features
 - **KPIs**: Ubuntu Council commissions, Legacy sponsorships, Marketplace transactions
 - **Features**: Ubuntu Council, Native advertising, Sacred feature marketplace
 - **Blind Spots**: Algorithm gaming, Commoditization
 
 #### Phase 5: Vauntico Credits (Months 25-30)
+
 - **Target**: $100K MRR from credits
 - **KPIs**: Credits earned, Credits redeemed, Bundle sales, Gift transactions
 - **Features**: Credit system (earned through trust actions), Bundles (100 credits for $79), Gifting
 - **Blind Spots**: Algorithm gaming, Commoditization
 
 ### Branch Naming Convention
+
 ```bash
 # Phase-specific branch naming
 feature/phase1-trust-calculator-enhancement
@@ -76,6 +85,7 @@ phase: 2 - API licensing tier upgrade workflow
 ## 🚀 Quick Start (15 Minutes)
 
 ### 1. Repository Setup
+
 ```bash
 # Clone the repository
 git clone https://github.com/Tygertbone/vauntico-server.git
@@ -89,6 +99,7 @@ npm run install:all
 ```
 
 ### 2. Environment Configuration
+
 ```bash
 # Copy environment templates
 cp .env.example .env.local
@@ -99,6 +110,7 @@ cp server-v2/.env.example server-v2/.env.local
 ```
 
 ### 3. Start Development Servers
+
 ```bash
 # Start all services (workspace)
 npm run dev
@@ -115,6 +127,7 @@ cd vauntico-fulfillment-engine && npm run dev
 ```
 
 ### 4. Verify Setup
+
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:3000/health
 - Payment Engine: http://localhost:3001/health
@@ -124,6 +137,7 @@ cd vauntico-fulfillment-engine && npm run dev
 ## 🔧 Development Workflow
 
 ### Monetization-Aligned Code Organization
+
 ```
 vauntico-mvp/
 ├── src/                           # Frontend React application
@@ -135,12 +149,14 @@ vauntico-mvp/
 ```
 
 ### Branch Strategy
+
 - `main`: Production-ready code
 - `develop`: Integration branch for features
 - `feature/*`: Feature branches (must include phase tag)
 - `hotfix/*`: Critical fixes
 
 ### Monetization-Aware Commit Convention
+
 ```bash
 # Format: phase: type: description
 
@@ -158,6 +174,7 @@ phase5: test: add credit redemption tests
 ## 📝 Environment Variables
 
 ### Frontend (.env.local)
+
 ```bash
 # API Configuration
 VITE_API_URL=http://localhost:3000
@@ -175,6 +192,7 @@ VITE_DEBUG=true
 ```
 
 ### Backend (server-v2/.env.local)
+
 ```bash
 # Server
 NODE_ENV=development
@@ -202,6 +220,7 @@ LOG_LEVEL=debug
 ```
 
 ### Payment Engine (vauntico-fulfillment-engine/.env.local)
+
 ```bash
 # Server
 NODE_ENV=development
@@ -223,6 +242,7 @@ MONETIZATION_PHASE=Phase 1: Foundation
 ## 🧪 Testing
 
 ### Running Tests
+
 ```bash
 # Run all tests
 npm run test
@@ -240,6 +260,7 @@ npm run test:watch
 ```
 
 ### Monetization-Aware Test Structure
+
 ```
 src/
 ├── __tests__/           # Frontend tests
@@ -264,28 +285,29 @@ vauntico-fulfillment-engine/
 ```
 
 ### Writing Monetization-Aware Tests
+
 ```javascript
 // Example: Phase 1 Pro Subscription Test
-import { render, screen } from '@testing-library/react';
-import { ProSubscription } from '../ProSubscription';
+import { render, screen } from "@testing-library/react";
+import { ProSubscription } from "../ProSubscription";
 
-test('Phase 1: Pro subscription processes $49/month correctly', async () => {
+test("Phase 1: Pro subscription processes $49/month correctly", async () => {
   render(<ProSubscription phase="Phase 1: Foundation" />);
-  
-  expect(screen.getByText('$49/month')).toBeInTheDocument();
-  expect(screen.getByText('Sacred Features Access')).toBeInTheDocument();
+
+  expect(screen.getByText("$49/month")).toBeInTheDocument();
+  expect(screen.getByText("Sacred Features Access")).toBeInTheDocument();
 });
 
 // Example: Phase 2 API Licensing Test
-import request from 'supertest';
-import app from '../app';
+import request from "supertest";
+import app from "../app";
 
-test('Phase 2: API licensing tier pricing works correctly', async () => {
+test("Phase 2: API licensing tier pricing works correctly", async () => {
   const response = await request(app)
-    .get('/api/v1/api-licenses/tiers')
+    .get("/api/v1/api-licenses/tiers")
     .expect(200);
-    
-  expect(response.body).toHaveProperty('tiers');
+
+  expect(response.body).toHaveProperty("tiers");
   expect(response.body.tiers[0].price).toBe(99);
   expect(response.body.tiers[2].price).toBe(2999);
 });
@@ -296,11 +318,12 @@ test('Phase 2: API licensing tier pricing works correctly', async () => {
 ## 🎨 Frontend Development
 
 ### Monetization-Aligned Component Structure
+
 ```jsx
 // Example component with phase awareness
-import React from 'react';
-import { useState, useEffect } from 'react';
-import './Component.css';
+import React from "react";
+import { useState, useEffect } from "react";
+import "./Component.css";
 
 const Component = ({ phase, monetizationData }) => {
   const [state, setState] = useState(initialValue);
@@ -308,10 +331,10 @@ const Component = ({ phase, monetizationData }) => {
   useEffect(() => {
     // Phase-specific initialization
     switch (phase) {
-      case 'Phase 1: Foundation':
+      case "Phase 1: Foundation":
         // Initialize Phase 1 features (Pro subscription, Score Insurance)
         break;
-      case 'Phase 2: B2B API Licensing':
+      case "Phase 2: B2B API Licensing":
         // Initialize Phase 2 features (API licensing, White-label)
         break;
       // ... other phases
@@ -321,12 +344,8 @@ const Component = ({ phase, monetizationData }) => {
   return (
     <div className="component">
       {/* Phase-specific rendering */}
-      {phase === 'Phase 1: Foundation' && (
-        <ProSubscriptionCard />
-      )}
-      {phase === 'Phase 2: B2B API Licensing' && (
-        <APILicensingTiers />
-      )}
+      {phase === "Phase 1: Foundation" && <ProSubscriptionCard />}
+      {phase === "Phase 2: B2B API Licensing" && <APILicensingTiers />}
     </div>
   );
 };
@@ -335,6 +354,7 @@ export default Component;
 ```
 
 ### Styling Guidelines
+
 - Use Tailwind CSS for styling
 - Follow component-based architecture
 - Use CSS modules for complex styles
@@ -342,6 +362,7 @@ export default Component;
 - Consider phase-specific UI variations
 
 ### State Management
+
 - Use React hooks for local state
 - Use React Query for server state
 - Context API for global state
@@ -352,38 +373,48 @@ export default Component;
 ## 🔙 Backend Development
 
 ### Monetization-Aligned API Structure
+
 ```javascript
 // Example: Phase-aware route structure
-import express from 'express';
-import { authenticate } from '../middleware/auth';
-import { validateInput } from '../middleware/validation';
+import express from "express";
+import { authenticate } from "../middleware/auth";
+import { validateInput } from "../middleware/validation";
 
 const router = express.Router();
 
 // Phase 1: Foundation routes
-router.get('/api/v1/subscriptions/plans', authenticate, async (req, res) => {
+router.get("/api/v1/subscriptions/plans", authenticate, async (req, res) => {
   try {
     const plans = [
-      { id: 'pro', name: 'Pro', price: 49, features: ['sacred_features'] },
-      { id: 'insurance', name: 'Score Insurance', price: 19, features: ['alerts', 'smoothing'] }
+      { id: "pro", name: "Pro", price: 49, features: ["sacred_features"] },
+      {
+        id: "insurance",
+        name: "Score Insurance",
+        price: 19,
+        features: ["alerts", "smoothing"],
+      },
     ];
-    
-    res.json({ success: true, data: plans, phase: 'Phase 1: Foundation' });
+
+    res.json({ success: true, data: plans, phase: "Phase 1: Foundation" });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
 // Phase 2: B2B API Licensing routes
-router.get('/api/v1/api-licenses/tiers', authenticate, async (req, res) => {
+router.get("/api/v1/api-licenses/tiers", authenticate, async (req, res) => {
   try {
     const tiers = [
-      { id: 'starter', price: 99, calls_limit: 10000 },
-      { id: 'business', price: 999, calls_limit: 100000 },
-      { id: 'enterprise', price: 2999, calls_limit: 'unlimited' }
+      { id: "starter", price: 99, calls_limit: 10000 },
+      { id: "business", price: 999, calls_limit: 100000 },
+      { id: "enterprise", price: 2999, calls_limit: "unlimited" },
     ];
-    
-    res.json({ success: true, data: tiers, phase: 'Phase 2: B2B API Licensing' });
+
+    res.json({
+      success: true,
+      data: tiers,
+      phase: "Phase 2: B2B API Licensing",
+    });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -393,9 +424,10 @@ export default router;
 ```
 
 ### Database Operations
+
 ```javascript
 // Example: Phase-aware service
-import { Pool } from 'pg';
+import { Pool } from "pg";
 
 class MonetizationService {
   constructor(pool) {
@@ -408,45 +440,46 @@ class MonetizationService {
       VALUES ($1, $2, $3, NOW())
       RETURNING *
     `;
-    
+
     const result = await this.pool.query(query, [phase, metric, value]);
     return result.rows[0];
   }
 
   async getPhaseTarget(phase) {
     const targets = {
-      'Phase 1: Foundation': 100000,
-      'Phase 2: B2B API Licensing': 500000,
-      'Phase 3: Enterprise Compliance': 300000,
-      'Phase 4: Creator Economy': 200000,
-      'Phase 5: Vauntico Credits': 100000
+      "Phase 1: Foundation": 100000,
+      "Phase 2: B2B API Licensing": 500000,
+      "Phase 3: Enterprise Compliance": 300000,
+      "Phase 4: Creator Economy": 200000,
+      "Phase 5: Vauntico Credits": 100000,
     };
-    
+
     return targets[phase] || 0;
   }
 }
 ```
 
 ### Error Handling
+
 ```javascript
 // Global error handler with phase awareness
 const errorHandler = (err, req, res, next) => {
   console.error(err.stack);
-  
+
   // Log to KPI tracking
   if (req.monetization_phase) {
-    kpiService.trackKPIMetric(req.monetization_phase, 'error_count', 1);
+    kpiService.trackKPIMetric(req.monetization_phase, "error_count", 1);
   }
-  
-  if (err.name === 'ValidationError') {
+
+  if (err.name === "ValidationError") {
     return res.status(400).json({ error: err.message });
   }
-  
-  if (err.name === 'UnauthorizedError') {
-    return res.status(401).json({ error: 'Unauthorized' });
+
+  if (err.name === "UnauthorizedError") {
+    return res.status(401).json({ error: "Unauthorized" });
   }
-  
-  res.status(500).json({ error: 'Internal server error' });
+
+  res.status(500).json({ error: "Internal server error" });
 };
 ```
 
@@ -455,6 +488,7 @@ const errorHandler = (err, req, res, next) => {
 ## 🔄 Development Tools
 
 ### Monetization-Aware Scripts
+
 ```bash
 # Phase-specific development commands
 npm run dev:phase1          # Start with Phase 1 features enabled
@@ -472,6 +506,7 @@ npm run deploy:phase2       # Deploy Phase 2 features
 ```
 
 ### Linting & Formatting
+
 ```bash
 # Lint all files
 npm run lint
@@ -487,6 +522,7 @@ npm run type-check
 ```
 
 ### Build Commands
+
 ```bash
 # Build all services
 npm run build
@@ -506,6 +542,7 @@ npm run build:phase2
 ## 🚀 Deployment
 
 ### Monetization-Aware Deployment
+
 ```bash
 # Phase-specific deployment commands
 npm run deploy:phase1      # Deploy Phase 1: Foundation
@@ -519,6 +556,7 @@ npm run deploy -- --phase="Phase 2: B2B API Licensing" --feature="API licensing 
 ```
 
 ### CI/CD Pipeline
+
 - **Branch**: `main` triggers production deployment
 - **Branch**: `develop` triggers staging deployment
 - **Pull Requests**: Run tests and build validation
@@ -526,6 +564,7 @@ npm run deploy -- --phase="Phase 2: B2B API Licensing" --feature="API licensing 
 - **Phase Alignment**: All deployments must specify monetization phase
 
 ### Environment Promotion
+
 1. **Development** → Feature branches (phase-aware)
 2. **Staging** → `develop` branch
 3. **Production** → `main` branch
@@ -537,6 +576,7 @@ npm run deploy -- --phase="Phase 2: B2B API Licensing" --feature="API licensing 
 The `memories.md` file is our living memory file that records the **canonical monetization roadmap** and governance principles. Every mistake becomes a rule to prevent future occurrences.
 
 ### Key Monetization Rules from memories.md:
+
 - **Rule 1**: All features must align with one of the 5 monetization phases
 - **Rule 2**: Every PR must specify which phase it supports and its revenue target
 - **Rule 3**: KPI tracking must be implemented for all monetization features
@@ -581,6 +621,7 @@ npm run validate:kpi       # Validate KPI tracking implementation
 Follow this checklist to ensure successful deployments:
 
 ## Monetization-Aware CI/CD Victory Checklist
+
 1. ✅ Feature tagged with correct monetization phase
 2. ✅ PR description includes phase alignment and revenue target
 3. ✅ KPI tracking implemented for monetization features
@@ -592,6 +633,7 @@ Follow this checklist to ensure successful deployments:
 9. ✅ Use npm scripts instead of manual commands
 
 ### Monetization Verification Requirements:
+
 - **Phase Alignment**: Feature must clearly align with memories.md phase
 - **KPI Tracking**: All monetization features must have KPI tracking
 - **Blind Spot Mitigations**: Document how blind spots are addressed
@@ -604,7 +646,9 @@ Follow this checklist to ensure successful deployments:
 - **Build**: Application must build successfully
 
 ### Phase-Specific Job Structure:
+
 Our CI/CD runs phase-aware jobs:
+
 - `test`: Phase-specific unit tests
 - `integration`: Phase-specific integration tests
 - `kpi-validation`: KPI tracking validation
@@ -614,6 +658,7 @@ Our CI/CD runs phase-aware jobs:
 - `browser-smoke`: End-to-end phase-specific tests
 
 ### Before Merging:
+
 1. All phase-specific jobs must pass successfully
 2. KPI tracking must be implemented and validated
 3. Blind spot mitigations must be documented
@@ -626,6 +671,7 @@ Our CI/CD runs phase-aware jobs:
 ## 📊 Monitoring & Debugging
 
 ### Monetization Health Checks
+
 ```bash
 # Frontend health with phase info
 curl http://localhost:5173/health?phase=Phase1
@@ -642,6 +688,7 @@ curl http://localhost:3000/api/v1/metrics/phase/Phase1
 ```
 
 ### Logging
+
 ```bash
 # View development logs with phase context
 npm run logs
@@ -657,6 +704,7 @@ tail -f logs/error.log
 ```
 
 ### Performance Monitoring
+
 - Frontend: React DevTools with phase indicators
 - Backend: PM2 monitoring with KPI dashboards
 - Database: Query performance logs by phase
@@ -667,6 +715,7 @@ tail -f logs/error.log
 ## 🤝 Contributing Guidelines
 
 ### Monetization-Aligned Code Review Process
+
 1. Create feature branch with phase tag
 2. Implement phase-specific features with KPI tracking
 3. Document blind spot mitigations
@@ -678,11 +727,14 @@ tail -f logs/error.log
 9. Merge to `main` for production
 
 ### Monetization-Aware Pull Request Template
+
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Monetization Phase Alignment
+
 - [ ] Phase 1: Foundation (Target: $100K MRR)
 - [ ] Phase 2: B2B API Licensing (Target: $500K MRR)
 - [ ] Phase 3: Enterprise Compliance (Target: $300K MRR)
@@ -690,29 +742,34 @@ Brief description of changes
 - [ ] Phase 5: Vauntico Credits (Target: $100K MRR)
 
 ## KPI Implementation
+
 - [ ] KPI tracking implemented
 - [ ] Metrics dashboard updated
 - [ ] Revenue impact calculated
 
 ## Blind Spot Mitigations
+
 - [ ] Data privacy: Transparent scoring, opt-in scores, right to explanation
 - [ ] Platform dependency: Multi-platform scoring, fallback scores, manual verification
 - [ ] Algorithm gaming: Anomaly detection, decay functions, manual audits
 - [ ] Commoditization: Sacred features, Ubuntu Echo community, predictions
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation
 
 ## Testing
+
 - [ ] Phase-specific unit tests pass
 - [ ] Integration tests pass
 - [ ] KPI tracking tests pass
 - [ ] Manual testing completed
 
 ## Checklist
+
 - [ ] Code follows style guidelines
 - [ ] Self-review completed
 - [ ] Documentation updated
@@ -721,6 +778,7 @@ Brief description of changes
 ```
 
 ### Code Standards
+
 - Use TypeScript for new code
 - Follow ESLint configuration
 - Write meaningful commit messages with phase tags
@@ -733,6 +791,7 @@ Brief description of changes
 ## 📞 Getting Help
 
 ### Resources
+
 - **Documentation**: `/docs` directory
 - **API Reference**: Backend `/api/docs` endpoint
 - **Issues**: GitHub Issues
@@ -740,12 +799,14 @@ Brief description of changes
 - **Monetization Guide**: `memories.md` (authoritative source)
 
 ### Team Communication
+
 - **Technical Questions**: Create GitHub Discussion (include phase tag)
 - **Bug Reports**: Create GitHub Issue (include phase context)
 - **Feature Requests**: Create GitHub Issue with phase alignment and "enhancement" label
 - **Monetization Questions**: Reference memories.md first, then create Discussion
 
 ### Development Support
+
 ```bash
 # Get help with commands
 npm run help
@@ -765,6 +826,7 @@ npm run check:alignment
 ## 🛠️ Development Scripts Reference
 
 ### Available Scripts
+
 ```bash
 # Development
 npm run dev              # Start all services
@@ -819,6 +881,7 @@ npm run deploy:validate   # Validate deployment
 ### Common Issues
 
 #### Monetization Phase Conflicts
+
 ```bash
 # Check phase alignment
 npm run check:alignment
@@ -828,6 +891,7 @@ git checkout -b feature/phase1-correct-implementation
 ```
 
 #### KPI Tracking Issues
+
 ```bash
 # Test KPI endpoints
 curl http://localhost:3000/api/v1/metrics/kpi
@@ -837,6 +901,7 @@ npm run validate:kpi
 ```
 
 #### Port Conflicts
+
 ```bash
 # Check what's using ports
 netstat -tulpn | grep :3000
@@ -848,6 +913,7 @@ sudo lsof -ti:3000 | xargs kill -9
 ```
 
 #### Database Connection Issues
+
 ```bash
 # Test database connection
 psql $DATABASE_URL -c "SELECT version();"
@@ -859,6 +925,7 @@ npm run db:seed
 ```
 
 #### Dependency Issues
+
 ```bash
 # Clear and reinstall
 rm -rf node_modules package-lock.json
@@ -869,6 +936,7 @@ npm cache clean --force
 ```
 
 #### Environment Variable Issues
+
 ```bash
 # Check loaded environment variables
 npm run env:check
@@ -890,6 +958,7 @@ console.log('All required variables present');
 ## 🎯 Monetization Best Practices
 
 ### Phase-Aware Code Organization
+
 ```
 src/
 ├── components/          # Reusable UI components
@@ -919,6 +988,7 @@ server-v2/
 ```
 
 ### Git Workflow
+
 ```bash
 # Phase-aware feature development
 git checkout -b feature/phase1-trust-calculator-enhancement
@@ -938,6 +1008,7 @@ git push origin hotfix/phase2-api-licensing-bug-fix
 ```
 
 ### Environment Management
+
 ```bash
 # Use phase-specific configs
 export MONETIZATION_PHASE="Phase 1: Foundation"
@@ -953,6 +1024,7 @@ echo "export DATABASE_URL=postgresql://localhost:5432/vauntico_dev" >> .envrc
 ## 📊 Monetization Performance Guidelines
 
 ### Phase-Specific Performance
+
 - **Phase 1**: Optimize trust score calculation (< 2s)
 - **Phase 2**: API response time < 100ms for licensing calls
 - **Phase 3**: Compliance validation < 5s
@@ -960,6 +1032,7 @@ echo "export DATABASE_URL=postgresql://localhost:5432/vauntico_dev" >> .envrc
 - **Phase 5**: Credit redemption < 500ms
 
 ### KPI Tracking Performance
+
 - Use React.memo for expensive components
 - Implement code splitting with React.lazy()
 - Optimize images with WebP format
@@ -967,6 +1040,7 @@ echo "export DATABASE_URL=postgresql://localhost:5432/vauntico_dev" >> .envrc
 - Minimize re-renders with useCallback/useMemo
 
 ### Backend Performance
+
 - Implement database connection pooling
 - Use Redis for session storage
 - Add compression middleware
@@ -974,6 +1048,7 @@ echo "export DATABASE_URL=postgresql://localhost:5432/vauntico_dev" >> .envrc
 - Use database indexes effectively
 
 ### Database Performance
+
 - Add appropriate indexes
 - Use EXPLAIN ANALYZE for query optimization
 - Implement connection pooling
@@ -985,6 +1060,7 @@ echo "export DATABASE_URL=postgresql://localhost:5432/vauntico_dev" >> .envrc
 ## 🔒 Monetization Security Guidelines
 
 ### Phase-Specific Security
+
 - **Phase 1**: Secure subscription billing data
 - **Phase 2**: Protect API licensing keys and usage limits
 - **Phase 3**: Enterprise compliance data protection
@@ -992,6 +1068,7 @@ echo "export DATABASE_URL=postgresql://localhost:5432/vauntico_dev" >> .envrc
 - **Phase 5**: Credit system fraud prevention
 
 ### General Security
+
 - Never commit secrets or API keys
 - Use environment variables for sensitive data
 - Validate all inputs
@@ -999,6 +1076,7 @@ echo "export DATABASE_URL=postgresql://localhost:5432/vauntico_dev" >> .envrc
 - Use HTTPS in production
 
 ### Compliance Requirements
+
 - **Data Privacy**: Transparent scoring algorithm, opt-in public scores, right to explanation
 - **Platform Dependency**: Multi-platform scoring, fallback scores, manual verification
 - **Algorithm Gaming**: Anomaly detection, decay functions, manual audits ($99 review)
@@ -1009,6 +1087,7 @@ echo "export DATABASE_URL=postgresql://localhost:5432/vauntico_dev" >> .envrc
 ## 🎓 Learning Resources
 
 ### Internal Documentation
+
 - **Monetization Guide**: `memories.md` (authoritative source)
 - **Architecture Guide**: `/docs/architecture.md`
 - **API Documentation**: Backend service
@@ -1016,6 +1095,7 @@ echo "export DATABASE_URL=postgresql://localhost:5432/vauntico_dev" >> .envrc
 - **Deployment Guide**: `/DEPLOYMENT_GUIDE.md`
 
 ### Phase-Specific Resources
+
 - **Phase 1**: Trust score calculation algorithms, subscription management
 - **Phase 2**: API licensing models, white-label integration
 - **Phase 3**: Enterprise compliance frameworks, African regulations
@@ -1023,6 +1103,7 @@ echo "export DATABASE_URL=postgresql://localhost:5432/vauntico_dev" >> .envrc
 - **Phase 5**: Credit systems, gamification, redemption flows
 
 ### External Resources
+
 - React Documentation: https://react.dev
 - Node.js Guide: https://nodejs.org/docs
 - TypeScript Handbook: https://www.typescriptlang.org/docs
@@ -1033,6 +1114,7 @@ echo "export DATABASE_URL=postgresql://localhost:5432/vauntico_dev" >> .envrc
 ## 🚀 Monetization Quick Start Templates
 
 ### Phase 1: Foundation Environment Setup
+
 ```bash
 # 1. Clone and setup
 git clone https://github.com/Tygertbone/vauntico-server.git
@@ -1053,6 +1135,7 @@ npm run dev:phase1
 ```
 
 ### Phase 2: B2B API Licensing Environment
+
 ```bash
 # Phase 2 Frontend Environment (.env.local)
 # API Configuration
@@ -1080,6 +1163,7 @@ API_LICENSE_MAX_PRICE=2999
 ```
 
 ### Docker Development Environment
+
 ```bash
 # Phase-specific Docker Compose
 docker-compose -f docker-compose.phase1.yml up -d
@@ -1093,6 +1177,7 @@ docker-compose -f docker-compose.phase2.yml up backend
 ### IDE Configuration Templates
 
 #### VS Code (.vscode/settings.json)
+
 ```json
 {
   "editor.formatOnSave": true,
@@ -1112,6 +1197,7 @@ docker-compose -f docker-compose.phase2.yml up backend
 ```
 
 #### VS Code Extensions (.vscode/extensions.json)
+
 ```json
 {
   "recommendations": [
@@ -1134,6 +1220,7 @@ docker-compose -f docker-compose.phase2.yml up backend
 We're excited to have you contribute to Vauntico's monetization journey. If you need help getting started, don't hesitate to reach out through GitHub Discussions or Issues.
 
 **Quick Monetization Commands:**
+
 ```bash
 # Clone and setup with phase alignment
 git clone https://github.com/Tygertbone/vauntico-server.git

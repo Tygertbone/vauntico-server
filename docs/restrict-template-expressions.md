@@ -1,5 +1,5 @@
 ---
-description: 'Enforce template literal expressions to be of `string` type.'
+description: "Enforce template literal expressions to be of `string` type."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -30,18 +30,18 @@ The [`no-base-to-string`](./no-base-to-string.md) rule can be used to guard this
 const arg1 = [1, 2];
 const msg1 = `arg1 = ${arg1}`;
 
-const arg2 = { name: 'Foo' };
+const arg2 = { name: "Foo" };
 const msg2 = `arg2 = ${arg2 || null}`;
 ```
 
 ### ✅ Correct
 
 ```ts
-const arg = 'foo';
+const arg = "foo";
 const msg1 = `arg = ${arg}`;
-const msg2 = `arg = ${arg || 'default'}`;
+const msg2 = `arg = ${arg || "default"}`;
 
-const stringWithKindProp: string & { _kind?: 'MyString' } = 'foo';
+const stringWithKindProp: string & { _kind?: "MyString" } = "foo";
 const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
 ```
 
@@ -54,7 +54,7 @@ Examples of additional **correct** code for this rule with `{ allowNumber: true 
 ```ts option='{ "allowNumber": true }' showPlaygroundButton
 const arg = 123;
 const msg1 = `arg = ${arg}`;
-const msg2 = `arg = ${arg || 'zero'}`;
+const msg2 = `arg = ${arg || "zero"}`;
 ```
 
 This option controls both numbers and BigInts.
@@ -66,7 +66,7 @@ Examples of additional **correct** code for this rule with `{ allowBoolean: true
 ```ts option='{ "allowBoolean": true }' showPlaygroundButton
 const arg = true;
 const msg1 = `arg = ${arg}`;
-const msg2 = `arg = ${arg || 'not truthy'}`;
+const msg2 = `arg = ${arg || "not truthy"}`;
 ```
 
 ### `allowAny`
@@ -76,7 +76,7 @@ Examples of additional **correct** code for this rule with `{ allowAny: true }`:
 ```ts option='{ "allowAny": true }' showPlaygroundButton
 const user = JSON.parse('{ "name": "foo" }');
 const msg1 = `arg = ${user.name}`;
-const msg2 = `arg = ${user.name || 'the user with no name'}`;
+const msg2 = `arg = ${user.name || "the user with no name"}`;
 ```
 
 ### `allowNullish`
@@ -84,7 +84,7 @@ const msg2 = `arg = ${user.name || 'the user with no name'}`;
 Examples of additional **correct** code for this rule with `{ allowNullish: true }`:
 
 ```ts option='{ "allowNullish": true }' showPlaygroundButton
-const arg = condition ? 'ok' : null;
+const arg = condition ? "ok" : null;
 const msg1 = `arg = ${arg}`;
 ```
 
@@ -93,7 +93,7 @@ const msg1 = `arg = ${arg}`;
 Examples of additional **correct** code for this rule with `{ allowRegExp: true }`:
 
 ```ts option='{ "allowRegExp": true }' showPlaygroundButton
-const arg = new RegExp('foo');
+const arg = new RegExp("foo");
 const msg1 = `arg = ${arg}`;
 ```
 
@@ -107,8 +107,8 @@ const msg1 = `arg = ${arg}`;
 Examples of additional **correct** code for this rule with `{ allowNever: true }`:
 
 ```ts option='{ "allowNever": true }' showPlaygroundButton
-const arg = 'something';
-const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
+const arg = "something";
+const msg1 = typeof arg === "string" ? arg : `arg = ${arg}`;
 ```
 
 ## When Not To Use It

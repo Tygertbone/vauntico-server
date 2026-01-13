@@ -7,9 +7,9 @@
 apiVersion: 1
 
 providers:
-  - name: 'vauntico-phase1-dashboards'
+  - name: "vauntico-phase1-dashboards"
     orgId: 1
-    folder: 'Vauntico Phase 1'
+    folder: "Vauntico Phase 1"
     type: file
     disableDeletion: false
     allowUiUpdates: true

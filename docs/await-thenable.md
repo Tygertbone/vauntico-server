@@ -1,5 +1,5 @@
 ---
-description: 'Disallow awaiting a value that is not a Thenable.'
+description: "Disallow awaiting a value that is not a Thenable."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -19,18 +19,18 @@ While doing so is valid JavaScript, it is often a programmer error, such as forg
 ### ❌ Incorrect
 
 ```ts
-await 'value';
+await "value";
 
-const createValue = () => 'value';
+const createValue = () => "value";
 await createValue();
 ```
 
 ### ✅ Correct
 
 ```ts
-await Promise.resolve('value');
+await Promise.resolve("value");
 
-const createValue = async () => 'value';
+const createValue = async () => "value";
 await createValue();
 ```
 

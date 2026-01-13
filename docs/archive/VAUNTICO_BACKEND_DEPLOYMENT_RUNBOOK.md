@@ -1,4 +1,5 @@
 # Vauntico Backend Deployment Runbook
+
 **Date:** January 5, 2026  
 **Version:** 1.0  
 **Status:** 🎉 **PRODUCTION-READY DEPLOYMENT GUIDE**
@@ -10,6 +11,7 @@
 This runbook provides a **complete, step-by-step guide** for deploying Vauntico backend services to Oracle Cloud Infrastructure (OCI) with full automation, monitoring, and validation procedures.
 
 ### **Target Infrastructure:**
+
 - **Provider:** Oracle Cloud Infrastructure (OCI)
 - **Region:** Johannesburg (Uocm:JOHANNESBURG-1-AD-1)
 - **Compute Shape:** VM.Standard.E2.1
@@ -22,6 +24,7 @@ This runbook provides a **complete, step-by-step guide** for deploying Vauntico 
 ## 🔧 **PREREQUISITES CHECKLIST**
 
 ### **✅ REQUIRED CREDENTIALS:**
+
 - [ ] OCI Compartment OCID
 - [ ] OCI User OCID with compute permissions
 - [ ] OCI API Signing Key file
@@ -31,6 +34,7 @@ This runbook provides a **complete, step-by-step guide** for deploying Vauntico 
 - [ ] OCI Security List OCID for security groups
 
 ### **✅ REQUIRED TOOLS:**
+
 - [ ] OCI CLI installed and configured
 - [ ] PowerShell 5.1+ for deployment scripts
 - [ ] SSH client (plink/PuTTY) for service deployment
@@ -38,6 +42,7 @@ This runbook provides a **complete, step-by-step guide** for deploying Vauntico 
 - [ ] curl for health and integration testing
 
 ### **✅ REQUIRED PERMISSIONS:**
+
 - [ ] Compute instance management in compartment
 - [ ] Network management in VCN
 - [ ] Security list management for security groups
@@ -46,6 +51,7 @@ This runbook provides a **complete, step-by-step guide** for deploying Vauntico 
 - [ ] Internet gateway access for public connectivity
 
 ### **✅ REQUIRED CONFIGURATION:**
+
 - [ ] OCI CLI configuration with correct region
 - [ ] Security groups allowing ports 22, 3000-3003
 - [ ] Network security lists allowing required traffic
@@ -57,12 +63,13 @@ This runbook provides a **complete, step-by-step guide** for deploying Vauntico 
 ## 🚀 **DEPLOYMENT PHASES**
 
 ### **Phase 1: Environment Setup (5 Minutes)**
+
 ```bash
 # 1.1 Configure OCI CLI
 oci setup config
 # Follow prompts for:
 # - User OCID
-# - Tenancy OCID  
+# - Tenancy OCID
 # - Region (Johannesburg)
 # - Private key file path
 
@@ -72,6 +79,7 @@ oci iam compartment list --query 'data[0]."compartment-name"'
 ```
 
 ### **Phase 2: Instance Provisioning (30-45 Minutes)**
+
 ```bash
 # 2.1 Launch all 4 instances concurrently
 ./deploy-vauntico-complete.ps1
@@ -83,6 +91,7 @@ oci iam compartment list --query 'data[0]."compartment-name"'
 ```
 
 ### **Phase 3: Service Deployment (15-30 Minutes)**
+
 ```bash
 # 3.1 Monitor instance status
 oci compute instance list --compartment-id $CompartmentId --lifecycle-state RUNNING
@@ -96,6 +105,7 @@ oci compute instance list --compartment-id $CompartmentId --lifecycle-state RUNN
 ```
 
 ### **Phase 4: Health Verification (10 Minutes)**
+
 ```bash
 # 4.1 Verify health endpoints
 curl -I http://<TRUST_SCORE_IP>:3000/health
@@ -109,6 +119,7 @@ curl -I http://<LEGACY_IP>:3003/health
 ```
 
 ### **Phase 5: DNS Configuration (15-30 Minutes)**
+
 ```bash
 # 5.1 Create DNS records
 # Use provided PowerShell script commands
@@ -127,6 +138,7 @@ nslookup legacy.vauntico.com
 ```
 
 ### **Phase 6: Integration Testing (20-30 Minutes)**
+
 ```bash
 # 6.1 Test API endpoints
 curl -I https://vault.vauntico.com/api/waitlist
@@ -149,6 +161,7 @@ curl -X POST https://vauntico-server.vauntico.com/payments/test \
 ## 🔍 **SERVICE CONFIGURATION DETAILS**
 
 ### **Trust Score Service (Port 3000)**
+
 ```yaml
 # Docker configuration
 image: vauntico/trust-score:latest
@@ -167,6 +180,7 @@ healthcheck:
 ```
 
 ### **Vauntico Server (Port 3001)**
+
 ```yaml
 # Docker configuration
 image: vauntico/vauntico-server:latest
@@ -188,6 +202,7 @@ healthcheck:
 ```
 
 ### **Fulfillment Engine (Port 3002)**
+
 ```yaml
 # Docker configuration
 image: vauntico/fulfillment:latest
@@ -206,6 +221,7 @@ healthcheck:
 ```
 
 ### **Legacy Server (Port 3003)**
+
 ```yaml
 # Docker configuration
 image: vauntico/legacy:latest
@@ -230,10 +246,13 @@ healthcheck:
 ### **Common Issues and Solutions**
 
 #### **Issue 1: Instance Launch Fails**
+
 ```
 Error: AuthorizationFailed
 ```
+
 **Solutions:**
+
 - Verify OCID and IAM permissions
 - Check compartment quotas
 - Validate shape availability in AD
@@ -241,40 +260,52 @@ Error: AuthorizationFailed
 - Check image OCID exists and is accessible
 
 #### **Issue 2: SSH Connection Fails**
+
 ```
 Error: SSH error: Connection timed out
 ```
+
 **Solutions:**
+
 - Wait 2-3 minutes after instance launch
 - Verify security group allows SSH (port 22)
 - Check SSH key is properly configured
 - Verify network connectivity to instance
 
 #### **Issue 3: Health Check Fails**
+
 ```
 Error: HTTP/1.1 503 Service Unavailable
 ```
+
 **Solutions:**
+
 - Check Docker service status: `docker ps`
 - Check service logs: `docker logs <service-name>`
 - Restart service: `docker-compose restart <service-name>`
 - Verify port mapping in docker-compose.yml
 
 #### **Issue 4: DNS Propagation Delay**
+
 ```
 Error: Non-existent domain
 ```
+
 **Solutions:**
+
 - Wait 5-15 minutes for DNS propagation
 - Check DNS records in Cloudflare dashboard
 - Use `nslookup` to verify resolution
 - Check TTL settings (recommend 120 seconds)
 
 #### **Issue 5: API Integration Fails**
+
 ```
 Error: CORS policy blocked request
 ```
+
 **Solutions:**
+
 - Check CORS configuration in backend services
 - Verify frontend origin in allowed list
 - Check API gateway configuration in Vercel
@@ -285,6 +316,7 @@ Error: CORS policy blocked request
 ## 📊 **MONITORING AND VALIDATION**
 
 ### **Health Check Automation**
+
 ```bash
 # Automated health monitoring script
 #!/bin/bash
@@ -304,6 +336,7 @@ done
 ```
 
 ### **Performance Monitoring**
+
 ```bash
 # Performance testing script
 #!/bin/bash
@@ -315,7 +348,7 @@ for endpoint in "${ENDPOINTS[@]}"; do
     response_time=$(curl -o /dev/null -s -w "%{time_total}" "$endpoint")
     end_time=$(date +%s)
     total_time=$((end_time - start_time))
-    
+
     echo "Response time: ${total_time}s"
     if [ $total_time -lt 200 ]; then
         echo "✅ $endpoint: Fast response"
@@ -329,6 +362,7 @@ done
 ```
 
 ### **Log Monitoring**
+
 ```bash
 # Log collection script
 #!/bin/bash
@@ -346,6 +380,7 @@ done
 ## 🔐 **SECURITY CONFIGURATION**
 
 ### **OCI Security Best Practices**
+
 ```bash
 # Security group configuration
 oci network security-list create \
@@ -383,6 +418,7 @@ oci network security-list create \
 ```
 
 ### **SSH Key Management**
+
 ```bash
 # Generate SSH key pair for each service
 ssh-keygen -t rsa -b 4096 -C "vauntico-ssh-key" -f "vauntico-ssh-key"
@@ -391,6 +427,7 @@ ssh-keygen -t rsa -b 4096 -C "vauntico-ssh-key" -f "vauntico-ssh-key"
 ```
 
 ### **Network Security**
+
 ```bash
 # Network list configuration
 oci network vcn list --compartment-id $CompartmentId
@@ -417,6 +454,7 @@ oci route-table create \
 ## 📋 **POST-DEPLOYMENT VALIDATION**
 
 ### **Success Criteria Checklist**
+
 - [ ] All 4 OCI instances launched successfully
 - [ ] All instances have public IP addresses
 - [ ] Docker services deployed on all instances
@@ -430,6 +468,7 @@ oci route-table create \
 - [ ] Monitoring and alerting configured
 
 ### **Performance Requirements**
+
 - [ ] API response times < 200ms
 - [ ] Database query times < 100ms
 - [ ] Uptime > 99.9%
@@ -437,6 +476,7 @@ oci route-table create \
 - [ ] Page load times < 2 seconds
 
 ### **Business Requirements**
+
 - [ ] All revenue-generating services operational
 - [ ] User onboarding workflows functional
 - [ ] Payment processing with Paystack working
@@ -450,18 +490,21 @@ oci route-table create \
 ## 📞 **ESCALATION CONTACTS**
 
 ### **Immediate Support (24/7)**
+
 - **Infrastructure Team:** OCI deployment issues, networking problems
 - **DevOps Team:** Service deployment failures, automation issues
 - **Security Team:** Security incidents, access problems
 - **Application Team:** Service functionality issues, integration problems
 
 ### **Escalation Process**
+
 1. **Level 1:** Use runbook troubleshooting procedures
 2. **Level 2:** Contact appropriate support team
 3. **Level 3:** Executive notification for production issues
 4. **Level 4:** Emergency rollback procedures
 
 ### **Contact Information**
+
 - **Infrastructure Lead:** [Infrastructure Team Lead]
 - **DevOps Lead:** [DevOps Team Lead]
 - **Security Officer:** [Security Team Lead]
@@ -472,6 +515,7 @@ oci route-table create \
 ## 📈 **BACKUP AND RECOVERY**
 
 ### **Automated Backups**
+
 ```bash
 # Database backup script
 #!/bin/bash
@@ -493,6 +537,7 @@ oci os object put \
 ```
 
 ### **Disaster Recovery**
+
 ```bash
 # Recovery procedures
 1. Stop all services: `docker-compose down`
@@ -503,6 +548,7 @@ oci os object put \
 ```
 
 ### **Rollback Procedures**
+
 ```bash
 # Rollback to previous version
 git checkout <previous-stable-tag>
@@ -519,6 +565,7 @@ curl -I https://vault.vauntico.com/health
 ## 🎯 **OPTIMIZATION TIPS**
 
 ### **Performance Optimization**
+
 - Use OCI Compute Optimizer for shape selection
 - Implement Redis caching for frequently accessed data
 - Use connection pooling for database connections
@@ -526,12 +573,14 @@ curl -I https://vault.vauntico.com/health
 - Enable gzip compression for API responses
 
 ### **Cost Optimization**
+
 - Use spot instances for non-critical workloads
 - Implement auto-scaling for variable traffic
 - Use resource tagging for cost allocation
 - Regularly review and terminate unused resources
 
 ### **Security Optimization**
+
 - Implement rate limiting for all API endpoints
 - Use WAF (Web Application Firewall) for protection
 - Regular security audits and penetration testing
@@ -543,6 +592,7 @@ curl -I https://vault.vauntico.com/health
 ## 📚 **MAINTENANCE OPERATIONS**
 
 ### **Daily Checks**
+
 - [ ] Verify all health endpoints (every 30 minutes)
 - [ ] Monitor system resource utilization
 - [ ] Check error logs for anomalies
@@ -551,6 +601,7 @@ curl -I https://vault.vauntico.com/health
 - [ ] Review security group rules for compliance
 
 ### **Weekly Maintenance**
+
 - [ ] Update all Docker images to latest versions
 - [ ] Apply security patches and updates
 - [ ] Review and rotate SSH keys
@@ -559,6 +610,7 @@ curl -I https://vault.vauntico.com/health
 - [ ] Test disaster recovery procedures
 
 ### **Monthly Tasks**
+
 - [ ] Comprehensive security audit
 - [ ] Performance testing and optimization
 - [ ] Cost analysis and optimization
@@ -571,6 +623,7 @@ curl -I https://vault.vauntico.com/health
 ## 📋 **COMPLIANCE AND AUDIT**
 
 ### **Security Compliance**
+
 - [ ] GDPR compliance for data handling
 - [ ] PCI DSS compliance for payment processing
 - [ ] SOC 2 Type II audit for security controls
@@ -579,6 +632,7 @@ curl -I https://vault.vauntico.com/health
 - [ ] Data encryption at rest and in transit
 
 ### **Infrastructure Compliance**
+
 - [ ] ISO 27001 certification for information security
 - [ ] SOC 2 Type I report for organizational controls
 - [ ] Cloud Security Alliance (CSA) membership verification
@@ -594,6 +648,7 @@ curl -I https://vault.vauntico.com/health
 ---
 
 **Next Steps:**
+
 1. **Complete Prerequisites:** Ensure all required credentials and permissions
 2. **Execute Deployment:** Run `deploy-vauntico-complete.ps1`
 3. **Monitor Progress:** Use health monitoring and validation scripts

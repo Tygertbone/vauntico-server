@@ -13,6 +13,7 @@ objective: "Create your first digital product and set up for passive income"
 **Affiliate income is great. But it depends on other people's products.**
 
 **Digital products = YOU control everything:**
+
 - ✅ 100% profit (no split with companies)
 - ✅ Sell unlimited copies (no inventory)
 - ✅ Passive income (sell while you sleep)
@@ -25,6 +26,7 @@ objective: "Create your first digital product and set up for passive income"
 ## 🎯 What is a Digital Product?
 
 **Digital product = Something people download/access instantly:**
+
 - Ebook/PDF guide
 - Template (budget, planner, tracker)
 - Video course/tutorial series
@@ -34,6 +36,7 @@ objective: "Create your first digital product and set up for passive income"
 - Workout plan
 
 **Delivered via:**
+
 - WhatsApp
 - Email
 - Google Drive link
@@ -44,30 +47,35 @@ objective: "Create your first digital product and set up for passive income"
 ## 💡 Digital Product Ideas by Niche
 
 ### **Fitness:**
+
 - 30-day home workout plan (R200-400)
 - Meal prep guide with recipes (R150-300)
 - Exercise form video library (R300-500)
 - Progress tracker template (R100)
 
 ### **Fashion:**
+
 - Capsule wardrobe guide (R150-300)
 - "10 Outfits from 5 Pieces" lookbook (R200)
 - Style quiz + personalized guide (R250-400)
 - Fashion photo editing presets (R150)
 
 ### **Finance:**
+
 - Budget template + tutorial (R100-250)
 - "50 Ways to Save R500/Month" ebook (R150)
 - Debt payoff calculator + guide (R200)
 - Investment starter pack (R300-500)
 
 ### **Cooking:**
+
 - 50 African recipes ebook (R200-400)
 - Weekly meal prep plan (R150-250)
 - Spice guide (R100-150)
 - Budget-friendly recipe collection (R150)
 
 ### **Content Creation:**
+
 - Video editing tutorial pack (R200-400)
 - 100 viral hooks library (R150-250)
 - Content calendar template (R100)
@@ -80,6 +88,7 @@ objective: "Create your first digital product and set up for passive income"
 ### **Step 1: Choose Your Product Type**
 
 **Beginner-friendly:** Start with a PDF guide/ebook
+
 - Easiest to create
 - Fastest to deliver
 - Proven to sell
@@ -89,6 +98,7 @@ objective: "Create your first digital product and set up for passive income"
 Open Google Docs, create outline:
 
 **Example: "Budget Mastery Guide"**
+
 ```
 Introduction (Why budgeting matters)
 Chapter 1: Calculate Your Income
@@ -104,6 +114,7 @@ Bonus: Budget Template (fillable)
 ### **Step 3: Write the Content**
 
 **In Google Docs (phone app):**
+
 - Write 1-2 pages per section
 - Use bullet points (easier to read)
 - Add personal examples
@@ -117,6 +128,7 @@ Bonus: Budget Template (fillable)
 **Download Canva app (free)**
 
 **Create design:**
+
 1. Open Canva → Search "Ebook"
 2. Choose free template
 3. Copy your text from Google Docs
@@ -130,14 +142,17 @@ Bonus: Budget Template (fillable)
 ### **Step 5: Create Delivery System**
 
 **Option A: Google Drive (Free)**
+
 - Upload PDF to Google Drive
 - Set sharing to "Anyone with link can view"
 - Copy link
 
 **Option B: Direct WhatsApp (Simple)**
+
 - Send PDF directly after payment
 
 **Option C: Gumroad (Professional)**
+
 - Upload to Gumroad.com
 - They handle payment + delivery
 - Take 10% fee + Paystack fees
@@ -160,11 +175,13 @@ Bonus: Budget Template (fillable)
 **Bundles:** R400-800
 
 ### **Your First Product:** R150-250
+
 - Low enough that people buy without overthinking
 - High enough to be taken seriously
 - Room for upsells later
 
 ### **The "Coffee Test":**
+
 If your product costs less than 2 coffees (R100-150), it's an easy "yes" for most people.
 
 ---
@@ -174,6 +191,7 @@ If your product costs less than 2 coffees (R100-150), it's an easy "yes" for mos
 ### **"The Ultimate [Topic] Guide for [Audience]"**
 
 **Structure:**
+
 1. **Welcome Page:** Who this is for, what they'll learn
 2. **Your Story:** Why you created this (builds trust)
 3. **The Problem:** Pain point your audience feels
@@ -193,18 +211,22 @@ If your product costs less than 2 coffees (R100-150), it's an easy "yes" for mos
 ### **Pre-Launch (Days before):**
 
 **Day 1:** Tease it
+
 - "I've been working on something for you..."
 - Create curiosity
 
 **Day 2:** Share the problem it solves
+
 - "So many of you asked about [problem]. I created something to help."
 
 **Day 3:** Show behind-the-scenes
+
 - "Almost done! Here's a sneak peek..." (screenshot of content)
 
 ### **Launch Day:**
 
 **Post 1: Announcement**
+
 ```
 🎉 IT'S LIVE!
 
@@ -228,10 +250,12 @@ Only [X] copies at this price!
 ```
 
 **Post 2: Social Proof**
+
 - Share screenshots of early buyers
 - Share testimonials (ask first buyers for feedback)
 
 **Post 3: Reminder**
+
 - "Last chance! Price goes up tomorrow!"
 
 ---
@@ -239,6 +263,7 @@ Only [X] copies at this price!
 ## 💳 How to Accept Payment (African-Friendly)
 
 ### **Option 1: Bank Transfer (Free)**
+
 - Share bank details in DM
 - They send proof of payment
 - You send product
@@ -247,6 +272,7 @@ Only [X] copies at this price!
 **Cons:** Manual, slow
 
 ### **Option 2: PayPal (If Available)**
+
 - Send PayPal.me link
 - Instant notification
 - Automatic
@@ -255,6 +281,7 @@ Only [X] copies at this price!
 **Cons:** Not everyone has PayPal in Africa
 
 ### **Option 3: Paystack Payment Link (BEST)**
+
 - Create payment link at paystack.com
 - Share link
 - They pay via card/bank
@@ -265,10 +292,12 @@ Only [X] copies at this price!
 **Cons:** Small fee (worth it!)
 
 ### **Option 4: Yoco Payment Link**
+
 - Similar to Paystack
 - yoco.com/za/online-payments
 
 ### **Option 5: SnapScan/Zapper (South Africa)**
+
 - QR code payment
 - Instant
 - Popular in SA
@@ -282,17 +311,20 @@ Only [X] copies at this price!
 **Product:** "The Nigerian Money Blueprint" (R150)
 
 **Creation:**
+
 - Spent 6 hours writing in Google Docs
 - Designed in Canva (2 hours)
 - 18-page PDF guide
 - Included budget template
 
 **Pre-Launch (3 days):**
+
 - Day 1: "I'm creating something for you..."
 - Day 2: "Almost done! Who needs help with budgeting?"
 - Day 3: "Launches tomorrow! Get ready!"
 
 **Launch Day:**
+
 - Posted at 6pm (peak time)
 - "DM me MONEY to get it"
 - 37 DMs in first 2 hours

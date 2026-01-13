@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const PaymentBridge = () => {
   const [formData, setFormData] = useState({
-    amount: '',
-    currency: 'NGN',
-    requestType: 'payout',
+    amount: "",
+    currency: "NGN",
+    requestType: "payout",
     bankAccount: {
-      accountName: '',
-      accountNumber: '',
-      bankName: '',
-      bankCode: ''
+      accountName: "",
+      accountNumber: "",
+      bankName: "",
+      bankCode: "",
     },
-    notes: ''
+    notes: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -22,7 +22,7 @@ const PaymentBridge = () => {
   // Form handlers
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -31,31 +31,35 @@ const PaymentBridge = () => {
     setError(null);
 
     try {
-      const response = await axios.post('/api/v1/payment-bridge/request', formData, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const response = await axios.post(
+        "/api/v1/payment-bridge/request",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
 
       setFormData({
-        amount: '',
-        currency: 'NGN',
-        requestType: 'payout',
+        amount: "",
+        currency: "NGN",
+        requestType: "payout",
         bankAccount: {
-          accountName: '',
-          accountNumber: '',
-          bankName: '',
-          bankCode: ''
+          accountName: "",
+          accountNumber: "",
+          bankName: "",
+          bankCode: "",
         },
-        notes: ''
+        notes: "",
       });
 
-      setRequests(prev => [...prev, response.data]);
+      setRequests((prev) => [...prev, response.data]);
       setLoading(false);
     } catch (err) {
-      console.error('Payment request failed:', err);
-      setError(err.response?.data?.message || 'Request failed');
+      console.error("Payment request failed:", err);
+      setError(err.response?.data?.message || "Request failed");
       setLoading(false);
     }
   };
@@ -65,18 +69,18 @@ const PaymentBridge = () => {
       setLoading(true);
       setError(null);
 
-      const response = await axios.get('/api/v1/payment-bridge/requests', {
+      const response = await axios.get("/api/v1/payment-bridge/requests", {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          "Content-Type": "application/json",
+        },
       });
 
       setRequests(response.data.requests || []);
       setLoading(false);
     } catch (err) {
-      console.error('Failed to fetch requests:', err);
-      setError('Failed to fetch requests');
+      console.error("Failed to fetch requests:", err);
+      setError("Failed to fetch requests");
       setLoading(false);
     }
   };
@@ -94,7 +98,8 @@ const PaymentBridge = () => {
               Payment Bridge
             </h2>
             <p className="text-gray-600 mb-4">
-              Submit payment requests and track payouts through our integrated Paystack system.
+              Submit payment requests and track payouts through our integrated
+              Paystack system.
             </p>
 
             {error && (
@@ -106,7 +111,10 @@ const PaymentBridge = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="amount"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Amount (cents)
                   </label>
                   <input
@@ -123,7 +131,10 @@ const PaymentBridge = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="currency" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="currency"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Currency
                   </label>
                   <select
@@ -132,7 +143,7 @@ const PaymentBridge = () => {
                     value={formData.currency}
                     onChange={handleInputChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:border-blue-500"
-                  required
+                    required
                   >
                     <option value="NGN">NGN (Nigerian Naira)</option>
                     <option value="USD">USD (US Dollar)</option>
@@ -141,7 +152,10 @@ const PaymentBridge = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="requestType" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="requestType"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Request Type
                   </label>
                   <select
@@ -159,7 +173,10 @@ const PaymentBridge = () => {
                 </div>
 
                 <div className="md:col-span-2">
-                  <label htmlFor="bankAccount" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="bankAccount"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Bank Account Details
                   </label>
                   <input
@@ -205,7 +222,10 @@ const PaymentBridge = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="notes"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Notes (Optional)
                   </label>
                   <textarea
@@ -228,7 +248,9 @@ const PaymentBridge = () => {
                 >
                   {loading ? (
                     <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-t-transparent border-blue-600"></div>
-                  ) : 'Submit Request'}
+                  ) : (
+                    "Submit Request"
+                  )}
                 </button>
               </div>
             </form>
@@ -245,23 +267,35 @@ const PaymentBridge = () => {
                 ) : (
                   <div className="space-y-2">
                     {requests.map((request, index) => (
-                      <div key={index} className="bg-white p-4 rounded-lg border border-gray-200">
+                      <div
+                        key={index}
+                        className="bg-white p-4 rounded-lg border border-gray-200"
+                      >
                         <div className="flex justify-between items-start">
                           <div>
-                            <span className="text-sm font-medium text-gray-500">#{request.id.slice(-8)}</span>
+                            <span className="text-sm font-medium text-gray-500">
+                              #{request.id.slice(-8)}
+                            </span>
                             <span className="text-sm text-gray-900 font-medium">
                               {request.reference}
                             </span>
                           </div>
                           <div className="text-right">
-                            <span className={`text-sm px-2 py-1 rounded ${
-                              request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                              request.status === 'processing' ? 'bg-blue-100 text-blue-800' :
-                              request.status === 'paid' ? 'bg-green-100 text-green-800' :
-                              request.status === 'failed' ? 'bg-red-100 text-red-800' :
-                              request.status === 'cancelled' ? 'bg-gray-100 text-gray-800' :
-                              'bg-gray-100 text-gray-800'
-                            }`}>
+                            <span
+                              className={`text-sm px-2 py-1 rounded ${
+                                request.status === "pending"
+                                  ? "bg-yellow-100 text-yellow-800"
+                                  : request.status === "processing"
+                                    ? "bg-blue-100 text-blue-800"
+                                    : request.status === "paid"
+                                      ? "bg-green-100 text-green-800"
+                                      : request.status === "failed"
+                                        ? "bg-red-100 text-red-800"
+                                        : request.status === "cancelled"
+                                          ? "bg-gray-100 text-gray-800"
+                                          : "bg-gray-100 text-gray-800"
+                              }`}
+                            >
                               {request.status}
                             </span>
                           </div>
@@ -273,7 +307,8 @@ const PaymentBridge = () => {
                           Amount: ₦{(request.amount_cents / 100).toFixed(2)}
                         </div>
                         <div className="text-xs text-gray-600 mt-1">
-                          Fee: ₦{(request.processing_fee_cents / 100).toFixed(2)}
+                          Fee: ₦
+                          {(request.processing_fee_cents / 100).toFixed(2)}
                         </div>
                       </div>
                     ))}

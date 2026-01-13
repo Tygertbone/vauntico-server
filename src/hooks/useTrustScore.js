@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import apiClient from '../lib/api';
+import { useState } from "react";
+import apiClient from "../lib/api";
 
 // Custom hook for trust score calculations
 export function useTrustScore() {
@@ -40,7 +40,7 @@ export function useTrustScore() {
     calculateTrustScore,
     getTrustScoreHistory,
     loading,
-    error
+    error,
   };
 }
 
@@ -50,7 +50,7 @@ const calculateTrustScore = async (userData) => {
     const result = await apiClient.calculateTrustScore(userData);
     return result;
   } catch (error) {
-    console.error('Legacy trust score calculation failed:', error);
+    console.error("Legacy trust score calculation failed:", error);
     // Fallback to mock for backward compatibility
     return {
       score: Math.floor(Math.random() * 100),
@@ -58,8 +58,8 @@ const calculateTrustScore = async (userData) => {
       metadata: {
         authentic: Math.random() > 0.5,
         botScore: Math.random(),
-        contentQuality: Math.random()
-      }
+        contentQuality: Math.random(),
+      },
     };
   }
 };
@@ -69,13 +69,13 @@ const getTrustScoreHistory = async (userId) => {
     const history = await apiClient.getTrustScoreHistory(userId);
     return history;
   } catch (error) {
-    console.error('Legacy trust score history failed:', error);
+    console.error("Legacy trust score history failed:", error);
     // Fallback to mock for backward compatibility
     return [
       { date: "2024-01-01", score: 85 },
       { date: "2024-01-15", score: 88 },
       { date: "2024-02-01", score: 92 },
-      { date: "2024-02-15", score: 89 }
+      { date: "2024-02-15", score: 89 },
     ];
   }
 };

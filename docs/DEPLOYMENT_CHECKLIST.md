@@ -3,6 +3,7 @@
 ## Pre-Deployment Validation
 
 ### 1. Development Environment Test
+
 ```powershell
 # Run the test script
 .\test-dev.ps1
@@ -13,6 +14,7 @@ pnpm dev
 ```
 
 **Verify:**
+
 - [ ] Dev server starts without errors
 - [ ] Navigate to all 5 routes:
   - [ ] http://localhost:3000/ (Dashboard)
@@ -25,6 +27,7 @@ pnpm dev
 - [ ] No console errors
 
 ### 2. Production Build Test
+
 ```powershell
 # Run the build test
 .\test-build.ps1
@@ -35,6 +38,7 @@ pnpm preview
 ```
 
 **Verify:**
+
 - [ ] Build completes successfully
 - [ ] No build warnings or errors
 - [ ] Preview server starts
@@ -42,12 +46,14 @@ pnpm preview
 - [ ] Assets load correctly
 
 ### 3. Code Quality Check
+
 ```powershell
 # Run linter
 pnpm lint
 ```
 
 **Verify:**
+
 - [ ] No linting errors
 - [ ] All React components follow best practices
 - [ ] No unused imports
@@ -57,11 +63,13 @@ pnpm lint
 ## Git Commit & Push
 
 ### 1. Stage Files
+
 ```bash
 git add .
 ```
 
 ### 2. Commit with Descriptive Message
+
 ```bash
 git commit -m "feat: Complete Vault Reforging Arc Phase 1 - Full React app scaffold
 
@@ -76,11 +84,13 @@ All features production-ready for deployment."
 ```
 
 ### 3. Push to Remote
+
 ```bash
 git push origin main
 ```
 
 **Verify:**
+
 - [ ] All files pushed successfully
 - [ ] GitHub shows latest commit
 - [ ] No merge conflicts
@@ -90,14 +100,17 @@ git push origin main
 ## Vercel Deployment
 
 ### Automatic Deployment (Recommended)
+
 If connected to Vercel, deployment happens automatically on push.
 
 **Monitor:**
+
 1. Go to Vercel dashboard
 2. Watch deployment logs
 3. Wait for "Ready" status
 
 ### Manual Deployment (Alternative)
+
 ```bash
 # Install Vercel CLI if needed
 npm i -g vercel
@@ -111,9 +124,11 @@ vercel --prod
 ## Post-Deployment Validation
 
 ### 1. Production URL Check
+
 Once deployed, test the live site:
 
 **Verify:**
+
 - [ ] Homepage loads at production URL
 - [ ] All 5 routes work:
   - [ ] / (Dashboard)
@@ -128,13 +143,16 @@ Once deployed, test the live site:
 - [ ] No console errors in production
 
 ### 2. Performance Check
+
 - [ ] Page loads in < 3 seconds
 - [ ] Lighthouse score > 90
 - [ ] No render-blocking resources
 - [ ] Fonts load properly
 
 ### 3. Cross-Browser Test
+
 Test on:
+
 - [ ] Chrome
 - [ ] Firefox
 - [ ] Safari
@@ -146,6 +164,7 @@ Test on:
 ## Troubleshooting
 
 ### Build Fails
+
 ```bash
 # Clear cache and reinstall
 rm -rf node_modules dist .vite
@@ -154,16 +173,19 @@ pnpm build
 ```
 
 ### Routes Don't Work in Production
+
 - Check `vercel.json` is present and configured
 - Verify SPA routing is enabled
 - Check Vercel deployment logs
 
 ### Styles Don't Load
+
 - Verify `tailwind.config.js` content paths
 - Check `postcss.config.js` is present
 - Rebuild with `pnpm build`
 
 ### Module Errors
+
 - Clear node_modules: `rm -rf node_modules`
 - Delete lockfile: `rm pnpm-lock.yaml`
 - Reinstall: `pnpm install`
@@ -198,6 +220,7 @@ vercel --prod         # Deploy to Vercel (manual)
 ## Success Criteria
 
 Deployment is successful when:
+
 - ✅ All 5 pages load without errors
 - ✅ Navigation works smoothly
 - ✅ Styles render correctly
@@ -236,6 +259,7 @@ git push origin main
 ## Contact & Support
 
 If issues arise:
+
 1. Check deployment logs in Vercel
 2. Review browser console for errors
 3. Check this checklist for solutions
@@ -246,4 +270,3 @@ If issues arise:
 **Status**: Ready for deployment 🚀  
 **Confidence Level**: High ✅  
 **Estimated Deployment Time**: 5-10 minutes
-

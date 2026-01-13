@@ -5,12 +5,14 @@ Welcome! We're thrilled you want to contribute to Vauntico. This document outlin
 ## 🚀 Quick Start
 
 ### Frontend (React/Vite)
+
 ```bash
 pnpm install
 pnpm dev
 ```
 
 ### Backend (server-v2)
+
 ```bash
 cd server-v2
 pnpm install
@@ -19,6 +21,7 @@ pnpm dev
 ```
 
 ### Environment Setup
+
 1. Copy `.env.example` to `.env`
 2. Set your environment variables (see README for details)
 3. Generate new JWT secrets for production:
@@ -29,18 +32,21 @@ pnpm dev
 ## 📋 Development Guidelines
 
 ### Code Quality
+
 - Use TypeScript for all new backend code
 - Follow ESLint rules (`pnpm lint` to check)
 - Write tests for new features (`pnpm test`)
 - Keep commits atomic and descriptive
 
 ### Security
+
 - Never commit environment variables or secrets
 - JWT secrets should be rotated regularly in production
 - Validate all inputs server-side
 - Use prepared statements for database queries
 
 ### Git Workflow
+
 - Create feature branches from main
 - Use conventional commit messages:
   - `feat:` - New features
@@ -53,6 +59,7 @@ pnpm dev
 ## 🔧 API Development
 
 ### Adding New Endpoints
+
 1. Create route in `server-v2/src/routes/`
 2. Add validation with express-validator
 3. Include proper error handling
@@ -60,6 +67,7 @@ pnpm dev
 5. Add integration tests
 
 ### Database Changes
+
 1. Add migration files in `server-v2/migrations/`
 2. Test migration with `pnpm run migrate`
 3. Update schema documentation
@@ -68,11 +76,13 @@ pnpm dev
 ## 🌐 Deployment
 
 ### Vercel (Frontend + API)
+
 - Automatic deployments on main branch
 - Preview deployments for all PRs
 - Environment variables must be set in Vercel dashboard
 
 ### Environment Variables Required
+
 - `DATABASE_URL` - PostgreSQL connection string
 - `JWT_SECRET` - 32-byte base64 encoded secret
 - `NODE_ENV` - production/development
@@ -106,7 +116,9 @@ pnpm test:e2e
 ---
 
 ### Pre‑Push Checklist
+
 Before pushing:
+
 1. Run `git status` to check U/M/D files.
 2. If you see untracked files:
    - Add them if they belong in source/docs/config.
@@ -115,6 +127,7 @@ Before pushing:
 4. Run `git commit -m "chore: sync changes"`.
 
 ### 🌱 First‑Commit Ritual
+
 When you make your first commit to Vauntico, run this message in your commit body:
 
 "I join the Vauntico legacy — building with clarity, peace, love, abundance, and humor."

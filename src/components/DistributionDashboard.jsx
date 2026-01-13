@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { DistributionLayer } from '../utils/distributionLayer';
+import React, { useState, useEffect } from "react";
+import { DistributionLayer } from "../utils/distributionLayer";
 
 const DistributionDashboard = () => {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState("overview");
   const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -12,7 +12,7 @@ const DistributionDashboard = () => {
 
   const loadAnalytics = async () => {
     setLoading(true);
-    const data = await DistributionLayer.analytics.getReport('30d');
+    const data = await DistributionLayer.analytics.getReport("30d");
     setAnalyticsData(data);
     setLoading(false);
   };
@@ -48,9 +48,7 @@ const DistributionDashboard = () => {
               <h2 className="text-2xl font-bold mb-2">
                 Overall Performance Score
               </h2>
-              <p className="text-purple-100">
-                Last {analyticsData.timeframe}
-              </p>
+              <p className="text-purple-100">Last {analyticsData.timeframe}</p>
             </div>
             <div className="text-6xl font-bold">
               {analyticsData.performanceScore}/10
@@ -60,14 +58,14 @@ const DistributionDashboard = () => {
 
         {/* Tabs */}
         <div className="flex gap-4 mb-6">
-          {['overview', 'platforms', 'seo', 'analytics'].map((tab) => (
+          {["overview", "platforms", "seo", "analytics"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-6 py-3 rounded-lg font-medium transition-all ${
                 activeTab === tab
-                  ? 'bg-purple-600 text-white shadow-lg'
-                  : 'bg-white text-gray-600 hover:bg-gray-50'
+                  ? "bg-purple-600 text-white shadow-lg"
+                  : "bg-white text-gray-600 hover:bg-gray-50"
               }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -76,10 +74,10 @@ const DistributionDashboard = () => {
         </div>
 
         {/* Tab Content */}
-        {activeTab === 'overview' && <OverviewTab data={analyticsData} />}
-        {activeTab === 'platforms' && <PlatformsTab />}
-        {activeTab === 'seo' && <SEOTab />}
-        {activeTab === 'analytics' && <AnalyticsTab data={analyticsData} />}
+        {activeTab === "overview" && <OverviewTab data={analyticsData} />}
+        {activeTab === "platforms" && <PlatformsTab />}
+        {activeTab === "seo" && <SEOTab />}
+        {activeTab === "analytics" && <AnalyticsTab data={analyticsData} />}
       </div>
     </div>
   );
@@ -171,11 +169,29 @@ const OverviewTab = ({ data }) => {
 
 const PlatformsTab = () => {
   const platforms = [
-    { name: 'Twitter/X', connected: true, icon: '🐦', posts: 42, engagement: 4.2 },
-    { name: 'LinkedIn', connected: true, icon: '💼', posts: 18, engagement: 6.8 },
-    { name: 'Medium', connected: true, icon: '📝', posts: 8, engagement: 3.1 },
-    { name: 'Instagram', connected: false, icon: '📱', posts: 0, engagement: 0 },
-    { name: 'Email', connected: true, icon: '📧', posts: 15, engagement: 41.3 },
+    {
+      name: "Twitter/X",
+      connected: true,
+      icon: "🐦",
+      posts: 42,
+      engagement: 4.2,
+    },
+    {
+      name: "LinkedIn",
+      connected: true,
+      icon: "💼",
+      posts: 18,
+      engagement: 6.8,
+    },
+    { name: "Medium", connected: true, icon: "📝", posts: 8, engagement: 3.1 },
+    {
+      name: "Instagram",
+      connected: false,
+      icon: "📱",
+      posts: 0,
+      engagement: 0,
+    },
+    { name: "Email", connected: true, icon: "📧", posts: 15, engagement: 41.3 },
   ];
 
   return (
@@ -188,8 +204,8 @@ const PlatformsTab = () => {
               key={index}
               className={`p-6 rounded-xl border-2 transition-all ${
                 platform.connected
-                  ? 'border-green-200 bg-green-50'
-                  : 'border-gray-200 bg-gray-50'
+                  ? "border-green-200 bg-green-50"
+                  : "border-gray-200 bg-gray-50"
               }`}
             >
               <div className="flex items-center justify-between mb-4">
@@ -213,7 +229,9 @@ const PlatformsTab = () => {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Engagement:</span>
-                    <span className="font-semibold">{platform.engagement}%</span>
+                    <span className="font-semibold">
+                      {platform.engagement}%
+                    </span>
                   </div>
                   <button className="w-full mt-3 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-medium transition-colors">
                     Manage
@@ -233,13 +251,13 @@ const PlatformsTab = () => {
 };
 
 const SEOTab = () => {
-  const [targetScroll, setTargetScroll] = useState('');
+  const [targetScroll, setTargetScroll] = useState("");
   const [seoScore, setSeoScore] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const analyzeSEO = async () => {
     if (!targetScroll) return;
-    
+
     setLoading(true);
     // Simulate API call
     setTimeout(() => {
@@ -267,7 +285,7 @@ const SEOTab = () => {
             disabled={loading || !targetScroll}
             className="px-8 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-300 text-white rounded-lg font-medium transition-colors"
           >
-            {loading ? 'Analyzing...' : 'Analyze'}
+            {loading ? "Analyzing..." : "Analyze"}
           </button>
         </div>
       </div>
@@ -340,7 +358,7 @@ const AnalyticsTab = ({ data }) => {
     <div className="space-y-6">
       <div className="bg-white rounded-2xl p-6 shadow-lg">
         <h3 className="text-xl font-bold mb-6">📊 Detailed Analytics</h3>
-        
+
         {/* Conversion Funnel */}
         <div className="mb-8">
           <h4 className="font-bold text-gray-900 mb-4">Conversion Funnel</h4>
@@ -362,7 +380,9 @@ const AnalyticsTab = ({ data }) => {
                 className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"
               >
                 <div className="flex-1">
-                  <h5 className="font-semibold capitalize">{platform.platform}</h5>
+                  <h5 className="font-semibold capitalize">
+                    {platform.platform}
+                  </h5>
                   <div className="flex gap-4 text-sm text-gray-600 mt-1">
                     <span>{platform.impressions.toLocaleString()} views</span>
                     <span>{platform.clicks} clicks</span>
@@ -371,7 +391,10 @@ const AnalyticsTab = ({ data }) => {
                 </div>
                 <div className="text-right">
                   <div className="text-lg font-bold text-purple-600">
-                    {((platform.conversions / platform.clicks) * 100).toFixed(1)}%
+                    {((platform.conversions / platform.clicks) * 100).toFixed(
+                      1,
+                    )}
+                    %
                   </div>
                   <div className="text-xs text-gray-600">CVR</div>
                 </div>
@@ -389,9 +412,7 @@ const StatCard = ({ icon, label, value, trend }) => (
     <div className="flex items-center justify-between mb-2">
       <span className="text-3xl">{icon}</span>
       {trend && (
-        <span className="text-sm font-semibold text-green-600">
-          {trend}
-        </span>
+        <span className="text-sm font-semibold text-green-600">{trend}</span>
       )}
     </div>
     <div className="text-2xl font-bold text-gray-900 mb-1">{value}</div>

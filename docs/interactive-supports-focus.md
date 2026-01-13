@@ -15,9 +15,7 @@ This element is a stand-alone control like a button, a link or a form element. A
 Add the `tabIndex` property to your component. A value of zero indicates that this element can be tabbed to.
 
 ```jsx
-<div
-  role="button"
-  tabIndex={0} />
+<div role="button" tabIndex={0} />
 ```
 
 -- or --
@@ -32,9 +30,15 @@ This element is part of a group of buttons, links, menu items, etc. Or this elem
 
 ```jsx
 <div role="menu">
-  <div role="menuitem" tabIndex="0">Open</div>
-  <div role="menuitem" tabIndex="-1">Save</div>
-  <div role="menuitem" tabIndex="-1">Close</div>
+  <div role="menuitem" tabIndex="0">
+    Open
+  </div>
+  <div role="menuitem" tabIndex="-1">
+    Save
+  </div>
+  <div role="menuitem" tabIndex="-1">
+    Close
+  </div>
 </div>
 ```
 
@@ -45,9 +49,7 @@ In the example above, the first item in the group can be tabbed to. The develope
 If your element is catching bubbled click or key events from descendant elements, then the proper role for this element is `presentation`.
 
 ```jsx
-<div
-  onClick={onClickHandler}
-  role="presentation">
+<div onClick={onClickHandler} role="presentation">
   <button>Save</button>
 </div>
 ```
@@ -83,41 +85,41 @@ The list of possible values includes:
 
 ```js
 [
-  'button',
-  'checkbox',
-  'columnheader',
-  'combobox',
-  'grid',
-  'gridcell',
-  'link',
-  'listbox',
-  'menu',
-  'menubar',
-  'menuitem',
-  'menuitemcheckbox',
-  'menuitemradio',
-  'option',
-  'progressbar',
-  'radio',
-  'radiogroup',
-  'row',
-  'rowheader',
-  'searchbox',
-  'slider',
-  'spinbutton',
-  'switch',
-  'tab',
-  'tablist',
-  'textbox',
-  'toolbar',
-  'tree',
-  'treegrid',
-  'treeitem',
-  'doc-backlink',
-  'doc-biblioref',
-  'doc-glossref',
-  'doc-noteref',
-]
+  "button",
+  "checkbox",
+  "columnheader",
+  "combobox",
+  "grid",
+  "gridcell",
+  "link",
+  "listbox",
+  "menu",
+  "menubar",
+  "menuitem",
+  "menuitemcheckbox",
+  "menuitemradio",
+  "option",
+  "progressbar",
+  "radio",
+  "radiogroup",
+  "row",
+  "rowheader",
+  "searchbox",
+  "slider",
+  "spinbutton",
+  "switch",
+  "tab",
+  "tablist",
+  "textbox",
+  "toolbar",
+  "tree",
+  "treegrid",
+  "treeitem",
+  "doc-backlink",
+  "doc-biblioref",
+  "doc-glossref",
+  "doc-noteref",
+];
 ```
 
 ### Succeed

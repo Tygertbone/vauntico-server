@@ -1,5 +1,5 @@
-import { Pool, PoolConfig } from 'pg';
-import { logger } from '../utils/logger';
+import { Pool, PoolConfig } from "pg";
+import { logger } from "../utils/logger";
 
 // Neon PostgreSQL connection configuration
 const dbConfig: PoolConfig = {
@@ -19,19 +19,19 @@ const dbConfig: PoolConfig = {
 const pool = new Pool(dbConfig);
 
 // Connection event handlers
-pool.on('connect', (client: any) => {
-  logger.info('New database connection established');
+pool.on("connect", (client: any) => {
+  logger.info("New database connection established");
 });
 
-pool.on('error', (err: Error, client: any) => {
-  logger.error('Unexpected error on idle database client', {
+pool.on("error", (err: Error, client: any) => {
+  logger.error("Unexpected error on idle database client", {
     error: err.message,
     stack: err.stack,
   });
 });
 
-pool.on('remove', (client: any) => {
-  logger.info('Database connection removed from pool');
+pool.on("remove", (client: any) => {
+  logger.info("Database connection removed from pool");
 });
 
 // Health check function
@@ -46,8 +46,8 @@ export async function checkDatabaseHealth(): Promise<{
     const client = await pool.connect();
 
     try {
-      await client.query('SELECT 1');
-      logger.info('Database health check passed');
+      await client.query("SELECT 1");
+      logger.info("Database health check passed");
     } finally {
       client.release();
     }
@@ -59,8 +59,8 @@ export async function checkDatabaseHealth(): Promise<{
       waitingCount: pool.waitingCount,
     };
   } catch (error) {
-    logger.error('Database health check failed', {
-      error: error instanceof Error ? error.message : 'Unknown error',
+    logger.error("Database health check failed", {
+      error: error instanceof Error ? error.message : "Unknown error",
     });
 
     return {
@@ -68,7 +68,7 @@ export async function checkDatabaseHealth(): Promise<{
       connectionCount: pool.totalCount,
       idleCount: pool.idleCount,
       waitingCount: pool.waitingCount,
-      error: error instanceof Error ? error.message : 'Unknown database error',
+      error: error instanceof Error ? error.message : "Unknown database error",
     };
   }
 }
@@ -76,31 +76,27 @@ export async function checkDatabaseHealth(): Promise<{
 // Query helper with error handling and performance monitoring
 export async function query<T = any>(
   text: string,
-  params?: any[]
+  params?: any[],
 ): Promise<{ rows: T[]; rowCount: number | null }> {
-  const { monitoredQuery } = await import('../utils/database-monitoring');
-  return monitoredQuery(
-    () => pool.query(text, params),
-    text,
-    params
-  );
+  const { monitoredQuery } = await import("../utils/database-monitoring");
+  return monitoredQuery(() => pool.query(text, params), text, params);
 }
 
 // Transaction helper
 export async function transaction<T>(
-  callback: (client: any) => Promise<T>
+  callback: (client: any) => Promise<T>,
 ): Promise<T> {
   const client = await pool.connect();
 
   try {
-    await client.query('BEGIN');
+    await client.query("BEGIN");
     const result = await callback(client);
-    await client.query('COMMIT');
+    await client.query("COMMIT");
     return result;
   } catch (error) {
-    await client.query('ROLLBACK');
-    logger.error('Database transaction failed', {
-      error: error instanceof Error ? error.message : 'Unknown error',
+    await client.query("ROLLBACK");
+    logger.error("Database transaction failed", {
+      error: error instanceof Error ? error.message : "Unknown error",
     });
     throw error;
   } finally {
@@ -110,9 +106,9 @@ export async function transaction<T>(
 
 // Graceful shutdown
 export async function closeDatabase(): Promise<void> {
-  logger.info('Closing database connections...');
+  logger.info("Closing database connections...");
   await pool.end();
-  logger.info('Database connections closed');
+  logger.info("Database connections closed");
 }
 
 // Export pool for advanced usage

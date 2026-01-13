@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import crypto from 'crypto';
-import { logger } from '../utils/logger';
+import { Request, Response, NextFunction } from "express";
+import crypto from "crypto";
+import { logger } from "../utils/logger";
 
 // Extend Express Request interface to include correlation ID
 declare global {
@@ -18,16 +18,16 @@ declare global {
 export const correlationMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   // Generate 8-character correlation ID (URL-safe, short but unique)
-  const correlationId = crypto.randomBytes(4).toString('hex');
+  const correlationId = crypto.randomBytes(4).toString("hex");
 
   // Attach to request for use in routes/services
   req.correlationId = correlationId;
 
   // Add to response headers for client-side correlation
-  res.setHeader('X-Correlation-ID', correlationId);
+  res.setHeader("X-Correlation-ID", correlationId);
 
   // Override the logger's defaultMeta to include correlation ID for this request
   const originalLogger = logger;
@@ -43,5 +43,5 @@ export const correlationMiddleware = (
  * Get correlation ID from request or generate new one
  */
 export const getCorrelationId = (req: Request): string => {
-  return req.correlationId || crypto.randomBytes(4).toString('hex');
+  return req.correlationId || crypto.randomBytes(4).toString("hex");
 };

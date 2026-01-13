@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { getCreatorPassTier, PRICING } from '../utils/pricing'
+import { useState, useEffect } from "react";
+import { getCreatorPassTier, PRICING } from "../utils/pricing";
 
 /**
  * Credit Tracker Component
@@ -11,78 +11,82 @@ function CreditTracker({ compact = false, showDetails = true }) {
     total: 500,
     remaining: 500,
     rollover: 0,
-    resetDate: null
-  })
+    resetDate: null,
+  });
 
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
-    loadCreditData()
-  }, [])
+    loadCreditData();
+  }, []);
 
   const loadCreditData = () => {
     // Load from localStorage or API
-    const savedCredits = localStorage.getItem('vauntico_credits')
-    const tierData = getCreatorPassTier()
+    const savedCredits = localStorage.getItem("vauntico_credits");
+    const tierData = getCreatorPassTier();
 
     if (savedCredits) {
-      setCredits(JSON.parse(savedCredits))
+      setCredits(JSON.parse(savedCredits));
     } else if (tierData) {
       // Set default credits based on tier
       const tierCredits = {
-        'starter': 500,
-        'pro': 2500,
-        'legacy': 10000
-      }
-      
-      const total = tierCredits[tierData.tier] || 500
+        starter: 500,
+        pro: 2500,
+        legacy: 10000,
+      };
+
+      const total = tierCredits[tierData.tier] || 500;
       setCredits({
         used: 0,
         total: total,
         remaining: total,
         rollover: 0,
-        resetDate: getNextResetDate()
-      })
+        resetDate: getNextResetDate(),
+      });
     }
-  }
+  };
 
   const getNextResetDate = () => {
-    const now = new Date()
-    const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
-    return nextMonth.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-  }
+    const now = new Date();
+    const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    return nextMonth.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
 
   const getUsagePercentage = () => {
-    return Math.round((credits.used / credits.total) * 100)
-  }
+    return Math.round((credits.used / credits.total) * 100);
+  };
 
   const getStatusColor = () => {
-    const percentage = getUsagePercentage()
-    if (percentage >= 90) return 'text-red-600'
-    if (percentage >= 70) return 'text-yellow-600'
-    return 'text-green-600'
-  }
+    const percentage = getUsagePercentage();
+    if (percentage >= 90) return "text-red-600";
+    if (percentage >= 70) return "text-yellow-600";
+    return "text-green-600";
+  };
 
   const getProgressBarColor = () => {
-    const percentage = getUsagePercentage()
-    if (percentage >= 90) return 'from-red-500 to-red-600'
-    if (percentage >= 70) return 'from-yellow-500 to-orange-500'
-    return 'from-green-500 to-emerald-500'
-  }
+    const percentage = getUsagePercentage();
+    if (percentage >= 90) return "from-red-500 to-red-600";
+    if (percentage >= 70) return "from-yellow-500 to-orange-500";
+    return "from-green-500 to-emerald-500";
+  };
 
   const getStatusIcon = () => {
-    const percentage = getUsagePercentage()
-    if (percentage >= 90) return '⚠️'
-    if (percentage >= 70) return '⏰'
-    return '✓'
-  }
+    const percentage = getUsagePercentage();
+    if (percentage >= 90) return "⚠️";
+    if (percentage >= 70) return "⏰";
+    return "✓";
+  };
 
   const getStatusMessage = () => {
-    const percentage = getUsagePercentage()
-    if (percentage >= 90) return 'Low credits - consider upgrading'
-    if (percentage >= 70) return 'Credits running low'
-    return 'Healthy credit balance'
-  }
+    const percentage = getUsagePercentage();
+    if (percentage >= 90) return "Low credits - consider upgrading";
+    if (percentage >= 70) return "Credits running low";
+    return "Healthy credit balance";
+  };
 
   if (compact) {
     return (
@@ -103,7 +107,7 @@ function CreditTracker({ compact = false, showDetails = true }) {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -125,7 +129,7 @@ function CreditTracker({ compact = false, showDetails = true }) {
             onClick={() => setIsExpanded(!isExpanded)}
             className="text-gray-400 hover:text-gray-600 transition-colors"
           >
-            {isExpanded ? '▲' : '▼'}
+            {isExpanded ? "▲" : "▼"}
           </button>
         )}
       </div>
@@ -166,7 +170,9 @@ function CreditTracker({ compact = false, showDetails = true }) {
       <div className="grid grid-cols-3 gap-4 text-center text-sm mb-4">
         <div>
           <div className="text-gray-500 mb-1">Used</div>
-          <div className="font-bold text-gray-700">{credits.used.toLocaleString()}</div>
+          <div className="font-bold text-gray-700">
+            {credits.used.toLocaleString()}
+          </div>
         </div>
         <div>
           <div className="text-gray-500 mb-1">Remaining</div>
@@ -176,7 +182,9 @@ function CreditTracker({ compact = false, showDetails = true }) {
         </div>
         <div>
           <div className="text-gray-500 mb-1">Rollover</div>
-          <div className="font-bold text-vault-purple">{credits.rollover.toLocaleString()}</div>
+          <div className="font-bold text-vault-purple">
+            {credits.rollover.toLocaleString()}
+          </div>
         </div>
       </div>
 
@@ -184,7 +192,9 @@ function CreditTracker({ compact = false, showDetails = true }) {
       {credits.resetDate && (
         <div className="flex items-center justify-between text-sm py-3 px-4 bg-gray-50 rounded-lg">
           <span className="text-gray-600">Credits reset on:</span>
-          <span className="font-semibold text-gray-800">{credits.resetDate}</span>
+          <span className="font-semibold text-gray-800">
+            {credits.resetDate}
+          </span>
         </div>
       )}
 
@@ -193,7 +203,9 @@ function CreditTracker({ compact = false, showDetails = true }) {
         <div className="mt-6 pt-6 border-t space-y-4 animate-slide-down">
           {/* Credit History */}
           <div>
-            <h4 className="font-semibold text-sm text-gray-700 mb-3">Recent Activity</h4>
+            <h4 className="font-semibold text-sm text-gray-700 mb-3">
+              Recent Activity
+            </h4>
             <div className="space-y-2 text-sm">
               <div className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded">
                 <span className="text-gray-600">Landing Page Generation</span>
@@ -217,9 +229,13 @@ function CreditTracker({ compact = false, showDetails = true }) {
               <div className="flex-1">
                 <div className="font-semibold mb-1">Need More Credits?</div>
                 <p className="text-xs text-gray-600 mb-3">
-                  Upgrade your tier to get more monthly credits and rollover benefits
+                  Upgrade your tier to get more monthly credits and rollover
+                  benefits
                 </p>
-                <a href="/creator-pass" className="text-sm font-semibold text-vault-purple hover:underline">
+                <a
+                  href="/creator-pass"
+                  className="text-sm font-semibold text-vault-purple hover:underline"
+                >
                   View Upgrade Options →
                 </a>
               </div>
@@ -228,32 +244,34 @@ function CreditTracker({ compact = false, showDetails = true }) {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 /**
  * Credit Badge - Mini version for headers/sidebars
  */
 export function CreditBadge({ showLabel = true }) {
-  const [remaining, setRemaining] = useState(0)
+  const [remaining, setRemaining] = useState(0);
 
   useEffect(() => {
-    const savedCredits = localStorage.getItem('vauntico_credits')
+    const savedCredits = localStorage.getItem("vauntico_credits");
     if (savedCredits) {
-      const { remaining } = JSON.parse(savedCredits)
-      setRemaining(remaining)
+      const { remaining } = JSON.parse(savedCredits);
+      setRemaining(remaining);
     }
-  }, [])
+  }, []);
 
   return (
     <div className="inline-flex items-center space-x-2 px-3 py-1.5 bg-gradient-to-r from-vault-purple/10 to-vault-blue/10 border border-vault-purple/30 rounded-full">
       <span className="text-lg">⚡</span>
-      {showLabel && <span className="text-xs font-medium text-gray-600">Credits:</span>}
+      {showLabel && (
+        <span className="text-xs font-medium text-gray-600">Credits:</span>
+      )}
       <span className="text-sm font-bold text-vault-purple">
         {remaining.toLocaleString()}
       </span>
     </div>
-  )
+  );
 }
 
 /**
@@ -266,7 +284,7 @@ export function CreditCost({ cost, action }) {
       <span className="font-semibold text-gray-700">{cost}</span>
       <span>⚡</span>
     </div>
-  )
+  );
 }
 
-export default CreditTracker
+export default CreditTracker;

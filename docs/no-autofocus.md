@@ -12,22 +12,27 @@ This rule takes one optional object argument of type object:
 
 ```json
 {
-    "rules": {
-        "jsx-a11y/no-autofocus": [ 2, {
-            "ignoreNonDOM": true
-        }],
-    }
+  "rules": {
+    "jsx-a11y/no-autofocus": [
+      2,
+      {
+        "ignoreNonDOM": true
+      }
+    ]
+  }
 }
 ```
 
 For the `ignoreNonDOM` option, this determines if developer created components are checked.
 
 ### Succeed
+
 ```jsx
 <div />
 ```
 
 ### Fail
+
 ```jsx
 <div autoFocus />
 <div autoFocus="true" />
@@ -36,8 +41,10 @@ For the `ignoreNonDOM` option, this determines if developer created components a
 ```
 
 ## Accessibility guidelines
+
 General best practice (reference resources)
 
 ### Resources
+
 - [WHATWG HTML Standard, The autofocus attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-fe-autofocus)
 - [The accessibility of HTML 5 autofocus](https://www.brucelawson.co.uk/2009/the-accessibility-of-html-5-autofocus/)

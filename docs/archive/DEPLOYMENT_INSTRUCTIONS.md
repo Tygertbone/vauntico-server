@@ -9,6 +9,7 @@ This document provides step-by-step instructions for deploying the Vauntico MVP 
 ## 📋 Prerequisites Checklist
 
 ### ✅ Required Access & Credentials
+
 - [ ] OCI server SSH access with key pair
 - [ ] Domain name access (api.vauntico.com)
 - [ ] Vercel account access
@@ -18,6 +19,7 @@ This document provides step-by-step instructions for deploying the Vauntico MVP 
 - [ ] Nginx installed on OCI server
 
 ### ✅ Infrastructure Ready
+
 - [ ] Neon PostgreSQL database running
 - [ ] OCI server provisioned and accessible
 - [ ] Domain pointing to OCI server
@@ -28,6 +30,7 @@ This document provides step-by-step instructions for deploying the Vauntico MVP 
 ## 🌐 Step 1: Backend Deployment (OCI + PM2)
 
 ### 1.1 Prepare OCI Server
+
 ```bash
 # SSH into OCI server
 ssh -i ~/.ssh/your-oci-key.pem ubuntu@your-oci-server-ip
@@ -52,6 +55,7 @@ sudo mkdir -p /etc/letsencrypt/live/api.vauntico.com/
 ```
 
 ### 1.2 Deploy Backend Code
+
 ```bash
 # Exit OCI server and run deployment from local
 exit
@@ -69,6 +73,7 @@ chmod +x deploy-to-oci.sh
 ```
 
 ### 1.3 Verify Backend Deployment
+
 ```bash
 # Check PM2 status
 ssh -i ~/.ssh/your-oci-key.pem ubuntu@your-oci-server-ip "pm2 status"
@@ -90,6 +95,7 @@ curl -I http://your-oci-server-ip/api/v1/payment-bridge/status
 ## 🌍 Step 2: Nginx Reverse Proxy + SSL
 
 ### 2.1 Install SSL Certificates
+
 ```bash
 # Install Certbot for Let's Encrypt
 ssh -i ~/.ssh/your-oci-key.pem ubuntu@your-oci-server-ip "
@@ -104,6 +110,7 @@ echo '0 2 * * * /usr/bin/certbot renew --quiet --nginx --deploy-hook \"nginx -s 
 ```
 
 ### 2.2 Configure Nginx
+
 ```bash
 # Copy Nginx configuration
 scp -i ~/.ssh/your-oci-key.pem nginx/vauntico.conf ubuntu@your-oci-server-ip:/tmp/
@@ -124,6 +131,7 @@ sudo systemctl status nginx
 ```
 
 ### 2.3 Verify SSL Setup
+
 ```bash
 # Test SSL certificate
 curl -I https://api.vauntico.com/health
@@ -137,6 +145,7 @@ openssl s_client -connect api.vauntico.com:443 -servername api.vauntico.com </de
 ## 🎨 Step 3: Frontend Deployment (Vercel)
 
 ### 3.1 Install Vercel CLI
+
 ```bash
 # Install Vercel CLI globally
 npm install -g vercel
@@ -146,6 +155,7 @@ vercel login
 ```
 
 ### 3.2 Deploy Frontend
+
 ```bash
 # Deploy to production
 cd c:/Users/admin/vauntico-mvp
@@ -159,6 +169,7 @@ vercel --prod --scope vauntico-mvp
 ```
 
 ### 3.3 Configure Vercel Environment Variables
+
 In Vercel Dashboard → Settings → Environment Variables:
 
 ```env
@@ -179,6 +190,7 @@ NEXT_PUBLIC_MIXPANEL_TOKEN=xxxxxxxx
 ```
 
 ### 3.4 Configure Custom Domain
+
 In Vercel Dashboard → Settings → Domains:
 
 ```
@@ -192,6 +204,7 @@ Domain: vauntico.com (for frontend)
 ## 🔧 Step 4: Environment Variables Configuration
 
 ### 4.1 Backend Environment Variables
+
 Update `server-v2/.env` on OCI server:
 
 ```bash
@@ -208,6 +221,7 @@ FRONTEND_URL=https://vauntico.com
 ```
 
 ### 4.2 Restart Backend
+
 ```bash
 ssh -i ~/.ssh/your-oci-key.pem ubuntu@your-oci-server-ip "
 pm2 restart vauntico-backend
@@ -219,6 +233,7 @@ pm2 restart vauntico-backend
 ## 🔍 Step 5: Testing & Verification
 
 ### 5.1 Backend API Testing
+
 ```bash
 # Test health endpoints
 curl -I https://api.vauntico.com/health
@@ -234,6 +249,7 @@ curl -H "Origin: https://vauntico.com" -H "Access-Control-Request-Method: POST" 
 ```
 
 ### 5.2 Frontend Testing
+
 ```bash
 # Test frontend accessibility
 curl -I https://vauntico.com/
@@ -248,6 +264,7 @@ curl -I https://vauntico.com/services/recovery
 ```
 
 ### 5.3 End-to-End Workflow Testing
+
 ```bash
 # Create test user
 curl -X POST https://api.vauntico.com/api/v1/auth/register \
@@ -283,6 +300,7 @@ curl -X POST https://api.vauntico.com/api/v1/auth/register \
 ## 📊 Step 6: Monitoring Setup
 
 ### 6.1 Backend Monitoring (Already Configured)
+
 ```bash
 # Sentry is already configured in .env
 SENTRY_DSN=https://5d94454fcc0960e8d36f67aefd0d05c5@o4510480205807616.ingest.us.sentry.io/4510480214851584
@@ -292,6 +310,7 @@ SENTRY_DSN=https://5d94454fcc0960e8d36f67aefd0d05c5@o4510480205807616.ingest.us.
 ```
 
 ### 6.2 Additional Monitoring Setup
+
 ```bash
 # Install monitoring on OCI server
 ssh -i ~/.ssh/your-oci-key.pem ubuntu@your-oci-server-ip "
@@ -323,6 +342,7 @@ sudo nano /etc/logrotate.d/vauntico
 ## 🔄 Step 7: Backup & Disaster Recovery
 
 ### 7.1 Database Backup
+
 ```bash
 # Neon has automatic backups, verify in dashboard
 # Visit: https://console.neon.tech/
@@ -330,6 +350,7 @@ sudo nano /etc/logrotate.d/vauntico
 ```
 
 ### 7.2 Application Backup
+
 ```bash
 # Setup application backup script
 ssh -i ~/.ssh/your-oci-key.pem ubuntu@your-oci-server-ip "
@@ -358,6 +379,7 @@ echo '0 2 * * * /usr/local/bin/backup-vauntico.sh' | sudo crontab -
 ```
 
 ### 7.3 Disaster Recovery Procedures
+
 ```bash
 # Create recovery documentation
 ssh -i ~/.ssh/your-oci-key.pem ubuntu@your-oci-server-ip "
@@ -392,6 +414,7 @@ sudo nano /var/www/DISASTER_RECOVERY.md
 ## 📱 Step 8: Final Production Verification
 
 ### 8.1 Complete System Check
+
 ```bash
 # Frontend Checklist
 [ ] https://vauntico.com loads properly
@@ -419,6 +442,7 @@ sudo nano /var/www/DISASTER_RECOVERY.md
 ```
 
 ### 8.2 Performance Verification
+
 ```bash
 # Load testing
 ab -n 100 -c 10 https://vauntico.com/
@@ -442,6 +466,7 @@ client.connect().then(() => {
 ```
 
 ### 8.3 Security Verification
+
 ```bash
 # SSL Certificate Check
 echo "SSL Certificate expiry:"
@@ -463,6 +488,7 @@ echo "Rate limiting test completed"
 ## 🚀 GO-LIVE AUTHORIZATION
 
 ### Final Sign-off Checklist
+
 - [ ] All health checks passing
 - [ ] Load tests completed successfully
 - [ ] Security verification complete
@@ -473,7 +499,9 @@ echo "Rate limiting test completed"
 - [ ] Support team trained
 
 ### Production Launch Decision
+
 When ALL items above are checked:
+
 1. Send team notification: "Vauntico MVP GO-LIVE approved"
 2. Update status page: https://status.vauntico.com
 3. Begin user onboarding
@@ -485,6 +513,7 @@ When ALL items above are checked:
 ## 📞 Emergency Contacts
 
 ### Technical Support
+
 - **Backend Issues**: [Backend Dev Contact]
 - **Frontend Issues**: [Frontend Dev Contact]
 - **Database Issues**: [DBA Contact]
@@ -492,6 +521,7 @@ When ALL items above are checked:
 - **Security**: [Security Team Contact]
 
 ### Critical Systems
+
 - **OCI Console**: https://console.oracle-cloud.com/
 - **Vercel Dashboard**: https://vercel.com/dashboard
 - **Neon Dashboard**: https://console.neon.tech/
@@ -504,6 +534,7 @@ When ALL items above are checked:
 ## 📚 Post-Deployment Monitoring
 
 ### First 24 Hours
+
 - Monitor error rates in Sentry
 - Check PM2 process stability
 - Verify SSL certificate functioning
@@ -512,6 +543,7 @@ When ALL items above are checked:
 - Watch payment processing success rates
 
 ### Ongoing Monitoring
+
 - Daily error report review
 - Weekly performance metrics
 - Monthly security scans

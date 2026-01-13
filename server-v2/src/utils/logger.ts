@@ -1,14 +1,14 @@
-import winston from 'winston';
+import winston from "winston";
 
 // Winston logger configuration optimized for free hosting
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.LOG_LEVEL || "info",
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.errors({ stack: true }),
-    winston.format.json()
+    winston.format.json(),
   ),
-  defaultMeta: { service: 'vauntico-trust-score' },
+  defaultMeta: { service: "vauntico-trust-score" },
   transports: [
     // Console transport for development and production logs
     new winston.transports.Console({
@@ -18,9 +18,9 @@ const logger = winston.createLogger({
         winston.format.printf(({ timestamp, level, message, ...meta }) => {
           const metaStr = Object.keys(meta).length
             ? ` ${JSON.stringify(meta)}`
-            : '';
+            : "";
           return `${timestamp} ${level}: ${message}${metaStr}`;
-        })
+        }),
       ),
     }),
   ],
@@ -45,26 +45,27 @@ export const logRequest = (req: any, res: any, next: any) => {
   const requestLogger = (req as any).logger || logger;
 
   // Log only essential request info (minimal data for free tier)
-  requestLogger.info('Request started', {
+  requestLogger.info("Request started", {
     method: req.method,
     url: req.url,
     ip: req.ip,
-    userAgent: req.get('User-Agent')?.slice(0, 100), // Trim long user agents
+    userAgent: req.get("User-Agent")?.slice(0, 100), // Trim long user agents
   });
 
   // Override res.end to log response
   const originalEnd = res.end;
-  res.end = function(...args: any[]) {
+  res.end = function (...args: any[]) {
     const duration = Date.now() - start;
 
-    const level = res.statusCode >= 500 ? 'error' : res.statusCode >= 400 ? 'warn' : 'info';
+    const level =
+      res.statusCode >= 500 ? "error" : res.statusCode >= 400 ? "warn" : "info";
 
-    requestLogger.log(level, 'Request completed', {
+    requestLogger.log(level, "Request completed", {
       method: req.method,
       url: req.url,
       statusCode: res.statusCode,
       duration: `${duration}ms`,
-      contentLength: res.get('Content-Length'),
+      contentLength: res.get("Content-Length"),
     });
 
     originalEnd.apply(this, args);
@@ -74,17 +75,21 @@ export const logRequest = (req: any, res: any, next: any) => {
 };
 
 // Database query logging (for performance monitoring)
-export const logDatabaseQuery = (query: string, params: any[], duration: number) => {
+export const logDatabaseQuery = (
+  query: string,
+  params: any[],
+  duration: number,
+) => {
   // Only log slow queries (>100ms) to reduce log volume
   if (duration > 100) {
-    logger.warn('Slow database query', {
-      query: query.slice(0, 200) + (query.length > 200 ? '...' : ''),
+    logger.warn("Slow database query", {
+      query: query.slice(0, 200) + (query.length > 200 ? "..." : ""),
       duration: `${duration}ms`,
       paramsCount: params?.length || 0,
     });
   } else {
-    logger.debug('Database query', {
-      query: query.slice(0, 100) + (query.length > 100 ? '...' : ''),
+    logger.debug("Database query", {
+      query: query.slice(0, 100) + (query.length > 100 ? "..." : ""),
       duration: `${duration}ms`,
     });
   }
@@ -92,7 +97,7 @@ export const logDatabaseQuery = (query: string, params: any[], duration: number)
 
 // Error logging with context
 export const logError = (error: Error, context?: Record<string, any>) => {
-  logger.error('Application error', {
+  logger.error("Application error", {
     message: error.message,
     stack: error.stack,
     ...context,

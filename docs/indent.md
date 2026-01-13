@@ -1,5 +1,5 @@
 ---
-description: 'Enforce consistent indentation.'
+description: "Enforce consistent indentation."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

@@ -7,7 +7,7 @@ export default function CourseComparisonTable() {
         { name: "Phone-only (no computer needed)", r2k: true, others: false },
         { name: "African-focused examples & brands", r2k: true, others: false },
         { name: "M-Pesa/MoMo payment support", r2k: true, others: false },
-      ]
+      ],
     },
     {
       category: "Content & Learning",
@@ -16,7 +16,7 @@ export default function CourseComparisonTable() {
         { name: "Video tutorials", r2k: true, others: true },
         { name: "100+ content templates", r2k: true, others: "paid extra" },
         { name: "African Brands Directory (200+)", r2k: true, others: false },
-      ]
+      ],
     },
     {
       category: "Community & Support",
@@ -24,17 +24,25 @@ export default function CourseComparisonTable() {
         { name: "Ubuntu R2K Creators WhatsApp Hub", r2k: true, others: false },
         { name: "Weekly live Q&A sessions", r2k: true, others: "paid extra" },
         { name: "Phase-specific support channels", r2k: true, others: false },
-        { name: "Pan-African community (4 countries)", r2k: true, others: false },
-      ]
+        {
+          name: "Pan-African community (4 countries)",
+          r2k: true,
+          others: false,
+        },
+      ],
     },
     {
       category: "Guarantee & Risk",
       items: [
         { name: "60-day money-back guarantee", r2k: true, others: "30 days" },
-        { name: "Results-based refund (R2K or refund)", r2k: true, others: false },
+        {
+          name: "Results-based refund (R2K or refund)",
+          r2k: true,
+          others: false,
+        },
         { name: "Lifetime access", r2k: true, others: "annual fee" },
         { name: "No hidden fees", r2k: true, others: false },
-      ]
+      ],
     },
     {
       category: "Pricing",
@@ -43,25 +51,26 @@ export default function CourseComparisonTable() {
         { name: "Payment plan option", r2k: "3×R349", others: "Not available" },
         { name: "Bonus value included", r2k: "R2,588", others: "R0-500" },
         { name: "Total cost", r2k: "R997", others: "R1,500-R5,000" },
-      ]
-    }
-  ]
+      ],
+    },
+  ];
 
   const renderCheckmark = (value) => {
     if (value === true) {
-      return <span className="text-green-500 text-2xl font-bold">✓</span>
+      return <span className="text-green-500 text-2xl font-bold">✓</span>;
     } else if (value === false) {
-      return <span className="text-red-500 text-2xl font-bold">✗</span>
-    } else if (typeof value === 'string') {
-      return <span className="text-sm font-semibold text-gray-700">{value}</span>
+      return <span className="text-red-500 text-2xl font-bold">✗</span>;
+    } else if (typeof value === "string") {
+      return (
+        <span className="text-sm font-semibold text-gray-700">{value}</span>
+      );
     }
-    return <span className="text-yellow-500 text-sm">~</span>
-  }
+    return <span className="text-yellow-500 text-sm">~</span>;
+  };
 
   return (
     <div className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-6xl mx-auto">
-        
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
@@ -74,7 +83,6 @@ export default function CourseComparisonTable() {
 
         {/* Comparison Table */}
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border-2 border-purple-200">
-          
           {/* Table Header */}
           <div className="grid grid-cols-3 bg-gradient-to-r from-purple-600 to-green-600 text-white">
             <div className="p-6 border-r border-white/20">
@@ -98,7 +106,9 @@ export default function CourseComparisonTable() {
             <div key={idx}>
               {/* Category Header */}
               <div className="bg-purple-50 px-6 py-3 border-b border-gray-200">
-                <h4 className="font-bold text-purple-900">{category.category}</h4>
+                <h4 className="font-bold text-purple-900">
+                  {category.category}
+                </h4>
               </div>
 
               {/* Category Items */}
@@ -106,7 +116,7 @@ export default function CourseComparisonTable() {
                 <div
                   key={itemIdx}
                   className={`grid grid-cols-3 border-b border-gray-200 ${
-                    itemIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                    itemIdx % 2 === 0 ? "bg-white" : "bg-gray-50"
                   }`}
                 >
                   <div className="p-4 border-r border-gray-200">
@@ -129,14 +139,14 @@ export default function CourseComparisonTable() {
               The Choice is Clear 🎯
             </p>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              More value. Better support. African-first focus. Phone-only system. 
-              And the only course with a results-based guarantee.
+              More value. Better support. African-first focus. Phone-only
+              system. And the only course with a results-based guarantee.
             </p>
             <a
               href="#hero"
               onClick={(e) => {
-                e.preventDefault()
-                window.scrollTo({ top: 0, behavior: 'smooth' })
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
               }}
               className="inline-block bg-gradient-to-r from-purple-600 to-green-600 hover:from-purple-700 hover:to-green-700 text-white font-bold text-lg px-10 py-4 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
@@ -162,5 +172,5 @@ export default function CourseComparisonTable() {
         </div>
       </div>
     </div>
-  )
+  );
 }

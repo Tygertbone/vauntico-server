@@ -6,7 +6,7 @@
 export interface WidgetConfig {
   apiKey: string;
   userId: string;
-  theme?: 'light' | 'dark' | 'auto';
+  theme?: "light" | "dark" | "auto";
   primaryColor?: string;
   fontFamily?: string;
   showLogo?: boolean;
@@ -64,18 +64,20 @@ class VaunticoTrustWidget {
     return {
       apiKey: config.apiKey,
       userId: config.userId,
-      theme: config.theme || 'light',
-      primaryColor: config.primaryColor || '#007bff',
-      fontFamily: config.fontFamily || '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      theme: config.theme || "light",
+      primaryColor: config.primaryColor || "#007bff",
+      fontFamily:
+        config.fontFamily ||
+        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       showLogo: config.showLogo !== false,
       showDetails: config.showDetails !== false,
-      width: config.width || '300px',
-      height: config.height || 'auto',
-      borderRadius: config.borderRadius || '8px',
+      width: config.width || "300px",
+      height: config.height || "auto",
+      borderRadius: config.borderRadius || "8px",
       animation: config.animation !== false,
       refreshInterval: config.refreshInterval || 300000, // 5 minutes
       onScoreUpdate: config.onScoreUpdate || (() => {}),
-      onError: config.onError || (() => {})
+      onError: config.onError || (() => {}),
     };
   }
 
@@ -87,9 +89,9 @@ class VaunticoTrustWidget {
   }
 
   private setupStyles(): void {
-    const styleId = 'vauntico-widget-styles';
+    const styleId = "vauntico-widget-styles";
     if (!document.getElementById(styleId)) {
-      const style = document.createElement('style');
+      const style = document.createElement("style");
       style.id = styleId;
       style.textContent = this.getWidgetCSS();
       document.head.appendChild(style);
@@ -98,7 +100,7 @@ class VaunticoTrustWidget {
 
   private getWidgetCSS(): string {
     const { primaryColor, fontFamily, borderRadius, animation } = this.config;
-    
+
     return `
       .vauntico-widget {
         font-family: ${fontFamily};
@@ -173,7 +175,7 @@ class VaunticoTrustWidget {
         font-weight: bold;
         position: relative;
         background: conic-gradient(${primaryColor} 0deg, ${primaryColor} var(--score-deg, 180deg), #e0e0e0 var(--score-deg, 180deg));
-        ${animation ? 'animation: pulse 2s infinite;' : ''}
+        ${animation ? "animation: pulse 2s infinite;" : ""}
       }
       
       .vauntico-score-circle::before {
@@ -187,13 +189,13 @@ class VaunticoTrustWidget {
         background-clip: padding-box;
         border: 5px solid;
         border-color: inherit;
-        border-color: ${document.querySelector('.vauntico-widget.light') ? '#ffffff' : '#1a1a1a'};
+        border-color: ${document.querySelector(".vauntico-widget.light") ? "#ffffff" : "#1a1a1a"};
       }
       
       .vauntico-score-value {
         position: relative;
         z-index: 1;
-        color: ${document.querySelector('.vauntico-widget.dark') ? '#ffffff' : '#333333'};
+        color: ${document.querySelector(".vauntico-widget.dark") ? "#ffffff" : "#333333"};
       }
       
       .vauntico-tier-badge {
@@ -298,17 +300,20 @@ class VaunticoTrustWidget {
 
   private async loadTrustScore(): Promise<void> {
     if (this.isLoading) return;
-    
+
     this.isLoading = true;
     this.renderLoading();
 
     try {
-      const response = await fetch(`/api/v1/trust-score?userId=${encodeURIComponent(this.config.userId)}`, {
-        headers: {
-          'X-API-Key': this.config.apiKey,
-          'Content-Type': 'application/json'
-        }
-      });
+      const response = await fetch(
+        `/api/v1/trust-score?userId=${encodeURIComponent(this.config.userId)}`,
+        {
+          headers: {
+            "X-API-Key": this.config.apiKey,
+            "Content-Type": "application/json",
+          },
+        },
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -318,17 +323,22 @@ class VaunticoTrustWidget {
       this.currentScore = data;
       this.renderScore(data);
       this.config.onScoreUpdate(data);
-      
+
       // Track widget usage as KPI metric
-      this.trackWidgetUsage('load', data);
-      
+      this.trackWidgetUsage("load", data);
     } catch (error) {
-      console.error('Vauntico Widget Error:', error);
-      this.config.onError(error instanceof Error ? error : new Error('Unknown error'));
-      this.renderError(error instanceof Error ? error : new Error('Failed to load trust score'));
-      
+      console.error("Vauntico Widget Error:", error);
+      this.config.onError(
+        error instanceof Error ? error : new Error("Unknown error"),
+      );
+      this.renderError(
+        error instanceof Error
+          ? error
+          : new Error("Failed to load trust score"),
+      );
+
       // Track widget errors as KPI metric
-      this.trackWidgetUsage('error', null);
+      this.trackWidgetUsage("error", null);
     } finally {
       this.isLoading = false;
     }
@@ -336,41 +346,41 @@ class VaunticoTrustWidget {
 
   private trackWidgetUsage(action: string, data: TrustScoreData | null): void {
     // Send usage data to KPI tracking endpoint
-    fetch('/api/v1/metrics/widget-usage', {
-      method: 'POST',
+    fetch("/api/v1/metrics/widget-usage", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'X-API-Key': this.config.apiKey
+        "Content-Type": "application/json",
+        "X-API-Key": this.config.apiKey,
       },
       body: JSON.stringify({
         action,
         userId: this.config.userId,
-        tier: data?.tier || 'unknown',
+        tier: data?.tier || "unknown",
         score: data?.score || 0,
         widgetConfig: {
           theme: this.config.theme,
           showLogo: this.config.showLogo,
-          showDetails: this.config.showDetails
+          showDetails: this.config.showDetails,
         },
-        timestamp: new Date().toISOString()
-      })
-    }).catch(err => {
-      console.warn('Failed to track widget usage:', err);
+        timestamp: new Date().toISOString(),
+      }),
+    }).catch((err) => {
+      console.warn("Failed to track widget usage:", err);
     });
   }
 
   private render(): void {
-    const container = document.createElement('div');
+    const container = document.createElement("div");
     container.className = `vauntico-widget ${this.config.theme}`;
     container.style.width = this.config.width;
     container.style.height = this.config.height;
-    
-    this.container.innerHTML = '';
+
+    this.container.innerHTML = "";
     this.container.appendChild(container);
   }
 
   private renderLoading(): void {
-    const content = this.container.querySelector('.vauntico-widget');
+    const content = this.container.querySelector(".vauntico-widget");
     if (!content) return;
 
     content.innerHTML = `
@@ -381,18 +391,20 @@ class VaunticoTrustWidget {
   }
 
   private renderScore(data: TrustScoreData): void {
-    const content = this.container.querySelector('.vauntico-widget');
+    const content = this.container.querySelector(".vauntico-widget");
     if (!content) return;
 
     const scoreDegrees = (data.score / 100) * 360;
     const tierColors = {
-      basic: '#28a745',
-      pro: '#007bff',
-      enterprise: '#6f42c1'
+      basic: "#28a745",
+      pro: "#007bff",
+      enterprise: "#6f42c1",
     };
 
     content.innerHTML = `
-      ${this.config.showLogo ? `
+      ${
+        this.config.showLogo
+          ? `
         <div class="vauntico-widget-header">
           <div class="vauntico-widget-logo">
             <svg viewBox="0 0 24 24" fill="${this.config.primaryColor}">
@@ -401,7 +413,9 @@ class VaunticoTrustWidget {
             Vauntico Trust
           </div>
         </div>
-      ` : ''}
+      `
+          : ""
+      }
       <div class="vauntico-widget-content">
         <div class="vauntico-tier-badge">${data.tier}</div>
         <div class="vauntico-score-container">
@@ -410,22 +424,34 @@ class VaunticoTrustWidget {
           </div>
         </div>
         
-        ${this.config.showDetails && data.factors ? `
+        ${
+          this.config.showDetails && data.factors
+            ? `
           <div class="vauntico-factors">
             <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600;">Trust Factors</h4>
-            ${Object.entries(data.factors).map(([key, value]) => `
+            ${Object.entries(data.factors)
+              .map(
+                ([key, value]) => `
               <div class="vauntico-factor">
-                <span style="text-transform: capitalize; font-size: 12px;">${key.replace(/_/g, ' ')}</span>
-                <span style="font-weight: 600; font-size: 12px;">${typeof value === 'number' ? Math.round(value) : value}</span>
+                <span style="text-transform: capitalize; font-size: 12px;">${key.replace(/_/g, " ")}</span>
+                <span style="font-weight: 600; font-size: 12px;">${typeof value === "number" ? Math.round(value) : value}</span>
               </div>
-              ${typeof value === 'number' ? `
+              ${
+                typeof value === "number"
+                  ? `
                 <div class="vauntico-factor-bar">
                   <div class="vauntico-factor-fill" style="width: ${Math.min(value, 100)}%; background: ${tierColors[data.tier as keyof typeof tierColors] || this.config.primaryColor};"></div>
                 </div>
-              ` : ''}
-            `).join('')}
+              `
+                  : ""
+              }
+            `,
+              )
+              .join("")}
           </div>
-        ` : ''}
+        `
+            : ""
+        }
         
         <div style="margin-top: 16px; font-size: 11px; color: #666; text-align: center;">
           Last updated: ${new Date(data.calculatedAt).toLocaleDateString()}
@@ -435,7 +461,7 @@ class VaunticoTrustWidget {
   }
 
   private renderError(error: Error): void {
-    const content = this.container.querySelector('.vauntico-widget');
+    const content = this.container.querySelector(".vauntico-widget");
     if (!content) return;
 
     content.innerHTML = `
@@ -450,7 +476,7 @@ class VaunticoTrustWidget {
         </button>
       </div>
     `;
-    
+
     // Make retry function globally available
     (window as any).vaunticoWidgetRetry = () => {
       this.loadTrustScore();
@@ -470,11 +496,11 @@ class VaunticoTrustWidget {
       clearInterval(this.refreshTimer);
       this.refreshTimer = null;
     }
-    
+
     if (this.container) {
-      this.container.innerHTML = '';
+      this.container.innerHTML = "";
     }
-    
+
     // Clean up global retry function
     delete (window as any).vaunticoWidgetRetry;
   }

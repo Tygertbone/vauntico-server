@@ -1,5 +1,5 @@
 ---
-description: 'Disallow non-null assertion in locations that may be confusing.'
+description: "Disallow non-null assertion in locations that may be confusing."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -29,7 +29,7 @@ interface Foo {
 }
 
 const foo: Foo = getFoo();
-const isEqualsBar = foo.bar! == 'hello';
+const isEqualsBar = foo.bar! == "hello";
 const isEqualsNum = 1 + foo.num! == 2;
 ```
 

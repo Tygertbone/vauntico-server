@@ -1,5 +1,5 @@
 ---
-description: 'Disallow unnecessary namespace qualifiers.'
+description: "Disallow unnecessary namespace qualifiers."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

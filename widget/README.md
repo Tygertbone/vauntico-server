@@ -28,7 +28,7 @@ npm install @vauntico/trust-widget
 ```
 
 ```javascript
-import VaunticoTrustWidget from '@vauntico/trust-widget';
+import VaunticoTrustWidget from "@vauntico/trust-widget";
 ```
 
 ### Yarn
@@ -44,155 +44,172 @@ yarn add @vauntico/trust-widget
 ```html
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Vauntico Trust Widget Demo</title>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Container for the widget -->
     <div id="trust-widget"></div>
-    
+
     <!-- Include widget script -->
     <script src="https://cdn.vauntico.com/widget/v2.0.0/vauntico-trust-widget.min.js"></script>
-    
+
     <!-- Initialize widget -->
     <script>
-        const widget = new VaunticoTrustWidget(document.getElementById('trust-widget'), {
-            apiKey: 'your-api-key',
-            userId: 'user-123',
-            theme: 'light',
-            primaryColor: '#007bff'
-        });
+      const widget = new VaunticoTrustWidget(
+        document.getElementById("trust-widget"),
+        {
+          apiKey: "your-api-key",
+          userId: "user-123",
+          theme: "light",
+          primaryColor: "#007bff",
+        },
+      );
     </script>
-</body>
+  </body>
 </html>
 ```
 
 ### ES Modules
 
 ```javascript
-import VaunticoTrustWidget from '@vauntico/trust-widget';
+import VaunticoTrustWidget from "@vauntico/trust-widget";
 
-const widget = new VaunticoTrustWidget(document.getElementById('trust-widget'), {
-    apiKey: 'your-api-key',
-    userId: 'user-123',
-    theme: 'auto',
-    primaryColor: '#6f42c1',
+const widget = new VaunticoTrustWidget(
+  document.getElementById("trust-widget"),
+  {
+    apiKey: "your-api-key",
+    userId: "user-123",
+    theme: "auto",
+    primaryColor: "#6f42c1",
     showDetails: true,
     onScoreUpdate: (score) => {
-        console.log('Trust score updated:', score);
-    }
-});
+      console.log("Trust score updated:", score);
+    },
+  },
+);
 ```
 
 ## ⚙️ Configuration Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `apiKey` | `string` | **Required** | Your Vauntico API key |
-| `userId` | `string` | **Required** | User ID to fetch trust score for |
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'light'` | Widget theme mode |
-| `primaryColor` | `string` | `'#007bff'` | Primary brand color |
-| `fontFamily` | `string` | System font stack | Custom font family |
-| `showLogo` | `boolean` | `true` | Show Vauntico logo |
-| `showDetails` | `boolean` | `true` | Show trust factors breakdown |
-| `width` | `string` | `'300px'` | Widget width |
-| `height` | `string` | `'auto'` | Widget height |
-| `borderRadius` | `string` | `'8px'` | Border radius for widget |
-| `animation` | `boolean` | `true` | Enable animations |
-| `refreshInterval` | `number` | `300000` | Auto-refresh interval (ms) |
-| `onScoreUpdate` | `function` | `undefined` | Callback when score updates |
-| `onError` | `function` | `undefined` | Callback for errors |
+| Option            | Type                          | Default           | Description                      |
+| ----------------- | ----------------------------- | ----------------- | -------------------------------- |
+| `apiKey`          | `string`                      | **Required**      | Your Vauntico API key            |
+| `userId`          | `string`                      | **Required**      | User ID to fetch trust score for |
+| `theme`           | `'light' \| 'dark' \| 'auto'` | `'light'`         | Widget theme mode                |
+| `primaryColor`    | `string`                      | `'#007bff'`       | Primary brand color              |
+| `fontFamily`      | `string`                      | System font stack | Custom font family               |
+| `showLogo`        | `boolean`                     | `true`            | Show Vauntico logo               |
+| `showDetails`     | `boolean`                     | `true`            | Show trust factors breakdown     |
+| `width`           | `string`                      | `'300px'`         | Widget width                     |
+| `height`          | `string`                      | `'auto'`          | Widget height                    |
+| `borderRadius`    | `string`                      | `'8px'`           | Border radius for widget         |
+| `animation`       | `boolean`                     | `true`            | Enable animations                |
+| `refreshInterval` | `number`                      | `300000`          | Auto-refresh interval (ms)       |
+| `onScoreUpdate`   | `function`                    | `undefined`       | Callback when score updates      |
+| `onError`         | `function`                    | `undefined`       | Callback for errors              |
 
 ## 🎨 Themes
 
 ### Light Theme
+
 ```javascript
 const widget = new VaunticoTrustWidget(container, {
-    apiKey: 'your-api-key',
-    userId: 'user-123',
-    theme: 'light'
+  apiKey: "your-api-key",
+  userId: "user-123",
+  theme: "light",
 });
 ```
 
 ### Dark Theme
+
 ```javascript
 const widget = new VaunticoTrustWidget(container, {
-    apiKey: 'your-api-key',
-    userId: 'user-123',
-    theme: 'dark'
+  apiKey: "your-api-key",
+  userId: "user-123",
+  theme: "dark",
 });
 ```
 
 ### Auto Theme
+
 ```javascript
 const widget = new VaunticoTrustWidget(container, {
-    apiKey: 'your-api-key',
-    userId: 'user-123',
-    theme: 'auto' // Follows system preference
+  apiKey: "your-api-key",
+  userId: "user-123",
+  theme: "auto", // Follows system preference
 });
 ```
 
 ## 🎯 Branding Customization
 
 ### Custom Colors
+
 ```javascript
 const widget = new VaunticoTrustWidget(container, {
-    apiKey: 'your-api-key',
-    userId: 'user-123',
-    primaryColor: '#ff5722', // Orange theme
-    theme: 'light'
+  apiKey: "your-api-key",
+  userId: "user-123",
+  primaryColor: "#ff5722", // Orange theme
+  theme: "light",
 });
 ```
 
 ### Hide Logo (White Label)
+
 ```javascript
 const widget = new VaunticoTrustWidget(container, {
-    apiKey: 'your-api-key',
-    userId: 'user-123',
-    showLogo: false, // Hide Vauntico branding
-    primaryColor: '#your-brand-color'
+  apiKey: "your-api-key",
+  userId: "user-123",
+  showLogo: false, // Hide Vauntico branding
+  primaryColor: "#your-brand-color",
 });
 ```
 
 ### Custom Styling
+
 ```javascript
 const widget = new VaunticoTrustWidget(container, {
-    apiKey: 'your-api-key',
-    userId: 'user-123',
-    width: '100%',
-    borderRadius: '16px',
-    fontFamily: 'Inter, sans-serif'
+  apiKey: "your-api-key",
+  userId: "user-123",
+  width: "100%",
+  borderRadius: "16px",
+  fontFamily: "Inter, sans-serif",
 });
 ```
 
 ## 📊 API Methods
 
 ### Initialize Widget
+
 ```javascript
 const widget = new VaunticoTrustWidget(container, config);
 ```
 
 ### Get Current Score
+
 ```javascript
 const score = widget.getScore();
-console.log('Current score:', score);
+console.log("Current score:", score);
 ```
 
 ### Refresh Score Manually
+
 ```javascript
 widget.refresh();
 ```
 
 ### Update Configuration
+
 ```javascript
 widget.updateConfig({
-    theme: 'dark',
-    primaryColor: '#ff5722',
-    showDetails: false
+  theme: "dark",
+  primaryColor: "#ff5722",
+  showDetails: false,
 });
 ```
 
 ### Destroy Widget
+
 ```javascript
 widget.destroy(); // Cleanup and remove widget
 ```
@@ -200,34 +217,36 @@ widget.destroy(); // Cleanup and remove widget
 ## 🔄 Event Callbacks
 
 ### Score Update Callback
+
 ```javascript
 const widget = new VaunticoTrustWidget(container, {
-    apiKey: 'your-api-key',
-    userId: 'user-123',
-    onScoreUpdate: (score) => {
-        console.log('Score updated:', score.score);
-        console.log('Tier:', score.tier);
-        console.log('Factors:', score.factors);
-        
-        // Custom logic based on score
-        if (score.score > 80) {
-            console.log('High trust score detected!');
-        }
+  apiKey: "your-api-key",
+  userId: "user-123",
+  onScoreUpdate: (score) => {
+    console.log("Score updated:", score.score);
+    console.log("Tier:", score.tier);
+    console.log("Factors:", score.factors);
+
+    // Custom logic based on score
+    if (score.score > 80) {
+      console.log("High trust score detected!");
     }
+  },
 });
 ```
 
 ### Error Callback
+
 ```javascript
 const widget = new VaunticoTrustWidget(container, {
-    apiKey: 'your-api-key',
-    userId: 'user-123',
-    onError: (error) => {
-        console.error('Widget error:', error);
-        
-        // Show user-friendly error message
-        alert('Unable to load trust score. Please try again later.');
-    }
+  apiKey: "your-api-key",
+  userId: "user-123",
+  onError: (error) => {
+    console.error("Widget error:", error);
+
+    // Show user-friendly error message
+    alert("Unable to load trust score. Please try again later.");
+  },
 });
 ```
 
@@ -242,6 +261,7 @@ The widget automatically tracks usage metrics for monetization analytics:
 - **User Interactions** - Clicks and engagements
 
 ### Tracked Data Points
+
 - API key identifier (masked)
 - User tier and score
 - Widget configuration
@@ -251,23 +271,25 @@ The widget automatically tracks usage metrics for monetization analytics:
 ## 🔐 Authentication & Security
 
 ### API Key Management
+
 - API keys are validated on each request
 - Keys are masked in client-side logs
 - Tier-based access control enforced
 - Rate limiting applied per API key
 
 ### Best Practices
+
 ```javascript
 // ✅ Good: Store API key securely
 const widget = new VaunticoTrustWidget(container, {
-    apiKey: 'pk_live_xxxxxxxxxxxxxxxxxxxxxxxx', // Environment variable
-    userId: 'user-123'
+  apiKey: "pk_live_xxxxxxxxxxxxxxxxxxxxxxxx", // Environment variable
+  userId: "user-123",
 });
 
 // ❌ Bad: Hardcoded API key in client code
 const widget = new VaunticoTrustWidget(container, {
-    apiKey: 'sk_live_your_stripe_secret_key_here', // Never expose secret keys
-    userId: 'user-123'
+  apiKey: "sk_live_your_stripe_secret_key_here", // Never expose secret keys
+  userId: "user-123",
 });
 ```
 
@@ -291,6 +313,7 @@ The widget automatically adapts to different screen sizes:
 ## 🧪 Development
 
 ### Local Development
+
 ```bash
 # Clone repository
 git clone https://github.com/Tygertbone/vauntico-server.git
@@ -307,6 +330,7 @@ npm run dev
 ```
 
 ### Build Commands
+
 ```bash
 npm run build          # Production build
 npm run build:dev      # Development build
@@ -354,6 +378,7 @@ The widget handles various error scenarios gracefully:
 - **Rate Limiting** - Automatic retry with respect to limits
 
 ### Error Types
+
 - `401 Unauthorized` - Invalid or missing API key
 - `403 Forbidden` - Insufficient subscription tier
 - `404 Not Found` - User not found
@@ -365,31 +390,35 @@ The widget handles various error scenarios gracefully:
 ### Common Issues
 
 **Widget not loading**
+
 - Check API key validity
 - Verify user ID exists
 - Ensure network connectivity
 - Check browser console for errors
 
 **Score not updating**
+
 - Verify refresh interval configuration
 - Check API rate limits
 - Ensure user has sufficient credits
 - Review onScoreUpdate callback
 
 **Styling issues**
+
 - Check CSS conflicts
 - Verify z-index positioning
 - Ensure container element exists
 - Check responsive breakpoints
 
 ### Debug Mode
+
 ```javascript
 // Enable debug logging
 const widget = new VaunticoTrustWidget(container, {
-    apiKey: 'your-api-key',
-    userId: 'user-123',
-    onScoreUpdate: (score) => console.log('Score updated:', score),
-    onError: (error) => console.error('Widget error:', error)
+  apiKey: "your-api-key",
+  userId: "user-123",
+  onScoreUpdate: (score) => console.log("Score updated:", score),
+  onError: (error) => console.error("Widget error:", error),
 });
 ```
 
@@ -407,6 +436,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## 🚀 Deployment
 
 ### CDN Usage
+
 ```html
 <!-- Production -->
 <script src="https://cdn.vauntico.com/widget/v2.0.0/vauntico-trust-widget.min.js"></script>
@@ -416,6 +446,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ```
 
 ### Self-Hosting
+
 ```html
 <script src="/path/to/vauntico-trust-widget.min.js"></script>
 ```
@@ -423,6 +454,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## 📊 Version History
 
 ### v2.0.0 (Current)
+
 - ✨ White label widget implementation
 - ✨ KPI tracking integration
 - ✨ Theme customization support
@@ -430,6 +462,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 - ✨ TypeScript definitions
 
 ### v1.x.x (Legacy)
+
 - Basic trust score display
 - Limited customization options
 - No KPI tracking

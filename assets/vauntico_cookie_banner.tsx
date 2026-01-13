@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { X, Cookie } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { X, Cookie } from "lucide-react";
 
 const CookieConsentBanner = () => {
   const [showBanner, setShowBanner] = useState(false);
@@ -7,12 +7,12 @@ const CookieConsentBanner = () => {
   const [preferences, setPreferences] = useState({
     essential: true, // Always required
     analytics: true,
-    marketing: false
+    marketing: false,
   });
 
   useEffect(() => {
     // Check if user has already made a choice
-    const consent = localStorage.getItem('vauntico_cookie_consent');
+    const consent = localStorage.getItem("vauntico_cookie_consent");
     if (!consent) {
       // Delay showing banner slightly for better UX
       setTimeout(() => setShowBanner(true), 1000);
@@ -27,7 +27,7 @@ const CookieConsentBanner = () => {
     const allAccepted = {
       essential: true,
       analytics: true,
-      marketing: true
+      marketing: true,
     };
     savePreferences(allAccepted);
   };
@@ -36,7 +36,7 @@ const CookieConsentBanner = () => {
     const essentialOnly = {
       essential: true,
       analytics: false,
-      marketing: false
+      marketing: false,
     };
     savePreferences(essentialOnly);
   };
@@ -47,10 +47,10 @@ const CookieConsentBanner = () => {
   };
 
   const savePreferences = (prefs) => {
-    localStorage.setItem('vauntico_cookie_consent', JSON.stringify(prefs));
-    localStorage.setItem('vauntico_consent_date', new Date().toISOString());
+    localStorage.setItem("vauntico_cookie_consent", JSON.stringify(prefs));
+    localStorage.setItem("vauntico_consent_date", new Date().toISOString());
     setShowBanner(false);
-    
+
     // Initialize analytics if accepted
     if (prefs.analytics) {
       initializeAnalytics();
@@ -59,7 +59,7 @@ const CookieConsentBanner = () => {
 
   const initializeAnalytics = () => {
     // Initialize Google Analytics or other services here
-    console.log('Analytics initialized');
+    console.log("Analytics initialized");
   };
 
   if (!showBanner) return null;
@@ -80,15 +80,19 @@ const CookieConsentBanner = () => {
                   <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
                     <Cookie className="w-6 h-6 text-white" />
                   </div>
-                  
+
                   <div className="flex-1 min-w-0">
                     <h3 className="text-xl font-bold text-slate-900 mb-2">
                       We value your privacy
                     </h3>
                     <p className="text-slate-600 leading-relaxed mb-4">
-                      We use cookies to enhance your experience, analyze site traffic, and personalize content. 
-                      By clicking "Accept All", you consent to our use of cookies.{' '}
-                      <a href="/privacy" className="text-blue-600 hover:underline font-medium">
+                      We use cookies to enhance your experience, analyze site
+                      traffic, and personalize content. By clicking "Accept
+                      All", you consent to our use of cookies.{" "}
+                      <a
+                        href="/privacy"
+                        className="text-blue-600 hover:underline font-medium"
+                      >
                         Learn more
                       </a>
                     </p>
@@ -149,11 +153,16 @@ const CookieConsentBanner = () => {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-bold text-slate-900">Essential Cookies</h4>
-                        <span className="text-xs px-2 py-1 bg-slate-200 rounded-full font-medium">Required</span>
+                        <h4 className="font-bold text-slate-900">
+                          Essential Cookies
+                        </h4>
+                        <span className="text-xs px-2 py-1 bg-slate-200 rounded-full font-medium">
+                          Required
+                        </span>
                       </div>
                       <p className="text-sm text-slate-600">
-                        Required for the website to function. These cannot be disabled.
+                        Required for the website to function. These cannot be
+                        disabled.
                       </p>
                     </div>
                   </div>
@@ -162,20 +171,30 @@ const CookieConsentBanner = () => {
                   <div className="flex items-start gap-4 p-4 bg-white border-2 border-slate-200 rounded-xl">
                     <div className="flex-shrink-0 pt-1">
                       <button
-                        onClick={() => setPreferences(p => ({ ...p, analytics: !p.analytics }))}
+                        onClick={() =>
+                          setPreferences((p) => ({
+                            ...p,
+                            analytics: !p.analytics,
+                          }))
+                        }
                         className={`w-12 h-6 rounded-full relative transition-all ${
-                          preferences.analytics ? 'bg-blue-600' : 'bg-slate-300'
+                          preferences.analytics ? "bg-blue-600" : "bg-slate-300"
                         }`}
                       >
-                        <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${
-                          preferences.analytics ? 'right-1' : 'left-1'
-                        }`} />
+                        <div
+                          className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${
+                            preferences.analytics ? "right-1" : "left-1"
+                          }`}
+                        />
                       </button>
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-bold text-slate-900 mb-1">Analytics Cookies</h4>
+                      <h4 className="font-bold text-slate-900 mb-1">
+                        Analytics Cookies
+                      </h4>
                       <p className="text-sm text-slate-600">
-                        Help us understand how visitors use our website to improve the experience.
+                        Help us understand how visitors use our website to
+                        improve the experience.
                       </p>
                     </div>
                   </div>
@@ -184,20 +203,30 @@ const CookieConsentBanner = () => {
                   <div className="flex items-start gap-4 p-4 bg-white border-2 border-slate-200 rounded-xl">
                     <div className="flex-shrink-0 pt-1">
                       <button
-                        onClick={() => setPreferences(p => ({ ...p, marketing: !p.marketing }))}
+                        onClick={() =>
+                          setPreferences((p) => ({
+                            ...p,
+                            marketing: !p.marketing,
+                          }))
+                        }
                         className={`w-12 h-6 rounded-full relative transition-all ${
-                          preferences.marketing ? 'bg-blue-600' : 'bg-slate-300'
+                          preferences.marketing ? "bg-blue-600" : "bg-slate-300"
                         }`}
                       >
-                        <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${
-                          preferences.marketing ? 'right-1' : 'left-1'
-                        }`} />
+                        <div
+                          className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${
+                            preferences.marketing ? "right-1" : "left-1"
+                          }`}
+                        />
                       </button>
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-bold text-slate-900 mb-1">Marketing Cookies</h4>
+                      <h4 className="font-bold text-slate-900 mb-1">
+                        Marketing Cookies
+                      </h4>
                       <p className="text-sm text-slate-600">
-                        Used to deliver personalized ads and track campaign effectiveness.
+                        Used to deliver personalized ads and track campaign
+                        effectiveness.
                       </p>
                     </div>
                   </div>
@@ -219,7 +248,8 @@ const CookieConsentBanner = () => {
                 </div>
 
                 <p className="text-xs text-slate-500 mt-4 text-center">
-                  You can change your preferences at any time in your account settings.
+                  You can change your preferences at any time in your account
+                  settings.
                 </p>
               </div>
             )}

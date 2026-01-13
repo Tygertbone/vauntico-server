@@ -1,6 +1,7 @@
 # ⚡ IMMEDIATE ACTION CHECKLIST - NEXT 2 HOURS
 
 ## 🎯 GOAL
+
 Get Vauntico production-ready with clean domain, updated positioning, and critical fixes.
 
 ---
@@ -23,6 +24,7 @@ Get Vauntico production-ready with clean domain, updated positioning, and critic
 ### HOUR 1: Domain & Deploy (60 min)
 
 #### ⏱️ Task 1: Commit Positioning Fixes (5 min)
+
 ```bash
 cd /path/to/vauntico-mvp
 git add index.html src/pages/Home.jsx
@@ -41,17 +43,20 @@ git push origin main
 #### ⏱️ Task 2: Configure Vercel Domain (20 min)
 
 **Step 1: Open Vercel Dashboard**
+
 ```
 https://vercel.com/dashboard
 ```
 
 **Step 2: Select Production Project**
+
 - Click: `vauntico-mvp-cursur-build`
 - Settings → Domains
 - Add Domain: `vauntico.com`
 - Copy DNS instructions
 
 **Step 3: Update DNS (Your Domain Registrar)**
+
 ```
 Type: A
 Name: @
@@ -71,6 +76,7 @@ Save and wait 5-10 minutes for propagation.
 **File:** `vercel.json`
 
 Replace entire contents with:
+
 ```json
 {
   "redirects": [
@@ -85,9 +91,7 @@ Replace entire contents with:
       "permanent": true
     }
   ],
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
-  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
   "headers": [
     {
       "source": "/(.*)",
@@ -114,6 +118,7 @@ Replace entire contents with:
 ```
 
 **Deploy:**
+
 ```bash
 git add vercel.json
 git commit -m "feat: Configure domain redirects"
@@ -125,6 +130,7 @@ git push origin main
 #### ⏱️ Task 4: Create SEO Files (10 min)
 
 **File 1:** `public/robots.txt`
+
 ```
 User-agent: *
 Allow: /
@@ -133,6 +139,7 @@ Sitemap: https://vauntico.com/sitemap.xml
 ```
 
 **File 2:** `public/sitemap.xml`
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -160,6 +167,7 @@ Sitemap: https://vauntico.com/sitemap.xml
 ```
 
 **Deploy:**
+
 ```bash
 git add public/robots.txt public/sitemap.xml
 git commit -m "feat: Add robots.txt and sitemap for SEO"
@@ -183,6 +191,7 @@ curl -I https://www.vauntico.com
 ```
 
 **Browser Tests:**
+
 - Visit: https://vauntico.com
 - Verify new hero headline shows
 - Check HTTPS padlock (green)
@@ -196,15 +205,18 @@ curl -I https://www.vauntico.com
 #### ⏱️ Task 6: Founder Photo (30 min)
 
 **Option A: Use AI Headshot Generator** (10 min)
+
 - Tool: https://www.photoai.com or https://aragon.ai
 - Generate professional headshot
 - Download as `founder-photo.jpg`
 
 **Option B: Use Real Photo** (5 min)
+
 - Take photo with phone (well-lit, clean background)
 - Or use existing professional photo
 
 **Upload Photo:**
+
 ```bash
 # Save to public folder
 mv founder-photo.jpg public/
@@ -214,6 +226,7 @@ mv founder-photo.jpg public/
 ```
 
 Update `src/pages/Home.jsx`:
+
 ```jsx
 // Find line 54-58 (the founder emoji section)
 // Replace this:
@@ -223,8 +236,8 @@ Update `src/pages/Home.jsx`:
 
 // With this:
 <div className="w-full h-64 rounded-xl overflow-hidden">
-  <img 
-    src="/founder-photo.jpg" 
+  <img
+    src="/founder-photo.jpg"
     alt="Founder of Vauntico"
     className="w-full h-full object-cover"
   />
@@ -234,6 +247,7 @@ Update `src/pages/Home.jsx`:
 **Repeat for About page** (`src/pages/About.jsx` line 30)
 
 **Deploy:**
+
 ```bash
 git add public/founder-photo.jpg src/pages/Home.jsx src/pages/About.jsx
 git commit -m "feat: Add real founder photo"
@@ -245,12 +259,14 @@ git push origin main
 #### ⏱️ Task 7: Handle Fake Testimonials (10 min)
 
 **Option A: Remove Them** (Recommended)
+
 ```bash
 # Edit src/pages/Home.jsx
 # Comment out or delete lines 213-263 (testimonials section)
 ```
 
 **Option B: Add Disclaimer**
+
 ```jsx
 <p className="text-center text-sm text-gray-500 mb-4">
   * Example testimonials for demonstration purposes
@@ -258,17 +274,19 @@ git push origin main
 ```
 
 **Option C: Replace with Founder Story**
+
 ```jsx
 <div className="card bg-gradient-to-r from-vault-purple/10 to-transparent">
   <h3 className="text-2xl font-bold mb-4">From Solo Creator to Tool Builder</h3>
   <p className="text-gray-700 leading-relaxed">
-    "I built Vauntico because I was tired of [YOUR REAL STORY]. 
-    After wasting hours juggling tools, I knew there had to be a better way..."
+    "I built Vauntico because I was tired of [YOUR REAL STORY]. After wasting
+    hours juggling tools, I knew there had to be a better way..."
   </p>
 </div>
 ```
 
 **Deploy:**
+
 ```bash
 git add src/pages/Home.jsx
 git commit -m "fix: Handle testimonials authentically"
@@ -301,6 +319,7 @@ git push origin main
 After completing all tasks, verify:
 
 ### Domain & Deployment
+
 - [ ] `https://vauntico.com` loads correctly
 - [ ] HTTPS certificate is valid (green padlock)
 - [ ] `www.vauntico.com` redirects to apex domain
@@ -308,6 +327,7 @@ After completing all tasks, verify:
 - [ ] All pages work (/pricing, /about, /lore)
 
 ### Content & Positioning
+
 - [ ] New hero headline: "Ship 10x Faster With the CLI That Thinks Like You"
 - [ ] Page title: "The Creator OS That Actually Ships"
 - [ ] Founder photo displays (not emoji)
@@ -315,12 +335,14 @@ After completing all tasks, verify:
 - [ ] No broken images
 
 ### SEO
+
 - [ ] robots.txt accessible: vauntico.com/robots.txt
 - [ ] sitemap.xml accessible: vauntico.com/sitemap.xml
 - [ ] Meta description updated in page source
 - [ ] OG tags show new positioning (test with Twitter card validator)
 
 ### Performance
+
 - [ ] No console errors (F12)
 - [ ] Page loads < 3s
 - [ ] Mobile responsive (test with device emulator)
@@ -330,22 +352,29 @@ After completing all tasks, verify:
 ## 🚨 TROUBLESHOOTING
 
 ### "DNS not propagating"
+
 **Solution**: Wait 30 min, clear browser cache, try incognito mode
 
 ### "HTTPS certificate pending"
+
 **Solution**: Vercel auto-issues certificates, wait 10-15 minutes
 
 ### "Old Vercel URLs still live"
+
 **Solution**: Add more redirects in vercel.json, then delete old projects
 
 ### "Founder photo not showing"
-**Solution**: 
+
+**Solution**:
+
 - Check file path: should be `public/founder-photo.jpg`
 - Check import in component: `/founder-photo.jpg` (leading slash)
 - Clear browser cache
 
 ### "Redirects not working"
+
 **Solution**:
+
 - Verify vercel.json syntax (use JSON validator)
 - Check Vercel deployment logs for errors
 - Clear browser cache and test in incognito
@@ -355,6 +384,7 @@ After completing all tasks, verify:
 ## ✅ SUCCESS CRITERIA
 
 **You're done when:**
+
 - ✅ vauntico.com is your primary URL
 - ✅ New positioning is live (hero headline updated)
 - ✅ Real founder photo visible (not emoji)
@@ -368,18 +398,21 @@ After completing all tasks, verify:
 ## 📈 NEXT STEPS (After 2 Hours)
 
 **Tomorrow:**
+
 1. [ ] Add CLI demo video/GIF
 2. [ ] Get 3 real testimonials (reach out to beta users)
 3. [ ] Update Google Search Console
 4. [ ] Share new positioning on social media
 
 **This Week:**
+
 1. [ ] Build interactive CLI demo page
 2. [ ] Add competitor comparison table
 3. [ ] Set up proper analytics events
 4. [ ] Create founder story blog post
 
 **This Month:**
+
 1. [ ] Backend integration (auth, payments)
 2. [ ] Real user dashboard
 3. [ ] Email capture & drip campaign
@@ -397,6 +430,6 @@ After completing all tasks, verify:
 
 ---
 
-**Start Time**: ___________  
+**Start Time**: ****\_\_\_****  
 **Expected Completion**: 2 hours  
 **Status**: Ready to Execute ⚡

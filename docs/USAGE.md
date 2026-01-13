@@ -3,39 +3,39 @@ This documentation is based on our [OAI specification](https://github.com/sendgr
 # INITIALIZATION
 
 ```javascript
-const client = require('@sendgrid/client');
+const client = require("@sendgrid/client");
 client.setApiKey(process.env.SENDGRID_API_KEY);
 ```
 
 # Table of Contents
 
-* [ACCESS SETTINGS](#access-settings)
-* [ALERTS](#alerts)
-* [API KEYS](#api-keys)
-* [ASM](#asm)
-* [BROWSERS](#browsers)
-* [CAMPAIGNS](#campaigns)
-* [CATEGORIES](#categories)
-* [CLIENTS](#clients)
-* [CONTACTDB](#contactdb)
-* [DEVICES](#devices)
-* [GEO](#geo)
-* [IPS](#ips)
-* [MAIL](#mail)
-* [MAIL SETTINGS](#mail-settings)
-* [MAILBOX PROVIDERS](#mailbox-providers)
-* [MESSAGES](#messages)
-* [PARTNER SETTINGS](#partner-settings)
-* [SCOPES](#scopes)
-* [SENDERS](#senders)
-* [SENDER AUTHENTICATION](#sender-authentication)
-* [STATS](#stats)
-* [SUBUSERS](#subusers)
-* [SUPPRESSION](#suppression)
-* [TEAMMATES](#teammates)
-* [TEMPLATES](#templates)
-* [TRACKING SETTINGS](#tracking-settings)
-* [USER](#user)
+- [ACCESS SETTINGS](#access-settings)
+- [ALERTS](#alerts)
+- [API KEYS](#api-keys)
+- [ASM](#asm)
+- [BROWSERS](#browsers)
+- [CAMPAIGNS](#campaigns)
+- [CATEGORIES](#categories)
+- [CLIENTS](#clients)
+- [CONTACTDB](#contactdb)
+- [DEVICES](#devices)
+- [GEO](#geo)
+- [IPS](#ips)
+- [MAIL](#mail)
+- [MAIL SETTINGS](#mail-settings)
+- [MAILBOX PROVIDERS](#mailbox-providers)
+- [MESSAGES](#messages)
+- [PARTNER SETTINGS](#partner-settings)
+- [SCOPES](#scopes)
+- [SENDERS](#senders)
+- [SENDER AUTHENTICATION](#sender-authentication)
+- [STATS](#stats)
+- [SUBUSERS](#subusers)
+- [SUPPRESSION](#suppression)
+- [TEAMMATES](#teammates)
+- [TEMPLATES](#templates)
+- [TRACKING SETTINGS](#tracking-settings)
+- [USER](#user)
 
 # On behalf of subusers
 
@@ -43,23 +43,23 @@ Most API calls will accept an `on-behalf-of` header
 in order to make API calls as a given subuser:
 
 ```javascript
-  // create an API key for the given subuser
+// create an API key for the given subuser
 const data = {
-  name: 'subuser API key',
-  scopes: ['mail.send'],
+  name: "subuser API key",
+  scopes: ["mail.send"],
 };
 request.body = data;
-request.method = 'POST';
-request.url = '/v3/api_keys';
-request.headers = { 'On-Behalf-Of': 'subuser username' };
-client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  });
+request.method = "POST";
+request.url = "/v3/api_keys";
+request.headers = { "On-Behalf-Of": "subuser username" };
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
 
 <a name="access-settings"></a>
+
 # ACCESS SETTINGS
 
 ## Retrieve all recent access attempts
@@ -72,20 +72,19 @@ For more information, please see our [User Guide](http://sendgrid.com/docs/User_
 
 ### GET /access_settings/activity
 
-
 ```javascript
-  const queryParams = {
-  'limit': 1
+const queryParams = {
+  limit: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/access_settings/activity';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/access_settings/activity";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Add one or more IPs to the whitelist
 
 **This endpoint allows you to add one or more IP addresses to your IP whitelist.**
@@ -98,30 +97,29 @@ For more information, please see our [User Guide](http://sendgrid.com/docs/User_
 
 ### POST /access_settings/whitelist
 
-
 ```javascript
-  const data = {
-  "ips": [
+const data = {
+  ips: [
     {
-      "ip": "192.168.1.1"
+      ip: "192.168.1.1",
     },
     {
-      "ip": "192.*.*.*"
+      ip: "192.*.*.*",
     },
     {
-      "ip": "192.168.1.3/32"
-    }
-  ]
+      ip: "192.168.1.3/32",
+    },
+  ],
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/access_settings/whitelist';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/access_settings/whitelist";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Remove one or more IPs from the whitelist
 
 **This endpoint allows you to remove one or more IPs from your IP whitelist.**
@@ -134,24 +132,19 @@ For more information, please see our [User Guide](http://sendgrid.com/docs/User_
 
 ### DELETE /access_settings/whitelist
 
-
 ```javascript
-  const data = {
-  "ids": [
-    1,
-    2,
-    3
-  ]
+const data = {
+  ids: [1, 2, 3],
 };
-  request.body = data;
-  request.method = 'DELETE';
-  request.url = '/v3/access_settings/whitelist';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "DELETE";
+request.url = "/v3/access_settings/whitelist";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a list of currently whitelisted IPs
 
 **This endpoint allows you to retrieve a list of IP addresses that are currently whitelisted.**
@@ -162,16 +155,15 @@ For more information, please see our [User Guide](http://sendgrid.com/docs/User_
 
 ### GET /access_settings/whitelist
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/access_settings/whitelist';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/access_settings/whitelist";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Remove a specific IP from the whitelist
 
 **This endpoint allows you to remove a specific IP address from your IP whitelist.**
@@ -184,16 +176,15 @@ For more information, please see our [User Guide](http://sendgrid.com/docs/User_
 
 ### DELETE /access_settings/whitelist/{rule_id}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/access_settings/whitelist/{rule_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/access_settings/whitelist/{rule_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a specific whitelisted IP
 
 **This endpoint allows you to retrieve a specific IP address that has been whitelisted.**
@@ -206,17 +197,17 @@ For more information, please see our [User Guide](http://sendgrid.com/docs/User_
 
 ### GET /access_settings/whitelist/{rule_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/access_settings/whitelist/{rule_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/access_settings/whitelist/{rule_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="alerts"></a>
+
 # ALERTS
 
 ## Create a new Alert
@@ -225,122 +216,122 @@ For more information, please see our [User Guide](http://sendgrid.com/docs/User_
 
 Alerts allow you to specify an email address to receive notifications regarding your email usage or statistics. There are two types of alerts available with this endpoint:
 
-* `usage_limit` allows you to set the threshold at which an alert will be sent.
-* `stats_notification` allows you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
+- `usage_limit` allows you to set the threshold at which an alert will be sent.
+- `stats_notification` allows you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
 
 For more information about alerts, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Settings/alerts.html).
 
 ### POST /alerts
 
-
 ```javascript
-  const data = {
-  "email_to": "example@example.com",
-  "frequency": "daily",
-  "type": "stats_notification"
+const data = {
+  email_to: "example@example.com",
+  frequency: "daily",
+  type: "stats_notification",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/alerts';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/alerts";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all alerts
 
 **This endpoint allows you to retrieve all of your alerts.**
 
 Alerts allow you to specify an email address to receive notifications regarding your email usage or statistics.
-* Usage alerts allow you to set the threshold at which an alert will be sent.
-* Stats notifications allow you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
+
+- Usage alerts allow you to set the threshold at which an alert will be sent.
+- Stats notifications allow you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
 
 For more information about alerts, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Settings/alerts.html).
 
 ### GET /alerts
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/alerts';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/alerts";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update an alert
 
 **This endpoint allows you to update an alert.**
 
 Alerts allow you to specify an email address to receive notifications regarding your email usage or statistics.
-* Usage alerts allow you to set the threshold at which an alert will be sent.
-* Stats notifications allow you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
+
+- Usage alerts allow you to set the threshold at which an alert will be sent.
+- Stats notifications allow you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
 
 For more information about alerts, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Settings/alerts.html).
 
 ### PATCH /alerts/{alert_id}
 
-
 ```javascript
-  const data = {
-  "email_to": "example@example.com"
+const data = {
+  email_to: "example@example.com",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/alerts/{alert_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/alerts/{alert_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete an alert
 
 **This endpoint allows you to delete an alert.**
 
 Alerts allow you to specify an email address to receive notifications regarding your email usage or statistics.
-* Usage alerts allow you to set the threshold at which an alert will be sent.
-* Stats notifications allow you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
+
+- Usage alerts allow you to set the threshold at which an alert will be sent.
+- Stats notifications allow you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
 
 For more information about alerts, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Settings/alerts.html).
 
 ### DELETE /alerts/{alert_id}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/alerts/{alert_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/alerts/{alert_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a specific alert
 
 **This endpoint allows you to retrieve a specific alert.**
 
 Alerts allow you to specify an email address to receive notifications regarding your email usage or statistics.
-* Usage alerts allow you to set the threshold at which an alert will be sent.
-* Stats notifications allow you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
+
+- Usage alerts allow you to set the threshold at which an alert will be sent.
+- Stats notifications allow you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
 
 For more information about alerts, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Settings/alerts.html).
 
 ### GET /alerts/{alert_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/alerts/{alert_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/alerts/{alert_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="api-keys"></a>
+
 # API KEYS
 
 ## Create API keys
@@ -357,26 +348,21 @@ See the [API Key Permissions List](https://sendgrid.com/docs/API_Reference/Web_A
 
 ### POST /api_keys
 
-
 ```javascript
-  const data = {
-  "name": "My API Key",
-  "sample": "data",
-  "scopes": [
-    "mail.send",
-    "alerts.create",
-    "alerts.read"
-  ]
+const data = {
+  name: "My API Key",
+  sample: "data",
+  scopes: ["mail.send", "alerts.create", "alerts.read"],
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/api_keys';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/api_keys";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all API Keys belonging to the authenticated user
 
 **This endpoint allows you to retrieve all API Keys that belong to the authenticated user.**
@@ -385,20 +371,19 @@ The API Keys feature allows customers to be able to generate an API Key credenti
 
 ### GET /api_keys
 
-
 ```javascript
-  const queryParams = {
-  'limit': 1
+const queryParams = {
+  limit: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/api_keys';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/api_keys";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update the name & scopes of an API Key
 
 **This endpoint allows you to update the name and scopes of a given API key.**
@@ -410,24 +395,20 @@ The API Keys feature allows customers to be able to generate an API Key credenti
 
 ### PUT /api_keys/{api_key_id}
 
-
 ```javascript
-  const data = {
-  "name": "A New Hope",
-  "scopes": [
-    "user.profile.read",
-    "user.profile.update"
-  ]
+const data = {
+  name: "A New Hope",
+  scopes: ["user.profile.read", "user.profile.update"],
 };
-  request.body = data;
-  request.method = 'PUT';
-  request.url = '/v3/api_keys/{api_key_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PUT";
+request.url = "/v3/api_keys/{api_key_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update API keys
 
 **This endpoint allows you to update the name of an existing API Key.**
@@ -438,26 +419,25 @@ The API Keys feature allows customers to be able to generate an API Key credenti
 
 ## URI Parameters
 
-| URI Parameter   | Type  | Required?  | Description  |
-|---|---|---|---|
-|api_key_id |string | required | The ID of the API Key you are updating.|
+| URI Parameter | Type   | Required? | Description                             |
+| ------------- | ------ | --------- | --------------------------------------- |
+| api_key_id    | string | required  | The ID of the API Key you are updating. |
 
 ### PATCH /api_keys/{api_key_id}
 
-
 ```javascript
-  const data = {
-  "name": "A New Hope"
+const data = {
+  name: "A New Hope",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/api_keys/{api_key_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/api_keys/{api_key_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete API keys
 
 **This endpoint allows you to revoke an existing API Key**
@@ -468,22 +448,21 @@ The API Keys feature allows customers to be able to generate an API Key credenti
 
 ## URI Parameters
 
-| URI Parameter   | Type  | Required?  | Description  |
-|---|---|---|---|
-|api_key_id |string | required | The ID of the API Key you are deleting.|
+| URI Parameter | Type   | Required? | Description                             |
+| ------------- | ------ | --------- | --------------------------------------- |
+| api_key_id    | string | required  | The ID of the API Key you are deleting. |
 
 ### DELETE /api_keys/{api_key_id}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/api_keys/{api_key_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/api_keys/{api_key_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve an existing API Key
 
 **This endpoint allows you to retrieve a single API key.**
@@ -492,17 +471,17 @@ If the API Key ID does not exist an HTTP 404 will be returned.
 
 ### GET /api_keys/{api_key_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/api_keys/{api_key_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/api_keys/{api_key_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="asm"></a>
+
 # ASM
 
 ## Create a new suppression group
@@ -517,22 +496,21 @@ Each user can create up to 25 different suppression groups.
 
 ### POST /asm/groups
 
-
 ```javascript
-  const data = {
-  "description": "Suggestions for products our users might like.",
-  "is_default": true,
-  "name": "Product Suggestions"
+const data = {
+  description: "Suggestions for products our users might like.",
+  is_default: true,
+  name: "Product Suggestions",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/asm/groups';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/asm/groups";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve information about multiple suppression groups
 
 **This endpoint allows you to retrieve information about multiple suppression groups.**
@@ -545,20 +523,19 @@ Suppression groups, or [unsubscribe groups](https://sendgrid.com/docs/API_Refere
 
 ### GET /asm/groups
 
-
 ```javascript
-  const queryParams = {
-  'id': 1
+const queryParams = {
+  id: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/asm/groups';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/asm/groups";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a suppression group.
 
 **This endpoint allows you to delete a suppression group.**
@@ -573,16 +550,15 @@ Each user can create up to 25 different suppression groups.
 
 ### DELETE /asm/groups/{group_id}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/asm/groups/{group_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/asm/groups/{group_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update a suppression group.
 
 **This endpoint allows you to update or change a suppression group.**
@@ -595,22 +571,21 @@ Each user can create up to 25 different suppression groups.
 
 ### PATCH /asm/groups/{group_id}
 
-
 ```javascript
-  const data = {
-  "description": "Suggestions for items our users might like.",
-  "id": 103,
-  "name": "Item Suggestions"
+const data = {
+  description: "Suggestions for items our users might like.",
+  id: 103,
+  name: "Item Suggestions",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/asm/groups/{group_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/asm/groups/{group_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Get information on a single suppression group.
 
 **This endpoint allows you to retrieve a single suppression group.**
@@ -623,16 +598,15 @@ Each user can create up to 25 different suppression groups.
 
 ### GET /asm/groups/{group_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/asm/groups/{group_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/asm/groups/{group_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Add suppressions to a suppression group
 
 **This endpoint allows you to add email addresses to an unsubscribe group.**
@@ -643,23 +617,19 @@ Suppressions are recipient email addresses that are added to [unsubscribe groups
 
 ### POST /asm/groups/{group_id}/suppressions
 
-
 ```javascript
-  const data = {
-  "recipient_emails": [
-    "test1@example.com",
-    "test2@example.com"
-  ]
+const data = {
+  recipient_emails: ["test1@example.com", "test2@example.com"],
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/asm/groups/{group_id}/suppressions';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/asm/groups/{group_id}/suppressions";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all suppressions for a suppression group
 
 **This endpoint allows you to retrieve all suppressed email addresses belonging to the given group.**
@@ -668,16 +638,15 @@ Suppressions are recipient email addresses that are added to [unsubscribe groups
 
 ### GET /asm/groups/{group_id}/suppressions
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/asm/groups/{group_id}/suppressions';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/asm/groups/{group_id}/suppressions";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Search for suppressions within a group
 
 **This endpoint allows you to search a suppression group for multiple suppressions.**
@@ -688,24 +657,23 @@ Suppressions are a list of email addresses that will not receive content sent un
 
 ### POST /asm/groups/{group_id}/suppressions/search
 
-
 ```javascript
-  const data = {
-  "recipient_emails": [
+const data = {
+  recipient_emails: [
     "exists1@example.com",
     "exists2@example.com",
-    "doesnotexists@example.com"
-  ]
+    "doesnotexists@example.com",
+  ],
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/asm/groups/{group_id}/suppressions/search';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/asm/groups/{group_id}/suppressions/search";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a suppression from a suppression group
 
 **This endpoint allows you to remove a suppressed email address from the given suppression group.**
@@ -714,16 +682,15 @@ Suppressions are recipient email addresses that are added to [unsubscribe groups
 
 ### DELETE /asm/groups/{group_id}/suppressions/{email}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/asm/groups/{group_id}/suppressions/{email}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/asm/groups/{group_id}/suppressions/{email}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all suppressions
 
 **This endpoint allows you to retrieve a list of all suppressions.**
@@ -732,16 +699,15 @@ Suppressions are a list of email addresses that will not receive content sent un
 
 ### GET /asm/suppressions
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/asm/suppressions';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/asm/suppressions";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Add recipient addresses to the global suppression group.
 
 **This endpoint allows you to add one or more email addresses to the global suppressions group.**
@@ -750,23 +716,19 @@ A global suppression (or global unsubscribe) is an email address of a recipient 
 
 ### POST /asm/suppressions/global
 
-
 ```javascript
-  const data = {
-  "recipient_emails": [
-    "test1@example.com",
-    "test2@example.com"
-  ]
+const data = {
+  recipient_emails: ["test1@example.com", "test2@example.com"],
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/asm/suppressions/global';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/asm/suppressions/global";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a Global Suppression
 
 **This endpoint allows you to remove an email address from the global suppressions group.**
@@ -775,16 +737,15 @@ A global suppression (or global unsubscribe) is an email address of a recipient 
 
 ### DELETE /asm/suppressions/global/{email}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/asm/suppressions/global/{email}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/asm/suppressions/global/{email}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a Global Suppression
 
 **This endpoint allows you to retrieve a global suppression. You can also use this endpoint to confirm if an email address is already globally suppressed.**
@@ -795,16 +756,15 @@ A global suppression (or global unsubscribe) is an email address of a recipient 
 
 ### GET /asm/suppressions/global/{email}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/asm/suppressions/global/{email}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/asm/suppressions/global/{email}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all suppression groups for an email address
 
 **This endpoint returns the list of all groups that the given email address has been unsubscribed from.**
@@ -813,17 +773,17 @@ Suppressions are a list of email addresses that will not receive content sent un
 
 ### GET /asm/suppressions/{email}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/asm/suppressions/{email}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/asm/suppressions/{email}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="browsers"></a>
+
 # BROWSERS
 
 ## Retrieve email statistics from a browser.
@@ -836,26 +796,26 @@ Advanced Stats provide a more in-depth view of your email statistics and the act
 
 ### GET /browsers/stats
 
-
 ```javascript
-  const queryParams = {
-  'aggregated_by': 'day',
-  'browsers': 'test_string',
-  'end_date': '2016-04-01',
-  'limit': 'test_string',
-  'offset': 'test_string',
-  'start_date': '2016-01-01'
+const queryParams = {
+  aggregated_by: "day",
+  browsers: "test_string",
+  end_date: "2016-04-01",
+  limit: "test_string",
+  offset: "test_string",
+  start_date: "2016-01-01",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/browsers/stats';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/browsers/stats";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="campaigns"></a>
+
 # CAMPAIGNS
 
 ## Create a Campaign
@@ -868,41 +828,34 @@ Note: To send or schedule the campaign, you will be required to provide a subjec
 
 For more information:
 
-* [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
+- [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
 
 ### POST /campaigns
 
-
 ```javascript
-  const data = {
-  "categories": [
-    "spring line"
-  ],
-  "custom_unsubscribe_url": "",
-  "html_content": "<html><head><title></title></head><body><p>Check out our spring line!</p></body></html>",
-  "ip_pool": "marketing",
-  "list_ids": [
-    110,
-    124
-  ],
-  "plain_content": "Check out our spring line!",
-  "segment_ids": [
-    110
-  ],
-  "sender_id": 124451,
-  "subject": "New Products for Spring!",
-  "suppression_group_id": 42,
-  "title": "March Newsletter"
+const data = {
+  categories: ["spring line"],
+  custom_unsubscribe_url: "",
+  html_content:
+    "<html><head><title></title></head><body><p>Check out our spring line!</p></body></html>",
+  ip_pool: "marketing",
+  list_ids: [110, 124],
+  plain_content: "Check out our spring line!",
+  segment_ids: [110],
+  sender_id: 124451,
+  subject: "New Products for Spring!",
+  suppression_group_id: 42,
+  title: "March Newsletter",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/campaigns';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/campaigns";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all Campaigns
 
 **This endpoint allows you to retrieve a list of all of your campaigns.**
@@ -913,55 +866,52 @@ Returns an empty array if no campaigns exist.
 
 For more information:
 
-* [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
+- [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
 
 ### GET /campaigns
 
-
 ```javascript
-  const queryParams = {
-  'limit': 1,
-  'offset': 1
+const queryParams = {
+  limit: 1,
+  offset: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/campaigns';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/campaigns";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update a Campaign
 
 Update a campaign. This is especially useful if you only set up the campaign using POST /campaigns, but didn't set many of the parameters.
 
 For more information:
 
-* [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
+- [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
 
 ### PATCH /campaigns/{campaign_id}
 
-
 ```javascript
-  const data = {
-  "categories": [
-    "summer line"
-  ],
-  "html_content": "<html><head><title></title></head><body><p>Check out our summer line!</p></body></html>",
-  "plain_content": "Check out our summer line!",
-  "subject": "New Products for Summer!",
-  "title": "May Newsletter"
+const data = {
+  categories: ["summer line"],
+  html_content:
+    "<html><head><title></title></head><body><p>Check out our summer line!</p></body></html>",
+  plain_content: "Check out our summer line!",
+  subject: "New Products for Summer!",
+  title: "May Newsletter",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/campaigns/{campaign_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/campaigns/{campaign_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a Campaign
 
 **This endpoint allows you to delete a specific campaign.**
@@ -970,20 +920,19 @@ Our Marketing Campaigns API lets you create, manage, send, and schedule campaign
 
 For more information:
 
-* [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
+- [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
 
 ### DELETE /campaigns/{campaign_id}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/campaigns/{campaign_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/campaigns/{campaign_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a single campaign
 
 **This endpoint allows you to retrieve a specific campaign.**
@@ -992,20 +941,19 @@ Our Marketing Campaigns API lets you create, manage, send, and schedule campaign
 
 For more information:
 
-* [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
+- [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
 
 ### GET /campaigns/{campaign_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/campaigns/{campaign_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/campaigns/{campaign_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Unschedule a Scheduled Campaign
 
 **This endpoint allows you to unschedule a campaign that has already been scheduled to be sent.**
@@ -1015,88 +963,84 @@ If the specified campaign is in the process of being sent, the only option is to
 
 For more information:
 
-* [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
+- [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
 
 ### DELETE /campaigns/{campaign_id}/schedules
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/campaigns/{campaign_id}/schedules';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/campaigns/{campaign_id}/schedules";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Schedule a Campaign
 
 **This endpoint allows you to schedule a specific date and time for your campaign to be sent.**
 
 For more information:
 
-* [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
+- [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
 
 ### POST /campaigns/{campaign_id}/schedules
 
-
 ```javascript
-  const data = {
-  "send_at": 1489771528
+const data = {
+  send_at: 1489771528,
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/campaigns/{campaign_id}/schedules';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/campaigns/{campaign_id}/schedules";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## View Scheduled Time of a Campaign
 
 **This endpoint allows you to retrieve the date and time that the given campaign has been scheduled to be sent.**
 
 For more information:
 
-* [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
+- [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
 
 ### GET /campaigns/{campaign_id}/schedules
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/campaigns/{campaign_id}/schedules';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/campaigns/{campaign_id}/schedules";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update a Scheduled Campaign
 
 **This endpoint allows to you change the scheduled time and date for a campaign to be sent.**
 
 For more information:
 
-* [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
+- [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
 
 ### PATCH /campaigns/{campaign_id}/schedules
 
-
 ```javascript
-  const data = {
-  "send_at": 1489451436
+const data = {
+  send_at: 1489451436,
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/campaigns/{campaign_id}/schedules';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/campaigns/{campaign_id}/schedules";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Send a Campaign
 
 **This endpoint allows you to immediately send a campaign at the time you make the API call.**
@@ -1105,20 +1049,19 @@ Usually, a POST would have a request body, but since this endpoint is telling us
 
 For more information:
 
-* [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
+- [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
 
 ### POST /campaigns/{campaign_id}/schedules/now
 
-
 ```javascript
-  request.method = 'POST';
-  request.url = '/v3/campaigns/{campaign_id}/schedules/now';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "POST";
+request.url = "/v3/campaigns/{campaign_id}/schedules/now";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Send a Test Campaign
 
 **This endpoint allows you to send a test campaign.**
@@ -1127,25 +1070,25 @@ To send to multiple addresses, use an array for the JSON "to" value ["one@addres
 
 For more information:
 
-* [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
+- [User Guide > Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html)
 
 ### POST /campaigns/{campaign_id}/schedules/test
 
-
 ```javascript
-  const data = {
-  "to": "your.email@example.com"
+const data = {
+  to: "your.email@example.com",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/campaigns/{campaign_id}/schedules/test';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/campaigns/{campaign_id}/schedules/test";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="categories"></a>
+
 # CATEGORIES
 
 ## Retrieve all categories
@@ -1156,22 +1099,21 @@ Categories can help organize your email analytics by enabling you to tag emails 
 
 ### GET /categories
 
-
 ```javascript
-  const queryParams = {
-  'category': 'test_string',
-  'limit': 1,
-  'offset': 1
+const queryParams = {
+  category: "test_string",
+  limit: 1,
+  offset: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/categories';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/categories";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve Email Statistics for Categories
 
 **This endpoint allows you to retrieve all of your email statistics for each of your categories.**
@@ -1182,53 +1124,48 @@ Categories allow you to group your emails according to broad topics that you def
 
 ### GET /categories/stats
 
-
 ```javascript
 const queryParams = {
-  'aggregated_by': 'day',
-  'categories': 'test_string',
-  'end_date': '2016-04-01',
-  'limit': 1,
-  'offset': 1,
-  'start_date': '2016-01-01'
+  aggregated_by: "day",
+  categories: "test_string",
+  end_date: "2016-04-01",
+  limit: 1,
+  offset: 1,
+  start_date: "2016-01-01",
 };
 request.qs = queryParams;
-request.method = 'GET';
-request.url = '/v3/categories/stats';
-client
-  .request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/categories/stats";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
-
 
 **Attention:** in order to receive the email statistics for multiple categories at once, you need to set the `qsStringifyOptions` as follows:
 
 ```javascript
-const client = require('@sendgrid/client')
-client.setDefaultRequest('qsStringifyOptions', {arrayFormat: 'repeat'});
+const client = require("@sendgrid/client");
+client.setDefaultRequest("qsStringifyOptions", { arrayFormat: "repeat" });
 
-const request = {}
+const request = {};
 const queryParams = {
-  'aggregated_by': 'day',
-  'categories': ['test_category_1', 'cat facts'],
-  'end_date': '2016-04-01',
-  'limit': 1,
-  'offset': 1,
-  'start_date': '2016-01-01'
+  aggregated_by: "day",
+  categories: ["test_category_1", "cat facts"],
+  end_date: "2016-04-01",
+  limit: 1,
+  offset: 1,
+  start_date: "2016-01-01",
 };
 request.qs = queryParams;
-request.method = 'GET';
-request.url = '/v3/categories/stats';
-client
-  .request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/categories/stats";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve sums of email stats for each category [Needs: Stats object defined, has category ID?]
 
 **This endpoint allows you to retrieve the total sum of each email statistic for every category over the given date range.**
@@ -1239,27 +1176,27 @@ Categories allow you to group your emails according to broad topics that you def
 
 ### GET /categories/stats/sums
 
-
 ```javascript
-  const queryParams = {
-  'aggregated_by': 'day',
-  'end_date': '2016-04-01',
-  'limit': 1,
-  'offset': 1,
-  'sort_by_direction': 'asc',
-  'sort_by_metric': 'test_string',
-  'start_date': '2016-01-01'
+const queryParams = {
+  aggregated_by: "day",
+  end_date: "2016-04-01",
+  limit: 1,
+  offset: 1,
+  sort_by_direction: "asc",
+  sort_by_metric: "test_string",
+  start_date: "2016-01-01",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/categories/stats/sums';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/categories/stats/sums";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="clients"></a>
+
 # CLIENTS
 
 ## Retrieve email statistics by client type.
@@ -1272,22 +1209,21 @@ Advanced Stats provide a more in-depth view of your email statistics and the act
 
 ### GET /clients/stats
 
-
 ```javascript
-  const queryParams = {
-  'aggregated_by': 'day',
-  'end_date': '2016-04-01',
-  'start_date': '2016-01-01'
+const queryParams = {
+  aggregated_by: "day",
+  end_date: "2016-04-01",
+  start_date: "2016-01-01",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/clients/stats';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/clients/stats";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve stats by a specific client type.
 
 **This endpoint allows you to retrieve your email statistics segmented by a specific client type.**
@@ -1295,6 +1231,7 @@ Advanced Stats provide a more in-depth view of your email statistics and the act
 **We only store up to 7 days of email activity in our database.** By default, 500 items will be returned per request via the Advanced Stats API endpoints.
 
 ## Available Client Types
+
 - phone
 - tablet
 - webmail
@@ -1304,23 +1241,23 @@ Advanced Stats provide a more in-depth view of your email statistics and the act
 
 ### GET /clients/{client_type}/stats
 
-
 ```javascript
-  const queryParams = {
-  'aggregated_by': 'day',
-  'end_date': '2016-04-01',
-  'start_date': '2016-01-01'
+const queryParams = {
+  aggregated_by: "day",
+  end_date: "2016-04-01",
+  start_date: "2016-01-01",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/clients/{client_type}/stats';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/clients/{client_type}/stats";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="contactdb"></a>
+
 # CONTACTDB
 
 ## Create a Custom Field
@@ -1331,21 +1268,20 @@ The contactdb is a database of your contacts for [Twilio SendGrid Marketing Camp
 
 ### POST /contactdb/custom_fields
 
-
 ```javascript
-  const data = {
-  "name": "pet",
-  "type": "text"
+const data = {
+  name: "pet",
+  type: "text",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/contactdb/custom_fields';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/contactdb/custom_fields";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all custom fields
 
 **This endpoint allows you to retrieve all custom fields.**
@@ -1354,16 +1290,15 @@ The contactdb is a database of your contacts for [Twilio SendGrid Marketing Camp
 
 ### GET /contactdb/custom_fields
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/contactdb/custom_fields';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/contactdb/custom_fields";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a Custom Field
 
 **This endpoint allows you to delete a custom field by ID.**
@@ -1372,16 +1307,15 @@ The contactdb is a database of your contacts for [Twilio SendGrid Marketing Camp
 
 ### DELETE /contactdb/custom_fields/{custom_field_id}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/contactdb/custom_fields/{custom_field_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/contactdb/custom_fields/{custom_field_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a Custom Field
 
 **This endpoint allows you to retrieve a custom field by ID.**
@@ -1390,16 +1324,15 @@ The contactdb is a database of your contacts for [Twilio SendGrid Marketing Camp
 
 ### GET /contactdb/custom_fields/{custom_field_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/contactdb/custom_fields/{custom_field_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/contactdb/custom_fields/{custom_field_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Create a List
 
 **This endpoint allows you to create a list for your recipients.**
@@ -1408,20 +1341,19 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### POST /contactdb/lists
 
-
 ```javascript
-  const data = {
-  "name": "your list name"
+const data = {
+  name: "your list name",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/contactdb/lists';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/contactdb/lists";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete Multiple lists
 
 **This endpoint allows you to delete multiple recipient lists.**
@@ -1430,23 +1362,17 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### DELETE /contactdb/lists
 
-
 ```javascript
-  const data = [
-  1,
-  2,
-  3,
-  4
-];
-  request.body = data;
-  request.method = 'DELETE';
-  request.url = '/v3/contactdb/lists';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const data = [1, 2, 3, 4];
+request.body = data;
+request.method = "DELETE";
+request.url = "/v3/contactdb/lists";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all lists
 
 **This endpoint allows you to retrieve all of your recipient lists. If you don't have any lists, an empty array will be returned.**
@@ -1455,16 +1381,15 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### GET /contactdb/lists
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/contactdb/lists';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/contactdb/lists";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a List
 
 **This endpoint allows you to delete a specific recipient list with the given ID.**
@@ -1473,47 +1398,44 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### DELETE /contactdb/lists/{list_id}
 
-
 ```javascript
-  const queryParams = {
-  'delete_contacts': 'true'
+const queryParams = {
+  delete_contacts: "true",
 };
-  request.qs = queryParams;
-  request.method = 'DELETE';
-  request.url = '/v3/contactdb/lists/{list_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "DELETE";
+request.url = "/v3/contactdb/lists/{list_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update a List
 
 **This endpoint allows you to update the name of one of your recipient lists.**
-
 
 The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html) recipients.
 
 ### PATCH /contactdb/lists/{list_id}
 
-
 ```javascript
-  const data = {
-  "name": "newlistname"
+const data = {
+  name: "newlistname",
 };
-  request.body = data;
-  const queryParams = {
-  'list_id': 1
+request.body = data;
+const queryParams = {
+  list_id: 1,
 };
-  request.qs = queryParams;
-  request.method = 'PATCH';
-  request.url = '/v3/contactdb/lists/{list_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "PATCH";
+request.url = "/v3/contactdb/lists/{list_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a single list
 
 This endpoint allows you to retrieve a single recipient list.
@@ -1522,20 +1444,19 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### GET /contactdb/lists/{list_id}
 
-
 ```javascript
-  const queryParams = {
-  'list_id': 1
+const queryParams = {
+  list_id: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/contactdb/lists/{list_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/contactdb/lists/{list_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Add Multiple Recipients to a List
 
 **This endpoint allows you to add multiple recipients to a list.**
@@ -1546,21 +1467,17 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### POST /contactdb/lists/{list_id}/recipients
 
-
 ```javascript
-  const data = [
-  "recipient_id1",
-  "recipient_id2"
-];
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/contactdb/lists/{list_id}/recipients';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const data = ["recipient_id1", "recipient_id2"];
+request.body = data;
+request.method = "POST";
+request.url = "/v3/contactdb/lists/{list_id}/recipients";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all recipients on a List
 
 **This endpoint allows you to retrieve all recipients on the list with the given ID.**
@@ -1569,22 +1486,21 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### GET /contactdb/lists/{list_id}/recipients
 
-
 ```javascript
 const queryParams = {
-  'page': 1,
-  'page_size': 1
+  page: 1,
+  page_size: 1,
 };
 request.qs = queryParams;
-request.method = 'GET';
+request.method = "GET";
 var list_id = 1;
-request.url = '/v3/contactdb/lists/{list_id}/recipients';
-client.request(request)
-.then(([response, body]) => {
+request.url = "/v3/contactdb/lists/{list_id}/recipients";
+client.request(request).then(([response, body]) => {
   console.log(response.statusCode);
   console.log(response.body);
-})
+});
 ```
+
 ## Add a Single Recipient to a List
 
 **This endpoint allows you to add a single recipient to a list.**
@@ -1593,16 +1509,15 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### POST /contactdb/lists/{list_id}/recipients/{recipient_id}
 
-
 ```javascript
-  request.method = 'POST';
-  request.url = '/v3/contactdb/lists/{list_id}/recipients/{recipient_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "POST";
+request.url = "/v3/contactdb/lists/{list_id}/recipients/{recipient_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a Single Recipient from a Single List
 
 **This endpoint allows you to delete a single recipient from a list.**
@@ -1611,21 +1526,20 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### DELETE /contactdb/lists/{list_id}/recipients/{recipient_id}
 
-
 ```javascript
-  const queryParams = {
-  'list_id': 1,
-  'recipient_id': 1
+const queryParams = {
+  list_id: 1,
+  recipient_id: 1,
 };
-  request.qs = queryParams;
-  request.method = 'DELETE';
-  request.url = '/v3/contactdb/lists/{list_id}/recipients/{recipient_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "DELETE";
+request.url = "/v3/contactdb/lists/{list_id}/recipients/{recipient_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Add recipients
 
 **This endpoint allows you to add a Marketing Campaigns recipient.**
@@ -1636,31 +1550,30 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### POST /contactdb/recipients
 
-
 ```javascript
-  const data = [
+const data = [
   {
-    "age": "25",
-    "email": "example@example.com",
-    "first_name": "",
-    "last_name": "User"
+    age: "25",
+    email: "example@example.com",
+    first_name: "",
+    last_name: "User",
   },
   {
-    "age": "25",
-    "email": "example2@example.com",
-    "first_name": "Example",
-    "last_name": "User"
-  }
+    age: "25",
+    email: "example2@example.com",
+    first_name: "Example",
+    last_name: "User",
+  },
 ];
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/contactdb/recipients';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/contactdb/recipients";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete Recipient
 
 **This endpoint allows you to delete one or more recipients.**
@@ -1671,21 +1584,17 @@ The contactdb is a database of your contacts for [Twilio SendGrid Marketing Camp
 
 ### DELETE /contactdb/recipients
 
-
 ```javascript
-  const data = [
-  "recipient_id1",
-  "recipient_id2"
-];
-  request.body = data;
-  request.method = 'DELETE';
-  request.url = '/v3/contactdb/recipients';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const data = ["recipient_id1", "recipient_id2"];
+request.body = data;
+request.method = "DELETE";
+request.url = "/v3/contactdb/recipients";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve recipients
 
 **This endpoint allows you to retrieve all of your Marketing Campaigns recipients.**
@@ -1697,21 +1606,20 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### GET /contactdb/recipients
 
-
 ```javascript
-  const queryParams = {
-  'page': 1,
-  'page_size': 1
+const queryParams = {
+  page: 1,
+  page_size: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/contactdb/recipients';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/contactdb/recipients";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update Recipient
 
 **This endpoint allows you to update one or more recipients.**
@@ -1724,24 +1632,23 @@ The contactdb is a database of your contacts for [Twilio SendGrid Marketing Camp
 
 ### PATCH /contactdb/recipients
 
-
 ```javascript
-  const data = [
+const data = [
   {
-    "email": "jones@example.com",
-    "first_name": "Guy",
-    "last_name": "Jones"
-  }
+    email: "jones@example.com",
+    first_name: "Guy",
+    last_name: "Jones",
+  },
 ];
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/contactdb/recipients';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/contactdb/recipients";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve the count of billable recipients
 
 **This endpoint allows you to retrieve the number of Marketing Campaigns recipients that you will be billed for.**
@@ -1752,16 +1659,15 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### GET /contactdb/recipients/billable_count
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/contactdb/recipients/billable_count';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/contactdb/recipients/billable_count";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a Count of Recipients
 
 **This endpoint allows you to retrieve the total number of Marketing Campaigns recipients.**
@@ -1770,47 +1676,45 @@ The contactdb is a database of your contacts for [Twilio SendGrid Marketing Camp
 
 ### GET /contactdb/recipients/count
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/contactdb/recipients/count';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/contactdb/recipients/count";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve recipients matching search criteria
 
 **This endpoint allows you to perform a search on all of your Marketing Campaigns recipients.**
 
 field_name:
 
-* is a variable that is substituted for your actual custom field name from your recipient.
-* Text fields must be URL encoded. Date fields are searchable only by Unix timestamp (e.g. 2/2/2015 becomes 1422835200)
-* If field_name is a 'reserved' date field, such as created_at or updated_at, the system will internally convert
-your epoch time to a date range encompassing the entire day. For example, an epoch time of 1422835600 converts to
-Mon, 02 Feb 2015 00:06:40 GMT, but internally the system will search from Mon, 02 Feb 2015 00:00:00 GMT through
-Mon, 02 Feb 2015 23:59:59 GMT.
+- is a variable that is substituted for your actual custom field name from your recipient.
+- Text fields must be URL encoded. Date fields are searchable only by Unix timestamp (e.g. 2/2/2015 becomes 1422835200)
+- If field_name is a 'reserved' date field, such as created_at or updated_at, the system will internally convert
+  your epoch time to a date range encompassing the entire day. For example, an epoch time of 1422835600 converts to
+  Mon, 02 Feb 2015 00:06:40 GMT, but internally the system will search from Mon, 02 Feb 2015 00:00:00 GMT through
+  Mon, 02 Feb 2015 23:59:59 GMT.
 
 The contactdb is a database of your contacts for [Twilio SendGrid Marketing Campaigns](https://sendgrid.com/docs/User_Guide/Marketing_Campaigns/index.html).
 
 ### GET /contactdb/recipients/search
 
-
 ```javascript
-  const queryParams = {
-  '{field_name}': 'test_string'
+const queryParams = {
+  "{field_name}": "test_string",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/contactdb/recipients/search';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/contactdb/recipients/search";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a Recipient
 
 **This endpoint allows you to delete a single recipient with the given ID from your contact database.**
@@ -1819,16 +1723,15 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### DELETE /contactdb/recipients/{recipient_id}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/contactdb/recipients/{recipient_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/contactdb/recipients/{recipient_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a single recipient
 
 **This endpoint allows you to retrieve a single recipient by ID from your contact database.**
@@ -1837,16 +1740,15 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### GET /contactdb/recipients/{recipient_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/contactdb/recipients/{recipient_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/contactdb/recipients/{recipient_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve the lists that a recipient is on
 
 **This endpoint allows you to retrieve the lists that a given recipient belongs to.**
@@ -1857,16 +1759,15 @@ The Contacts API helps you manage your [Marketing Campaigns](https://sendgrid.co
 
 ### GET /contactdb/recipients/{recipient_id}/lists
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/contactdb/recipients/{recipient_id}/lists';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/contactdb/recipients/{recipient_id}/lists";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve reserved fields
 
 **This endpoint allows you to list all fields that are reserved and can't be used for custom field names.**
@@ -1875,16 +1776,15 @@ The contactdb is a database of your contacts for [Twilio SendGrid Marketing Camp
 
 ### GET /contactdb/reserved_fields
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/contactdb/reserved_fields';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/contactdb/reserved_fields";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Create a Segment
 
 **This endpoint allows you to create a segment.**
@@ -1893,17 +1793,17 @@ All recipients in your contactdb will be added or removed automatically dependin
 
 List Id:
 
-* Send this to segment from an existing list.
-* Don't send this to segment from your entire contactdb.
+- Send this to segment from an existing list.
+- Don't send this to segment from your entire contactdb.
 
 Valid operators for create and update depend on the type of the field you are segmenting:
 
-* **Dates:** "eq", "ne", "lt" (before), "gt" (after)
-* **Text:** "contains", "eq" (is - matches the full field), "ne" (is not - matches any field where the entire field is not the condition value)
-* **Numbers:** "eq", "lt", "gt"
-* **Email Clicks and Opens:** "eq" (opened), "ne" (not opened)
+- **Dates:** "eq", "ne", "lt" (before), "gt" (after)
+- **Text:** "contains", "eq" (is - matches the full field), "ne" (is not - matches any field where the entire field is not the condition value)
+- **Numbers:** "eq", "lt", "gt"
+- **Email Clicks and Opens:** "eq" (opened), "ne" (not opened)
 
-Segment conditions using "eq" or "ne" for email clicks and opens should provide a "field" of either *clicks.campaign_identifier* or *opens.campaign_identifier*. The condition value should be a string containing the id of a completed campaign.
+Segment conditions using "eq" or "ne" for email clicks and opens should provide a "field" of either _clicks.campaign_identifier_ or _opens.campaign_identifier_. The condition value should be a string containing the id of a completed campaign.
 
 Segments may contain multiple conditions, joined by an "and" or "or" in the "and_or" field. The first condition in the conditions list must have an empty "and_or", and subsequent conditions must all specify an "and_or".
 
@@ -1913,41 +1813,40 @@ For more information about segments in Marketing Campaigns, please see our [User
 
 ### POST /contactdb/segments
 
-
 ```javascript
-  const data = {
-  "conditions": [
+const data = {
+  conditions: [
     {
-      "and_or": "",
-      "field": "last_name",
-      "operator": "eq",
-      "value": "Miller"
+      and_or: "",
+      field: "last_name",
+      operator: "eq",
+      value: "Miller",
     },
     {
-      "and_or": "and",
-      "field": "last_clicked",
-      "operator": "gt",
-      "value": "01/02/2015"
+      and_or: "and",
+      field: "last_clicked",
+      operator: "gt",
+      value: "01/02/2015",
     },
     {
-      "and_or": "or",
-      "field": "clicks.campaign_identifier",
-      "operator": "eq",
-      "value": "513"
-    }
+      and_or: "or",
+      field: "clicks.campaign_identifier",
+      operator: "eq",
+      value: "513",
+    },
   ],
-  "list_id": 4,
-  "name": "Last Name Miller"
+  list_id: 4,
+  name: "Last Name Miller",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/contactdb/segments';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/contactdb/segments";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all segments
 
 **This endpoint allows you to retrieve all of your segments.**
@@ -1958,16 +1857,15 @@ For more information about segments in Marketing Campaigns, please see our [User
 
 ### GET /contactdb/segments
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/contactdb/segments';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/contactdb/segments";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a segment
 
 **This endpoint allows you to delete a segment from your recipients' database.**
@@ -1980,20 +1878,19 @@ For more information about segments in Marketing Campaigns, please see our [User
 
 ### DELETE /contactdb/segments/{segment_id}
 
-
 ```javascript
-  const queryParams = {
-  'delete_contacts': 'true'
+const queryParams = {
+  delete_contacts: "true",
 };
-  request.qs = queryParams;
-  request.method = 'DELETE';
-  request.url = '/v3/contactdb/segments/{segment_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "DELETE";
+request.url = "/v3/contactdb/segments/{segment_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update a segment
 
 **This endpoint allows you to update a segment.**
@@ -2004,33 +1901,32 @@ For more information about segments in Marketing Campaigns, please see our [User
 
 ### PATCH /contactdb/segments/{segment_id}
 
-
 ```javascript
-  const data = {
-  "conditions": [
+const data = {
+  conditions: [
     {
-      "and_or": "",
-      "field": "last_name",
-      "operator": "eq",
-      "value": "Miller"
-    }
+      and_or: "",
+      field: "last_name",
+      operator: "eq",
+      value: "Miller",
+    },
   ],
-  "list_id": 5,
-  "name": "The Millers"
+  list_id: 5,
+  name: "The Millers",
 };
-  request.body = data;
-  const queryParams = {
-  'segment_id': 'test_string'
+request.body = data;
+const queryParams = {
+  segment_id: "test_string",
 };
-  request.qs = queryParams;
-  request.method = 'PATCH';
-  request.url = '/v3/contactdb/segments/{segment_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "PATCH";
+request.url = "/v3/contactdb/segments/{segment_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a segment
 
 **This endpoint allows you to retrieve a single segment with the given ID.**
@@ -2041,20 +1937,19 @@ For more information about segments in Marketing Campaigns, please see our [User
 
 ### GET /contactdb/segments/{segment_id}
 
-
 ```javascript
-  const queryParams = {
-  'segment_id': 1
+const queryParams = {
+  segment_id: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/contactdb/segments/{segment_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/contactdb/segments/{segment_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve recipients on a segment
 
 **This endpoint allows you to retrieve all of the recipients in a segment with the given ID.**
@@ -2065,38 +1960,35 @@ For more information about segments in Marketing Campaigns, please see our [User
 
 ### GET /contactdb/segments/{segment_id}/recipients
 
-
 ```javascript
-  const queryParams = {
-  'page': 1,
-  'page_size': 1
+const queryParams = {
+  page: 1,
+  page_size: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/contactdb/segments/{segment_id}/recipients';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/contactdb/segments/{segment_id}/recipients";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Get Contact Upload Status
-
-
 
 ### GET /contactdb/status
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/contactdb/status';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/contactdb/status";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="devices"></a>
+
 # DEVICES
 
 ## Retrieve email statistics by device type.
@@ -2106,37 +1998,38 @@ For more information about segments in Marketing Campaigns, please see our [User
 **We only store up to 7 days of email activity in our database.** By default, 500 items will be returned per request via the Advanced Stats API endpoints.
 
 ## Available Device Types
-| **Device** | **Description** | **Example** |
-|---|---|---|
-| Desktop | Email software on a desktop computer. | I.E., Outlook, Sparrow, or Apple Mail. |
-| Webmail |	A web-based email client. | I.E., Yahoo, Google, AOL, or Outlook.com. |
-| Phone | A smartphone. | iPhone, Android, Blackberry, etc.
-| Tablet | A tablet computer. | iPad, Android-based tablet, etc. |
-| Other | An unrecognized device. |
+
+| **Device** | **Description**                       | **Example**                               |
+| ---------- | ------------------------------------- | ----------------------------------------- |
+| Desktop    | Email software on a desktop computer. | I.E., Outlook, Sparrow, or Apple Mail.    |
+| Webmail    | A web-based email client.             | I.E., Yahoo, Google, AOL, or Outlook.com. |
+| Phone      | A smartphone.                         | iPhone, Android, Blackberry, etc.         |
+| Tablet     | A tablet computer.                    | iPad, Android-based tablet, etc.          |
+| Other      | An unrecognized device.               |
 
 Advanced Stats provide a more in-depth view of your email statistics and the actions taken by your recipients. You can segment these statistics by geographic location, device type, client type, browser, and mailbox provider. For more information about statistics, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Statistics/index.html).
 
 ### GET /devices/stats
 
-
 ```javascript
-  const queryParams = {
-  'aggregated_by': 'day',
-  'end_date': '2016-04-01',
-  'limit': 1,
-  'offset': 1,
-  'start_date': '2016-01-01'
+const queryParams = {
+  aggregated_by: "day",
+  end_date: "2016-04-01",
+  limit: 1,
+  offset: 1,
+  start_date: "2016-01-01",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/devices/stats';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/devices/stats";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="geo"></a>
+
 # GEO
 
 ## Retrieve email statistics by country and state/province.
@@ -2149,26 +2042,26 @@ Advanced Stats provide a more in-depth view of your email statistics and the act
 
 ### GET /geo/stats
 
-
 ```javascript
-  const queryParams = {
-  'aggregated_by': 'day',
-  'country': 'US',
-  'end_date': '2016-04-01',
-  'limit': 1,
-  'offset': 1,
-  'start_date': '2016-01-01'
+const queryParams = {
+  aggregated_by: "day",
+  country: "US",
+  end_date: "2016-04-01",
+  limit: 1,
+  offset: 1,
+  start_date: "2016-01-01",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/geo/stats';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/geo/stats";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="ips"></a>
+
 # IPS
 
 ## Add IPs
@@ -2177,26 +2070,22 @@ This endpoint is for adding a(n) IP Address(es) to your account.
 
 ### POST /ips
 
-
 ```javascript
-  const data = {
-  "count": 90323478,
-  "subusers": [
-    "subuser1",
-    "subuser2"
-  ],
-  "user_can_send": true,
-  "warmup": true
+const data = {
+  count: 90323478,
+  subusers: ["subuser1", "subuser2"],
+  user_can_send: true,
+  warmup: true,
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/ips';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/ips";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all IP addresses
 
 **This endpoint allows you to retrieve a list of all assigned and unassigned IPs.**
@@ -2207,25 +2096,24 @@ A single IP address or a range of IP addresses may be dedicated to an account to
 
 ### GET /ips
 
-
 ```javascript
-  const queryParams = {
-  'exclude_whitelabels': 'true',
-  'ip': 'test_string',
-  'limit': 1,
-  'offset': 1,
-  'sort_by_direction': 'asc',
-  'subuser': 'test_string'
+const queryParams = {
+  exclude_whitelabels: "true",
+  ip: "test_string",
+  limit: 1,
+  offset: 1,
+  sort_by_direction: "asc",
+  subuser: "test_string",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/ips';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/ips";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all assigned IPs
 
 **This endpoint allows you to retrieve only assigned IP addresses.**
@@ -2234,16 +2122,15 @@ A single IP address or a range of IP addresses may be dedicated to an account to
 
 ### GET /ips/assigned
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/ips/assigned';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/ips/assigned";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Create an IP pool.
 
 **This endpoint allows you to create an IP pool.**
@@ -2258,20 +2145,19 @@ If an IP pool is NOT specified for an email, it will use any IP available, inclu
 
 ### POST /ips/pools
 
-
 ```javascript
-  const data = {
-  "name": "marketing"
+const data = {
+  name: "marketing",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/ips/pools';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/ips/pools";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all IP pools.
 
 **This endpoint allows you to retrieve all of your IP pools.**
@@ -2284,16 +2170,15 @@ If an IP pool is NOT specified for an email, it will use any IP available, inclu
 
 ### GET /ips/pools
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/ips/pools';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/ips/pools";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update an IP pools name.
 
 **This endpoint allows you to update the name of an IP pool.**
@@ -2306,20 +2191,19 @@ If an IP pool is NOT specified for an email, it will use any IP available, inclu
 
 ### PUT /ips/pools/{pool_name}
 
-
 ```javascript
-  const data = {
-  "name": "new_pool_name"
+const data = {
+  name: "new_pool_name",
 };
-  request.body = data;
-  request.method = 'PUT';
-  request.url = '/v3/ips/pools/{pool_name}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PUT";
+request.url = "/v3/ips/pools/{pool_name}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete an IP pool.
 
 **This endpoint allows you to delete an IP pool.**
@@ -2332,16 +2216,15 @@ If an IP pool is NOT specified for an email, it will use any IP available, inclu
 
 ### DELETE /ips/pools/{pool_name}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/ips/pools/{pool_name}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/ips/pools/{pool_name}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all IPs in a specified pool.
 
 **This endpoint allows you to list all of the IP addresses that are in a specific IP pool.**
@@ -2354,16 +2237,15 @@ If an IP pool is NOT specified for an email, it will use any IP available, inclu
 
 ### GET /ips/pools/{pool_name}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/ips/pools/{pool_name}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/ips/pools/{pool_name}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Add an IP address to a pool
 
 **This endpoint allows you to add an IP address to an IP pool.**
@@ -2374,20 +2256,19 @@ A single IP address or a range of IP addresses may be dedicated to an account to
 
 ### POST /ips/pools/{pool_name}/ips
 
-
 ```javascript
-  const data = {
-  "ip": "0.0.0.0"
+const data = {
+  ip: "0.0.0.0",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/ips/pools/{pool_name}/ips';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/ips/pools/{pool_name}/ips";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Remove an IP address from a pool.
 
 **This endpoint allows you to remove an IP address from an IP pool.**
@@ -2398,32 +2279,30 @@ A single IP address or a range of IP addresses may be dedicated to an account to
 
 ### DELETE /ips/pools/{pool_name}/ips/{ip}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/ips/pools/{pool_name}/ips/{ip}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/ips/pools/{pool_name}/ips/{ip}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Get remaining IPs count
 
 This endpoint gets the amount of IP Addresses that can still be created during a given period and the price of those IPs.
 
 ### GET /ips/remaining
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/ips/remaining';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/ips/remaining";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Add an IP to warmup
 
 **This endpoint allows you to enter an IP address into warmup mode.**
@@ -2434,20 +2313,19 @@ For more general information about warming up IPs, please see our [Classroom](ht
 
 ### POST /ips/warmup
 
-
 ```javascript
-  const data = {
-  "ip": "0.0.0.0"
+const data = {
+  ip: "0.0.0.0",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/ips/warmup';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/ips/warmup";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all IPs currently in warmup
 
 **This endpoint allows you to retrieve all of your IP addresses that are currently warming up.**
@@ -2458,16 +2336,15 @@ For more general information about warming up IPs, please see our [Classroom](ht
 
 ### GET /ips/warmup
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/ips/warmup';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/ips/warmup";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Remove an IP from warmup
 
 **This endpoint allows you to remove an IP address from warmup mode.**
@@ -2478,16 +2355,15 @@ For more general information about warming up IPs, please see our [Classroom](ht
 
 ### DELETE /ips/warmup/{ip_address}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/ips/warmup/{ip_address}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/ips/warmup/{ip_address}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve warmup status for a specific IP address
 
 **This endpoint allows you to retrieve the warmup status for a specific IP address.**
@@ -2498,16 +2374,15 @@ For more general information about warming up IPs, please see our [Classroom](ht
 
 ### GET /ips/warmup/{ip_address}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/ips/warmup/{ip_address}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/ips/warmup/{ip_address}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all IP pools an IP address belongs to
 
 **This endpoint allows you to see which IP pools a particular IP address has been added to.**
@@ -2518,17 +2393,17 @@ A single IP address or a range of IP addresses may be dedicated to an account to
 
 ### GET /ips/{ip_address}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/ips/{ip_address}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/ips/{ip_address}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="mail"></a>
+
 # MAIL
 
 ## Create a batch ID
@@ -2539,20 +2414,19 @@ If you set the SMTPAPI header `batch_id`, it allows you to then associate multip
 
 More Information:
 
-* [Scheduling Parameters > Batch ID](https://sendgrid.com/docs/API_Reference/SMTP_API/scheduling_parameters.html)
+- [Scheduling Parameters > Batch ID](https://sendgrid.com/docs/API_Reference/SMTP_API/scheduling_parameters.html)
 
 ### POST /mail/batch
 
-
 ```javascript
-  request.method = 'POST';
-  request.url = '/v3/mail/batch';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "POST";
+request.url = "/v3/mail/batch";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Validate batch ID
 
 **This endpoint allows you to validate a batch ID.**
@@ -2561,29 +2435,27 @@ If you set the SMTPAPI header `batch_id`, it allows you to then associate multip
 
 More Information:
 
-* [Scheduling Parameters > Batch ID](https://sendgrid.com/docs/API_Reference/SMTP_API/scheduling_parameters.html)
+- [Scheduling Parameters > Batch ID](https://sendgrid.com/docs/API_Reference/SMTP_API/scheduling_parameters.html)
 
 ### GET /mail/batch/{batch_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/mail/batch/{batch_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/mail/batch/{batch_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## v3 Mail Send
 
 This endpoint allows you to send an email over Twilio SendGrid's v3 Web API, the most recent version of our API. If you are looking for documentation about the v2 Mail Send endpoint, please see our [v2 API Reference](https://sendgrid.com/docs/API_Reference/Web_API/mail.html).
 
-* Top level parameters are referred to as "global".
-* Individual fields within the personalizations array will override any other global, or message level, parameters that are defined outside of personalizations.
+- Top level parameters are referred to as "global".
+- Individual fields within the personalizations array will override any other global, or message level, parameters that are defined outside of personalizations.
 
 **Twilio SendGrid provides libraries to help you quickly and easily integrate with the v3 Web API in 7 different languages: [C#](https://github.com/sendgrid/sendgrid-csharp), [Go](https://github.com/sendgrid/sendgrid-go), [Java](https://github.com/sendgrid/sendgrid-java), [Node JS](https://github.com/sendgrid/sendgrid-nodejs), [PHP](https://github.com/sendgrid/sendgrid-php), [Python](https://github.com/sendgrid/sendgrid-python), and [Ruby](https://github.com/sendgrid/sendgrid-ruby).**
-
 
 For more detailed information about how to use the v3 Mail Send endpoint, please visit our [Classroom](https://sendgrid.com/docs/Classroom/Send/v3_Mail_Send/index.html).
 
@@ -2592,44 +2464,45 @@ For more detailed information about how to use the v3 Mail Send endpoint, please
 // This endpoint has a helper, check it out [here](../mail).
 
 ```javascript
-  const data = {
-  "content": [
+const data = {
+  content: [
     {
-      "type": "text/html",
-      "value": "<html><p>Hello, world!</p></html>"
-    }
+      type: "text/html",
+      value: "<html><p>Hello, world!</p></html>",
+    },
   ],
-  "from": {
-    "email": "sam.smith@example.com",
-    "name": "Sam Smith"
+  from: {
+    email: "sam.smith@example.com",
+    name: "Sam Smith",
   },
-  "personalizations": [
+  personalizations: [
     {
-      "subject": "Hello, World!",
-      "to": [
+      subject: "Hello, World!",
+      to: [
         {
-          "email": "john.doe@example.com",
-          "name": "John Doe"
-        }
-      ]
-    }
+          email: "john.doe@example.com",
+          name: "John Doe",
+        },
+      ],
+    },
   ],
-  "reply_to": {
-    "email": "sam.smith@example.com",
-    "name": "Sam Smith"
+  reply_to: {
+    email: "sam.smith@example.com",
+    name: "Sam Smith",
   },
-  "subject": "Hello, World!"
+  subject: "Hello, World!",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/mail/send';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/mail/send";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="mail-settings"></a>
+
 # MAIL SETTINGS
 
 ## Retrieve all mail settings
@@ -2640,21 +2513,20 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### GET /mail_settings
 
-
 ```javascript
-  const queryParams = {
-  'limit': 1,
-  'offset': 1
+const queryParams = {
+  limit: 1,
+  offset: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/mail_settings';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/mail_settings";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update address whitelist mail settings
 
 **This endpoint allows you to update your current email address whitelist settings.**
@@ -2665,24 +2537,20 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### PATCH /mail_settings/address_whitelist
 
-
 ```javascript
-  const data = {
-  "enabled": true,
-  "list": [
-    "email1@example.com",
-    "example.com"
-  ]
+const data = {
+  enabled: true,
+  list: ["email1@example.com", "example.com"],
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/mail_settings/address_whitelist';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/mail_settings/address_whitelist";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve address whitelist mail settings
 
 **This endpoint allows you to retrieve your current email address whitelist settings.**
@@ -2693,16 +2561,15 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### GET /mail_settings/address_whitelist
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/mail_settings/address_whitelist';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/mail_settings/address_whitelist";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update BCC mail settings
 
 **This endpoint allows you to update your current BCC mail settings.**
@@ -2713,21 +2580,20 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### PATCH /mail_settings/bcc
 
-
 ```javascript
-  const data = {
-  "email": "email@example.com",
-  "enabled": false
+const data = {
+  email: "email@example.com",
+  enabled: false,
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/mail_settings/bcc';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/mail_settings/bcc";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all BCC mail settings
 
 **This endpoint allows you to retrieve your current BCC mail settings.**
@@ -2738,16 +2604,15 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### GET /mail_settings/bcc
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/mail_settings/bcc';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/mail_settings/bcc";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update bounce purge mail settings
 
 **This endpoint allows you to update your current bounce purge settings.**
@@ -2758,22 +2623,21 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### PATCH /mail_settings/bounce_purge
 
-
 ```javascript
-  const data = {
-  "enabled": true,
-  "hard_bounces": 5,
-  "soft_bounces": 5
+const data = {
+  enabled: true,
+  hard_bounces: 5,
+  soft_bounces: 5,
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/mail_settings/bounce_purge';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/mail_settings/bounce_purge";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve bounce purge mail settings
 
 **This endpoint allows you to retrieve your current bounce purge settings.**
@@ -2784,16 +2648,15 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### GET /mail_settings/bounce_purge
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/mail_settings/bounce_purge';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/mail_settings/bounce_purge";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update footer mail settings
 
 **This endpoint allows you to update your current Footer mail settings.**
@@ -2804,22 +2667,21 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### PATCH /mail_settings/footer
 
-
 ```javascript
-  const data = {
-  "enabled": true,
-  "html_content": "...",
-  "plain_content": "..."
+const data = {
+  enabled: true,
+  html_content: "...",
+  plain_content: "...",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/mail_settings/footer';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/mail_settings/footer";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve footer mail settings
 
 **This endpoint allows you to retrieve your current Footer mail settings.**
@@ -2830,16 +2692,15 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### GET /mail_settings/footer
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/mail_settings/footer';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/mail_settings/footer";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update forward bounce mail settings
 
 **This endpoint allows you to update your current bounce forwarding mail settings.**
@@ -2850,21 +2711,20 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### PATCH /mail_settings/forward_bounce
 
-
 ```javascript
-  const data = {
-  "email": "example@example.com",
-  "enabled": true
+const data = {
+  email: "example@example.com",
+  enabled: true,
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/mail_settings/forward_bounce';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/mail_settings/forward_bounce";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve forward bounce mail settings
 
 **This endpoint allows you to retrieve your current bounce forwarding mail settings.**
@@ -2875,16 +2735,15 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### GET /mail_settings/forward_bounce
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/mail_settings/forward_bounce';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/mail_settings/forward_bounce";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update forward spam mail settings
 
 **This endpoint allows you to update your current Forward Spam mail settings.**
@@ -2895,21 +2754,20 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### PATCH /mail_settings/forward_spam
 
-
 ```javascript
-  const data = {
-  "email": "",
-  "enabled": false
+const data = {
+  email: "",
+  enabled: false,
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/mail_settings/forward_spam';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/mail_settings/forward_spam";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve forward spam mail settings
 
 **This endpoint allows you to retrieve your current Forward Spam mail settings.**
@@ -2920,16 +2778,15 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### GET /mail_settings/forward_spam
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/mail_settings/forward_spam';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/mail_settings/forward_spam";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update plain content mail settings
 
 **This endpoint allows you to update your current Plain Content mail settings.**
@@ -2940,20 +2797,19 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### PATCH /mail_settings/plain_content
 
-
 ```javascript
-  const data = {
-  "enabled": false
+const data = {
+  enabled: false,
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/mail_settings/plain_content';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/mail_settings/plain_content";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve plain content mail settings
 
 **This endpoint allows you to retrieve your current Plain Content mail settings.**
@@ -2964,16 +2820,15 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### GET /mail_settings/plain_content
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/mail_settings/plain_content';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/mail_settings/plain_content";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update spam check mail settings
 
 **This endpoint allows you to update your current spam checker mail settings.**
@@ -2984,22 +2839,21 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### PATCH /mail_settings/spam_check
 
-
 ```javascript
-  const data = {
-  "enabled": true,
-  "max_score": 5,
-  "url": "url"
+const data = {
+  enabled: true,
+  max_score: 5,
+  url: "url",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/mail_settings/spam_check';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/mail_settings/spam_check";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve spam check mail settings
 
 **This endpoint allows you to retrieve your current Spam Checker mail settings.**
@@ -3010,16 +2864,15 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### GET /mail_settings/spam_check
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/mail_settings/spam_check';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/mail_settings/spam_check";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update template mail settings
 
 **This endpoint allows you to update your current legacy email template settings.**
@@ -3032,21 +2885,20 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### PATCH /mail_settings/template
 
-
 ```javascript
-  const data = {
-  "enabled": true,
-  "html_content": "<% body %>"
+const data = {
+  enabled: true,
+  html_content: "<% body %>",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/mail_settings/template';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/mail_settings/template";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve legacy template mail settings
 
 **This endpoint allows you to retrieve your current legacy email template settings.**
@@ -3059,17 +2911,17 @@ Mail settings allow you to tell Twilio SendGrid specific things to do to every e
 
 ### GET /mail_settings/template
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/mail_settings/template';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/mail_settings/template";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="mailbox-providers"></a>
+
 # MAILBOX PROVIDERS
 
 ## Retrieve email statistics by mailbox provider.
@@ -3082,29 +2934,30 @@ Advanced Stats provide a more in-depth view of your email statistics and the act
 
 ### GET /mailbox_providers/stats
 
-
 ```javascript
-  const queryParams = {
-  'aggregated_by': 'day',
-  'end_date': '2016-04-01',
-  'limit': 1,
-  'mailbox_providers': 'test_string',
-  'offset': 1,
-  'start_date': '2016-01-01'
+const queryParams = {
+  aggregated_by: "day",
+  end_date: "2016-04-01",
+  limit: 1,
+  mailbox_providers: "test_string",
+  offset: 1,
+  start_date: "2016-01-01",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/mailbox_providers/stats';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/mailbox_providers/stats";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="messages"></a>
+
 # MESSAGES
 
 ## Filter all messages
+
 > In order to gain access to the Email Activity Feed API, you must purchase [additional email activity history](https://app.sendgrid.com/settings/billing/addons/email_activity).
 
 Filter all messages to search your Email Activity. All queries need to be [URL encoded](https://meyerweb.com/eric/tools/dencoder/), and have this format:
@@ -3247,21 +3100,20 @@ For information about building combined queries, see [Building compound Email Ac
 
 ### GET /messages
 
-
 ```javascript
-  const queryParams = {
-    'limit': 10,
-    'query': 'from_email="testing@sendgrid.net"'
-  };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/messages';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const queryParams = {
+  limit: 10,
+  query: 'from_email="testing@sendgrid.net"',
+};
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/messages";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Filter messages by message ID
 
 > In order to gain access to the Email Activity Feed API, you must purchase [additional email activity history](https://app.sendgrid.com/settings/billing/addons/email_activity).
@@ -3270,16 +3122,15 @@ Get all of the details about the specified message.
 
 ### GET /messages/{msg_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/messages/{msg_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/messages/{msg_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Request a CSV
 
 > In order to gain access to the Email Activity Feed API, you must purchase [additional email activity history](https://app.sendgrid.com/settings/billing/addons/email_activity).
@@ -3290,16 +3141,15 @@ The CSV fill contain the last 1 million messages. This endpoint will be rate lim
 
 ### POST /messages/download
 
-
 ```javascript
-  request.method = 'POST';
-  request.url = '/v3/messages/download';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "POST";
+request.url = "/v3/messages/download";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Download CSV
 
 > In order to gain access to the Email Activity Feed API, you must purchase [additional email activity history](https://app.sendgrid.com/settings/billing/addons/email_activity).
@@ -3312,17 +3162,17 @@ The CSV fill contain the last 1 million messages. This endpoint will be rate lim
 
 ### GET /messages/download/{download_uuid}
 
-
 ```javascript
-  request.method = 'POST';
-  request.url = '/v3/messages/download';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "POST";
+request.url = "/v3/messages/download";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="partner-settings"></a>
+
 # PARTNER SETTINGS
 
 ## Returns a list of all partner settings.
@@ -3333,21 +3183,20 @@ Our partner settings allow you to integrate your Twilio SendGrid account with ou
 
 ### GET /partner_settings
 
-
 ```javascript
-  const queryParams = {
-  'limit': 1,
-  'offset': 1
+const queryParams = {
+  limit: 1,
+  offset: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/partner_settings';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/partner_settings";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Updates New Relic partner settings.
 
 **This endpoint allows you to update or change your New Relic partner settings.**
@@ -3358,22 +3207,21 @@ By integrating with New Relic, you can send your Twilio SendGrid email statistic
 
 ### PATCH /partner_settings/new_relic
 
-
 ```javascript
-  const data = {
-  "enable_subuser_statistics": true,
-  "enabled": true,
-  "license_key": ""
+const data = {
+  enable_subuser_statistics: true,
+  enabled: true,
+  license_key: "",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/partner_settings/new_relic';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/partner_settings/new_relic";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Returns all New Relic partner settings.
 
 **This endpoint allows you to retrieve your current New Relic partner settings.**
@@ -3384,17 +3232,17 @@ By integrating with New Relic, you can send your Twilio SendGrid email statistic
 
 ### GET /partner_settings/new_relic
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/partner_settings/new_relic';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/partner_settings/new_relic";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="scopes"></a>
+
 # SCOPES
 
 ## Retrieve a list of scopes for which this user has access.
@@ -3405,41 +3253,39 @@ API Keys can be used to authenticate the use of [Twilio SendGrid's v3 Web API](h
 
 ### GET /scopes
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/scopes';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/scopes";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve access requests
 
 This endpoint allows you to retrieve a list of all recent access requests.
 
 **Note:** The Response Header's 'link' parameter will include pagination info. For example:
 
-link: ```<https://api.sendgrid.com/v3/scopes/requests?limit=10&offset=0>; rel="first"; title="1", <https://api.sendgrid.com/v3/scopes/requests?limit=10&offset=10>; rel="last"; title="2", <https://api.sendgrid.com/v3/scopes/requests?limit=10&offset=0>; rel="prev"; title="1"```
+link: `<https://api.sendgrid.com/v3/scopes/requests?limit=10&offset=0>; rel="first"; title="1", <https://api.sendgrid.com/v3/scopes/requests?limit=10&offset=10>; rel="last"; title="2", <https://api.sendgrid.com/v3/scopes/requests?limit=10&offset=0>; rel="prev"; title="1"`
 
 ### GET /scopes/requests
 
-
 ```javascript
-  const queryParams = {
-  'limit': 1,
-  'offset': 1
+const queryParams = {
+  limit: 1,
+  offset: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/scopes/requests';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/scopes/requests";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Deny access request
 
 This endpoint allows you to deny an attempt to access your account.
@@ -3448,16 +3294,15 @@ This endpoint allows you to deny an attempt to access your account.
 
 ### DELETE /scopes/requests/{request_id}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/scopes/requests/{request_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/scopes/requests/{request_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Approve access request
 
 This endpoint allows you to approve an access attempt.
@@ -3466,57 +3311,56 @@ This endpoint allows you to approve an access attempt.
 
 ### PATCH /scopes/requests/{request_id}/approve
 
-
 ```javascript
-  request.method = 'PATCH';
-  request.url = '/v3/scopes/requests/{request_id}/approve';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "PATCH";
+request.url = "/v3/scopes/requests/{request_id}/approve";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="senders"></a>
+
 # SENDERS
 
 ## Create a Sender Identity
 
 **This endpoint allows you to create a new sender identity.**
 
-*You may create up to 100 unique sender identities.*
+_You may create up to 100 unique sender identities._
 
 Sender Identities are required to be verified before use. If your domain has been authenticated it will auto verify on creation. Otherwise, an email will be sent to the `from.email`.
 
 ### POST /senders
 
-
 ```javascript
-  const data = {
-  "address": "123 Elm St.",
-  "address_2": "Apt. 456",
-  "city": "Denver",
-  "country": "United States",
-  "from": {
-    "email": "from@example.com",
-    "name": "Example INC"
+const data = {
+  address: "123 Elm St.",
+  address_2: "Apt. 456",
+  city: "Denver",
+  country: "United States",
+  from: {
+    email: "from@example.com",
+    name: "Example INC",
   },
-  "nickname": "My Sender ID",
-  "reply_to": {
-    "email": "replyto@example.com",
-    "name": "Example INC"
+  nickname: "My Sender ID",
+  reply_to: {
+    email: "replyto@example.com",
+    name: "Example INC",
   },
-  "state": "Colorado",
-  "zip": "80202"
+  state: "Colorado",
+  zip: "80202",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/senders';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/senders";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Get all Sender Identities
 
 **This endpoint allows you to retrieve a list of all sender identities that have been created for your account.**
@@ -3525,16 +3369,15 @@ Sender Identities are required to be verified before use. If your domain has bee
 
 ### GET /senders
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/senders';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/senders";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## View a Sender Identity
 
 **This endpoint allows you to retrieve a specific sender identity.**
@@ -3543,16 +3386,15 @@ Sender Identities are required to be verified before use. If your domain has bee
 
 ### GET /senders/{sender_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/senders/{sender_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/senders/{sender_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a Sender Identity
 
 **This endpoint allows you to delete one of your sender identities.**
@@ -3561,16 +3403,15 @@ Sender Identities are required to be verified before use. If your domain has bee
 
 ### DELETE /senders/{sender_id}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/senders/{sender_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/senders/{sender_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update a Sender Identity
 
 **This endpoint allows you to update a sender identity.**
@@ -3581,34 +3422,33 @@ Partial updates are allowed, but fields that are marked as "required" in the POS
 
 ### PATCH /senders/{sender_id}
 
-
 ```javascript
-  const data = {
-  "address": "123 Elm St.",
-  "address_2": "Apt. 456",
-  "city": "Denver",
-  "country": "United States",
-  "from": {
-    "email": "from@example.com",
-    "name": "Example INC"
+const data = {
+  address: "123 Elm St.",
+  address_2: "Apt. 456",
+  city: "Denver",
+  country: "United States",
+  from: {
+    email: "from@example.com",
+    name: "Example INC",
   },
-  "nickname": "My Sender ID",
-  "reply_to": {
-    "email": "replyto@example.com",
-    "name": "Example INC"
+  nickname: "My Sender ID",
+  reply_to: {
+    email: "replyto@example.com",
+    name: "Example INC",
   },
-  "state": "Colorado",
-  "zip": "80202"
+  state: "Colorado",
+  zip: "80202",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/senders/{sender_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/senders/{sender_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Resend Sender Identity Verification
 
 **This endpoint allows you to resend a sender identity verification email.**
@@ -3617,18 +3457,17 @@ Sender Identities are required to be verified before use. If your domain has bee
 
 ### POST /senders/{sender_id}/resend_verification
 
-
 ```javascript
-  request.method = 'POST';
-  request.url = '/v3/senders/{sender_id}/resend_verification';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "POST";
+request.url = "/v3/senders/{sender_id}/resend_verification";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
 
 <a name="sender-authentication"></a>
+
 # SENDER AUTHENTICATION
 
 ## Create a domain authentication.
@@ -3636,6 +3475,7 @@ Sender Identities are required to be verified before use. If your domain has bee
 **This endpoint allows you to create an authentication for one of your domains.**
 
 If you are creating a domain authentication that you would like a subuser to use, you have two options:
+
 1. Use the "username" parameter. This allows you to create an authenticated domain on behalf of your subuser. This means the subuser can see and modify the created authenticated domain.
 2. Use the Association workflow (see Associate Domain section). This allows you to assign a domain authentication created by the parent to a subuser. This means the subuser will default to the assigned authenticated domain, but will not be able to see or modify that authentication. However, if the subuser creates their domain authentication it will overwrite the assigned domain authentication.
 
@@ -3645,29 +3485,25 @@ For more information on domain authentication, please see our [User Guide](https
 
 ### POST /whitelabel/domains
 
-
 ```javascript
-  const data = {
-  "automatic_security": false,
-  "custom_spf": true,
-  "default": true,
-  "domain": "example.com",
-  "ips": [
-    "192.168.1.1",
-    "192.168.1.2"
-  ],
-  "subdomain": "news",
-  "username": "john@example.com"
+const data = {
+  automatic_security: false,
+  custom_spf: true,
+  default: true,
+  domain: "example.com",
+  ips: ["192.168.1.1", "192.168.1.2"],
+  subdomain: "news",
+  username: "john@example.com",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/whitelabel/domains';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/whitelabel/domains";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## List all domain authentications.
 
 **This endpoint allows you to retrieve a list of all domain authentications you have created.**
@@ -3678,24 +3514,23 @@ For more information on domain authentication, please see our [User Guide](https
 
 ### GET /whitelabel/domains
 
-
 ```javascript
-  const queryParams = {
-  'domain': 'test_string',
-  'exclude_subusers': 'true',
-  'limit': 1,
-  'offset': 1,
-  'username': 'test_string'
+const queryParams = {
+  domain: "test_string",
+  exclude_subusers: "true",
+  limit: 1,
+  offset: 1,
+  username: "test_string",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/whitelabel/domains';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/whitelabel/domains";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Get the default domain authentication.
 
 **This endpoint allows you to retrieve the default authentication for a domain.**
@@ -3705,22 +3540,22 @@ A domain authentication allows you to remove the via or sent on behalf of messag
 For more information on domain authentication, please see our [User Guide](https://sendgrid.com/docs/ui/account-and-settings/how-to-set-up-domain-authentication/)
 
 ## URI Parameters
-| URI Parameter   | Type   | Description  |
-|---|---|---|
-| domain | string  |The domain to find a default domain whitelabel for. |
+
+| URI Parameter | Type   | Description                                         |
+| ------------- | ------ | --------------------------------------------------- |
+| domain        | string | The domain to find a default domain whitelabel for. |
 
 ### GET /whitelabel/domains/default
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/whitelabel/domains/default';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/whitelabel/domains/default";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Disassociate a domain authentication from a given user.
 
 **This endpoint allows you to disassociate a specific authentication from a subuser.**
@@ -3732,24 +3567,24 @@ Domain authentications can be associated with (i.e. assigned to) subusers from a
 For more information on domain authentication, please see our [User Guide](https://sendgrid.com/docs/ui/account-and-settings/how-to-set-up-domain-authentication/)
 
 ## URI Parameters
-| URI Parameter   | Type  | Required?  | Description  |
-|---|---|---|---|
-| username | string  | required  | Username for the subuser to find associated whitelabels for. |
+
+| URI Parameter | Type   | Required? | Description                                                  |
+| ------------- | ------ | --------- | ------------------------------------------------------------ |
+| username      | string | required  | Username for the subuser to find associated whitelabels for. |
 
 ### DELETE /whitelabel/domains/subuser
 
-
 ```javascript
-  const data = None;
-  request.body = data;
-  request.method = 'DELETE';
-  request.url = '/v3/whitelabel/domains/subuser';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const data = None;
+request.body = data;
+request.method = "DELETE";
+request.url = "/v3/whitelabel/domains/subuser";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## List the domain authentications associated with the given user.
 
 **This endpoint allows you to retrieve all of the domain authentications that have been assigned to a specific subuser.**
@@ -3761,22 +3596,22 @@ Domain authentications can be associated with (i.e. assigned to) subusers from a
 For more information on domain authentication, please see our [User Guide](https://sendgrid.com/docs/ui/account-and-settings/how-to-set-up-domain-authentication/)
 
 ## URI Parameters
-| URI Parameter   | Type  | Description  |
-|---|---|---|
-| username | string  | Username of the subuser to find associated whitelabels for. |
+
+| URI Parameter | Type   | Description                                                 |
+| ------------- | ------ | ----------------------------------------------------------- |
+| username      | string | Username of the subuser to find associated whitelabels for. |
 
 ### GET /whitelabel/domains/subuser
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/whitelabel/domains/subuser';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/whitelabel/domains/subuser";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a domain authentication.
 
 **This endpoint allows you to delete a domain authentication.**
@@ -3787,18 +3622,17 @@ For more information on domain authentication, please see our [User Guide](https
 
 ### DELETE /whitelabel/domains/{domain_id}
 
-
 ```javascript
-  const data = None;
-  request.body = data;
-  request.method = 'DELETE';
-  request.url = '/v3/whitelabel/domains/{domain_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const data = None;
+request.body = data;
+request.method = "DELETE";
+request.url = "/v3/whitelabel/domains/{domain_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update a domain authentication.
 
 **This endpoint allows you to update the settings for a domain authentication.**
@@ -3809,21 +3643,20 @@ For more information on domain authentication, please see our [User Guide](https
 
 ### PATCH /whitelabel/domains/{domain_id}
 
-
 ```javascript
-  const data = {
-  "custom_spf": true,
-  "default": false
+const data = {
+  custom_spf: true,
+  default: false,
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/whitelabel/domains/{domain_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/whitelabel/domains/{domain_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a domain authentication.
 
 **This endpoint allows you to retrieve a specific domain authentication.**
@@ -3834,16 +3667,15 @@ For more information on domain authentication, please see our [User Guide](https
 
 ### GET /whitelabel/domains/{domain_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/whitelabel/domains/{domain_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/whitelabel/domains/{domain_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Associate a domain authentication with a given user.
 
 **This endpoint allows you to associate a specific domain authentication with a subuser.**
@@ -3855,26 +3687,26 @@ Domain authentications can be associated with (i.e. assigned to) subusers from a
 For more information on domain authentication, please see our [User Guide](https://sendgrid.com/docs/ui/account-and-settings/how-to-set-up-domain-authentication/)
 
 ## URI Parameters
-| URI Parameter   | Type   | Description  |
-|---|---|---|
-| domain_id | integer   | ID of the domain whitelabel to associate with the subuser. |
+
+| URI Parameter | Type    | Description                                                |
+| ------------- | ------- | ---------------------------------------------------------- |
+| domain_id     | integer | ID of the domain whitelabel to associate with the subuser. |
 
 ### POST /whitelabel/domains/{domain_id}/subuser
 
-
 ```javascript
-  const data = {
-  "username": "jane@example.com"
+const data = {
+  username: "jane@example.com",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/whitelabel/domains/{domain_id}/subuser';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/whitelabel/domains/{domain_id}/subuser";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Add an IP to a domain authentication.
 
 **This endpoint allows you to add an IP address to a domain authentication.**
@@ -3884,26 +3716,26 @@ A domain authentication allows you to remove the via or sent on behalf of messag
 For more information on domain authentication, please see our [User Guide](https://sendgrid.com/docs/ui/account-and-settings/how-to-set-up-domain-authentication/)
 
 ## URI Parameters
-| URI Parameter   | Type  |  Description  |
-|---|---|---|
-| id | integer  | ID of the domain to which you are adding an IP |
+
+| URI Parameter | Type    | Description                                    |
+| ------------- | ------- | ---------------------------------------------- |
+| id            | integer | ID of the domain to which you are adding an IP |
 
 ### POST /whitelabel/domains/{id}/ips
 
-
 ```javascript
-  const data = {
-  "ip": "192.168.0.1"
+const data = {
+  ip: "192.168.0.1",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/whitelabel/domains/{id}/ips';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/whitelabel/domains/{id}/ips";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Remove an IP from a domain authentication.
 
 **This endpoint allows you to remove a domain's IP address from that domain's authentication.**
@@ -3913,25 +3745,25 @@ A domain authentication allows you to remove the via or sent on behalf of messag
 For more information on domain authentication, please see our [User Guide](https://sendgrid.com/docs/ui/account-and-settings/how-to-set-up-domain-authentication/)
 
 ## URI Parameters
-| URI Parameter   | Type  | Description  |
-|---|---|---|
-| id | integer  | ID of the domain whitelabel to delete the IP from. |
-| ip | string | IP to remove from the domain whitelabel. |
+
+| URI Parameter | Type    | Description                                        |
+| ------------- | ------- | -------------------------------------------------- |
+| id            | integer | ID of the domain whitelabel to delete the IP from. |
+| ip            | string  | IP to remove from the domain whitelabel.           |
 
 ### DELETE /whitelabel/domains/{id}/ips/{ip}
 
-
 ```javascript
-  const data = None;
-  request.body = data;
-  request.method = 'DELETE';
-  request.url = '/v3/whitelabel/domains/{id}/ips/{ip}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const data = None;
+request.body = data;
+request.method = "DELETE";
+request.url = "/v3/whitelabel/domains/{id}/ips/{ip}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Validate a domain authentication.
 
 **This endpoint allows you to validate a domain authentication. If it fails, it will return an error message describing why the domain authentication could not be validated.**
@@ -3941,24 +3773,24 @@ A domain authentication allows you to remove the via or sent on behalf of messag
 For more information on domain authentication, please see our [User Guide](https://sendgrid.com/docs/ui/account-and-settings/how-to-set-up-domain-authentication/)
 
 ## URI Parameters
-| URI Parameter   | Type   | Description  |
-|---|---|---|
-| id | integer  |ID of the domain whitelabel to validate. |
+
+| URI Parameter | Type    | Description                              |
+| ------------- | ------- | ---------------------------------------- |
+| id            | integer | ID of the domain whitelabel to validate. |
 
 ### POST /whitelabel/domains/{id}/validate
 
-
 ```javascript
-  const data = None;
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/whitelabel/domains/{id}/validate';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const data = None;
+request.body = data;
+request.method = "POST";
+request.url = "/v3/whitelabel/domains/{id}/validate";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Create reverse DNS record
 
 **This endpoint allows you to create a reverse DNS record.**
@@ -3971,22 +3803,21 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### POST /whitelabel/ips
 
-
 ```javascript
-  const data = {
-  "domain": "example.com",
-  "ip": "192.168.1.1",
-  "subdomain": "email"
+const data = {
+  domain: "example.com",
+  ip: "192.168.1.1",
+  subdomain: "email",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/whitelabel/ips';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/whitelabel/ips";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all reverse DNS records
 
 **This endpoint allows you to retrieve all of the reverse DNS records that have been created by this account.**
@@ -3999,22 +3830,21 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### GET /whitelabel/ips
 
-
 ```javascript
-  const queryParams = {
-  'ip': 'test_string',
-  'limit': 1,
-  'offset': 1
+const queryParams = {
+  ip: "test_string",
+  limit: 1,
+  offset: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/whitelabel/ips';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/whitelabel/ips";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete an reverse DNS record
 
 **This endpoint allows you to delete an reverse DNS record.**
@@ -4025,18 +3855,17 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### DELETE /whitelabel/ips/{id}
 
-
 ```javascript
-  const data = None;
-  request.body = data;
-  request.method = 'DELETE';
-  request.url = '/v3/whitelabel/ips/{id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const data = None;
+request.body = data;
+request.method = "DELETE";
+request.url = "/v3/whitelabel/ips/{id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve an reverse DNS record
 
 **This endpoint allows you to retrieve an reverse DNS record.**
@@ -4047,16 +3876,15 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### GET /whitelabel/ips/{id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/whitelabel/ips/{id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/whitelabel/ips/{id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Validate an reverse DNS record
 
 **This endpoint allows you to validate an reverse DNS record.**
@@ -4067,18 +3895,17 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### POST /whitelabel/ips/{id}/validate
 
-
 ```javascript
-  const data = None;
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/whitelabel/ips/{id}/validate';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const data = None;
+request.body = data;
+request.method = "POST";
+request.url = "/v3/whitelabel/ips/{id}/validate";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Create a Branded Link
 
 **This endpoint allows you to create a new link branding.**
@@ -4089,27 +3916,26 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### POST /whitelabel/links
 
-
 ```javascript
-  const data = {
-  "default": true,
-  "domain": "example.com",
-  "subdomain": "mail"
+const data = {
+  default: true,
+  domain: "example.com",
+  subdomain: "mail",
 };
-  request.body = data;
-  const queryParams = {
-  'limit': 1,
-  'offset': 1
+request.body = data;
+const queryParams = {
+  limit: 1,
+  offset: 1,
 };
-  request.qs = queryParams;
-  request.method = 'POST';
-  request.url = '/v3/whitelabel/links';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "POST";
+request.url = "/v3/whitelabel/links";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all link brandings
 
 **This endpoint allows you to retrieve all link brandings.**
@@ -4120,25 +3946,25 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### GET /whitelabel/links
 
-
 ```javascript
-  const queryParams = {
-  'limit': 1
+const queryParams = {
+  limit: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/whitelabel/links';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/whitelabel/links";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a Default Link Branding
 
 **This endpoint allows you to retrieve the default link branding.**
 
 Default link branding is the actual link branding to be used when sending messages. If there are multiple link brandings, the default is determined by the following order:
+
 <ul>
   <li>Validated link branding marked as "default"</li>
   <li>Legacy link brands (migrated from the whitelabel wizard)</li>
@@ -4151,39 +3977,36 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### GET /whitelabel/links/default
 
-
 ```javascript
-  const queryParams = {
-  'domain': 'test_string'
+const queryParams = {
+  domain: "test_string",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/whitelabel/links/default';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/whitelabel/links/default";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
 
 ### DELETE /whitelabel/links/subuser
 
-
 ```javascript
-  const data = None;
-  request.body = data;
-  const queryParams = {
-  'username': 'test_string'
+const data = None;
+request.body = data;
+const queryParams = {
+  username: "test_string",
 };
-  request.qs = queryParams;
-  request.method = 'DELETE';
-  request.url = '/v3/whitelabel/links/subuser';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "DELETE";
+request.url = "/v3/whitelabel/links/subuser";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve Associated Link Branding
 
 **This endpoint allows you to retrieve the associated link branding for a subuser.**
@@ -4198,20 +4021,19 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### GET /whitelabel/links/subuser
 
-
 ```javascript
-  const queryParams = {
-  'username': 'test_string'
+const queryParams = {
+  username: "test_string",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/whitelabel/links/subuser';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/whitelabel/links/subuser";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Disassociate a Link Branding
 
 **This endpoint allows you to disassociate a link branding from a subuser.**
@@ -4234,18 +4056,17 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### DELETE /whitelabel/links/{id}
 
-
 ```javascript
-  const data = None;
-  request.body = data;
-  request.method = 'DELETE';
-  request.url = '/v3/whitelabel/links/{id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const data = None;
+request.body = data;
+request.method = "DELETE";
+request.url = "/v3/whitelabel/links/{id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update a Link Branding
 
 **This endpoint allows you to update a specific link branding. You can use this endpoint to change a branded link's default status.**
@@ -4256,20 +4077,19 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### PATCH /whitelabel/links/{id}
 
-
 ```javascript
-  const data = {
-  "default": true
+const data = {
+  default: true,
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/whitelabel/links/{id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/whitelabel/links/{id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a Link Branding
 
 **This endpoint allows you to retrieve a specific link branding.**
@@ -4280,16 +4100,15 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### GET /whitelabel/links/{id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/whitelabel/links/{id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/whitelabel/links/{id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Validate a Link Branding
 
 **This endpoint allows you to validate a link branding.**
@@ -4300,18 +4119,17 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### POST /whitelabel/links/{id}/validate
 
-
 ```javascript
-  const data = None;
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/whitelabel/links/{id}/validate';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const data = None;
+request.body = data;
+request.method = "POST";
+request.url = "/v3/whitelabel/links/{id}/validate";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 # Associate a Link Branding
 
 **This endpoint allows you to associate a link branding with a subuser account.**
@@ -4326,22 +4144,21 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/ui/a
 
 ### POST /whitelabel/links/{link_id}/subuser
 
-
 ```javascript
-  const data = {
-  "username": "jane@example.com"
+const data = {
+  username: "jane@example.com",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/whitelabel/links/{link_id}/subuser';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/whitelabel/links/{link_id}/subuser";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
 
 <a name="stats"></a>
+
 # STATS
 
 ## Retrieve global email statistics
@@ -4352,25 +4169,25 @@ Parent accounts will see aggregated stats for their account and all subuser acco
 
 ### GET /stats
 
-
 ```javascript
-  const queryParams = {
-  'aggregated_by': 'day',
-  'end_date': '2016-04-01',
-  'limit': 1,
-  'offset': 1,
-  'start_date': '2016-01-01'
+const queryParams = {
+  aggregated_by: "day",
+  end_date: "2016-04-01",
+  limit: 1,
+  offset: 1,
+  start_date: "2016-01-01",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/stats';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/stats";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="subusers"></a>
+
 # SUBUSERS
 
 ## Create Subuser
@@ -4379,58 +4196,53 @@ This endpoint allows you to retrieve a list of all of your subusers. You can cho
 
 For more information about Subusers:
 
-* [User Guide > Subusers](https://sendgrid.com/docs/User_Guide/Settings/Subusers/index.html)
-* [Classroom > How do I add more subusers to my account?](https://sendgrid.com/docs/Classroom/Basics/Account/how_do_i_add_more_subusers_to_my_account.html)
+- [User Guide > Subusers](https://sendgrid.com/docs/User_Guide/Settings/Subusers/index.html)
+- [Classroom > How do I add more subusers to my account?](https://sendgrid.com/docs/Classroom/Basics/Account/how_do_i_add_more_subusers_to_my_account.html)
 
 ### POST /subusers
 
-
 ```javascript
-  const data = {
-  "email": "John@example.com",
-  "ips": [
-    "1.1.1.1",
-    "2.2.2.2"
-  ],
-  "password": "johns_password",
-  "username": "John@example.com"
+const data = {
+  email: "John@example.com",
+  ips: ["1.1.1.1", "2.2.2.2"],
+  password: "johns_password",
+  username: "John@example.com",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/subusers';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/subusers";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## List all Subusers
 
 This endpoint allows you to retrieve a list of all of your subusers. You can choose to retrieve specific subusers as well as limit the results that come back from the API.
 
 For more information about Subusers:
 
-* [User Guide > Subusers](https://sendgrid.com/docs/User_Guide/Settings/Subusers/index.html)
-* [Classroom > How do I add more subusers to my account?](https://sendgrid.com/docs/Classroom/Basics/Account/how_do_i_add_more_subusers_to_my_account.html)
+- [User Guide > Subusers](https://sendgrid.com/docs/User_Guide/Settings/Subusers/index.html)
+- [Classroom > How do I add more subusers to my account?](https://sendgrid.com/docs/Classroom/Basics/Account/how_do_i_add_more_subusers_to_my_account.html)
 
 ### GET /subusers
 
-
 ```javascript
-  const queryParams = {
-  'limit': 1,
-  'offset': 1,
-  'username': 'test_string'
+const queryParams = {
+  limit: 1,
+  offset: 1,
+  username: "test_string",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/subusers';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/subusers";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve Subuser Reputations
 
 Subuser sender reputations give a good idea how well a sender is doing with regards to how recipients and recipient servers react to the mail that is being received. When a bounce, spam report, or other adverse action happens on a sent email, it will affect your sender rating.
@@ -4439,20 +4251,19 @@ This endpoint allows you to request the reputations for your subusers.
 
 ### GET /subusers/reputations
 
-
 ```javascript
-  const queryParams = {
-  'usernames': 'test_string'
+const queryParams = {
+  usernames: "test_string",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/subusers/reputations';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/subusers/reputations";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve email statistics for your subusers.
 
 **This endpoint allows you to retrieve the email statistics for the given subusers.**
@@ -4465,25 +4276,24 @@ For more information, see our [User Guide](https://sendgrid.com/docs/User_Guide/
 
 ### GET /subusers/stats
 
-
 ```javascript
-  const queryParams = {
-  'aggregated_by': 'day',
-  'end_date': '2016-04-01',
-  'limit': 1,
-  'offset': 1,
-  'start_date': '2016-01-01',
-  'subusers': 'test_string'
+const queryParams = {
+  aggregated_by: "day",
+  end_date: "2016-04-01",
+  limit: 1,
+  offset: 1,
+  start_date: "2016-01-01",
+  subusers: "test_string",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/subusers/stats';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/subusers/stats";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve monthly stats for all subusers
 
 **This endpoint allows you to retrieve the monthly email statistics for all subusers over the given date range.**
@@ -4497,29 +4307,27 @@ For more information, see our [User Guide](https://sendgrid.com/docs/User_Guide/
 
 ### GET /subusers/stats/monthly
 
-
 ```javascript
-  const queryParams = {
-  'date': 'test_string',
-  'limit': 1,
-  'offset': 1,
-  'sort_by_direction': 'asc',
-  'sort_by_metric': 'test_string',
-  'subuser': 'test_string'
+const queryParams = {
+  date: "test_string",
+  limit: 1,
+  offset: 1,
+  sort_by_direction: "asc",
+  sort_by_metric: "test_string",
+  subuser: "test_string",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/subusers/stats/monthly';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/subusers/stats/monthly";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
-##  Retrieve the totals for each email statistic metric for all subusers.
+
+## Retrieve the totals for each email statistic metric for all subusers.
 
 **This endpoint allows you to retrieve the total sums of each email statistic metric for all subusers over the given date range.**
-
 
 While you can always view the statistics for all email activity on your account, subuser statistics enable you to view specific segments of your stats. Emails sent, bounces, and spam reports are always tracked for subusers. Unsubscribes, clicks, and opens are tracked if you have enabled the required settings.
 
@@ -4527,171 +4335,161 @@ For more information, see our [User Guide](https://sendgrid.com/docs/User_Guide/
 
 ### GET /subusers/stats/sums
 
-
 ```javascript
-  const queryParams = {
-  'aggregated_by': 'day',
-  'end_date': '2016-04-01',
-  'limit': 1,
-  'offset': 1,
-  'sort_by_direction': 'asc',
-  'sort_by_metric': 'test_string',
-  'start_date': '2016-01-01'
+const queryParams = {
+  aggregated_by: "day",
+  end_date: "2016-04-01",
+  limit: 1,
+  offset: 1,
+  sort_by_direction: "asc",
+  sort_by_metric: "test_string",
+  start_date: "2016-01-01",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/subusers/stats/sums';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/subusers/stats/sums";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a subuser
 
 This endpoint allows you to delete a subuser. This is a permanent action, once deleted a subuser cannot be retrieved.
 
 For more information about Subusers:
 
-* [User Guide > Subusers](https://sendgrid.com/docs/User_Guide/Settings/Subusers/index.html)
-* [Classroom > How do I add more subusers to my account?](https://sendgrid.com/docs/Classroom/Basics/Account/how_do_i_add_more_subusers_to_my_account.html)
+- [User Guide > Subusers](https://sendgrid.com/docs/User_Guide/Settings/Subusers/index.html)
+- [Classroom > How do I add more subusers to my account?](https://sendgrid.com/docs/Classroom/Basics/Account/how_do_i_add_more_subusers_to_my_account.html)
 
 ### DELETE /subusers/{subuser_name}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/subusers/{subuser_name}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/subusers/{subuser_name}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Enable/disable a subuser
 
 This endpoint allows you to enable or disable a subuser.
 
 For more information about Subusers:
 
-* [User Guide > Subusers](https://sendgrid.com/docs/User_Guide/Settings/Subusers/index.html)
-* [Classroom > How do I add more subusers to my account?](https://sendgrid.com/docs/Classroom/Basics/Account/how_do_i_add_more_subusers_to_my_account.html)
+- [User Guide > Subusers](https://sendgrid.com/docs/User_Guide/Settings/Subusers/index.html)
+- [Classroom > How do I add more subusers to my account?](https://sendgrid.com/docs/Classroom/Basics/Account/how_do_i_add_more_subusers_to_my_account.html)
 
 ### PATCH /subusers/{subuser_name}
 
-
 ```javascript
-  const data = {
-  "disabled": false
+const data = {
+  disabled: false,
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/subusers/{subuser_name}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/subusers/{subuser_name}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update IPs assigned to a subuser
 
 Each subuser should be assigned to an IP address, from which all of this subuser's mail will be sent. Often, this is the same IP as the parent account, but each subuser can have their own, or multiple, IP addresses as well.
 
 More information:
 
-* [How to request more IPs](https://sendgrid.com/docs/Classroom/Basics/Account/adding_an_additional_dedicated_ip_to_your_account.html)
-* [How to setup reverse DNS](https://sendgrid.com/docs/ui/account-and-settings/how-to-set-up-reverse-dns/)
+- [How to request more IPs](https://sendgrid.com/docs/Classroom/Basics/Account/adding_an_additional_dedicated_ip_to_your_account.html)
+- [How to setup reverse DNS](https://sendgrid.com/docs/ui/account-and-settings/how-to-set-up-reverse-dns/)
 
 ### PUT /subusers/{subuser_name}/ips
 
-
 ```javascript
-  const data = [
-  "127.0.0.1"
-];
-  request.body = data;
-  request.method = 'PUT';
-  request.url = '/v3/subusers/{subuser_name}/ips';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const data = ["127.0.0.1"];
+request.body = data;
+request.method = "PUT";
+request.url = "/v3/subusers/{subuser_name}/ips";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update Monitor Settings for a subuser
 
 Subuser monitor settings allow you to receive a sample of an outgoing message by a specific customer at a specific frequency of emails.
 
 ### PUT /subusers/{subuser_name}/monitor
 
-
 ```javascript
-  const data = {
-  "email": "example@example.com",
-  "frequency": 500
+const data = {
+  email: "example@example.com",
+  frequency: 500,
 };
-  request.body = data;
-  request.method = 'PUT';
-  request.url = '/v3/subusers/{subuser_name}/monitor';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PUT";
+request.url = "/v3/subusers/{subuser_name}/monitor";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Create monitor settings
 
 Subuser monitor settings allow you to receive a sample of an outgoing message by a specific customer at a specific frequency of emails.
 
 ### POST /subusers/{subuser_name}/monitor
 
-
 ```javascript
-  const data = {
-  "email": "example@example.com",
-  "frequency": 50000
+const data = {
+  email: "example@example.com",
+  frequency: 50000,
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/subusers/{subuser_name}/monitor';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/subusers/{subuser_name}/monitor";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete monitor settings
 
 Subuser monitor settings allow you to receive a sample of an outgoing message by a specific customer at a specific frequency of emails.
 
 ### DELETE /subusers/{subuser_name}/monitor
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/subusers/{subuser_name}/monitor';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/subusers/{subuser_name}/monitor";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve monitor settings for a subuser
 
 Subuser monitor settings allow you to receive a sample of an outgoing message by a specific customer at a specific frequency of emails.
 
 ### GET /subusers/{subuser_name}/monitor
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/subusers/{subuser_name}/monitor';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/subusers/{subuser_name}/monitor";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve the monthly email statistics for a single subuser
 
 **This endpoint allows you to retrieve the monthly email statistics for a specific subuser.**
@@ -4705,25 +4503,25 @@ For more information, see our [User Guide](https://sendgrid.com/docs/User_Guide/
 
 ### GET /subusers/{subuser_name}/stats/monthly
 
-
 ```javascript
-  const queryParams = {
-  'date': 'test_string',
-  'limit': 1,
-  'offset': 1,
-  'sort_by_direction': 'asc',
-  'sort_by_metric': 'test_string'
+const queryParams = {
+  date: "test_string",
+  limit: 1,
+  offset: 1,
+  sort_by_direction: "asc",
+  sort_by_metric: "test_string",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/subusers/{subuser_name}/stats/monthly';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/subusers/{subuser_name}/stats/monthly";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="suppression"></a>
+
 # SUPPRESSION
 
 ## Delete blocks
@@ -4741,24 +4539,20 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/User
 
 ### DELETE /suppression/blocks
 
-
 ```javascript
-  const data = {
-  "delete_all": false,
-  "emails": [
-    "example1@example.com",
-    "example2@example.com"
-  ]
+const data = {
+  delete_all: false,
+  emails: ["example1@example.com", "example2@example.com"],
 };
-  request.body = data;
-  request.method = 'DELETE';
-  request.url = '/v3/suppression/blocks';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "DELETE";
+request.url = "/v3/suppression/blocks";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all blocks
 
 **This endpoint allows you to retrieve a list of all email addresses that are currently on your blocks list.**
@@ -4769,23 +4563,22 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/User
 
 ### GET /suppression/blocks
 
-
 ```javascript
-  const queryParams = {
-  'end_time': 1,
-  'limit': 1,
-  'offset': 1,
-  'start_time': 1
+const queryParams = {
+  end_time: 1,
+  limit: 1,
+  offset: 1,
+  start_time: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/suppression/blocks';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/suppression/blocks";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a specific block
 
 **This endpoint allows you to delete a specific email address from your blocks list.**
@@ -4796,16 +4589,15 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/User
 
 ### DELETE /suppression/blocks/{email}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/suppression/blocks/{email}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/suppression/blocks/{email}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a specific block
 
 **This endpoint allows you to retrieve a specific email address from your blocks list.**
@@ -4816,16 +4608,15 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/User
 
 ### GET /suppression/blocks/{email}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/suppression/blocks/{email}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/suppression/blocks/{email}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete bounces
 
 **This endpoint allows you to delete all of your bounces. You can also use this endpoint to remove a specific email address from your bounce list.**
@@ -4834,32 +4625,28 @@ A bounced email is when the message is undeliverable and then returned to the se
 
 For more information see:
 
-* [User Guide > Bounces](https://sendgrid.com/docs/User_Guide/Suppressions/bounces.html) for more information
-* [Glossary > Bounces](https://sendgrid.com/docs/Glossary/Bounces.html)
-* [Classroom > List Scrubbing Guide](https://sendgrid.com/docs/Classroom/Deliver/list_scrubbing.html)
+- [User Guide > Bounces](https://sendgrid.com/docs/User_Guide/Suppressions/bounces.html) for more information
+- [Glossary > Bounces](https://sendgrid.com/docs/Glossary/Bounces.html)
+- [Classroom > List Scrubbing Guide](https://sendgrid.com/docs/Classroom/Deliver/list_scrubbing.html)
 
 Note: the `delete_all` and `emails` parameters should be used independently of each other as they have different purposes.
 
 ### DELETE /suppression/bounces
 
-
 ```javascript
-  const data = {
-  "delete_all": true,
-  "emails": [
-    "example@example.com",
-    "example2@example.com"
-  ]
+const data = {
+  delete_all: true,
+  emails: ["example@example.com", "example2@example.com"],
 };
-  request.body = data;
-  request.method = 'DELETE';
-  request.url = '/v3/suppression/bounces';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "DELETE";
+request.url = "/v3/suppression/bounces";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all bounces
 
 **This endpoint allows you to retrieve all of your bounces.**
@@ -4868,26 +4655,25 @@ A bounced email is when the message is undeliverable and then returned to the se
 
 For more information see:
 
-* [User Guide > Bounces](https://sendgrid.com/docs/User_Guide/Suppressions/bounces.html) for more information
-* [Glossary > Bounces](https://sendgrid.com/docs/Glossary/Bounces.html)
+- [User Guide > Bounces](https://sendgrid.com/docs/User_Guide/Suppressions/bounces.html) for more information
+- [Glossary > Bounces](https://sendgrid.com/docs/Glossary/Bounces.html)
 
 ### GET /suppression/bounces
 
-
 ```javascript
-  const queryParams = {
-  'end_time': 1,
-  'start_time': 1
+const queryParams = {
+  end_time: 1,
+  start_time: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/suppression/bounces';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/suppression/bounces";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a bounce
 
 **This endpoint allows you to remove an email address from your bounce list.**
@@ -4896,26 +4682,25 @@ A bounced email is when the message is undeliverable and then returned to the se
 
 For more information see:
 
-* [User Guide > Bounces](https://sendgrid.com/docs/User_Guide/Suppressions/bounces.html) for more information
-* [Glossary > Bounces](https://sendgrid.com/docs/Glossary/Bounces.html)
-* [Classroom > List Scrubbing Guide](https://sendgrid.com/docs/Classroom/Deliver/list_scrubbing.html)
+- [User Guide > Bounces](https://sendgrid.com/docs/User_Guide/Suppressions/bounces.html) for more information
+- [Glossary > Bounces](https://sendgrid.com/docs/Glossary/Bounces.html)
+- [Classroom > List Scrubbing Guide](https://sendgrid.com/docs/Classroom/Deliver/list_scrubbing.html)
 
 ### DELETE /suppression/bounces/{email}
 
-
 ```javascript
-  const queryParams = {
-  'email_address': 'example@example.com'
+const queryParams = {
+  email_address: "example@example.com",
 };
-  request.qs = queryParams;
-  request.method = 'DELETE';
-  request.url = '/v3/suppression/bounces/{email}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "DELETE";
+request.url = "/v3/suppression/bounces/{email}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a Bounce
 
 **This endpoint allows you to retrieve a specific bounce for a given email address.**
@@ -4924,30 +4709,29 @@ A bounced email is when the message is undeliverable and then returned to the se
 
 For more information see:
 
-* [User Guide > Bounces](https://sendgrid.com/docs/User_Guide/Suppressions/bounces.html) for more information
-* [Glossary > Bounces](https://sendgrid.com/docs/Glossary/Bounces.html)
-* [Classroom > List Scrubbing Guide](https://sendgrid.com/docs/Classroom/Deliver/list_scrubbing.html)
+- [User Guide > Bounces](https://sendgrid.com/docs/User_Guide/Suppressions/bounces.html) for more information
+- [Glossary > Bounces](https://sendgrid.com/docs/Glossary/Bounces.html)
+- [Classroom > List Scrubbing Guide](https://sendgrid.com/docs/Classroom/Deliver/list_scrubbing.html)
 
 ### GET /suppression/bounces/{email}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/suppression/bounces/{email}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/suppression/bounces/{email}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete invalid emails
 
 **This endpoint allows you to remove email addresses from your invalid email address list.**
 
 There are two options for deleting invalid email addresses:
 
-1) You can delete all invalid email addresses by setting `delete_all` to true in the request body.
-2) You can delete some invalid email addresses by specifying the addresses in an array in the request body.
+1. You can delete all invalid email addresses by setting `delete_all` to true in the request body.
+2. You can delete some invalid email addresses by specifying the addresses in an array in the request body.
 
 An invalid email occurs when you attempt to send email to an address that is formatted in a manner that does not meet internet email format standards or the email does not exist at the recipients' mail server.
 
@@ -4957,24 +4741,20 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/User
 
 ### DELETE /suppression/invalid_emails
 
-
 ```javascript
-  const data = {
-  "delete_all": false,
-  "emails": [
-    "example1@example.com",
-    "example2@example.com"
-  ]
+const data = {
+  delete_all: false,
+  emails: ["example1@example.com", "example2@example.com"],
 };
-  request.body = data;
-  request.method = 'DELETE';
-  request.url = '/v3/suppression/invalid_emails';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "DELETE";
+request.url = "/v3/suppression/invalid_emails";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all invalid emails
 
 **This endpoint allows you to retrieve a list of all invalid email addresses.**
@@ -4987,23 +4767,22 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/User
 
 ### GET /suppression/invalid_emails
 
-
 ```javascript
-  const queryParams = {
-  'end_time': 1,
-  'limit': 1,
-  'offset': 1,
-  'start_time': 1
+const queryParams = {
+  end_time: 1,
+  limit: 1,
+  offset: 1,
+  start_time: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/suppression/invalid_emails';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/suppression/invalid_emails";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a specific invalid email
 
 **This endpoint allows you to remove a specific email address from the invalid email address list.**
@@ -5016,16 +4795,15 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/User
 
 ### DELETE /suppression/invalid_emails/{email}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/suppression/invalid_emails/{email}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/suppression/invalid_emails/{email}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a specific invalid email
 
 **This endpoint allows you to retrieve a specific invalid email address.**
@@ -5038,24 +4816,23 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/User
 
 ### GET /suppression/invalid_emails/{email}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/suppression/invalid_emails/{email}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/suppression/invalid_emails/{email}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete spam reports
 
 **This endpoint allows you to delete your spam reports.**
 
 There are two options for deleting spam reports:
 
-1) You can delete all spam reports by setting "delete_all" to true in the request body.
-2) You can delete some spam reports by specifying the email addresses in an array in the request body.
+1. You can delete all spam reports by setting "delete_all" to true in the request body.
+2. You can delete some spam reports by specifying the email addresses in an array in the request body.
 
 [Spam reports](https://sendgrid.com/docs/Glossary/spam_reports.html) happen when a recipient indicates that they think your email is [spam](https://sendgrid.com/docs/Glossary/spam.html) and then their email provider reports this to Twilio SendGrid.
 
@@ -5063,24 +4840,20 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/User
 
 ### DELETE /suppression/spam_reports
 
-
 ```javascript
-  const data = {
-  "delete_all": false,
-  "emails": [
-    "example1@example.com",
-    "example2@example.com"
-  ]
+const data = {
+  delete_all: false,
+  emails: ["example1@example.com", "example2@example.com"],
 };
-  request.body = data;
-  request.method = 'DELETE';
-  request.url = '/v3/suppression/spam_reports';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "DELETE";
+request.url = "/v3/suppression/spam_reports";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all spam reports
 
 **This endpoint allows you to retrieve all spam reports.**
@@ -5091,23 +4864,22 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/User
 
 ### GET /suppression/spam_reports
 
-
 ```javascript
-  const queryParams = {
-  'end_time': 1,
-  'limit': 1,
-  'offset': 1,
-  'start_time': 1
+const queryParams = {
+  end_time: 1,
+  limit: 1,
+  offset: 1,
+  start_time: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/suppression/spam_reports';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/suppression/spam_reports";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a specific spam report
 
 **This endpoint allows you to delete a specific spam report.**
@@ -5118,16 +4890,15 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/User
 
 ### DELETE /suppression/spam_reports/{email}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/suppression/spam_reports/{email}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/suppression/spam_reports/{email}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a specific spam report
 
 **This endpoint allows you to retrieve a specific spam report.**
@@ -5138,16 +4909,15 @@ For more information, please see our [User Guide](https://sendgrid.com/docs/User
 
 ### GET /suppression/spam_reports/{email}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/suppression/spam_reports/{email}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/suppression/spam_reports/{email}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all global suppressions
 
 **This endpoint allows you to retrieve a list of all email addresses that are globally suppressed.**
@@ -5156,24 +4926,24 @@ A global suppression (or global unsubscribe) is an email address of a recipient 
 
 ### GET /suppression/unsubscribes
 
-
 ```javascript
-  const queryParams = {
-  'end_time': 1,
-  'limit': 1,
-  'offset': 1,
-  'start_time': 1
+const queryParams = {
+  end_time: 1,
+  limit: 1,
+  offset: 1,
+  start_time: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/suppression/unsubscribes';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/suppression/unsubscribes";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="teammates"></a>
+
 # TEAMMATES
 
 ## Invite teammate
@@ -5186,50 +4956,45 @@ Essentials, [Legacy Lite](https://sendgrid.com/docs/Classroom/Basics/Billing/leg
 
 ### POST /teammates
 
-
 ```javascript
-  const data = {
-  "email": "teammate1@example.com",
-  "is_admin": false,
-  "scopes": [
-    "user.profile.read",
-    "user.profile.update"
-  ]
+const data = {
+  email: "teammate1@example.com",
+  is_admin: false,
+  scopes: ["user.profile.read", "user.profile.update"],
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/teammates';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/teammates";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all teammates
 
 This endpoint allows you to retrieve a list of all current teammates.
 
 **Note:** The Response Header will include pagination info. For example:
 
-link: ```<https://api.sendgrid.com/v3/teammates?limit=10&offset=0>; rel="first"; title="1", <https://api.sendgrid.com/v3/teammates?limit=10&offset=10>; rel="last"; title="2", <https://api.sendgrid.com/v3/teammates?limit=10&offset=0>; rel="prev"; title="1"```
+link: `<https://api.sendgrid.com/v3/teammates?limit=10&offset=0>; rel="first"; title="1", <https://api.sendgrid.com/v3/teammates?limit=10&offset=10>; rel="last"; title="2", <https://api.sendgrid.com/v3/teammates?limit=10&offset=0>; rel="prev"; title="1"`
 
 ### GET /teammates
 
-
 ```javascript
-  const queryParams = {
-  'limit': 1,
-  'offset': 1
+const queryParams = {
+  limit: 1,
+  offset: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/teammates';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/teammates";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all pending teammates
 
 This endpoint allows you to retrieve a list of all pending teammate invitations.
@@ -5238,32 +5003,30 @@ This endpoint allows you to retrieve a list of all pending teammate invitations.
 
 ### GET /teammates/pending
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/teammates/pending';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/teammates/pending";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete pending teammate
 
 This endpoint allows you to delete a pending teammate invite.
 
 ### DELETE /teammates/pending/{token}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/teammates/pending/{token}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/teammates/pending/{token}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Resend teammate invite
 
 This endpoint allows you to resend a teammate invite.
@@ -5272,16 +5035,15 @@ This endpoint allows you to resend a teammate invite.
 
 ### POST /teammates/pending/{token}/resend
 
-
 ```javascript
-  request.method = 'POST';
-  request.url = '/v3/teammates/pending/{token}/resend';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "POST";
+request.url = "/v3/teammates/pending/{token}/resend";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete teammate
 
 This endpoint allows you to delete a teammate.
@@ -5290,16 +5052,15 @@ This endpoint allows you to delete a teammate.
 
 ### DELETE /teammates/{username}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/teammates/{username}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/teammates/{username}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update teammate's permissions
 
 This endpoint allows you to update a teammate's permissions.
@@ -5312,41 +5073,37 @@ To turn a teammate into an admin, the request body should contain an `is_admin` 
 
 ### PATCH /teammates/{username}
 
-
 ```javascript
-  const data = {
-  "is_admin": false,
-  "scopes": [
-    "user.profile.read",
-    "user.profile.edit"
-  ]
+const data = {
+  is_admin: false,
+  scopes: ["user.profile.read", "user.profile.edit"],
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/teammates/{username}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/teammates/{username}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve specific teammate
 
 This endpoint allows you to retrieve a specific teammate by username.
 
 ### GET /teammates/{username}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/teammates/{username}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/teammates/{username}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="templates"></a>
+
 # TEMPLATES
 
 ## Create a transactional template.
@@ -5359,21 +5116,20 @@ Transactional templates are templates explicitly created for transactional email
 
 ### POST /templates
 
-
 ```javascript
-  const data = {
-    "name": "example_name",
-    "generation": "dynamic"
-  };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/templates';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+const data = {
+  name: "example_name",
+  generation: "dynamic",
+};
+request.body = data;
+request.method = "POST";
+request.url = "/v3/templates";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all transactional templates.
 
 **This endpoint allows you to retrieve all transactional templates.**
@@ -5385,38 +5141,34 @@ Transactional templates are templates explicitly created for transactional email
 ### GET all dynamic /templates
 
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/templates?generations=dynamic';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/templates?generations=dynamic";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
 
 ### GET all legacy /templates
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/templates?generations=legacy';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/templates?generations=legacy";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
 
 ### GET all /templates
 
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/templates?generations=legacy,dynamic';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/templates?generations=legacy,dynamic";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
 
 ## Delete a template.
@@ -5429,16 +5181,15 @@ Transactional templates are templates explicitly created for transactional email
 
 ### DELETE /templates/{template_id}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/templates/{template_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/templates/{template_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Edit a transactional template.
 
 **This endpoint allows you to edit a transactional template.**
@@ -5449,20 +5200,19 @@ Transactional templates are templates explicitly created for transactional email
 
 ### PATCH /templates/{template_id}
 
-
 ```javascript
-  const data = {
-  "name": "new_example_name"
+const data = {
+  name: "new_example_name",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/templates/{template_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/templates/{template_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a single transactional template.
 
 **This endpoint allows you to retrieve a single transactional template.**
@@ -5473,16 +5223,15 @@ Transactional templates are templates explicitly created for transactional email
 
 ### GET /templates/{template_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/templates/{template_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/templates/{template_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Create a new transactional template version.
 
 **This endpoint allows you to create a new version of a template.**
@@ -5493,25 +5242,24 @@ For more information about transactional templates, please see our [User Guide](
 
 ### POST /templates/{template_id}/versions
 
-
 ```javascript
-  const data = {
-  "active": 1,
-  "html_content": "<%body%>",
-  "name": "example_version_name",
-  "plain_content": "<%body%>",
-  "subject": "<%subject%>",
-  "template_id": "ddb96bbc-9b92-425e-8979-99464621b543"
+const data = {
+  active: 1,
+  html_content: "<%body%>",
+  name: "example_version_name",
+  plain_content: "<%body%>",
+  subject: "<%subject%>",
+  template_id: "ddb96bbc-9b92-425e-8979-99464621b543",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/templates/{template_id}/versions';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/templates/{template_id}/versions";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a transactional template version.
 
 **This endpoint allows you to delete one of your transactional template versions.**
@@ -5521,23 +5269,23 @@ Each transactional template can have multiple versions, each version with unique
 For more information about transactional templates, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Transactional_Templates/index.html).
 
 ## URI Parameters
-| URI Parameter | Type | Description |
-|---|---|---|
-| template_id | string | The ID of the original template |
-| version_id | string | The ID of the template version |
+
+| URI Parameter | Type   | Description                     |
+| ------------- | ------ | ------------------------------- |
+| template_id   | string | The ID of the original template |
+| version_id    | string | The ID of the template version  |
 
 ### DELETE /templates/{template_id}/versions/{version_id}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/templates/{template_id}/versions/{version_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/templates/{template_id}/versions/{version_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Edit a transactional template version.
 
 **This endpoint allows you to edit a version of one of your transactional templates.**
@@ -5547,31 +5295,31 @@ Each transactional template can have multiple versions, each version with unique
 For more information about transactional templates, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Transactional_Templates/index.html).
 
 ## URI Parameters
-| URI Parameter | Type | Description |
-|---|---|---|
-| template_id | string | The ID of the original template |
-| version_id | string | The ID of the template version |
+
+| URI Parameter | Type   | Description                     |
+| ------------- | ------ | ------------------------------- |
+| template_id   | string | The ID of the original template |
+| version_id    | string | The ID of the template version  |
 
 ### PATCH /templates/{template_id}/versions/{version_id}
 
-
 ```javascript
-  const data = {
-  "active": 1,
-  "html_content": "<%body%>",
-  "name": "updated_example_name",
-  "plain_content": "<%body%>",
-  "subject": "<%subject%>"
+const data = {
+  active: 1,
+  html_content: "<%body%>",
+  name: "updated_example_name",
+  plain_content: "<%body%>",
+  subject: "<%subject%>",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/templates/{template_id}/versions/{version_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/templates/{template_id}/versions/{version_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a specific transactional template version.
 
 **This endpoint allows you to retrieve a specific version of a template.**
@@ -5581,51 +5329,51 @@ Each transactional template can have multiple versions, each version with unique
 For more information about transactional templates, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Transactional_Templates/index.html).
 
 ## URI Parameters
-| URI Parameter | Type | Description |
-|---|---|---|
-| template_id | string | The ID of the original template |
-| version_id | string |  The ID of the template version |
+
+| URI Parameter | Type   | Description                     |
+| ------------- | ------ | ------------------------------- |
+| template_id   | string | The ID of the original template |
+| version_id    | string | The ID of the template version  |
 
 ### GET /templates/{template_id}/versions/{version_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/templates/{template_id}/versions/{version_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/templates/{template_id}/versions/{version_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Activate a transactional template version.
 
 **This endpoint allows you to activate a version of one of your templates.**
 
 Each transactional template can have multiple versions, each version with unique subject and content. Each user can have up to 300 versions across all templates.
 
-
 For more information about transactional templates, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Transactional_Templates/index.html).
 
 ## URI Parameters
-| URI Parameter | Type | Description |
-|---|---|---|
-| template_id | string | The ID of the original template |
-| version_id | string |  The ID of the template version |
+
+| URI Parameter | Type   | Description                     |
+| ------------- | ------ | ------------------------------- |
+| template_id   | string | The ID of the original template |
+| version_id    | string | The ID of the template version  |
 
 ### POST /templates/{template_id}/versions/{version_id}/activate
 
-
 ```javascript
-  request.method = 'POST';
-  request.url = '/v3/templates/{template_id}/versions/{version_id}/activate';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "POST";
+request.url = "/v3/templates/{template_id}/versions/{version_id}/activate";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="tracking-settings"></a>
+
 # TRACKING SETTINGS
 
 ## Retrieve Tracking Settings
@@ -5638,21 +5386,20 @@ For more information about tracking, please see our [User Guide](https://sendgri
 
 ### GET /tracking_settings
 
-
 ```javascript
-  const queryParams = {
-  'limit': 1,
-  'offset': 1
+const queryParams = {
+  limit: 1,
+  offset: 1,
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/tracking_settings';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/tracking_settings";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update Click Tracking Settings
 
 **This endpoint allows you to change your current click tracking setting. You can enable, or disable, click tracking using this endpoint.**
@@ -5663,20 +5410,19 @@ For more information about tracking, please see our [User Guide](https://sendgri
 
 ### PATCH /tracking_settings/click
 
-
 ```javascript
-  const data = {
-  "enabled": true
+const data = {
+  enabled: true,
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/tracking_settings/click';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/tracking_settings/click";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve Click Track Settings
 
 **This endpoint allows you to retrieve your current click tracking setting.**
@@ -5687,16 +5433,15 @@ For more information about tracking, please see our [User Guide](https://sendgri
 
 ### GET /tracking_settings/click
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/tracking_settings/click';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/tracking_settings/click";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update Google Analytics Settings
 
 **This endpoint allows you to update your current setting for Google Analytics.**
@@ -5711,25 +5456,24 @@ For more information about tracking, please see our [User Guide](https://sendgri
 
 ### PATCH /tracking_settings/google_analytics
 
-
 ```javascript
-  const data = {
-  "enabled": true,
-  "utm_campaign": "website",
-  "utm_content": "",
-  "utm_medium": "email",
-  "utm_source": "sendgrid.com",
-  "utm_term": ""
+const data = {
+  enabled: true,
+  utm_campaign: "website",
+  utm_content: "",
+  utm_medium: "email",
+  utm_source: "sendgrid.com",
+  utm_term: "",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/tracking_settings/google_analytics';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/tracking_settings/google_analytics";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve Google Analytics Settings
 
 **This endpoint allows you to retrieve your current setting for Google Analytics.**
@@ -5744,16 +5488,15 @@ For more information about tracking, please see our [User Guide](https://sendgri
 
 ### GET /tracking_settings/google_analytics
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/tracking_settings/google_analytics';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/tracking_settings/google_analytics";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update Open Tracking Settings
 
 **This endpoint allows you to update your current settings for open tracking.**
@@ -5766,20 +5509,19 @@ For more information about tracking, please see our [User Guide](https://sendgri
 
 ### PATCH /tracking_settings/open
 
-
 ```javascript
-  const data = {
-  "enabled": true
+const data = {
+  enabled: true,
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/tracking_settings/open';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/tracking_settings/open";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Get Open Tracking Settings
 
 **This endpoint allows you to retrieve your current settings for open tracking.**
@@ -5792,16 +5534,15 @@ For more information about tracking, please see our [User Guide](https://sendgri
 
 ### GET /tracking_settings/open
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/tracking_settings/open';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/tracking_settings/open";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update Subscription Tracking Settings
 
 **This endpoint allows you to update your current settings for subscription tracking.**
@@ -5814,25 +5555,24 @@ For more information about tracking, please see our [User Guide](https://sendgri
 
 ### PATCH /tracking_settings/subscription
 
-
 ```javascript
-  const data = {
-  "enabled": true,
-  "html_content": "html content",
-  "landing": "landing page html",
-  "plain_content": "text content",
-  "replace": "replacement tag",
-  "url": "url"
+const data = {
+  enabled: true,
+  html_content: "html content",
+  landing: "landing page html",
+  plain_content: "text content",
+  replace: "replacement tag",
+  url: "url",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/tracking_settings/subscription';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/tracking_settings/subscription";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve Subscription Tracking Settings
 
 **This endpoint allows you to retrieve your current settings for subscription tracking.**
@@ -5845,17 +5585,17 @@ For more information about tracking, please see our [User Guide](https://sendgri
 
 ### GET /tracking_settings/subscription
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/tracking_settings/subscription';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/tracking_settings/subscription";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 <a name="user"></a>
+
 # USER
 
 ## Get a user's account information.
@@ -5868,20 +5608,19 @@ Keeping your user profile up to date is essential. This will help Twilio SendGri
 
 For more information about your user profile:
 
-* [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
+- [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
 
 ### GET /user/account
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/user/account';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/user/account";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve your credit balance
 
 **This endpoint allows you to retrieve the current credit balance for your account.**
@@ -5890,16 +5629,15 @@ Your monthly credit allotment limits the number of emails you may send before in
 
 ### GET /user/credits
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/user/credits';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/user/credits";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update your account email address
 
 **This endpoint allows you to update the email address currently on file for your account.**
@@ -5908,24 +5646,23 @@ Keeping your user profile up to date is essential. This will help Twilio SendGri
 
 For more information about your user profile:
 
-* [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
+- [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
 
 ### PUT /user/email
 
-
 ```javascript
-  const data = {
-  "email": "example@example.com"
+const data = {
+  email: "example@example.com",
 };
-  request.body = data;
-  request.method = 'PUT';
-  request.url = '/v3/user/email';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PUT";
+request.url = "/v3/user/email";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve your account email address
 
 **This endpoint allows you to retrieve the email address currently on file for your account.**
@@ -5934,20 +5671,19 @@ Keeping your user profile up to date is essential. This will help Twilio SendGri
 
 For more information about your user profile:
 
-* [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
+- [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
 
 ### GET /user/email
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/user/email';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/user/email";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update your password
 
 **This endpoint allows you to update your password.**
@@ -5956,25 +5692,24 @@ Keeping your user profile up to date is essential. This will help Twilio SendGri
 
 For more information about your user profile:
 
-* [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
+- [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
 
 ### PUT /user/password
 
-
 ```javascript
-  const data = {
-  "new_password": "new_password",
-  "old_password": "old_password"
+const data = {
+  new_password: "new_password",
+  old_password: "old_password",
 };
-  request.body = data;
-  request.method = 'PUT';
-  request.url = '/v3/user/password';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PUT";
+request.url = "/v3/user/password";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update a user's profile
 
 **This endpoint allows you to update your current profile details.**
@@ -5983,48 +5718,46 @@ Keeping your user profile up to date is essential. This will help Twilio SendGri
 
 For more information about your user profile:
 
-* [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
+- [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
 
 It should be noted that any one or more of the parameters can be updated via the PATCH /user/profile endpoint. The only requirement is that you include at least one when you PATCH.
 
 ### PATCH /user/profile
 
-
 ```javascript
-  const data = {
-  "city": "Orange",
-  "first_name": "Example",
-  "last_name": "User"
+const data = {
+  city: "Orange",
+  first_name: "Example",
+  last_name: "User",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/user/profile';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/user/profile";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Get a user's profile
 
 Keeping your user profile up to date is essential. This will help Twilio SendGrid to verify who you are as well as contact you should we need to.
 
 For more information about your user profile:
 
-* [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
+- [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
 
 ### GET /user/profile
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/user/profile';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/user/profile";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Cancel or pause a scheduled send
 
 **This endpoint allows you to cancel or pause an email that has been scheduled to be sent.**
@@ -6036,21 +5769,20 @@ The Cancel Scheduled Sends feature allows the customer to cancel a scheduled sen
 
 ### POST /user/scheduled_sends
 
-
 ```javascript
-  const data = {
-  "batch_id": "YOUR_BATCH_ID",
-  "status": "pause"
+const data = {
+  batch_id: "YOUR_BATCH_ID",
+  status: "pause",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/user/scheduled_sends';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/user/scheduled_sends";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all scheduled sends
 
 **This endpoint allows you to retrieve all cancel/paused scheduled send information.**
@@ -6059,16 +5791,15 @@ The Cancel Scheduled Sends feature allows the customer to cancel a scheduled sen
 
 ### GET /user/scheduled_sends
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/user/scheduled_sends';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/user/scheduled_sends";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a cancellation or pause of a scheduled send
 
 **This endpoint allows you to delete the cancellation/pause of a scheduled send.**
@@ -6077,16 +5808,15 @@ The Cancel Scheduled Sends feature allows the customer to cancel a scheduled sen
 
 ### DELETE /user/scheduled_sends/{batch_id}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/user/scheduled_sends/{batch_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/user/scheduled_sends/{batch_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update user scheduled send information
 
 **This endpoint allows you to update the status of a scheduled send for the given `batch_id`.**
@@ -6095,20 +5825,19 @@ The Cancel Scheduled Sends feature allows the customer to cancel a scheduled sen
 
 ### PATCH /user/scheduled_sends/{batch_id}
 
-
 ```javascript
-  const data = {
-  "status": "pause"
+const data = {
+  status: "pause",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/user/scheduled_sends/{batch_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/user/scheduled_sends/{batch_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve scheduled send
 
 **This endpoint allows you to retrieve the cancel/paused scheduled send information for a specific `batch_id`.**
@@ -6117,16 +5846,15 @@ The Cancel Scheduled Sends feature allows the customer to cancel a scheduled sen
 
 ### GET /user/scheduled_sends/{batch_id}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/user/scheduled_sends/{batch_id}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/user/scheduled_sends/{batch_id}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update Enforced TLS settings
 
 **This endpoint allows you to update your current Enforced TLS settings.**
@@ -6137,21 +5865,20 @@ The Enforced TLS settings specify whether or not the recipient is required to su
 
 ### PATCH /user/settings/enforced_tls
 
-
 ```javascript
-  const data = {
-  "require_tls": true,
-  "require_valid_cert": false
+const data = {
+  require_tls: true,
+  require_valid_cert: false,
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/user/settings/enforced_tls';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/user/settings/enforced_tls";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve current Enforced TLS settings.
 
 **This endpoint allows you to retrieve your current Enforced TLS settings.**
@@ -6162,16 +5889,15 @@ The Enforced TLS settings specify whether or not the recipient is required to su
 
 ### GET /user/settings/enforced_tls
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/user/settings/enforced_tls';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/user/settings/enforced_tls";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update your username
 
 **This endpoint allows you to update the username for your account.**
@@ -6180,24 +5906,23 @@ Keeping your user profile up to date is essential. This will help Twilio SendGri
 
 For more information about your user profile:
 
-* [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
+- [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
 
 ### PUT /user/username
 
-
 ```javascript
-  const data = {
-  "username": "test_username"
+const data = {
+  username: "test_username",
 };
-  request.body = data;
-  request.method = 'PUT';
-  request.url = '/v3/user/username';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PUT";
+request.url = "/v3/user/username";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve your username
 
 **This endpoint allows you to retrieve your current account username.**
@@ -6206,20 +5931,19 @@ Keeping your user profile up to date is essential. This will help Twilio SendGri
 
 For more information about your user profile:
 
-* [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
+- [Twilio SendGrid Account Settings](https://sendgrid.com/docs/User_Guide/Settings/account.html)
 
 ### GET /user/username
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/user/username';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/user/username";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update Event Notification Settings
 
 **This endpoint allows you to update your current event webhook settings.**
@@ -6232,32 +5956,31 @@ Typical uses of this data are to remove unsubscribes, react to spam reports, det
 
 ### PATCH /user/webhooks/event/settings
 
-
 ```javascript
-  const data = {
-  "bounce": true,
-  "click": true,
-  "deferred": true,
-  "delivered": true,
-  "dropped": true,
-  "enabled": true,
-  "group_resubscribe": true,
-  "group_unsubscribe": true,
-  "open": true,
-  "processed": true,
-  "spam_report": true,
-  "unsubscribe": true,
-  "url": "url"
+const data = {
+  bounce: true,
+  click: true,
+  deferred: true,
+  delivered: true,
+  dropped: true,
+  enabled: true,
+  group_resubscribe: true,
+  group_unsubscribe: true,
+  open: true,
+  processed: true,
+  spam_report: true,
+  unsubscribe: true,
+  url: "url",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/user/webhooks/event/settings';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/user/webhooks/event/settings";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve Event Webhook settings
 
 **This endpoint allows you to retrieve your current event webhook settings.**
@@ -6270,16 +5993,15 @@ Typical uses of this data are to remove unsubscribes, react to spam reports, det
 
 ### GET /user/webhooks/event/settings
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/user/webhooks/event/settings';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/user/webhooks/event/settings";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Test Event Notification Settings
 
 **This endpoint allows you to test your event webhook by sending a fake event notification post to the provided URL.**
@@ -6290,20 +6012,19 @@ Typical uses of this data are to remove unsubscribes, react to spam reports, det
 
 ### POST /user/webhooks/event/test
 
-
 ```javascript
-  const data = {
-  "url": "url"
+const data = {
+  url: "url",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/user/webhooks/event/test';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/user/webhooks/event/test";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Create a parse setting
 
 **This endpoint allows you to create a new inbound parse setting.**
@@ -6312,23 +6033,22 @@ The inbound parse webhook allows you to have incoming emails parsed, extracting 
 
 ### POST /user/webhooks/parse/settings
 
-
 ```javascript
-  const data = {
-  "hostname": "myhostname.com",
-  "send_raw": false,
-  "spam_check": true,
-  "url": "http://email.myhosthame.com"
+const data = {
+  hostname: "myhostname.com",
+  send_raw: false,
+  spam_check: true,
+  url: "http://email.myhosthame.com",
 };
-  request.body = data;
-  request.method = 'POST';
-  request.url = '/v3/user/webhooks/parse/settings';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "POST";
+request.url = "/v3/user/webhooks/parse/settings";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve all parse settings
 
 **This endpoint allows you to retrieve all of your current inbound parse settings.**
@@ -6337,16 +6057,15 @@ The inbound parse webhook allows you to have incoming emails parsed, extracting 
 
 ### GET /user/webhooks/parse/settings
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/user/webhooks/parse/settings';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/user/webhooks/parse/settings";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Delete a parse setting
 
 **This endpoint allows you to delete a specific inbound parse setting.**
@@ -6355,16 +6074,15 @@ The inbound parse webhook allows you to have incoming emails parsed, extracting 
 
 ### DELETE /user/webhooks/parse/settings/{hostname}
 
-
 ```javascript
-  request.method = 'DELETE';
-  request.url = '/v3/user/webhooks/parse/settings/{hostname}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "DELETE";
+request.url = "/v3/user/webhooks/parse/settings/{hostname}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Update a parse setting
 
 **This endpoint allows you to update a specific inbound parse setting.**
@@ -6373,22 +6091,21 @@ The inbound parse webhook allows you to have incoming emails parsed, extracting 
 
 ### PATCH /user/webhooks/parse/settings/{hostname}
 
-
 ```javascript
-  const data = {
-  "send_raw": true,
-  "spam_check": false,
-  "url": "http://newdomain.com/parse"
+const data = {
+  send_raw: true,
+  spam_check: false,
+  url: "http://newdomain.com/parse",
 };
-  request.body = data;
-  request.method = 'PATCH';
-  request.url = '/v3/user/webhooks/parse/settings/{hostname}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.body = data;
+request.method = "PATCH";
+request.url = "/v3/user/webhooks/parse/settings/{hostname}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieve a specific parse setting
 
 **This endpoint allows you to retrieve a specific inbound parse setting.**
@@ -6397,16 +6114,15 @@ The inbound parse webhook allows you to have incoming emails parsed, extracting 
 
 ### GET /user/webhooks/parse/settings/{hostname}
 
-
 ```javascript
-  request.method = 'GET';
-  request.url = '/v3/user/webhooks/parse/settings/{hostname}';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.method = "GET";
+request.url = "/v3/user/webhooks/parse/settings/{hostname}";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```
+
 ## Retrieves Inbound Parse Webhook statistics.
 
 **This endpoint allows you to retrieve the statistics for your Parse Webhook usage.**
@@ -6417,21 +6133,19 @@ There are many pre-made integrations for the Twilio SendGrid Parse Webhook which
 
 ### GET /user/webhooks/parse/stats
 
-
 ```javascript
-  const queryParams = {
-  'aggregated_by': 'day',
-  'end_date': '2016-04-01',
-  'limit': 'test_string',
-  'offset': 'test_string',
-  'start_date': '2016-01-01'
+const queryParams = {
+  aggregated_by: "day",
+  end_date: "2016-04-01",
+  limit: "test_string",
+  offset: "test_string",
+  start_date: "2016-01-01",
 };
-  request.qs = queryParams;
-  request.method = 'GET';
-  request.url = '/v3/user/webhooks/parse/stats';
-  client.request(request)
-  .then(([response, body]) => {
-    console.log(response.statusCode);
-    console.log(response.body);
-  })
+request.qs = queryParams;
+request.method = "GET";
+request.url = "/v3/user/webhooks/parse/stats";
+client.request(request).then(([response, body]) => {
+  console.log(response.statusCode);
+  console.log(response.body);
+});
 ```

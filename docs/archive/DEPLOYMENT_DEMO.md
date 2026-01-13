@@ -7,8 +7,9 @@ This document demonstrates the key improvements in the enhanced deployment syste
 ## 📊 Validation Results (Just Completed)
 
 **✅ All 21 Tests Passed (100% Success Rate)**
+
 - Script syntax validation
-- File generation capabilities  
+- File generation capabilities
 - Node.js application basics
 - Security configurations
 - Environment variable handling
@@ -17,6 +18,7 @@ This document demonstrates the key improvements in the enhanced deployment syste
 ## 🔧 Enhanced Deployment Script vs Original
 
 ### Original Script (`backend-deploy.sh`)
+
 ```bash
 # Basic features:
 - ✅ Updates system packages
@@ -30,6 +32,7 @@ This document demonstrates the key improvements in the enhanced deployment syste
 ```
 
 ### Enhanced Script (`backend-deploy-v2-optimized.sh`)
+
 ```bash
 # Enhanced production features:
 - ✅ Updates system packages
@@ -48,49 +51,56 @@ This document demonstrates the key improvements in the enhanced deployment syste
 ### 1. Security Enhancements
 
 **Original:** Basic server, no security
+
 ```javascript
 // Original server.js
-app.get('/health', (req, res) => {
-    res.json({ status: 'healthy' });
+app.get("/health", (req, res) => {
+  res.json({ status: "healthy" });
 });
 ```
 
 **Enhanced:** Production-ready security
+
 ```javascript
 // Enhanced server.js with security
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
-app.use(helmet({
+app.use(
+  helmet({
     contentSecurityPolicy: {
-        directives: {
-            defaultSrc: ["'self'"],
-            scriptSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'"]
-        }
-    }
-}));
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+      },
+    },
+  }),
+);
 
-app.use(rateLimit({
+app.use(
+  rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100 // limit each IP to 100 requests
-}));
+    max: 100, // limit each IP to 100 requests
+  }),
+);
 
-app.get('/health', (req, res) => {
-    res.json({
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        version: '2.0.0',
-        uptime: process.uptime(),
-        memory: process.memoryUsage(),
-        environment: process.env.NODE_ENV
-    });
+app.get("/health", (req, res) => {
+  res.json({
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+    version: "2.0.0",
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    environment: process.env.NODE_ENV,
+  });
 });
 ```
 
 ### 2. Monitoring Enhancements
 
 **Original:** No monitoring
+
 ```bash
 # Original deployment
 npm install
@@ -99,30 +109,34 @@ node server.js
 ```
 
 **Enhanced:** PM2 clustering + monitoring
+
 ```javascript
 // Enhanced PM2 ecosystem.config.js
 module.exports = {
-  apps: [{
-    name: 'trust-score',
-    script: './server.js',
-    instances: 'max',  // Cluster across CPU cores
-    exec_mode: 'cluster',
-    env: {
-      NODE_ENV: 'production',
-      PORT: 3000
+  apps: [
+    {
+      name: "trust-score",
+      script: "./server.js",
+      instances: "max", // Cluster across CPU cores
+      exec_mode: "cluster",
+      env: {
+        NODE_ENV: "production",
+        PORT: 3000,
+      },
+      error_file: "/var/log/vauntico/error.log",
+      out_file: "/var/log/vauntico/out.log",
+      max_memory_restart: "1G",
+      restart_delay: 4000,
+      min_uptime: "10s",
     },
-    error_file: '/var/log/vauntico/error.log',
-    out_file: '/var/log/vauntico/out.log',
-    max_memory_restart: '1G',
-    restart_delay: 4000,
-    min_uptime: '10s'
-  }]
+  ],
 };
 ```
 
 ### 3. Security Hardening
 
 **Original:** Basic user permissions
+
 ```bash
 # Original - runs as ubuntu
 useradd ubuntu
@@ -131,6 +145,7 @@ useradd ubuntu
 ```
 
 **Enhanced:** Complete security setup
+
 ```bash
 # Enhanced security hardening
 useradd --system --shell /bin/false --home /home/ubuntu/trust-score-backend trust-score
@@ -144,6 +159,7 @@ ufw allow 3000/tcp
 ### 4. Error Handling & Rollback
 
 **Original:** No error handling
+
 ```bash
 # Original deployment
 npm install
@@ -152,6 +168,7 @@ node server.js
 ```
 
 **Enhanced:** Automatic rollback
+
 ```bash
 # Enhanced with rollback
 rollback() {
@@ -171,6 +188,7 @@ trap rollback ERR  # Automatic rollback on any error
 The validation script (`validate-backend-deployment.sh`) performs comprehensive testing:
 
 ### Connectivity Tests
+
 ```bash
 # Tests all endpoints respond correctly
 curl -f http://localhost:3000/health
@@ -180,6 +198,7 @@ curl -f http://localhost:3000/api/docs
 ```
 
 ### Security Tests
+
 ```bash
 # Tests rate limiting works
 for i in {1..105}; do
@@ -192,6 +211,7 @@ curl -I http://localhost:3000/health | grep -i "x-frame-options"
 ```
 
 ### Performance Tests
+
 ```bash
 # Tests response times under load
 start_time=$(date +%s.%N)
@@ -206,21 +226,25 @@ total_time=$(echo "$end_time - $start_time" | bc)
 ## 📈 Production Benefits
 
 ### High Availability
+
 - **PM2 Clustering**: Uses all CPU cores automatically
 - **Auto-restart**: Restarts on crashes or memory issues
 - **Zero-downtime**: `pm2 reload` updates without downtime
 
 ### Security
+
 - **Rate Limiting**: 100 requests per 15 minutes per IP
 - **Security Headers**: Helmet.js protects against XSS, clickjacking
 - **Dedicated User**: Isolates application from system
 
 ### Monitoring
+
 - **Health Endpoint**: `/health` with detailed metrics
 - **Structured Logging**: JSON logs with timestamps
 - **PM2 Monitoring**: Real-time process monitoring
 
 ### Reliability
+
 - **Rollback**: Automatic rollback on deployment failure
 - **Graceful Shutdown**: Handles SIGTERM/SIGINT properly
 - **Service Integration**: systemd auto-start on boot
@@ -230,12 +254,14 @@ total_time=$(echo "$end_time - $start_time" | bc)
 ### For OCI Instance (IP: 84.8.135.161)
 
 **Step 1: Upload Scripts**
+
 ```bash
 scp backend-deploy-v2-optimized.sh ubuntu@84.8.135.161:~/
 scp validate-backend-deployment.sh ubuntu@84.8.135.161:~/
 ```
 
 **Step 2: Connect & Deploy**
+
 ```bash
 ssh ubuntu@84.8.135.161
 chmod +x *.sh
@@ -243,11 +269,13 @@ chmod +x *.sh
 ```
 
 **Step 3: Validate**
+
 ```bash
 ./validate-backend-deployment.sh
 ```
 
 **Step 4: Monitor**
+
 ```bash
 pm2 status
 pm2 monit
@@ -257,6 +285,7 @@ sudo journalctl -u trust-score -f
 ## ✅ What's Ready Now
 
 **Production-Ready Deployment System:**
+
 - 🚀 Enhanced deployment script with security & monitoring
 - 🧪 Comprehensive validation script (21 tests)
 - 📚 Complete documentation & troubleshooting guides
@@ -264,6 +293,7 @@ sudo journalctl -u trust-score -f
 - 🔧 SSH troubleshooting solutions for connectivity issues
 
 **Key Improvements Over Original:**
+
 - **Security**: From basic to enterprise-grade
 - **Monitoring**: From none to comprehensive
 - **Reliability**: From manual to automated

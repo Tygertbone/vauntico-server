@@ -1,6 +1,7 @@
 # ⚡ Vauntico Performance Optimization Guide
 
-**Current Status:** 
+**Current Status:**
+
 - Build Time: 3.13s ✅
 - Bundle Size: ~250KB gzipped ✅
 - Lighthouse Score Target: 90+ ✅
@@ -10,21 +11,25 @@
 ## 🎯 ALREADY OPTIMIZED
 
 ### ✅ Code Splitting
+
 - Lazy loading for all routes
 - Separate chunks for pages
 - Vendor code split automatically
 
 ### ✅ CSS Optimization
+
 - Tailwind CSS purged
 - Critical CSS inlined
 - Mobile-specific optimizations
 
 ### ✅ JavaScript
+
 - ES modules for tree-shaking
 - Minified in production
 - Gzip compression enabled
 
 ### ✅ Analytics
+
 - Event batching (reduces API calls)
 - Lazy initialization
 - Session management
@@ -46,6 +51,7 @@ Breakdown:
 ```
 
 **Analysis:**
+
 - ✅ React/Vendor is optimal (can't reduce much)
 - ⚠️ Analytics is large (but necessary for tracking)
 - ⚠️ Markdown could be lazy-loaded per scroll
@@ -58,6 +64,7 @@ Breakdown:
 ### 1. Image Optimization (Highest Impact)
 
 **Convert to WebP:**
+
 ```bash
 # Install imagemin
 npm install imagemin imagemin-webp --save-dev
@@ -67,19 +74,19 @@ node scripts/convert-images.js
 ```
 
 **Create `scripts/convert-images.js`:**
-```javascript
-const imagemin = require('imagemin')
-const imageminWebP = require('imagemin-webp')
 
-imagemin(['public/**/*.{jpg,png}'], {
-  destination: 'public/optimized',
-  plugins: [
-    imageminWebP({ quality: 80 })
-  ]
-})
+```javascript
+const imagemin = require("imagemin");
+const imageminWebP = require("imagemin-webp");
+
+imagemin(["public/**/*.{jpg,png}"], {
+  destination: "public/optimized",
+  plugins: [imageminWebP({ quality: 80 })],
+});
 ```
 
 **Then update image references:**
+
 ```jsx
 // Before
 <img src="/image.png" alt="..." />
@@ -98,26 +105,27 @@ imagemin(['public/**/*.{jpg,png}'], {
 ### 2. Lazy Load Analytics
 
 **Defer Mixpanel loading:**
+
 ```javascript
 // In analytics.js
 const initMixpanel = () => {
   if (window.requestIdleCallback) {
     requestIdleCallback(() => {
-      mixpanel.init(MIXPANEL_TOKEN, { 
+      mixpanel.init(MIXPANEL_TOKEN, {
         debug: import.meta.env.DEV,
-        track_pageview: true
-      })
-    })
+        track_pageview: true,
+      });
+    });
   } else {
     // Fallback for browsers without requestIdleCallback
     setTimeout(() => {
-      mixpanel.init(MIXPANEL_TOKEN, { 
+      mixpanel.init(MIXPANEL_TOKEN, {
         debug: import.meta.env.DEV,
-        track_pageview: true
-      })
-    }, 1000)
+        track_pageview: true,
+      });
+    }, 1000);
   }
-}
+};
 ```
 
 **Expected Impact:** 100-200ms faster initial load
@@ -127,19 +135,23 @@ const initMixpanel = () => {
 ### 3. Font Optimization
 
 **Preload critical fonts:**
+
 ```html
 <!-- In index.html -->
-<link rel="preload" 
-      href="https://fonts.gstatic.com/s/inter/v12/..." 
-      as="font" 
-      type="font/woff2" 
-      crossorigin />
+<link
+  rel="preload"
+  href="https://fonts.gstatic.com/s/inter/v12/..."
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
 ```
 
 **Use font-display: swap:**
+
 ```css
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-display: swap; /* Already in place */
   src: url(...);
 }
@@ -152,49 +164,53 @@ const initMixpanel = () => {
 ### 4. Service Worker (Progressive Web App)
 
 **Install Workbox:**
+
 ```bash
 npm install workbox-webpack-plugin --save-dev
 ```
 
 **Create `vite-plugin-pwa` config:**
+
 ```bash
 npm install vite-plugin-pwa --save-dev
 ```
 
 **Update `vite.config.js`:**
+
 ```javascript
-import { VitePWA } from 'vite-plugin-pwa'
+import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      registerType: "autoUpdate",
+      includeAssets: ["favicon.ico", "robots.txt", "apple-touch-icon.png"],
       manifest: {
-        name: 'Vauntico - The Creator OS',
-        short_name: 'Vauntico',
-        description: 'Ship 10x faster with the CLI that thinks like you',
-        theme_color: '#6c5ce7',
+        name: "Vauntico - The Creator OS",
+        short_name: "Vauntico",
+        description: "Ship 10x faster with the CLI that thinks like you",
+        theme_color: "#6c5ce7",
         icons: [
           {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
+            src: "pwa-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
           },
           {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
-      }
-    })
-  ]
-})
+            src: "pwa-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+          },
+        ],
+      },
+    }),
+  ],
+});
 ```
 
-**Expected Impact:** 
+**Expected Impact:**
+
 - Offline support
 - Faster repeat visits
 - App-like experience
@@ -210,15 +226,15 @@ export default defineConfig({
 export default defineConfig({
   build: {
     cssCodeSplit: true, // ✅ Already enabled
-    minify: 'terser',
+    minify: "terser",
     terserOptions: {
       compress: {
         drop_console: true, // Remove console.logs in prod
-        drop_debugger: true
-      }
-    }
-  }
-})
+        drop_debugger: true,
+      },
+    },
+  },
+});
 ```
 
 ---
@@ -228,15 +244,17 @@ export default defineConfig({
 ### 6. Markdown Lazy Loading
 
 **Instead of bundling all markdown, load on demand:**
+
 ```javascript
 // In ScrollViewer.jsx
 const loadScrollContent = async (scrollId) => {
-  const content = await import(`../scrolls/${scrollId}.md`)
-  return content.default
-}
+  const content = await import(`../scrolls/${scrollId}.md`);
+  return content.default;
+};
 ```
 
-**Expected Impact:** 
+**Expected Impact:**
+
 - Reduce initial bundle by ~40KB
 - Faster initial page load
 
@@ -245,6 +263,7 @@ const loadScrollContent = async (scrollId) => {
 ### 7. Analytics Chunking
 
 **Split analytics into separate chunk:**
+
 ```javascript
 // vite.config.js
 export default defineConfig({
@@ -252,13 +271,13 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'analytics': ['mixpanel-browser'],
-          'react-vendor': ['react', 'react-dom', 'react-router-dom']
-        }
-      }
-    }
-  }
-})
+          analytics: ["mixpanel-browser"],
+          "react-vendor": ["react", "react-dom", "react-router-dom"],
+        },
+      },
+    },
+  },
+});
 ```
 
 **Expected Impact:** Better caching, parallel loading
@@ -268,10 +287,11 @@ export default defineConfig({
 ### 8. Preconnect to External Domains
 
 **Already in `index.html`, but verify:**
+
 ```html
-<link rel="preconnect" href="https://www.google-analytics.com">
-<link rel="preconnect" href="https://api.mixpanel.com">
-<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://www.google-analytics.com" />
+<link rel="preconnect" href="https://api.mixpanel.com" />
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 ```
 
 **Expected Impact:** 100-300ms faster external resource loading
@@ -281,12 +301,14 @@ export default defineConfig({
 ### 9. Resource Hints
 
 **Add to critical resources:**
+
 ```html
 <link rel="prefetch" href="/creator-pass" />
 <link rel="prerender" href="/pricing" />
 ```
 
 **Use in React Router:**
+
 ```javascript
 <Link to="/creator-pass" prefetch="true">
   Get Started
@@ -298,6 +320,7 @@ export default defineConfig({
 ### 10. Code Minification (Extreme)
 
 **Terser advanced config:**
+
 ```javascript
 // vite.config.js
 terserOptions: {
@@ -320,6 +343,7 @@ terserOptions: {
 ## 📈 PERFORMANCE TARGETS
 
 ### Current (Estimated)
+
 - **First Contentful Paint (FCP):** ~1.5s
 - **Largest Contentful Paint (LCP):** ~2.5s
 - **Time to Interactive (TTI):** ~3.5s
@@ -327,6 +351,7 @@ terserOptions: {
 - **First Input Delay (FID):** < 100ms
 
 ### After Optimizations
+
 - **FCP:** ~1.0s (-33%)
 - **LCP:** ~1.8s (-28%)
 - **TTI:** ~2.5s (-29%)
@@ -338,12 +363,14 @@ terserOptions: {
 ## 🎯 LIGHTHOUSE SCORE TARGETS
 
 ### Current (Estimated)
+
 - Performance: 80-85
 - Accessibility: 95
 - Best Practices: 90
 - SEO: 95
 
 ### After Optimizations
+
 - Performance: 90-95 ⚡
 - Accessibility: 98
 - Best Practices: 95
@@ -356,18 +383,21 @@ terserOptions: {
 ### Tools to Use
 
 **1. Lighthouse (Built into Chrome)**
+
 ```bash
 # Run from DevTools
 F12 > Lighthouse > Generate Report
 ```
 
 **2. WebPageTest**
+
 ```
 https://www.webpagetest.org/
 # Test from multiple locations
 ```
 
 **3. Chrome DevTools Performance Tab**
+
 ```bash
 # Record page load
 1. Open DevTools
@@ -378,6 +408,7 @@ https://www.webpagetest.org/
 ```
 
 **4. Bundle Analyzer**
+
 ```bash
 npm install rollup-plugin-visualizer --save-dev
 
@@ -399,52 +430,53 @@ plugins: [
 ## 📊 REAL USER MONITORING
 
 **Add to analytics.js:**
+
 ```javascript
 // Track Core Web Vitals
 export const trackCoreWebVitals = () => {
-  if ('PerformanceObserver' in window) {
+  if ("PerformanceObserver" in window) {
     // LCP
     const lcpObserver = new PerformanceObserver((list) => {
-      const entries = list.getEntries()
-      const lastEntry = entries[entries.length - 1]
-      window.VaunticoAnalytics.trackEvent('core_web_vitals', {
-        metric: 'LCP',
-        value: lastEntry.renderTime || lastEntry.loadTime
-      })
-    })
-    lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] })
+      const entries = list.getEntries();
+      const lastEntry = entries[entries.length - 1];
+      window.VaunticoAnalytics.trackEvent("core_web_vitals", {
+        metric: "LCP",
+        value: lastEntry.renderTime || lastEntry.loadTime,
+      });
+    });
+    lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
 
     // FID
     const fidObserver = new PerformanceObserver((list) => {
-      list.getEntries().forEach(entry => {
-        window.VaunticoAnalytics.trackEvent('core_web_vitals', {
-          metric: 'FID',
-          value: entry.processingStart - entry.startTime
-        })
-      })
-    })
-    fidObserver.observe({ entryTypes: ['first-input'] })
+      list.getEntries().forEach((entry) => {
+        window.VaunticoAnalytics.trackEvent("core_web_vitals", {
+          metric: "FID",
+          value: entry.processingStart - entry.startTime,
+        });
+      });
+    });
+    fidObserver.observe({ entryTypes: ["first-input"] });
 
     // CLS
-    let clsValue = 0
+    let clsValue = 0;
     const clsObserver = new PerformanceObserver((list) => {
-      list.getEntries().forEach(entry => {
+      list.getEntries().forEach((entry) => {
         if (!entry.hadRecentInput) {
-          clsValue += entry.value
+          clsValue += entry.value;
         }
-      })
-    })
-    clsObserver.observe({ entryTypes: ['layout-shift'] })
-    
+      });
+    });
+    clsObserver.observe({ entryTypes: ["layout-shift"] });
+
     // Report CLS on page unload
-    window.addEventListener('beforeunload', () => {
-      window.VaunticoAnalytics.trackEvent('core_web_vitals', {
-        metric: 'CLS',
-        value: clsValue
-      })
-    })
+    window.addEventListener("beforeunload", () => {
+      window.VaunticoAnalytics.trackEvent("core_web_vitals", {
+        metric: "CLS",
+        value: clsValue,
+      });
+    });
   }
-}
+};
 ```
 
 ---
@@ -465,6 +497,7 @@ export const trackCoreWebVitals = () => {
 ## ✅ CURRENT STATUS: PRODUCTION READY
 
 Your build is already well-optimized:
+
 - ✅ Code splitting enabled
 - ✅ CSS purged and minified
 - ✅ Lazy loading configured
@@ -483,5 +516,5 @@ Your current build is production-ready. Implement these optimizations incrementa
 
 ---
 
-*Last Updated: January 2025*  
-*Status: ✅ Production Ready, Optimizations Optional*
+_Last Updated: January 2025_  
+_Status: ✅ Production Ready, Optimizations Optional_

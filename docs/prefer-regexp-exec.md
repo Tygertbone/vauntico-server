@@ -1,5 +1,5 @@
 ---
-description: 'Enforce `RegExp#exec` over `String#match` if no global flag is provided.'
+description: "Enforce `RegExp#exec` over `String#match` if no global flag is provided."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -20,11 +20,11 @@ This rule reports when a `String#match` call can be replaced with an equivalent 
 ### ❌ Incorrect
 
 ```ts
-'something'.match(/thing/);
+"something".match(/thing/);
 
-'some things are just things'.match(/thing/);
+"some things are just things".match(/thing/);
 
-const text = 'something';
+const text = "something";
 const search = /thing/;
 text.match(search);
 ```
@@ -32,11 +32,11 @@ text.match(search);
 ### ✅ Correct
 
 ```ts
-/thing/.exec('something');
+/thing/.exec("something");
 
-'some things are just things'.match(/thing/g);
+"some things are just things".match(/thing/g);
 
-const text = 'something';
+const text = "something";
 const search = /thing/;
 search.exec(text);
 ```

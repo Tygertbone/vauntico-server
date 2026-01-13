@@ -1,5 +1,5 @@
 ---
-description: 'Disallow unnecessary template literals.'
+description: "Disallow unnecessary template literals."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -15,34 +15,34 @@ This rule reports template literals that can be simplified to a normal string li
 ### ❌ Incorrect
 
 ```ts
-const ab1 = `${'a'}${'b'}`;
-const ab2 = `a${'b'}`;
+const ab1 = `${"a"}${"b"}`;
+const ab2 = `a${"b"}`;
 
-const stringWithNumber = `${'1 + 1 = '}${2}`;
+const stringWithNumber = `${"1 + 1 = "}${2}`;
 
-const stringWithBoolean = `${'true is '}${true}`;
+const stringWithBoolean = `${"true is "}${true}`;
 
-const text = 'a';
+const text = "a";
 const wrappedText = `${text}`;
 
-declare const intersectionWithString: string & { _brand: 'test-brand' };
+declare const intersectionWithString: string & { _brand: "test-brand" };
 const wrappedIntersection = `${intersectionWithString}`;
 ```
 
 ### ✅ Correct
 
 ```ts
-const ab1 = 'ab';
-const ab2 = 'ab';
+const ab1 = "ab";
+const ab2 = "ab";
 
 const stringWithNumber = `1 + 1 = 2`;
 
 const stringWithBoolean = `true is true`;
 
-const text = 'a';
+const text = "a";
 const wrappedText = text;
 
-declare const intersectionWithString: string & { _brand: 'test-brand' };
+declare const intersectionWithString: string & { _brand: "test-brand" };
 const wrappedIntersection = intersectionWithString;
 ```
 

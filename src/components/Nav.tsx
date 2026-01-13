@@ -1,48 +1,51 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { FullLogo } from './Logo';
-import { Eye, Heart, Infinity, Sparkles, Menu, X } from 'lucide-react';
+"use client";
+import React, { useEffect, useState } from "react";
+import { FullLogo } from "./Logo";
+import { Eye, Heart, Infinity, Sparkles, Menu, X } from "lucide-react";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentUbuntuValue, setCurrentUbuntuValue] = useState('');
+  const [currentUbuntuValue, setCurrentUbuntuValue] = useState("");
 
   const ubuntuValues = [
     "I am because we are",
-    "Together we create abundance", 
+    "Together we create abundance",
     "My success lifts others",
     "Community is my foundation",
-    "We rise by lifting others"
+    "We rise by lifting others",
   ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const randomValue = ubuntuValues[Math.floor(Math.random() * ubuntuValues.length)];
+      const randomValue =
+        ubuntuValues[Math.floor(Math.random() * ubuntuValues.length)];
       setCurrentUbuntuValue(randomValue);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
 
   const sacredLinks = [
-    { href: '/', label: 'Home', icon: Eye },
-    { href: '/vaults', label: 'Vaults', icon: Infinity },
-    { href: '/lore', label: 'Lore', icon: Sparkles },
-    { href: '/workshop', label: 'Workshop', icon: Heart }
+    { href: "/", label: "Home", icon: Eye },
+    { href: "/vaults", label: "Vaults", icon: Infinity },
+    { href: "/lore", label: "Lore", icon: Sparkles },
+    { href: "/workshop", label: "Workshop", icon: Heart },
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled 
-        ? 'backdrop-blur-md bg-black/40 border-b border-white/10' 
-        : 'bg-black/20'
-    }`}>
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "backdrop-blur-md bg-black/40 border-b border-white/10"
+          : "bg-black/20"
+      }`}
+    >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Sacred Logo with Ubuntu Integration */}
         <div className="flex items-center space-x-4">
@@ -65,11 +68,13 @@ export default function Nav() {
                 className="group flex items-center space-x-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 sacred-hover"
               >
                 <Icon className="w-4 h-4 text-purple-400 group-hover:text-purple-300" />
-                <span className="text-white text-sm font-medium">{link.label}</span>
+                <span className="text-white text-sm font-medium">
+                  {link.label}
+                </span>
               </a>
             );
           })}
-          
+
           {/* Sacred CTA Button */}
           <a
             href="/signup"
@@ -113,14 +118,14 @@ export default function Nav() {
                 </a>
               );
             })}
-            
+
             {/* Mobile Ubuntu Wisdom */}
             <div className="mt-4 p-4 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-lg border border-purple-500/30">
               <p className="text-sm text-gray-300 italic text-center">
                 "{currentUbuntuValue}"
               </p>
             </div>
-            
+
             {/* Mobile CTA */}
             <a
               href="/signup"

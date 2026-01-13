@@ -1,5 +1,5 @@
 ---
-description: 'Disallow literal numbers that lose precision.'
+description: "Disallow literal numbers that lose precision."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

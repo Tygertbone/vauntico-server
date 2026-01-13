@@ -3,6 +3,7 @@
 ## ⚡ **IMMEDIATE ACTIONS (NEXT 10 MINUTES)**
 
 ### **Step 1: DNS Setup (2 min)**
+
 ```bash
 # Edit with your Cloudflare credentials
 nano cloudflare-dns-setup.sh
@@ -16,6 +17,7 @@ nslookup trust-score.vauntico.com
 ```
 
 ### **Step 2: Backend Deploy (5 min)**
+
 ```bash
 # SSH to instance
 oci compute instance ssh --instance-id ocid1.instance.oc1.af-johannesburg-1.anvg4ljr4eq3kmqc7xrszmhs2geuocplk74cxm3sozcjr7otloapshomte3q
@@ -27,6 +29,7 @@ ssh ubuntu@84.8.135.161
 ```
 
 ### **Step 3: Verification (3 min)**
+
 ```bash
 # Test local endpoints
 curl http://localhost:3000/health
@@ -41,12 +44,14 @@ curl https://trust-score.vauntico.com/api/v1/status
 ## 📋 **SUCCESS CRITERIA**
 
 ### **✅ Infrastructure (COMPLETED)**
+
 - [x] OCI Instance: RUNNING at 84.8.135.161
 - [x] Scripts: Executable and ready
 - [x] Documentation: Complete
 - [x] Network: Configured and reachable
 
 ### **🔄 Final Steps (PENDING)**
+
 - [ ] Cloudflare DNS A record created
 - [ ] Backend application deployed
 - [ ] HTTPS endpoints responding
@@ -57,11 +62,13 @@ curl https://trust-score.vauntico.com/api/v1/status
 ## 🎯 **FINAL URLs**
 
 **After DNS & Deployment:**
+
 - **🔗 Main**: https://trust-score.vauntico.com
-- **❤️ Health**: https://trust-score.vauntico.com/health  
+- **❤️ Health**: https://trust-score.vauntico.com/health
 - **📊 Status**: https://trust-score.vauntico.com/api/v1/status
 
 **Direct Access (if needed):**
+
 - **HTTP**: http://84.8.135.161:3000
 - **SSH**: ubuntu@84.8.135.161
 
@@ -69,12 +76,12 @@ curl https://trust-score.vauntico.com/api/v1/status
 
 ## 🚨 **TROUBLESHOOTING**
 
-| Issue | Solution |
-|--------|----------|
-| DNS not resolving | Wait 5-10 minutes for propagation |
-| SSH connection refused | Check OCI security list rules |
-| Service not starting | `sudo journalctl -u trust-score` |
-| Port blocked | Ensure port 3000 allowed in firewall |
+| Issue                  | Solution                             |
+| ---------------------- | ------------------------------------ |
+| DNS not resolving      | Wait 5-10 minutes for propagation    |
+| SSH connection refused | Check OCI security list rules        |
+| Service not starting   | `sudo journalctl -u trust-score`     |
+| Port blocked           | Ensure port 3000 allowed in firewall |
 
 ---
 

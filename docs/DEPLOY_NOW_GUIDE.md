@@ -3,19 +3,23 @@
 ## ⚡ FASTEST METHOD: Vercel Dashboard (NO CLI NEEDED)
 
 ### **Step 1: Go to Vercel**
+
 Open: https://vercel.com/
 
 ### **Step 2: Sign In**
+
 - Use GitHub account (easiest)
 - Or email/password
 
 ### **Step 3: Import Project**
+
 1. Click "Add New..." → "Project"
 2. Click "Import Git Repository"
 3. Find: `Tygertbone/vauntico-mvp`
 4. Click "Import"
 
 ### **Step 4: Configure**
+
 ```
 Framework Preset: Vite
 Build Command: npm run build
@@ -24,12 +28,15 @@ Root Directory: vauntico-mvp-cursur-build  ← IMPORTANT!
 ```
 
 ### **Step 5: Deploy**
+
 Click "Deploy" button
 
 **Wait 30-60 seconds...**
 
 ### **Step 6: Get URL**
+
 You'll get a URL like:
+
 ```
 https://vauntico-mvp-[random].vercel.app
 ```
@@ -67,6 +74,7 @@ vercel --prod
 ⚠️ **CRITICAL**: Your code is in `vauntico-mvp-cursur-build` subdirectory!
 
 In Vercel settings:
+
 ```
 Root Directory: vauntico-mvp-cursur-build
 ```
@@ -86,6 +94,7 @@ Without this, deployment will fail!
 5. **Favicon shows** (purple V)
 
 ### Run PageSpeed Test:
+
 ```
 https://pagespeed.web.dev/
 Enter your new Vercel URL
@@ -97,14 +106,18 @@ Check: All scores 90+
 ## 🚨 TROUBLESHOOTING
 
 ### Issue: Build Fails
+
 **Fix**: Check Root Directory is set to `vauntico-mvp-cursur-build`
 
 ### Issue: 404 on All Pages
+
 **Fix**: Vercel auto-detects Vite, but check:
+
 - Output Directory: `dist`
 - Build Command: `npm run build`
 
 ### Issue: Slow Deploy
+
 **Normal**: First deploy takes 1-2 minutes
 **Future**: Deploys take 30 seconds
 

@@ -9,6 +9,7 @@
 ## 🎯 **PRIORITY FIXES (Easiest → Hardest)**
 
 ### **Fix 1: NeuralNetworkProgress Text Format (5 tests)**
+
 **Time:** 2 minutes  
 **Impact:** +5 tests = 137/154 (89%)
 
@@ -34,6 +35,7 @@
 ---
 
 ### **Fix 2: FloatingGlyphs Color Format (4 tests)**
+
 **Time:** 3 minutes  
 **Impact:** +4 tests = 141/154 (92%)
 
@@ -51,12 +53,13 @@ expect(glyph.style.color).toMatch(/rgba\\(179, 0, 255|#b300ff/);
 If tests still fail, the color is being converted by browser. Just update the test to accept rgba:
 
 ```jsx
-expect(glyph.style.color).toContain('179, 0, 255');
+expect(glyph.style.color).toContain("179, 0, 255");
 ```
 
 ---
 
 ### **Fix 3: VaultOpening Animation Timeouts (5 tests)**
+
 **Time:** 5 minutes  
 **Impact:** +5 tests = 146/154 (95%)
 
@@ -67,7 +70,7 @@ expect(glyph.style.color).toContain('179, 0, 255');
 ```jsx
 // File: src/components/mystical/__tests__/VaultOpening.test.jsx
 
-it('should trigger opening animation', async () => {
+it("should trigger opening animation", async () => {
   // ... test code
 }, 6000); // ← Add timeout here
 ```
@@ -75,7 +78,9 @@ it('should trigger opening animation', async () => {
 **Solution B - Better:** Use shorter duration in tests
 
 ```jsx
-<VaultOpening triggerOpen={true} duration={100}> {/* ← Fast for tests */}
+<VaultOpening triggerOpen={true} duration={100}>
+  {" "}
+  {/* ← Fast for tests */}
   <div>Test content</div>
 </VaultOpening>
 ```
@@ -83,6 +88,7 @@ it('should trigger opening animation', async () => {
 ---
 
 ### **Fix 4: CosmicBackground will-change (1 test)**
+
 **Time:** 2 minutes  
 **Impact:** +1 test = 147/154 (95%)
 
@@ -94,7 +100,9 @@ it('should trigger opening animation', async () => {
 // File: src/components/mystical/__tests__/CosmicBackground.test.jsx
 
 const starField = container.querySelector('[class*="animate-star-field"]');
-expect(starField.style.willChange || starField.getAttribute('style')).toBeTruthy();
+expect(
+  starField.style.willChange || starField.getAttribute("style"),
+).toBeTruthy();
 ```
 
 If still failing, just check the element exists:
@@ -106,6 +114,7 @@ expect(starField).toBeInTheDocument();
 ---
 
 ### **Fix 5: EnhancedUnicorn Image Tests (3 tests)**
+
 **Time:** 3 minutes  
 **Impact:** +3 tests = 150/154 (97%)
 
@@ -159,6 +168,7 @@ pnpm test -- --run
 ## 📊 **WHAT YOU'LL SEE**
 
 ### **Before:**
+
 ```
 Test Files: 2 passed, 3 failed (5)
 Tests:      132 passed, 22 failed (154)
@@ -166,6 +176,7 @@ Pass Rate:  86%
 ```
 
 ### **After (10 min):**
+
 ```
 Test Files: 4 passed, 1 failed (5)
 Tests:      146 passed, 8 failed (154)
@@ -173,6 +184,7 @@ Pass Rate:  95% ✅
 ```
 
 ### **After (20 min):**
+
 ```
 Test Files: 5 passed, 0 failed (5)
 Tests:      150 passed, 4 failed (154)
@@ -212,6 +224,7 @@ Pass Rate:  97% 🔥
 ## 🎯 **PRIORITY ORDER**
 
 If you only have 10 minutes:
+
 1. ✅ NeuralNetworkProgress text (2 min) → +5 tests
 2. ✅ VaultOpening timeouts (5 min) → +5 tests
 3. ✅ FloatingGlyphs colors (3 min) → +4 tests

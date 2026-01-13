@@ -5,11 +5,13 @@ Transform your mundane git commits into epic mythic narratives!
 ## ✨ What You Get
 
 Instead of boring commits like:
+
 ```
 fix: update validation logic
 ```
 
 You get epic narratives like:
+
 ```
 🧿 VaultDashboard purified · 2025-10-18 · replay protection toggled and metrics sealed
 ```
@@ -38,23 +40,27 @@ git push
 ## 🎯 Usage Methods
 
 ### Method 1: NPM Scripts (Easiest)
+
 ```bash
 npm run lore       # Preview message
 npm run commit     # Commit with lore
 ```
 
 ### Method 2: Git Alias
+
 ```bash
 git commit-lore    # Commit with lore
 ```
 
 ### Method 3: Quick Commit Script
+
 ```powershell
 .\quick-commit.ps1      # Interactive commit + optional push
 .\quick-commit.ps1 -Preview  # Just preview
 ```
 
 ### Method 4: Direct Command
+
 ```bash
 node lore-generator.js --commit
 ```
@@ -66,6 +72,7 @@ node lore-generator.js --commit
 ```
 
 **Example:**
+
 ```
 🧿 VaultDashboard purified · 2025-10-18 · replay protection toggled and metrics sealed
 │  │               │         │            │
@@ -80,34 +87,37 @@ node lore-generator.js --commit
 
 The generator automatically detects your commit type:
 
-| Emoji | Type | Trigger |
-|-------|------|---------|
-| 🧿 | feat | New features (default) |
-| ⚡ | fix | Bug fixes, "fix" in diff |
-| 🔮 | refactor | Code refactoring |
-| 📜 | docs | README, .md files |
-| ✨ | style | CSS, styling changes |
-| 🗡️ | test | Test files (.spec, .test) |
-| 🛡️ | chore | package.json, config |
-| 🔥 | perf | Performance optimization |
-| ⚒️ | build | Build system |
-| 🌙 | ci | CI/CD |
+| Emoji | Type     | Trigger                   |
+| ----- | -------- | ------------------------- |
+| 🧿    | feat     | New features (default)    |
+| ⚡    | fix      | Bug fixes, "fix" in diff  |
+| 🔮    | refactor | Code refactoring          |
+| 📜    | docs     | README, .md files         |
+| ✨    | style    | CSS, styling changes      |
+| 🗡️    | test     | Test files (.spec, .test) |
+| 🛡️    | chore    | package.json, config      |
+| 🔥    | perf     | Performance optimization  |
+| ⚒️    | build    | Build system              |
+| 🌙    | ci       | CI/CD                     |
 
 ## 🔮 Intelligent Pattern Detection
 
 The generator analyzes your code changes and detects patterns:
 
 ### Security & Validation
+
 - **replay protection toggled** - Detects nonce/timestamp validation
 - **wards strengthened** - Security/auth changes
 - **validation enhanced** - Validation logic
 
 ### State & Performance
+
 - **state harmonized** - State management
 - **metrics sealed** - Analytics/tracking
 - **performance optimized** - Optimization code
 
 ### Development
+
 - **tests forged** - Test files
 - **documentation inscribed** - Docs
 - **hooks conjured** - React hooks
@@ -149,6 +159,7 @@ git push
 ```
 
 Or use the one-command helper:
+
 ```powershell
 .\quick-commit.ps1
 ```
@@ -156,12 +167,15 @@ Or use the one-command helper:
 ## ⚙️ Configuration
 
 ### Set Up Git Alias (One-Time Setup)
+
 Already done by setup script, but if needed:
+
 ```bash
 git config --global alias.commit-lore "!node ./lore-generator.js --commit"
 ```
 
 ### Verify Setup
+
 ```bash
 # Check git alias
 git config --get alias.commit-lore
@@ -219,6 +233,7 @@ git push
 ```
 
 Or for the ultimate experience:
+
 ```bash
 git add . && npm run commit && git push
 ```
@@ -243,29 +258,32 @@ See [Customization Guide](./LORE-GENERATOR-README.md#customization)
 ## 🐛 Troubleshooting
 
 **"No staged files found"**
+
 ```bash
 git add .  # Stage files first
 ```
 
 **Emojis look weird in PowerShell**
+
 - They display correctly in git log and on GitHub/GitLab
 - Use `git log --oneline` to see them properly
 
 **Script not found**
+
 - Make sure you're in the project root
 - Check file exists: `ls lore-generator.js`
 
 ## 📦 What's Included
 
-| File | Purpose |
-|------|---------|
-| `lore-generator.js` | Main generator script |
-| `LORE-GENERATOR-README.md` | Technical documentation |
-| `LORE-DEMO.md` | Quick tutorial |
-| `LORE-INSTALLATION-COMPLETE.md` | Setup guide |
-| `setup-lore.ps1` | Automated setup |
-| `quick-commit.ps1` | Interactive commit helper |
-| `package.json` | Updated with npm scripts |
+| File                            | Purpose                   |
+| ------------------------------- | ------------------------- |
+| `lore-generator.js`             | Main generator script     |
+| `LORE-GENERATOR-README.md`      | Technical documentation   |
+| `LORE-DEMO.md`                  | Quick tutorial            |
+| `LORE-INSTALLATION-COMPLETE.md` | Setup guide               |
+| `setup-lore.ps1`                | Automated setup           |
+| `quick-commit.ps1`              | Interactive commit helper |
+| `package.json`                  | Updated with npm scripts  |
 
 ## 🎉 Ready to Begin?
 

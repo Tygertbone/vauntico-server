@@ -3,6 +3,7 @@
 ## Emergency Rollback Procedures
 
 ### Railway Rollback
+
 1. **Access Railway Dashboard**
    - Log into https://railway.app
    - Navigate to your projects
@@ -24,6 +25,7 @@
    - Verify health endpoint: `curl https://vauntico-fulfillment-engine-production.up.railway.app/health`
 
 ### Namecheap DNS Rollback
+
 1. **Access Namecheap Dashboard**
    - Log into https://namecheap.com
    - Go to Domain List → vauntico.com → Manage → Advanced DNS
@@ -40,6 +42,7 @@
    ```
 
 ### Vercel Rollback
+
 1. **Access Vercel Dashboard**
    - Log into https://vercel.com
    - Navigate to your projects
@@ -59,7 +62,9 @@
    - Verify: https://fulfillment.vauntico.com/health.json
 
 ### Verification Steps
+
 Run these smoke tests after rollback:
+
 ```
 curl https://api.vauntico.com/health
 curl https://fulfillment-sys.vauntico.com/health
@@ -70,6 +75,7 @@ curl https://fulfillment.vauntico.com/health.json
 All should return: `{"status": "ok"}`
 
 ## Rollback Changelog
+
 - **Date:** [Insert date]
 - **Previous API Deployment ID:** [Insert Railway deployment ID]
 - **Previous Fulfillment Deployment ID:** [Insert Railway deployment ID]

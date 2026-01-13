@@ -5,6 +5,7 @@
 A webhook is an automatic notification Paystack sends to your server when important events happen (like successful payments, subscription renewals, etc.).
 
 **Why you need it:**
+
 - Get notified immediately when payments succeed
 - Automatically grant access to customers
 - Track subscription renewals
@@ -18,11 +19,12 @@ A webhook is an automatic notification Paystack sends to your server when import
 ### **Step 1: Get Your Webhook URL**
 
 Your webhook URL will be:
+
 ```
 https://vauntico-mvp-cursur-build.vercel.app/api/paystack-webhook
 ```
 
-*(Replace with your actual Vercel domain if different)*
+_(Replace with your actual Vercel domain if different)_
 
 ---
 
@@ -35,6 +37,7 @@ https://vauntico-mvp-cursur-build.vercel.app/api/paystack-webhook
 3. **Click "Add Webhook URL"**
 
 4. **Enter your webhook URL:**
+
    ```
    https://vauntico-mvp-cursur-build.vercel.app/api/paystack-webhook
    ```
@@ -65,6 +68,7 @@ It looks like: `sk_webhook_xxxxxxxxxxxxxxxxxx`
 Now that you know how to set it up, I'll build the actual webhook endpoint that receives these notifications.
 
 **What it will do:**
+
 1. Receive webhook from Paystack
 2. Verify the signature (security!)
 3. Handle different event types
@@ -90,11 +94,13 @@ Now that you know how to set it up, I'll build the actual webhook endpoint that 
 The webhook secret is used to verify that requests are really from Paystack (not hackers).
 
 **Never:**
+
 - ❌ Commit it to Git
 - ❌ Share it publicly
 - ❌ Use it in frontend code
 
 **Always:**
+
 - ✅ Store in environment variables
 - ✅ Keep it secret
 - ✅ Verify signatures on every webhook
@@ -106,9 +112,11 @@ The webhook secret is used to verify that requests are really from Paystack (not
 **Two options:**
 
 ### Option A: Set it up now (5 mins)
+
 Follow steps above and give me the webhook secret
 
 ### Option B: Set it up after deployment (~2 hours)
+
 We can add it once the site is live
 
 **Which do you prefer?**
@@ -118,22 +126,27 @@ We can add it once the site is live
 ## 📝 FOR LATER: WEBHOOK EVENTS EXPLAINED
 
 ### **charge.success**
+
 Triggers when: Any payment completes  
 We'll use it to: Grant immediate access, send welcome email
 
 ### **subscription.create**
+
 Triggers when: Payment plan starts  
 We'll use it to: Track subscription ID, set up renewal reminders
 
 ### **subscription.not_renew**
+
 Triggers when: User cancels before next payment  
 We'll use it to: Send "sorry to see you go" email, stop reminders
 
 ### **subscription.disable**
+
 Triggers when: Subscription is terminated  
 We'll use it to: Revoke access (after grace period)
 
 ### **invoice.payment_failed**
+
 Triggers when: Payment plan installment fails  
 We'll use it to: Send "payment failed" email, retry payment
 
@@ -142,6 +155,7 @@ We'll use it to: Send "payment failed" email, retry payment
 ## 🚀 WHAT'S NEXT
 
 Once you set up the webhook:
+
 1. ✅ I'll build the handler endpoint
 2. ✅ I'll add the secret to Vercel
 3. ✅ I'll test webhook delivery

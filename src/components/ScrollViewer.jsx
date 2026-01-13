@@ -1,40 +1,42 @@
-import { useState, useEffect } from 'react'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import CLICommandGenerator from './CLICommandGenerator'
+import { useState, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import CLICommandGenerator from "./CLICommandGenerator";
 
 function ScrollViewer({ scroll, onBack, hasPass }) {
-  const [content, setContent] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [content, setContent] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const loadScrollContent = async () => {
-      setIsLoading(true)
-      setError(null)
-      
+      setIsLoading(true);
+      setError(null);
+
       try {
         // Fetch from public folder
-        const response = await fetch(`/docs/lore/scrolls/${scroll.id}.md`)
-        
-        if (!response.ok) {
-          throw new Error(`Failed to load scroll: ${response.statusText}`)
-        }
-        
-        const text = await response.text()
-        setContent(text)
-      } catch (err) {
-        console.error('Error loading scroll:', err)
-        setError(err.message)
-        // Fallback content
-        setContent(`# ${scroll.title}\n\n*This scroll is being forged. Check back soon.*\n\n${scroll.description}`)
-      } finally {
-        setIsLoading(false)
-      }
-    }
+        const response = await fetch(`/docs/lore/scrolls/${scroll.id}.md`);
 
-    loadScrollContent()
-  }, [scroll])
+        if (!response.ok) {
+          throw new Error(`Failed to load scroll: ${response.statusText}`);
+        }
+
+        const text = await response.text();
+        setContent(text);
+      } catch (err) {
+        console.error("Error loading scroll:", err);
+        setError(err.message);
+        // Fallback content
+        setContent(
+          `# ${scroll.title}\n\n*This scroll is being forged. Check back soon.*\n\n${scroll.description}`,
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadScrollContent();
+  }, [scroll]);
 
   if (isLoading) {
     return (
@@ -55,7 +57,7 @@ function ScrollViewer({ scroll, onBack, hasPass }) {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -87,28 +89,34 @@ function ScrollViewer({ scroll, onBack, hasPass }) {
       </div>
 
       {/* CLI Command Generator - Show for scrolls with CLI commands */}
-      {['audit-as-a-service', 'dream-mover-cli', 'AGENCY_CLI_QUICKSTART', '10-agency-scroll', 'creator-pass'].includes(scroll.id) && (
-        <CLICommandGenerator scrollId={scroll.id} />
-      )}
+      {[
+        "audit-as-a-service",
+        "dream-mover-cli",
+        "AGENCY_CLI_QUICKSTART",
+        "10-agency-scroll",
+        "creator-pass",
+      ].includes(scroll.id) && <CLICommandGenerator scrollId={scroll.id} />}
 
       {/* Scroll Content */}
       <div className="card prose prose-lg max-w-none">
         {error ? (
           <div className="text-center py-12">
             <div className="text-5xl mb-4">⚠️</div>
-            <h3 className="text-xl font-bold text-gray-700 mb-2">Scroll Not Found</h3>
+            <h3 className="text-xl font-bold text-gray-700 mb-2">
+              Scroll Not Found
+            </h3>
             <p className="text-gray-600 mb-6">{error}</p>
             <button onClick={onBack} className="btn-primary">
               Return to Library
             </button>
           </div>
         ) : (
-          <ReactMarkdown 
+          <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
               // Custom rendering for code blocks
-              code({node, inline, className, children, ...props}) {
-                const match = /language-(\w+)/.exec(className || '')
+              code({ node, inline, className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || "");
                 return !inline && match ? (
                   <div className="relative">
                     <div className="absolute top-2 right-2 text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">
@@ -121,44 +129,54 @@ function ScrollViewer({ scroll, onBack, hasPass }) {
                     </pre>
                   </div>
                 ) : (
-                  <code className="bg-gray-100 text-vault-purple px-2 py-1 rounded text-sm" {...props}>
+                  <code
+                    className="bg-gray-100 text-vault-purple px-2 py-1 rounded text-sm"
+                    {...props}
+                  >
                     {children}
                   </code>
-                )
+                );
               },
               // Custom link rendering
-              a({node, children, href, ...props}) {
-                const isInternal = href && (href.startsWith('/') || href.startsWith('#'))
+              a({ node, children, href, ...props }) {
+                const isInternal =
+                  href && (href.startsWith("/") || href.startsWith("#"));
                 return (
                   <a
                     href={href}
                     className="text-vault-purple hover:text-vault-blue font-medium underline"
-                    target={isInternal ? '_self' : '_blank'}
-                    rel={isInternal ? '' : 'noopener noreferrer'}
+                    target={isInternal ? "_self" : "_blank"}
+                    rel={isInternal ? "" : "noopener noreferrer"}
                     {...props}
                   >
                     {children}
                   </a>
-                )
+                );
               },
               // Custom table rendering
-              table({node, children, ...props}) {
+              table({ node, children, ...props }) {
                 return (
                   <div className="overflow-x-auto my-6">
-                    <table className="min-w-full divide-y divide-gray-200 border" {...props}>
+                    <table
+                      className="min-w-full divide-y divide-gray-200 border"
+                      {...props}
+                    >
                       {children}
                     </table>
                   </div>
-                )
+                );
               },
               // Blockquote styling
-              blockquote({node, children, ...props}) {
+              blockquote({ node, children, ...props }) {
                 return (
-                  <blockquote className="border-l-4 border-vault-purple pl-4 italic text-gray-700 my-6" {...props}>
+                  <blockquote
+                    className="border-l-4 border-vault-purple pl-4 italic text-gray-700 my-6"
+                    {...props}
+                  >
                     {children}
                   </blockquote>
-                )
-              }
+                );
+              },
             }}
           >
             {content}
@@ -170,22 +188,26 @@ function ScrollViewer({ scroll, onBack, hasPass }) {
       <div className="mt-8 card bg-gradient-to-br from-gray-50 to-white">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-bold text-lg mb-1">Found this scroll valuable?</h3>
-            <p className="text-gray-600 text-sm">Share it with your fellow builders.</p>
+            <h3 className="font-bold text-lg mb-1">
+              Found this scroll valuable?
+            </h3>
+            <p className="text-gray-600 text-sm">
+              Share it with your fellow builders.
+            </p>
           </div>
           <div className="flex items-center space-x-3">
-            <button 
+            <button
               onClick={() => {
-                navigator.clipboard.writeText(window.location.href)
-                alert('Scroll link copied to clipboard!')
+                navigator.clipboard.writeText(window.location.href);
+                alert("Scroll link copied to clipboard!");
               }}
               className="btn-outline text-sm"
             >
               📋 Copy Link
             </button>
-            <button 
+            <button
               onClick={() => {
-                window.print()
+                window.print();
               }}
               className="btn-outline text-sm"
             >
@@ -202,7 +224,7 @@ function ScrollViewer({ scroll, onBack, hasPass }) {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
-export default ScrollViewer
+export default ScrollViewer;

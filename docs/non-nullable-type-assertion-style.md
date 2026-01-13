@@ -1,5 +1,5 @@
 ---
-description: 'Enforce non-null assertions over explicit type casts.'
+description: "Enforce non-null assertions over explicit type casts."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -21,7 +21,7 @@ This rule reports when an `as` cast is doing the same job as a `!` would, and su
 ### ❌ Incorrect
 
 ```ts
-const maybe = Math.random() > 0.5 ? '' : undefined;
+const maybe = Math.random() > 0.5 ? "" : undefined;
 
 const definitely = maybe as string;
 const alsoDefinitely = <string>maybe;
@@ -30,7 +30,7 @@ const alsoDefinitely = <string>maybe;
 ### ✅ Correct
 
 ```ts
-const maybe = Math.random() > 0.5 ? '' : undefined;
+const maybe = Math.random() > 0.5 ? "" : undefined;
 
 const definitely = maybe!;
 const alsoDefinitely = maybe!;

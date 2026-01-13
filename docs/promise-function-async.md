@@ -1,5 +1,5 @@
 ---
-description: 'Require any function or method that returns a Promise to be marked async.'
+description: "Require any function or method that returns a Promise to be marked async."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -26,35 +26,35 @@ Examples of code for this rule
 ### ❌ Incorrect
 
 ```ts
-const arrowFunctionReturnsPromise = () => Promise.resolve('value');
+const arrowFunctionReturnsPromise = () => Promise.resolve("value");
 
 function functionReturnsPromise() {
-  return Promise.resolve('value');
+  return Promise.resolve("value");
 }
 
 function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
-  return p ? 'value' : Promise.resolve('value');
+  return p ? "value" : Promise.resolve("value");
 }
 ```
 
 ### ✅ Correct
 
 ```ts
-const arrowFunctionReturnsPromise = async () => Promise.resolve('value');
+const arrowFunctionReturnsPromise = async () => Promise.resolve("value");
 
 async function functionReturnsPromise() {
-  return Promise.resolve('value');
+  return Promise.resolve("value");
 }
 
 // An explicit return type that is not Promise means this function cannot be made async, so it is ignored by the rule
 function functionReturnsUnionWithPromiseExplicitly(
   p: boolean,
 ): string | Promise<string> {
-  return p ? 'value' : Promise.resolve('value');
+  return p ? "value" : Promise.resolve("value");
 }
 
 async function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
-  return p ? 'value' : Promise.resolve('value');
+  return p ? "value" : Promise.resolve("value");
 }
 ```
 
@@ -93,7 +93,7 @@ Examples of code with `{ "allowedPromiseNames": ["Bluebird"] }`:
 #### ❌ Incorrect
 
 ```ts option='{ "allowedPromiseNames": ["Bluebird"] }'
-import { Bluebird } from 'bluebird';
+import { Bluebird } from "bluebird";
 
 const returnsBluebird = () => new Bluebird(() => {});
 ```
@@ -101,7 +101,7 @@ const returnsBluebird = () => new Bluebird(() => {});
 #### ✅ Correct
 
 ```ts option='{ "allowedPromiseNames": ["Bluebird"] }'
-import { Bluebird } from 'bluebird';
+import { Bluebird } from "bluebird";
 
 const returnsBluebird = async () => new Bluebird(() => {});
 ```

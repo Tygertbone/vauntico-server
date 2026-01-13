@@ -33,10 +33,13 @@ objective: "Master creating sponsored content that drives results and repeat par
 ## 📊 The Sponsored Content Formula
 
 ### **BAD Sponsored Content:**
+
 ```
 "Check out @BrandName! They're amazing! Link in bio! #ad"
 ```
+
 **Why it fails:**
+
 - Sounds like an ad
 - No personal connection
 - Followers scroll past
@@ -46,6 +49,7 @@ objective: "Master creating sponsored content that drives results and repeat par
 ---
 
 ### **GOOD Sponsored Content:**
+
 ```
 Hook: "I saved R500 on my electricity bill this month. Here's how..."
 
@@ -55,6 +59,7 @@ CTA: "I've been using @BrandName for 3 months. Link in bio if you want to try! #
 ```
 
 **Why it works:**
+
 - Valuable content first
 - Natural product integration
 - Authentic (you're actually using it)
@@ -69,12 +74,14 @@ CTA: "I've been using @BrandName for 3 months. Link in bio if you want to try! #
 ### **Format #1: The Honest Review**
 
 **Structure:**
+
 - Hook: "I tried [product] for 30 days..."
 - Show before/after or results
 - Share 3 pros, 1 con (honesty builds trust)
 - Genuine recommendation
 
 **Example (Fitness niche):**
+
 ```
 "I tested [Brand's protein powder] for 30 days.
 
@@ -94,11 +101,13 @@ Overall: 9/10. Would recommend! Link in bio. #ad"
 ### **Format #2: The Tutorial/How-To**
 
 **Structure:**
+
 - Teach something valuable
 - Use brand's product as part of the tutorial
 - Focus on results, not product features
 
 **Example (Fashion niche):**
+
 ```
 "How to style one jacket 5 ways:
 
@@ -116,12 +125,14 @@ Jacket is from @BrandName - super versatile! Link in bio. #partner"
 ### **Format #3: The Problem-Solution**
 
 **Structure:**
+
 - Present relatable problem
 - Share your struggle
 - Introduce brand's product as solution
 - Show results
 
 **Example (Finance niche):**
+
 ```
 "I was wasting R600/month on bank fees.
 
@@ -137,11 +148,13 @@ If you're tired of bank fees, check them out! Link in bio. #ad"
 ### **Format #4: The Lifestyle Integration**
 
 **Structure:**
+
 - Show your day/routine
 - Naturally feature brand's product
 - Don't make it the focus (just part of your life)
 
 **Example (Wellness niche):**
+
 ```
 "My morning routine:
 
@@ -159,12 +172,14 @@ That supplement has been a game-changer for my energy. Link in bio if you want t
 ### **Format #5: The Transformation Story**
 
 **Structure:**
+
 - Before state (struggling)
 - What you tried (including brand's product)
 - After state (success)
 - Invite followers to try
 
 **Example (Content creation niche):**
+
 ```
 "3 months ago: Editing videos took me 3 hours.
 
@@ -182,6 +197,7 @@ If you're spending forever editing, try this app. Link in bio! #ad"
 ## 🚫 Sponsored Content Mistakes to Avoid
 
 ### **❌ Mistake #1: Making it Obviously an Ad**
+
 Followers will scroll past immediately.
 
 ✅ **Fix:** Lead with value. Sneak product mention in naturally.
@@ -189,6 +205,7 @@ Followers will scroll past immediately.
 ---
 
 ### **❌ Mistake #2: No Disclosure**
+
 It's illegal in many places to not disclose ads.
 
 ✅ **Fix:** Use #ad, #sponsored, or #partner. Be transparent.
@@ -196,6 +213,7 @@ It's illegal in many places to not disclose ads.
 ---
 
 ### **❌ Mistake #3: Promoting What You Don't Use**
+
 Followers can tell it's fake.
 
 ✅ **Fix:** Only partner with brands you actually use/believe in.
@@ -203,6 +221,7 @@ Followers can tell it's fake.
 ---
 
 ### **❌ Mistake #4: All Features, No Benefits**
+
 "This has X feature and Y feature" = boring.
 
 ✅ **Fix:** "This saves me 2 hours per week" = relatable.
@@ -210,6 +229,7 @@ Followers can tell it's fake.
 ---
 
 ### **❌ Mistake #5: Weak CTA**
+
 "Check out @Brand!" = vague.
 
 ✅ **Fix:** "Link in bio to get 10% off with code [X]!" = clear action.
@@ -241,6 +261,7 @@ Happy to create more content if you're interested!
 ```
 
 **Why this works:**
+
 - Shows professionalism
 - Proves ROI
 - Makes renewal easy
@@ -253,6 +274,7 @@ Happy to create more content if you're interested!
 **After successful campaign:**
 
 **Email/DM:**
+
 ```
 Hi [Brand],
 
@@ -276,16 +298,19 @@ Interested in discussing?
 **Thabo** (Fitness, 1,800 followers, SA)
 
 **Month 1:**
+
 - Created sponsored post for local gym
 - Post got 3,200 views, 8% engagement
 - Gym got 15 new inquiries
 - Payment: R800 one-time
 
 **Thabo's follow-up:**
+
 - Sent performance report
 - Offered monthly package: R2,500 for 4 posts
 
 **Month 2-6:**
+
 - Gym signed retainer
 - R2,500/month × 5 months = R12,500
 - vs one-time R800 = R11,700 extra!
@@ -312,6 +337,7 @@ Interested in discussing?
 You know how to create great content. Tomorrow: How to NEGOTIATE better deals.
 
 **Learn to:**
+
 - Counter lowball offers
 - Ask for more without losing the deal
 - Negotiate usage rights, exclusivity

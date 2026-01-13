@@ -9,7 +9,7 @@
  */
 export function normalizeQueryParam(param: unknown): string {
   if (Array.isArray(param)) {
-    return param.map(String).join(',');
+    return param.map(String).join(",");
   }
-  return String(param ?? '');
+  return String(param ?? "");
 }

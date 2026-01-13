@@ -12,55 +12,65 @@ As of 3.0.0, the ReleaseNotes.md file has been deprecated. [Please refer to the 
 Added `ownPropertyDescriptor` assertion:
 
 ```js
-expect('test').to.have.ownPropertyDescriptor('length');
-expect('test').to.have.ownPropertyDescriptor('length', { enumerable: false, configurable: false, writable: false, value: 4 });
-expect('test').not.to.have.ownPropertyDescriptor('length', { enumerable: false, configurable: false, writable: false, value: 3 });
-expect('test').ownPropertyDescriptor('length').to.have.property('enumerable', false);
-expect('test').ownPropertyDescriptor('length').to.have.keys('value');
+expect("test").to.have.ownPropertyDescriptor("length");
+expect("test").to.have.ownPropertyDescriptor("length", {
+  enumerable: false,
+  configurable: false,
+  writable: false,
+  value: 4,
+});
+expect("test").not.to.have.ownPropertyDescriptor("length", {
+  enumerable: false,
+  configurable: false,
+  writable: false,
+  value: 3,
+});
+expect("test")
+  .ownPropertyDescriptor("length")
+  .to.have.property("enumerable", false);
+expect("test").ownPropertyDescriptor("length").to.have.keys("value");
 ```
 
 ### Community Contributions
 
 #### Code Features & Fixes
 
- * [#408](https://github.com/chaijs/chai/pull/408) Add `ownPropertyDescriptor`
-   assertion.
-   By [@ljharb](https://github.com/ljharb)
- * [#422](https://github.com/chaijs/chai/pull/422) Improve ownPropertyDescriptor
-   tests.
-   By [@ljharb](https://github.com/ljharb)
+- [#408](https://github.com/chaijs/chai/pull/408) Add `ownPropertyDescriptor`
+  assertion.
+  By [@ljharb](https://github.com/ljharb)
+- [#422](https://github.com/chaijs/chai/pull/422) Improve ownPropertyDescriptor
+  tests.
+  By [@ljharb](https://github.com/ljharb)
 
 #### Documentation fixes
 
- * [#417](https://github.com/chaijs/chai/pull/417) Fix documentation typo
- By [@astorije](https://github.com/astorije)
- * [#423](https://github.com/chaijs/chai/pull/423) Fix inconsistency in docs.
- By [@ehntoo](https://github.com/ehntoo)
-
+- [#417](https://github.com/chaijs/chai/pull/417) Fix documentation typo
+  By [@astorije](https://github.com/astorije)
+- [#423](https://github.com/chaijs/chai/pull/423) Fix inconsistency in docs.
+  By [@ehntoo](https://github.com/ehntoo)
 
 ## 2.2.0 / 2015-03-26
 
 Deep property strings can now be escaped using `\\` - for example:
 
 ```js
-var deepCss = { '.link': { '[target]': 42 }};
-expect(deepCss).to.have.deep.property('\\.link.\\[target\\]', 42)
+var deepCss = { ".link": { "[target]": 42 } };
+expect(deepCss).to.have.deep.property("\\.link.\\[target\\]", 42);
 ```
 
 ### Community Contributions
 
 #### Code Features & Fixes
 
- * [#402](https://github.com/chaijs/chai/pull/402) Allow escaping of deep
-   property keys.
-   By [@umireon](https://github.com/umireon)
+- [#402](https://github.com/chaijs/chai/pull/402) Allow escaping of deep
+  property keys.
+  By [@umireon](https://github.com/umireon)
 
 #### Documentation fixes
 
- * [#405](https://github.com/chaijs/chai/pull/405) Tweak documentation around
- deep property escaping.
- By [@keithamus](https://github.com/keithamus)
-
+- [#405](https://github.com/chaijs/chai/pull/405) Tweak documentation around
+  deep property escaping.
+  By [@keithamus](https://github.com/keithamus)
 
 ## 2.1.2 / 2015-03-15
 
@@ -70,9 +80,9 @@ A minor bug fix. No new features.
 
 #### Code Features & Fixes
 
- * [#395](https://github.com/chaijs/chai/pull/395) Fix eval-related bugs with
-   assert.operator ([#386](https://github.com/chaijs/chai/pull/386)).
-   By [@cjqed](https://github.com/cjqed)
+- [#395](https://github.com/chaijs/chai/pull/395) Fix eval-related bugs with
+  assert.operator ([#386](https://github.com/chaijs/chai/pull/386)).
+  By [@cjqed](https://github.com/cjqed)
 
 ## 2.1.1 / 2015-03-04
 
@@ -82,21 +92,21 @@ Two minor bugfixes. No new features.
 
 #### Code Features & Fixes
 
- * [#385](https://github.com/chaijs/chai/pull/385) Fix a bug (also described in
-   [#387](https://github.com/chaijs/chai/pull/385)) where `deep.property` would not work with single
-   key names. By [@eldritch-fossicker](https://github.com/eldritch-fossicker)
- * [#379](https://github.com/chaijs/chai/pull/379) Fix bug where tools which overwrite
-   primitive prototypes, such as Babel or core-js would fail.
-   By [@dcneiner](https://github.com/dcneiner)
+- [#385](https://github.com/chaijs/chai/pull/385) Fix a bug (also described in
+  [#387](https://github.com/chaijs/chai/pull/385)) where `deep.property` would not work with single
+  key names. By [@eldritch-fossicker](https://github.com/eldritch-fossicker)
+- [#379](https://github.com/chaijs/chai/pull/379) Fix bug where tools which overwrite
+  primitive prototypes, such as Babel or core-js would fail.
+  By [@dcneiner](https://github.com/dcneiner)
 
 #### Documentation fixes
 
- * [#382](https://github.com/chaijs/chai/pull/382) Add doc for showDiff argument in assert.
-   By [@astorije](https://github.com/astorije)
- * [#383](https://github.com/chaijs/chai/pull/383) Improve wording for truncateTreshold docs
-   By [@gurdiga](https://github.com/gurdiga)
- * [#381](https://github.com/chaijs/chai/pull/381) Improve wording for assert.empty docs
-   By [@astorije](https://github.com/astorije)
+- [#382](https://github.com/chaijs/chai/pull/382) Add doc for showDiff argument in assert.
+  By [@astorije](https://github.com/astorije)
+- [#383](https://github.com/chaijs/chai/pull/383) Improve wording for truncateTreshold docs
+  By [@gurdiga](https://github.com/gurdiga)
+- [#381](https://github.com/chaijs/chai/pull/381) Improve wording for assert.empty docs
+  By [@astorije](https://github.com/astorije)
 
 ## 2.1.0 / 2015-02-23
 
@@ -110,8 +120,8 @@ methods to throw Assertion Errors.
 
 #### Code Features & Fixes
 
- * [#356](https://github.com/chaijs/chai/pull/356) Add should.fail(), expect.fail(). By [@Soviut](https://github.com/Soviut)
- * [#374](https://github.com/chaijs/chai/pull/374) Increment version. By [@jmm](https://github.com/jmm)
+- [#356](https://github.com/chaijs/chai/pull/356) Add should.fail(), expect.fail(). By [@Soviut](https://github.com/Soviut)
+- [#374](https://github.com/chaijs/chai/pull/374) Increment version. By [@jmm](https://github.com/jmm)
 
 ## 2.0.0 / 2015-02-09
 
@@ -127,28 +137,27 @@ by [@joshperry](https://github.com/joshperry)
 
 #### Code Features & Fixes
 
- * [#361](https://github.com/chaijs/chai/pull/361) `.keys()` now accepts Objects, extracting keys from them. By [@gregglind](https://github.com/gregglind)
- * [#359](https://github.com/chaijs/chai/pull/359) `.keys()` no longer mutates passed arrays. By [@gregglind](https://github.com/gregglind)
- * [#349](https://github.com/chaijs/chai/pull/349) Add a new chainable keyword - `.which`. By [@toastynerd](https://github.com/toastynerd)
- * [#333](https://github.com/chaijs/chai/pull/333) Add `.change`, `.increase` and `.decrease` assertions. By [@cmpolis](https://github.com/cmpolis)
- * [#335](https://github.com/chaijs/chai/pull/335) `chai.util` is now exposed [@DingoEatingFuzz](https://github.com/DingoEatingFuzz)
- * [#328](https://github.com/chaijs/chai/pull/328) Add `.includes` and `.contains` aliases (for `.include` and `.contain`). By [@lo1tuma](https://github.com/lo1tuma)
- * [#313](https://github.com/chaijs/chai/pull/313) Add `.any.keys()` and `.all.keys()` qualifiers. By [@cjqed](https://github.com/cjqed)
- * [#312](https://github.com/chaijs/chai/pull/312) Add `assert.sameDeepMembers()`. By [@cjqed](https://github.com/cjqed)
- * [#311](https://github.com/chaijs/chai/pull/311) Add `assert.isAbove()` and `assert.isBelow()`. By [@cjqed](https://github.com/cjqed)
- * [#308](https://github.com/chaijs/chai/pull/308) `property` and `deep.property` now pass if a value is set to `undefined`. By [@prodatakey](https://github.com/prodatakey)
- * [#309](https://github.com/chaijs/chai/pull/309) optimize deep equal in Arrays. By [@ericdouglas](https://github.com/ericdouglas)
- * [#306](https://github.com/chaijs/chai/pull/306) revert #297 - allowing lint-friendly tests. By [@keithamus](https://github.com/keithamus)
+- [#361](https://github.com/chaijs/chai/pull/361) `.keys()` now accepts Objects, extracting keys from them. By [@gregglind](https://github.com/gregglind)
+- [#359](https://github.com/chaijs/chai/pull/359) `.keys()` no longer mutates passed arrays. By [@gregglind](https://github.com/gregglind)
+- [#349](https://github.com/chaijs/chai/pull/349) Add a new chainable keyword - `.which`. By [@toastynerd](https://github.com/toastynerd)
+- [#333](https://github.com/chaijs/chai/pull/333) Add `.change`, `.increase` and `.decrease` assertions. By [@cmpolis](https://github.com/cmpolis)
+- [#335](https://github.com/chaijs/chai/pull/335) `chai.util` is now exposed [@DingoEatingFuzz](https://github.com/DingoEatingFuzz)
+- [#328](https://github.com/chaijs/chai/pull/328) Add `.includes` and `.contains` aliases (for `.include` and `.contain`). By [@lo1tuma](https://github.com/lo1tuma)
+- [#313](https://github.com/chaijs/chai/pull/313) Add `.any.keys()` and `.all.keys()` qualifiers. By [@cjqed](https://github.com/cjqed)
+- [#312](https://github.com/chaijs/chai/pull/312) Add `assert.sameDeepMembers()`. By [@cjqed](https://github.com/cjqed)
+- [#311](https://github.com/chaijs/chai/pull/311) Add `assert.isAbove()` and `assert.isBelow()`. By [@cjqed](https://github.com/cjqed)
+- [#308](https://github.com/chaijs/chai/pull/308) `property` and `deep.property` now pass if a value is set to `undefined`. By [@prodatakey](https://github.com/prodatakey)
+- [#309](https://github.com/chaijs/chai/pull/309) optimize deep equal in Arrays. By [@ericdouglas](https://github.com/ericdouglas)
+- [#306](https://github.com/chaijs/chai/pull/306) revert #297 - allowing lint-friendly tests. By [@keithamus](https://github.com/keithamus)
 
 #### Documentation fixes
 
- * [#357](https://github.com/chaijs/chai/pull/357) Copyright year updated in docs. By [@danilovaz](https://github.com/danilovaz)
- * [#325](https://github.com/chaijs/chai/pull/325) Fix documentation for overwriteChainableMethod. By [@chasenlehara](https://github.com/chasenlehara)
- * [#334](https://github.com/chaijs/chai/pull/334) Typo fix. By [@hurrymaplelad](https://github.com/hurrymaplelad)
- * [#317](https://github.com/chaijs/chai/pull/317) Typo fix. By [@jasonkarns](https://github.com/jasonkarns)
- * [#318](https://github.com/chaijs/chai/pull/318) Typo fix. By [@jasonkarns](https://github.com/jasonkarns)
- * [#316](https://github.com/chaijs/chai/pull/316) Typo fix. By [@jasonkarns](https://github.com/jasonkarns)
-
+- [#357](https://github.com/chaijs/chai/pull/357) Copyright year updated in docs. By [@danilovaz](https://github.com/danilovaz)
+- [#325](https://github.com/chaijs/chai/pull/325) Fix documentation for overwriteChainableMethod. By [@chasenlehara](https://github.com/chasenlehara)
+- [#334](https://github.com/chaijs/chai/pull/334) Typo fix. By [@hurrymaplelad](https://github.com/hurrymaplelad)
+- [#317](https://github.com/chaijs/chai/pull/317) Typo fix. By [@jasonkarns](https://github.com/jasonkarns)
+- [#318](https://github.com/chaijs/chai/pull/318) Typo fix. By [@jasonkarns](https://github.com/jasonkarns)
+- [#316](https://github.com/chaijs/chai/pull/316) Typo fix. By [@jasonkarns](https://github.com/jasonkarns)
 
 ## 1.10.0 / 2014-11-10
 
@@ -165,15 +174,15 @@ The following changes are required if you are upgrading from the previous versio
 
 The following assertions can now also be used in the function-call form:
 
-* ok
-* true
-* false
-* null
-* undefined
-* exist
-* empty
-* arguments
-* Arguments
+- ok
+- true
+- false
+- null
+- undefined
+- exist
+- empty
+- arguments
+- Arguments
 
 The above list of assertions are property getters that assert immediately on
 access. Because of that, they were written to be used by terminating the assertion
@@ -507,7 +516,7 @@ This update constructor has a different constructor param signature that conform
 with the new signature.
 
 ```js
-var AssertionError = require('chai').AssertionError;
+var AssertionError = require("chai").AssertionError;
 
 /**
  * previous
@@ -516,11 +525,11 @@ var AssertionError = require('chai').AssertionError;
  */
 
 throw new AssertionError({
-    message: 'An assertion error occurred'
-  , actual: actual
-  , expect: expect
-  , startStackFunction: arguments.callee
-  , showStack: true
+  message: "An assertion error occurred",
+  actual: actual,
+  expect: expect,
+  startStackFunction: arguments.callee,
+  showStack: true,
 });
 
 /**
@@ -531,15 +540,19 @@ throw new AssertionError({
  * @param {Function} start stack function
  */
 
-throw new AssertionError('An assertion error occurred', {
-    actual: actual
-  , expect: expect
-  , showStack: true
-}, arguments.callee);
+throw new AssertionError(
+  "An assertion error occurred",
+  {
+    actual: actual,
+    expect: expect,
+    showStack: true,
+  },
+  arguments.callee,
+);
 
 // other signatures
-throw new AssertionError('An assertion error occurred');
-throw new AssertionError('An assertion error occurred', null, arguments.callee);
+throw new AssertionError("An assertion error occurred");
+throw new AssertionError("An assertion error occurred", null, arguments.callee);
 ```
 
 #### External Dependencies
@@ -614,11 +627,10 @@ expect([1, 2, 3]).to.include.members([3, 2]);
 expect([1, 2, 3]).to.not.include.members([3, 2, 8]);
 
 // (assert) full set
-assert.sameMembers([ 1, 2, 3 ], [ 2, 1, 3 ], 'same members');
+assert.sameMembers([1, 2, 3], [2, 1, 3], "same members");
 
 // (assert) inclusion
-assert.includeMembers([ 1, 2, 3 ], [ 2, 1 ], 'include members');
-
+assert.includeMembers([1, 2, 3], [2, 1], "include members");
 ```
 
 #### Non-inclusion for Assert Interface
@@ -627,8 +639,8 @@ Most `assert` functions have a negative version, like `instanceOf()` has a corre
 However `include()` did not have a corresponding `notInclude()`. This has been added.
 
 ```js
-assert.notInclude([ 1, 2, 3 ], 8);
-assert.notInclude('foobar', 'baz');
+assert.notInclude([1, 2, 3], 8);
+assert.notInclude("foobar", "baz");
 ```
 
 ### Community Contributions
@@ -652,8 +664,8 @@ The following changes are required if you are upgrading from the previous versio
 
 - **Users:**
   - _Update [2013-02-04]:_ Some users may notice a small subset of deep equality assertions will no longer pass. This is the result of
-  [#120](https://github.com/chaijs/chai/issues/120), an improvement to our deep equality algorithm. Users will need to revise their assertions
-  to be more granular should this occur. Further information: [#139](https://github.com/chaijs/chai/issues/139).
+    [#120](https://github.com/chaijs/chai/issues/120), an improvement to our deep equality algorithm. Users will need to revise their assertions
+    to be more granular should this occur. Further information: [#139](https://github.com/chaijs/chai/issues/139).
 - **Plugin Developers:**
   - No changes required.
 - **Core Contributors:**
@@ -674,7 +686,6 @@ Thank you to all who took time to contribute!
 - Improve type detection of `.a()`/`.an()` to work in cross-browser scenarios.
 - [#116](https://github.com/chaijs/chai/issues/116): `.throw()` has cleaner display of errors when WebKit browsers.
 - [#120](https://github.com/chaijs/chai/issues/120): `.eql()` now works to compare dom nodes in browsers.
-
 
 ### Usage Updates
 

@@ -1,5 +1,5 @@
 ---
-description: 'Enforce consistent spacing before blocks.'
+description: "Enforce consistent spacing before blocks."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

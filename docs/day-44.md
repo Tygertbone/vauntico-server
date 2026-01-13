@@ -35,6 +35,7 @@ Today: Build the asset that NO platform can take away.
 **Free valuable content in exchange for email:**
 
 Examples:
+
 - Budget template (PDF)
 - 7-day challenge
 - Video training

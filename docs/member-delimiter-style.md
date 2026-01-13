@@ -1,5 +1,5 @@
 ---
-description: 'Require a specific member delimiter style for interfaces and type literals.'
+description: "Require a specific member delimiter style for interfaces and type literals."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

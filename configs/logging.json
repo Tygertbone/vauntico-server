@@ -1,0 +1,79 @@
+{
+  "logging": {
+    "defaultLevel": "info",
+    "environments": {
+      "development": {
+        "level": "debug",
+        "console": true,
+        "file": false,
+        "prettyPrint": true,
+        "colorize": true
+      },
+      "staging": {
+        "level": "info",
+        "console": true,
+        "file": true,
+        "prettyPrint": false,
+        "colorize": false,
+        "filePath": "logs/staging.log",
+        "maxSize": "10m",
+        "maxFiles": "7"
+      },
+      "production": {
+        "level": "warn",
+        "console": true,
+        "file": true,
+        "prettyPrint": false,
+        "colorize": false,
+        "filePath": "logs/production.log",
+        "maxSize": "50m",
+        "maxFiles": "14"
+      },
+      "test": {
+        "level": "error",
+        "console": true,
+        "file": false,
+        "prettyPrint": false,
+        "colorize": false
+      }
+    },
+    "modules": {
+      "api": "info",
+      "database": "warn",
+      "authentication": "info",
+      "payment": "debug",
+      "email": "info",
+      "monitoring": "warn",
+      "cron": "info",
+      "cache": "debug"
+    },
+    "formats": {
+      "console": "[{timestamp}] {level} {module}: {message}",
+      "file": "{timestamp} {level} {module} {message} {stack}",
+      "json": "{\"timestamp\":\"{timestamp}\",\"level\":\"{level}\",\"module\":\"{module}\",\"message\":\"{message}\",\"stack\":\"{stack}\"}"
+    },
+    "transports": [
+      {
+        "type": "console",
+        "format": "console",
+        "enabled": true
+      },
+      {
+        "type": "file",
+        "format": "file",
+        "enabled": false,
+        "filename": "logs/combined.log",
+        "maxSize": "100m",
+        "maxFiles": "7"
+      },
+      {
+        "type": "json",
+        "format": "json",
+        "enabled": false,
+        "filename": "logs/json.log",
+        "maxSize": "50m",
+        "maxFiles": "14"
+      }
+    ]
+  }
+}

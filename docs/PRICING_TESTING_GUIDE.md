@@ -15,6 +15,7 @@ http://localhost:5173/pricing-demo
 ```
 
 The demo page provides 4 tabs:
+
 - **Access Status**: View current access state
 - **Component Demo**: See all UI components
 - **Pricing Data**: Review pricing configuration
@@ -36,6 +37,7 @@ The demo page provides 4 tabs:
 6. **Expected:** Content is hidden/gated
 
 ✅ **Pass Criteria:**
+
 - Lock icon displayed
 - R499 price shown
 - "Unlock Access" button visible
@@ -56,6 +58,7 @@ The demo page provides 4 tabs:
 7. **Expected:** Badge shows "Creator Pass"
 
 ✅ **Pass Criteria:**
+
 - Content fully visible
 - Creator Pass badge displayed
 - No payment prompts
@@ -76,6 +79,7 @@ The demo page provides 4 tabs:
 7. **Expected:** Badge shows "Purchased"
 
 ✅ **Pass Criteria:**
+
 - Content accessible
 - Purchased badge shown
 - No additional payment required
@@ -92,6 +96,7 @@ The demo page provides 4 tabs:
 4. **Expected:** R999/month price displayed
 
 ✅ **Pass Criteria:**
+
 - Subscription required message
 - Price clearly shown
 - Sample audit visible but full access gated
@@ -110,6 +115,7 @@ The demo page provides 4 tabs:
 6. **Expected:** Subscription status badge
 
 ✅ **Pass Criteria:**
+
 - Full feature access
 - Subscription badge active
 - Plan level shown (Professional)
@@ -129,6 +135,7 @@ The demo page provides 4 tabs:
 4. **Expected:** All features show "Unlocked"
 
 ✅ **Pass Criteria:**
+
 - All premium features accessible
 - Creator Pass badge everywhere
 - Discounts applied to add-ons
@@ -154,6 +161,7 @@ The demo page provides 4 tabs:
 **Test on:** `/pricing-demo` > Component Demo tab
 
 ✅ **Verify:**
+
 - Locked: Shows paywall UI
 - Unlocked: Shows content
 - Loading state works correctly
@@ -165,6 +173,7 @@ The demo page provides 4 tabs:
 **Test on:** `/pricing-demo` > Component Demo tab
 
 ✅ **Verify all variants:**
+
 - 🔒 Locked (gray)
 - 💎 Creator Pass (purple gradient)
 - ✓ Purchased (green)
@@ -176,11 +185,13 @@ The demo page provides 4 tabs:
 ### CreatorPassPromoBanner
 
 **Test locations:**
+
 - `/workshop-kit` (when no access)
 - `/audit-service` (when no access)
 - `/pricing-demo` > Component Demo
 
 ✅ **Verify:**
+
 - Shows features list
 - Discount percentage visible
 - CTA button works
@@ -193,10 +204,11 @@ The demo page provides 4 tabs:
 ### useCreatorPass()
 
 ```javascript
-const { hasPass, isLoading } = useCreatorPass()
+const { hasPass, isLoading } = useCreatorPass();
 ```
 
 **Test:**
+
 1. Console: `window.VaunticoDev.toggleCreatorPass()`
 2. Verify hook updates automatically
 3. Check loading state briefly appears
@@ -206,11 +218,12 @@ const { hasPass, isLoading } = useCreatorPass()
 ### useWorkshopKitAccess()
 
 ```javascript
-const accessStatus = useWorkshopKitAccess()
+const accessStatus = useWorkshopKitAccess();
 // Returns: { hasAccess, reason, message, price, isLoading }
 ```
 
 **Test:**
+
 1. No access: reason = 'no_access'
 2. With pass: reason = 'creator_pass'
 3. Purchased: reason = 'purchased'
@@ -220,11 +233,12 @@ const accessStatus = useWorkshopKitAccess()
 ### useAuditServiceAccess()
 
 ```javascript
-const accessStatus = useAuditServiceAccess()
+const accessStatus = useAuditServiceAccess();
 // Returns: { hasAccess, reason, message, plan, isLoading }
 ```
 
 **Test:**
+
 1. No subscription: hasAccess = false
 2. With subscription: hasAccess = true, plan = 'professional'
 3. With Creator Pass: hasAccess = true, reason = 'creator_pass'
@@ -239,19 +253,19 @@ const accessStatus = useAuditServiceAccess()
 // Open browser console (F12) and run:
 
 // View current state
-window.VaunticoDev.logState()
+window.VaunticoDev.logState();
 
 // Toggle Creator Pass
-window.VaunticoDev.toggleCreatorPass()
+window.VaunticoDev.toggleCreatorPass();
 
 // Toggle Workshop Kit
-window.VaunticoDev.toggleWorkshopKit()
+window.VaunticoDev.toggleWorkshopKit();
 
 // Enable Audit Subscription
-window.VaunticoDev.setAuditSubscription('professional')
+window.VaunticoDev.setAuditSubscription("professional");
 
 // Reset everything
-window.VaunticoDev.clearAll()
+window.VaunticoDev.clearAll();
 ```
 
 ### Expected Console Output
@@ -278,7 +292,7 @@ Audit Service Access: { hasAccess: true, reason: 'creator_pass', message: '...' 
 1. **Start:** No access to anything
 2. **Action:** Subscribe to Creator Pass
 3. **Result:** All features unlocked
-4. **Verify:** 
+4. **Verify:**
    - Workshop Kit accessible
    - Audit Service accessible
    - Add-ons show discounts
@@ -371,58 +385,58 @@ Save as `test-pricing.js` and run in console:
 ```javascript
 // Automated Pricing Logic Test Suite
 async function runPricingTests() {
-  console.log('🧪 Starting Pricing Logic Tests...\n')
-  
-  const tests = []
-  
+  console.log("🧪 Starting Pricing Logic Tests...\n");
+
+  const tests = [];
+
   // Test 1: Initial State
-  window.VaunticoDev.clearAll()
+  window.VaunticoDev.clearAll();
   tests.push({
-    name: 'No Access State',
+    name: "No Access State",
     pass: !hasCreatorPass() && !hasWorkshopKit(),
-    message: 'Initial state cleared'
-  })
-  
+    message: "Initial state cleared",
+  });
+
   // Test 2: Creator Pass Toggle
-  window.VaunticoDev.toggleCreatorPass()
+  window.VaunticoDev.toggleCreatorPass();
   tests.push({
-    name: 'Creator Pass Toggle',
+    name: "Creator Pass Toggle",
     pass: hasCreatorPass(),
-    message: 'Creator Pass enabled'
-  })
-  
+    message: "Creator Pass enabled",
+  });
+
   // Test 3: Workshop Kit Access via Pass
-  const workshopAccess = canAccessWorkshopKit()
+  const workshopAccess = canAccessWorkshopKit();
   tests.push({
-    name: 'Workshop Access via Pass',
-    pass: workshopAccess.hasAccess && workshopAccess.reason === 'creator_pass',
-    message: 'Workshop unlocked by Creator Pass'
-  })
-  
+    name: "Workshop Access via Pass",
+    pass: workshopAccess.hasAccess && workshopAccess.reason === "creator_pass",
+    message: "Workshop unlocked by Creator Pass",
+  });
+
   // Test 4: Audit Access via Pass
-  const auditAccess = canAccessAuditService()
+  const auditAccess = canAccessAuditService();
   tests.push({
-    name: 'Audit Access via Pass',
-    pass: auditAccess.hasAccess && auditAccess.reason === 'creator_pass',
-    message: 'Audit unlocked by Creator Pass'
-  })
-  
+    name: "Audit Access via Pass",
+    pass: auditAccess.hasAccess && auditAccess.reason === "creator_pass",
+    message: "Audit unlocked by Creator Pass",
+  });
+
   // Results
-  console.log('\n📊 Test Results:\n')
-  tests.forEach(test => {
-    const icon = test.pass ? '✅' : '❌'
-    console.log(`${icon} ${test.name}: ${test.message}`)
-  })
-  
-  const passed = tests.filter(t => t.pass).length
-  const total = tests.length
-  console.log(`\n🎯 Score: ${passed}/${total} tests passed\n`)
-  
-  return { tests, passed, total }
+  console.log("\n📊 Test Results:\n");
+  tests.forEach((test) => {
+    const icon = test.pass ? "✅" : "❌";
+    console.log(`${icon} ${test.name}: ${test.message}`);
+  });
+
+  const passed = tests.filter((t) => t.pass).length;
+  const total = tests.length;
+  console.log(`\n🎯 Score: ${passed}/${total} tests passed\n`);
+
+  return { tests, passed, total };
 }
 
 // Run tests
-runPricingTests()
+runPricingTests();
 ```
 
 ---
@@ -457,6 +471,7 @@ runPricingTests()
 ## Responsive Testing
 
 Test on:
+
 - [ ] Desktop (1920x1080)
 - [ ] Tablet (768x1024)
 - [ ] Mobile (375x667)
@@ -477,10 +492,11 @@ Test on:
 
 ### Issue: Access not updating
 
-**Solution:** 
+**Solution:**
+
 ```javascript
-window.VaunticoDev.clearAll()
-window.location.reload()
+window.VaunticoDev.clearAll();
+window.location.reload();
 ```
 
 ### Issue: Hooks not working
@@ -494,9 +510,10 @@ window.location.reload()
 ### Issue: localStorage full
 
 **Solution:**
+
 ```javascript
-localStorage.clear()
-window.location.reload()
+localStorage.clear();
+window.location.reload();
 ```
 
 ---
@@ -537,22 +554,22 @@ window.location.reload()
 
 ```javascript
 // pricing.test.js
-import { hasCreatorPass, canAccessWorkshopKit } from './utils/pricing'
+import { hasCreatorPass, canAccessWorkshopKit } from "./utils/pricing";
 
-describe('Pricing Logic', () => {
+describe("Pricing Logic", () => {
   beforeEach(() => {
-    localStorage.clear()
-  })
-  
-  test('Creator Pass grants Workshop access', () => {
-    localStorage.setItem('vauntico_creator_pass', 'true')
-    const access = canAccessWorkshopKit()
-    expect(access.hasAccess).toBe(true)
-    expect(access.reason).toBe('creator_pass')
-  })
-  
+    localStorage.clear();
+  });
+
+  test("Creator Pass grants Workshop access", () => {
+    localStorage.setItem("vauntico_creator_pass", "true");
+    const access = canAccessWorkshopKit();
+    expect(access.hasAccess).toBe(true);
+    expect(access.reason).toBe("creator_pass");
+  });
+
   // Add more tests...
-})
+});
 ```
 
 ---

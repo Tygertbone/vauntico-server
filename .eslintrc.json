@@ -87,8 +87,7 @@
     {
       "files": ["tools/**/*.js"],
       "env": {
-        "node": true,
-        "k6": true
+        "node": true
       },
       "globals": {
         "__VU": "readonly",

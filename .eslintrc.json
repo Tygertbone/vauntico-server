@@ -61,6 +61,11 @@
         }
       },
       "plugins": ["@typescript-eslint"],
+      "env": {
+        "browser": true,
+        "es2022": true,
+        "react": true
+      },
       "rules": {
         "@typescript-eslint/no-unused-vars": "warn",
         "@typescript-eslint/no-console": "warn",

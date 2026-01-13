@@ -116,21 +116,17 @@ jest.mock("../src/app", () => {
   app.use("/api/v1/enterprise", (req: any, res: any, next: any) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res
-        .status(401)
-        .json({
-          error: "Unauthorized",
-          message: "No authentication token provided",
-        });
+      return res.status(401).json({
+        error: "Unauthorized",
+        message: "No authentication token provided",
+      });
     }
     const token = authHeader.substring(7);
     if (token !== "test_token") {
-      return res
-        .status(401)
-        .json({
-          error: "Unauthorized",
-          message: "Invalid or expired authentication token",
-        });
+      return res.status(401).json({
+        error: "Unauthorized",
+        message: "Invalid or expired authentication token",
+      });
     }
     next();
   });
@@ -294,22 +290,18 @@ jest.mock("../src/app", () => {
   const checkAuth = (req: any, res: any) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      res
-        .status(401)
-        .json({
-          error: "Unauthorized",
-          message: "No authentication token provided",
-        });
+      res.status(401).json({
+        error: "Unauthorized",
+        message: "No authentication token provided",
+      });
       return false;
     }
     const token = authHeader.substring(7);
     if (token !== "test_token") {
-      res
-        .status(401)
-        .json({
-          error: "Unauthorized",
-          message: "Invalid or expired authentication token",
-        });
+      res.status(401).json({
+        error: "Unauthorized",
+        message: "Invalid or expired authentication token",
+      });
       return false;
     }
     return true;

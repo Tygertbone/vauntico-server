@@ -223,10 +223,10 @@ Before deploying:
 
 Document any issues found:
 
-- Browser: ****\_****
-- Issue: ****\_****
-- Expected: ****\_****
-- Actual: ****\_****
+- Browser: \***\*\_\*\***
+- Issue: \***\*\_\*\***
+- Expected: \***\*\_\*\***
+- Actual: \***\*\_\*\***
 
 ---
 

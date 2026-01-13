@@ -23,7 +23,7 @@ export interface WidgetConfig {
 export interface TrustScoreData {
   score: number;
   tier: string;
-  factors: Record<string, any>;
+  factors: Record<string, unknown>;
   calculatedAt: string;
   expiresAt: string;
   monetization: {
@@ -497,6 +497,17 @@ class VaunticoTrustWidget {
     this.loadTrustScore();
   }
 }
+
+// ============================================================================
+// ESLint Configuration for Widget
+// ============================================================================
+
+// Configure proper TypeScript ESLint rules
+const tsEslintRules = {
+  '@typescript-eslint/no-console': 'warn',
+  '@typescript-eslint/prefer-const': 'warn',
+  '@typescript-eslint/no-explicit-any': 'warn'
+};
 
 // Global factory function for easy initialization
 (window as any).VaunticoTrustWidget = VaunticoTrustWidget;

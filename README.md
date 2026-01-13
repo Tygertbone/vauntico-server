@@ -24,7 +24,7 @@ Welcome to the official Vauntico platform - your gateway to AI-powered trust sco
 
 #### Local Development
 ```bash
-# Clone the repository
+# Clone repository
 git clone https://github.com/Tygertbone/vauntico-mvp.git
 cd vauntico-mvp
 
@@ -41,7 +41,7 @@ pnpm run dev
 .\scripts\comprehensive-health-check.ps1
 ```
 
-#### Redeployment
+#### Deployment
 ```bash
 # Deploy all services to OCI
 .\scripts\oci-deploy-all.sh
@@ -63,7 +63,7 @@ pnpm run dev
 - Vercel analytics integrated
 - Automated health smoke tests
 
-## 🕊️ Launch Rituals
+### 🕊️ Launch Rituals
 
 ### Peace, Love, Abundance
 In celebration of this launch, we honor the sacred principles that guide our work:
@@ -93,19 +93,54 @@ To all who contributed to this vision:
 - [OCI Quick Reference](./docs/OCI_QUICK_REFERENCE.md)
 - [Contributing Guidelines](./CONTRIBUTING.md)
 - [API Documentation](./docs/)
-- [Lore Vault](./README-LORE.md)
+- [Lore Vault](./README_LORE.md)
 - [Railway to OCI Migration](./RAILWAY_TO_OCI_MIGRATION_COMPLETE.md)
 
 ## 🛠️ Tech Stack
 
 - **Frontend**: React + Vite + Vercel
-- **Backend**: Node.js + Express + OCI Compute
+- **Backend**: Node.js + Express + OCI Compute  
 - **Database**: PostgreSQL + OCI Autonomous Database
-- **Payments**: Paystack
+- **Payments**: Paystack + Stripe
 - **Monitoring**: Prometheus + Grafana + Sentry
 - **Deployment**: OCI + Docker Compose + Vercel
 - **Load Balancer**: OCI Load Balancer
 - **Container Registry**: OCI Container Registry
+
+## 🎯 Server-v2 MVP Baseline
+
+**✅ Server-v2 Integration**: As of v2.0.0, server-v2 is now part of the Vauntico MVP baseline, providing:
+
+### Core Services
+- **AI-Powered Trust Scoring**: Advanced algorithms for content trustworthiness evaluation
+- **Premium Content Vaults**: Secure, encrypted storage for high-value digital assets
+- **Enterprise Compliance**: POPIA-compliant data handling and privacy controls
+- **Creator Economy Tools**: Sponsorship, marketplace, and community engagement features
+- **Ubuntu Council Governance**: Democratic decision-making and proposal system
+
+### Infrastructure Components
+- **API Gateway**: Centralized entry point with load balancing and health monitoring
+- **Fulfillment Engine**: Automated content delivery and payment processing
+- **Widget System**: Embeddable trust scores for external platforms
+- **Monitoring Stack**: Comprehensive observability with Prometheus/Grafana
+
+### Integration Benefits
+- **Unified Authentication**: JWT-based auth across all services
+- **Standardized APIs**: RESTful endpoints with OpenAPI documentation
+- **Enhanced Security**: Enterprise-grade security and compliance controls
+- **Improved Performance**: Optimized for high-throughput operations
+- **Better Monitoring**: Centralized logging and health checks
+
+### Migration Status
+- ✅ **Complete**: All legacy functionality migrated to server-v2
+- ✅ **Tested**: Comprehensive test coverage with integration tests
+- ✅ **Deployed**: Production-ready with health monitoring
+- ✅ **Documented**: Full API documentation and deployment guides
+
+For detailed implementation information, see:
+- [Server-v2 Documentation](./server-v2/README.md)
+- [API Documentation](./docs/API.md)
+- [Migration Guide](./docs/SERVER_V2_MIGRATION.md)
 
 ## 🚨 Emergency Revenue Features
 
@@ -188,13 +223,13 @@ We welcome contributions! Please see our [Contributing Guidelines](./CONTRIBUTIN
 
 ## 📜 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
 *Launched with peace, love, and abundance on December 20, 2025*
 
-*Last updated: January 6, 2026 - Workflow trigger test*
+*Last updated: January 13, 2026 - v2.0.0 server-v2 MVP baseline integration*
 
 ## 🌍 Vauntico Legacy Statement
 

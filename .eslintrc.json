@@ -16,10 +16,22 @@
       "jsx": true
     }
   },
+  "ignorePatterns": [
+    "dist/",
+    "node_modules/",
+    "*.min.js",
+    "build/",
+    "coverage/",
+    ".nyc_output/"
+  ],
   "rules": {
     "no-unused-vars": "warn",
     "no-console": "warn",
-    "prefer-const": "error"
+    "prefer-const": "error",
+    "no-useless-escape": "warn",
+    "no-extra-semi": "error",
+    "no-prototype-builtins": "error",
+    "no-case-declarations": "error"
   },
   "overrides": [
     {
@@ -34,13 +46,30 @@
         "es2022": true
       },
       "rules": {
-        "no-unused-vars": "warn"
+        "no-unused-vars": "warn",
+        "no-console": "warn"
       }
     },
     {
       "files": ["*.ts", "*.tsx"],
       "rules": {
         "no-unused-vars": "off"
+      }
+    },
+    {
+      "files": ["*.js"],
+      "env": {
+        "node": true,
+        "browser": true
+      },
+      "rules": {
+        "no-console": "warn"
+      }
+    },
+    {
+      "files": ["scripts/**/*.js", "tools/**/*.js", "**/*.config.js"],
+      "rules": {
+        "no-console": "off"
       }
     }
   ]

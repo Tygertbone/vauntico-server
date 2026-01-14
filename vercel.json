@@ -1,13 +1,18 @@
 {
   "version": 2,
-  "framework": "nextjs",
+  "framework": "vite",
   "buildCommand": "npm run build",
-  "outputDirectory": ".next",
+  "outputDirectory": "dist",
   "installCommand": "npm install",
   "rewrites": [
     {
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "functions": {
+    "server-v2/src/routes/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }

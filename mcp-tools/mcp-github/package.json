@@ -1,0 +1,29 @@
+{
+  "name": "mcp-github",
+  "version": "1.0.0",
+  "description": "MCP connector for GitHub APIs including Secrets, Issues, PRs, and Actions",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "@octokit/rest": "^20.0.0",
+    "node-fetch": "^3.3.2",
+    "crypto": "^1.0.1"
+  },
+  "keywords": [
+    "mcp",
+    "github",
+    "api",
+    "secrets",
+    "issues",
+    "pull-requests",
+    "actions",
+    "automation"
+  ],
+  "author": "Vauntico",
+  "license": "MIT"
+}

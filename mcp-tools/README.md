@@ -4,7 +4,7 @@ A comprehensive suite of MCP (Model Context Protocol) tools designed to help cle
 
 ## Overview
 
-This collection contains 5 specialized MCP servers that address common development workflow challenges:
+This collection contains 6 specialized MCP servers that address common development workflow challenges:
 
 ### 🧹 **git-cleaner**
 
@@ -105,6 +105,40 @@ Detect deprecated configs (Railway, Vercel, phantom secrets) and remove them saf
 
 ---
 
+### 🐙 **mcp-github**
+
+Comprehensive GitHub API connector for repository management, secrets, issues, pull requests, and actions.
+
+**Features:**
+
+- Secrets management (list, get, set, delete)
+- Repository operations (list repos, branches, commits)
+- Issues management (create, update, close)
+- Pull requests (list, merge)
+- Actions and workflows (list, trigger, runs)
+- GraphQL API access for advanced queries
+
+**Tools:**
+
+- `list_secrets` - List all repository secrets
+- `get_secret` - Retrieve specific secret metadata
+- `set_secret` - Create or update repository secret
+- `delete_secret` - Delete repository secret
+- `list_repositories` - List accessible repositories
+- `list_branches` - List repository branches
+- `list_commits` - List repository commits
+- `create_issue` - Create new issue with labels/assignees
+- `update_issue` - Update existing issue
+- `close_issue` - Close an issue
+- `list_pull_requests` - List pull requests
+- `merge_pull_request` - Merge a pull request
+- `list_workflows` - List repository workflows
+- `trigger_workflow` - Trigger workflow run
+- `list_workflow_runs` - List workflow runs
+- `execute_graphql_query` - Execute GraphQL queries
+
+---
+
 ## Installation
 
 ### Prerequisites
@@ -142,6 +176,11 @@ npm start
 cd mcp-tools/config-sweeper
 npm install
 npm start
+
+# Install mcp-github
+cd mcp-tools/mcp-github
+npm install
+npm start
 ```
 
 ### MCP Client Configuration
@@ -175,6 +214,14 @@ Add these tools to your MCP client configuration (e.g., Claude Desktop):
       "command": "node",
       "args": ["mcp-tools/config-sweeper/index.js"],
       "cwd": "/path/to/vauntico-mvp/mcp-tools/config-sweeper"
+    },
+    "mcp-github": {
+      "command": "node",
+      "args": ["mcp-tools/mcp-github/index.js"],
+      "cwd": "/path/to/vauntico-mvp/mcp-tools/mcp-github",
+      "env": {
+        "GITHUB_TOKEN": "your_github_token_here"
+      }
     }
   }
 }
@@ -226,6 +273,36 @@ await mcp.call("config-sweeper", "remove_deprecated_configs", {
 });
 ```
 
+### GitHub Repository Management
+
+```javascript
+// List repositories
+await mcp.call("mcp-github", "list_repositories", {
+  type: "owner",
+  sort: "updated",
+});
+
+// Create an issue
+await mcp.call("mcp-github", "create_issue", {
+  owner: "myorg",
+  repo: "myrepo",
+  title: "Bug: Login not working",
+  body: "Detailed description of the issue...",
+  labels: ["bug", "high-priority"],
+});
+
+// Trigger a workflow
+await mcp.call("mcp-github", "trigger_workflow", {
+  owner: "myorg",
+  repo: "myrepo",
+  workflow_id: "ci.yml",
+  ref: "main",
+  inputs: {
+    environment: "staging",
+  },
+});
+```
+
 ## Integration with Existing Tools
 
 These MCP tools are designed to work seamlessly with the existing Vauntico project structure:
@@ -234,6 +311,7 @@ These MCP tools are designed to work seamlessly with the existing Vauntico proje
 - **TypeScript Configuration**: Works with existing `tsconfig.json` files
 - **Git Integration**: Compatible with existing `.gitignore` and git hooks
 - **Project Structure**: Scans all relevant directories (`src/`, `server-v2/`, etc.)
+- **GitHub Integration**: Works with existing GitHub repositories and workflows
 
 ## Security Features
 
@@ -255,6 +333,7 @@ The tools enforce Vauntico's development best practices:
 - ✅ Comprehensive .gitignore rules
 - ✅ Clean configuration management
 - ✅ Secret leak prevention
+- ✅ GitHub repository management
 
 ## Troubleshooting
 
@@ -264,6 +343,7 @@ The tools enforce Vauntico's development best practices:
 2. **Permission denied**: Check file permissions for the target directory
 3. **Git not found**: Ensure git is initialized and accessible
 4. **TypeScript errors**: Verify `tsconfig.json` exists and is valid
+5. **GitHub authentication**: Ensure `GITHUB_TOKEN` is set and has proper scopes
 
 ### Debug Mode
 

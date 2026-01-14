@@ -1,0 +1,91 @@
+{
+  "name": "mcp-plugins",
+  "version": "1.0.0",
+  "description": "MCP connector for plugin management and extensibility",
+  "capabilities": {
+    "authentication": {
+      "method": "api_key",
+      "env": "PLUGIN_API_KEY",
+      "notes": "API key for plugin marketplace access"
+    },
+    "discovery": {
+      "list": {
+        "description": "List available plugins in marketplace",
+        "parameters": ["category", "status", "sort_by", "limit"]
+      },
+      "search": {
+        "description": "Search for plugins by keyword",
+        "parameters": ["query", "category", "tags"]
+      },
+      "info": {
+        "description": "Get detailed plugin information",
+        "parameters": ["plugin_id", "include_reviews", "include_dependencies"]
+      }
+    },
+    "installation": {
+      "install": {
+        "description": "Install a plugin from marketplace",
+        "parameters": ["plugin_id", "version", "auto_update", "config"]
+      },
+      "uninstall": {
+        "description": "Uninstall an installed plugin",
+        "parameters": ["plugin_id", "remove_config"]
+      },
+      "update": {
+        "description": "Update an installed plugin",
+        "parameters": ["plugin_id", "version", "force"]
+      }
+    },
+    "management": {
+      "enable": {
+        "description": "Enable an installed plugin",
+        "parameters": ["plugin_id"]
+      },
+      "disable": {
+        "description": "Disable an installed plugin",
+        "parameters": ["plugin_id", "reason"]
+      },
+      "configure": {
+        "description": "Configure plugin settings",
+        "parameters": ["plugin_id", "config", "merge"]
+      },
+      "get_config": {
+        "description": "Get current plugin configuration",
+        "parameters": ["plugin_id", "include_defaults"]
+      }
+    },
+    "development": {
+      "create": {
+        "description": "Create a new plugin skeleton",
+        "parameters": ["name", "description", "category", "author", "template"]
+      },
+      "validate": {
+        "description": "Validate plugin structure and configuration",
+        "parameters": ["plugin_path", "strict_mode"]
+      },
+      "dependencies": {
+        "description": "Manage plugin dependencies",
+        "parameters": ["plugin_id", "include_transitive"]
+      }
+    },
+    "analytics": {
+      "reviews": {
+        "description": "Manage plugin reviews and ratings",
+        "parameters": ["plugin_id", "rating", "review", "anonymous"]
+      },
+      "usage": {
+        "description": "Get plugin usage analytics",
+        "parameters": ["plugin_id", "period", "metrics"]
+      }
+    }
+  },
+  "security": {
+    "notes": [
+      "Validate plugin integrity before installation",
+      "Scan plugins for malicious code",
+      "Implement proper sandboxing",
+      "Control plugin permissions carefully",
+      "Monitor plugin resource usage"
+    ]
+  }
+}

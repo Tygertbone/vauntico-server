@@ -1,0 +1,106 @@
+{
+  "name": "mcp-vercel",
+  "version": "1.0.0",
+  "description": "MCP connector for Vercel deployments, projects, and environment variables",
+  "capabilities": {
+    "authentication": {
+      "method": "token",
+      "env": "VERCEL_TOKEN",
+      "notes": "Vercel access token for API authentication"
+    },
+    "projects": {
+      "list": {
+        "description": "List all Vercel projects",
+        "parameters": ["team_id", "limit"]
+      },
+      "get": {
+        "description": "Get detailed project information",
+        "parameters": ["project_id", "include_deployments"]
+      },
+      "create": {
+        "description": "Create a new Vercel project",
+        "parameters": [
+          "name",
+          "framework",
+          "build_command",
+          "output_directory",
+          "root_directory"
+        ]
+      },
+      "delete": {
+        "description": "Delete a Vercel project",
+        "parameters": ["project_id"]
+      }
+    },
+    "deployments": {
+      "deploy": {
+        "description": "Trigger a deployment",
+        "parameters": ["project_id", "branch", "force"]
+      },
+      "list": {
+        "description": "List deployment history",
+        "parameters": ["project_id", "limit", "state"]
+      },
+      "rollback": {
+        "description": "Rollback to a previous deployment",
+        "parameters": ["project_id", "deployment_id"]
+      }
+    },
+    "environment_variables": {
+      "list": {
+        "description": "List environment variables",
+        "parameters": ["project_id", "environment", "include_sensitive"]
+      },
+      "set": {
+        "description": "Create or update environment variable",
+        "parameters": ["project_id", "key", "value", "environment", "sensitive"]
+      },
+      "delete": {
+        "description": "Delete environment variable",
+        "parameters": ["project_id", "key", "environment"]
+      }
+    },
+    "domains": {
+      "list": {
+        "description": "List custom domains",
+        "parameters": ["team_id"]
+      },
+      "add": {
+        "description": "Add a custom domain",
+        "parameters": ["domain", "project_id"]
+      }
+    },
+    "analytics": {
+      "project": {
+        "description": "Get project analytics",
+        "parameters": ["project_id", "period"]
+      },
+      "deployment_logs": {
+        "description": "Get deployment logs",
+        "parameters": ["deployment_id", "limit", "follow"]
+      }
+    },
+    "edge_functions": {
+      "list": {
+        "description": "List Edge Functions",
+        "parameters": ["project_id"]
+      },
+      "create": {
+        "description": "Create a new Edge Function",
+        "parameters": ["project_id", "name", "runtime", "code"]
+      }
+    }
+  },
+  "security": {
+    "notes": [
+      "Validate Vercel token scopes before operations",
+      "Implement proper team-based access control",
+      "Never log sensitive environment variables",
+      "Use environment-specific deployments for sensitive data",
+      "Validate deployment targets before deployment",
+      "Implement proper rollback procedures",
+      "Monitor and audit all API calls",
+      "Use HTTPS for all API communications"
+    ]
+  }
+}

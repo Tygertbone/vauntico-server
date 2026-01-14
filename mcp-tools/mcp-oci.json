@@ -1,0 +1,149 @@
+{
+  "name": "mcp-oci",
+  "version": "1.0.0",
+  "description": "MCP connector for Oracle Cloud Infrastructure operations",
+  "capabilities": {
+    "authentication": {
+      "method": "api_key",
+      "env": "OCI_PRIVATE_KEY",
+      "notes": "OCI private key and configuration for authentication"
+    },
+    "compute": {
+      "list": {
+        "description": "List compute instances in a compartment",
+        "parameters": [
+          "compartment_id",
+          "availability_domain",
+          "lifecycle_state"
+        ]
+      },
+      "create": {
+        "description": "Create a new compute instance",
+        "parameters": [
+          "compartment_id",
+          "display_name",
+          "shape",
+          "subnet_id",
+          "image_id",
+          "ssh_authorized_keys"
+        ]
+      },
+      "start": {
+        "description": "Start a stopped compute instance",
+        "parameters": ["instance_id"]
+      },
+      "stop": {
+        "description": "Stop a running compute instance",
+        "parameters": ["instance_id"]
+      },
+      "terminate": {
+        "description": "Terminate a compute instance",
+        "parameters": ["instance_id", "preserve_boot_volume"]
+      }
+    },
+    "storage": {
+      "list_buckets": {
+        "description": "List object storage buckets",
+        "parameters": ["compartment_id", "namespace"]
+      },
+      "create_bucket": {
+        "description": "Create a new object storage bucket",
+        "parameters": ["compartment_id", "name", "storage_tier"]
+      },
+      "upload_object": {
+        "description": "Upload object to storage bucket",
+        "parameters": [
+          "bucket_name",
+          "namespace",
+          "object_name",
+          "content",
+          "content_type"
+        ]
+      }
+    },
+    "networking": {
+      "list_vcn": {
+        "description": "List Virtual Cloud Networks (VCNs)",
+        "parameters": ["compartment_id"]
+      },
+      "create_vcn": {
+        "description": "Create a new Virtual Cloud Network",
+        "parameters": ["compartment_id", "display_name", "cidr_block"]
+      },
+      "list_subnets": {
+        "description": "List subnets in a VCN",
+        "parameters": ["vcn_id"]
+      }
+    },
+    "database": {
+      "list": {
+        "description": "List autonomous databases",
+        "parameters": ["compartment_id", "db_type"]
+      },
+      "create": {
+        "description": "Create a new autonomous database",
+        "parameters": [
+          "compartment_id",
+          "display_name",
+          "db_name",
+          "cpu_core_count",
+          "data_storage_size_in_tbs",
+          "admin_password"
+        ]
+      }
+    },
+    "identity": {
+      "list_users": {
+        "description": "List IAM users in tenancy",
+        "parameters": ["compartment_id"]
+      },
+      "create_user": {
+        "description": "Create a new IAM user",
+        "parameters": ["name", "description", "email"]
+      },
+      "create_group": {
+        "description": "Create a new IAM group",
+        "parameters": ["name", "description"]
+      }
+    },
+    "cost_management": {
+      "analysis": {
+        "description": "Get cost analysis for a time period",
+        "parameters": [
+          "compartment_id",
+          "start_date",
+          "end_date",
+          "granularity"
+        ]
+      }
+    },
+    "monitoring": {
+      "metrics": {
+        "description": "Get monitoring metrics for resources",
+        "parameters": ["resource_id", "metric_name", "start_time", "end_time"]
+      },
+      "alarms": {
+        "description": "Create a monitoring alarm",
+        "parameters": [
+          "display_name",
+          "metric_compartment_id",
+          "metric_namespace",
+          "metric_name",
+          "threshold",
+          "operator"
+        ]
+      }
+    }
+  },
+  "security": {
+    "notes": [
+      "Validate OCI credentials before operations",
+      "Implement proper compartment isolation",
+      "Use least privilege principle for IAM",
+      "Encrypt sensitive data in transit and at rest",
+      "Monitor and log all API calls",
+      "Implement proper network security groups",
+      "Regularly rotate access keys and credentials"
+    ]
+  }
+}

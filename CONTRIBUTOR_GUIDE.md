@@ -1,6 +1,30 @@
 # Contributing to Vauntico v2.0.0
 
-Welcome to Vauntico! This guide will help you get started and understand our development workflow.
+Welcome to Vauntico! This guide will help you get started and understand our **Systematic Push-Pull-Merge-PR Flow**.
+
+## 🚀 Quick Start
+
+For experienced contributors, here's the essential workflow:
+
+```bash
+# 1. Sync and clean
+./scripts/pre-push-hygiene.sh
+
+# 2. Create feature branch
+git checkout -b feature/your-feature-name
+
+# 3. Make changes with semantic commits
+git add .
+git commit -m "feat(api): implement customer authentication"
+
+# 4. Run validation before PR
+./scripts/validate-semantic-commits.sh
+
+# 5. Push and create PR
+git push origin feature/your-feature-name
+```
+
+For complete guidance, read the systematic flow documentation: [SYSTEMATIC_PUSH_PULL_MERGE_PR_FLOW.md](SYSTEMATIC_PUSH_PULL_MERGE_PR_FLOW.md)
 
 ## Development Setup
 

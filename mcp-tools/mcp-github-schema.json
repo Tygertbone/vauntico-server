@@ -1,0 +1,366 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vauntico.com/schemas/mcp-github.json",
+  "title": "Vauntico MCP GitHub Connector Schema",
+  "description": "JSON Schema for GitHub MCP connector operations including repositories, secrets, workflows, issues, and pull requests management",
+  "type": "object",
+  "properties": {
+    "connector": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "mcp-github",
+          "description": "Connector identifier"
+        },
+        "version": {
+          "type": "string",
+          "const": "1.0.0",
+          "description": "Connector version"
+        },
+        "description": {
+          "type": "string",
+          "const": "GitHub integration for repository management, secrets, workflows, issues, and pull requests",
+          "description": "Connector description"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of supported capabilities",
+          "enum": [
+            "repository_management",
+            "secrets_management",
+            "workflow_automation",
+            "issues_tracking",
+            "pull_request_management",
+            "branch_management",
+            "commit_tracking",
+            "graphql_queries"
+          ]
+        }
+      },
+      "required": ["name", "version", "description", "capabilities"]
+    },
+    "operations": {
+      "type": "object",
+      "properties": {
+        "list_secrets": {
+          "type": "object",
+          "description": "List all repository secrets",
+          "properties": {
+            "owner": {
+              "type": "string",
+              "description": "Repository owner username or organization name",
+              "minLength": 1,
+              "maxLength": 39
+            },
+            "repo": {
+              "type": "string",
+              "description": "Repository name",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "required": ["owner", "repo"]
+        },
+        "get_secret": {
+          "type": "object",
+          "description": "Retrieve a specific secret metadata",
+          "properties": {
+            "owner": {
+              "type": "string",
+              "description": "Repository owner username or organization name",
+              "minLength": 1,
+              "maxLength": 39
+            },
+            "repo": {
+              "type": "string",
+              "description": "Repository name",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "secret_name": {
+              "type": "string",
+              "description": "Name of the secret",
+              "minLength": 1,
+              "maxLength": 64
+            }
+          },
+          "required": ["owner", "repo", "secret_name"]
+        },
+        "set_secret": {
+          "type": "object",
+          "description": "Create or update a repository secret",
+          "properties": {
+            "owner": {
+              "type": "string",
+              "description": "Repository owner username or organization name",
+              "minLength": 1,
+              "maxLength": 39
+            },
+            "repo": {
+              "type": "string",
+              "description": "Repository name",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "secret_name": {
+              "type": "string",
+              "description": "Name of the secret",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "secret_value": {
+              "type": "string",
+              "description": "Value of the secret",
+              "minLength": 1
+            }
+          },
+          "required": ["owner", "repo", "secret_name", "secret_value"]
+        },
+        "delete_secret": {
+          "type": "object",
+          "description": "Delete a repository secret",
+          "properties": {
+            "owner": {
+              "type": "string",
+              "description": "Repository owner username or organization name",
+              "minLength": 1,
+              "maxLength": 39
+            },
+            "repo": {
+              "type": "string",
+              "description": "Repository name",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "secret_name": {
+              "type": "string",
+              "description": "Name of the secret",
+              "minLength": 1,
+              "maxLength": 64
+            }
+          },
+          "required": ["owner", "repo", "secret_name"]
+        },
+        "list_repositories": {
+          "type": "object",
+          "description": "List repositories accessible to the authenticated user",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Type of repositories to list",
+              "enum": ["all", "owner", "member"],
+              "default": "all"
+            },
+            "sort": {
+              "type": "string",
+              "description": "Sort field",
+              "enum": ["created", "updated", "pushed", "full_name"],
+              "default": "updated"
+            },
+            "per_page": {
+              "type": "integer",
+              "description": "Number of results per page",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 30
+            }
+          }
+        },
+        "list_branches": {
+          "type": "object",
+          "description": "List branches in a repository",
+          "properties": {
+            "owner": {
+              "type": "string",
+              "description": "Repository owner username or organization name",
+              "minLength": 1,
+              "maxLength": 39
+            },
+            "repo": {
+              "type": "string",
+              "description": "Repository name",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "protected": {
+              "type": "boolean",
+              "description": "Filter by protected status"
+            },
+            "per_page": {
+              "type": "integer",
+              "description": "Number of results per page",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 30
+            }
+          },
+          "required": ["owner", "repo"]
+        },
+        "trigger_workflow": {
+          "type": "object",
+          "description": "Trigger a workflow run",
+          "properties": {
+            "owner": {
+              "type": "string",
+              "description": "Repository owner username or organization name",
+              "minLength": 1,
+              "maxLength": 39
+            },
+            "repo": {
+              "type": "string",
+              "description": "Repository name",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "workflow_id": {
+              "type": "string",
+              "description": "Workflow ID or filename",
+              "minLength": 1
+            },
+            "ref": {
+              "type": "string",
+              "description": "Git reference (branch, tag, SHA)",
+              "default": "main"
+            },
+            "inputs": {
+              "type": "object",
+              "description": "Input parameters for the workflow",
+              "additionalProperties": true
+            }
+          },
+          "required": ["owner", "repo", "workflow_id"]
+        },
+        "create_issue": {
+          "type": "object",
+          "description": "Create a new issue",
+          "properties": {
+            "owner": {
+              "type": "string",
+              "description": "Repository owner username or organization name",
+              "minLength": 1,
+              "maxLength": 39
+            },
+            "repo": {
+              "type": "string",
+              "description": "Repository name",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "title": {
+              "type": "string",
+              "description": "Issue title",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "body": {
+              "type": "string",
+              "description": "Issue body content"
+            },
+            "labels": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Array of label names"
+            },
+            "assignees": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Array of assignee usernames"
+            }
+          },
+          "required": ["owner", "repo", "title"]
+        }
+      }
+    },
+    "authentication": {
+      "type": "object",
+      "properties": {
+        "required_env_vars": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Required environment variables for authentication",
+          "enum": ["GITHUB_TOKEN"]
+        },
+        "token_description": {
+          "type": "string",
+          "description": "Description of the required token",
+          "const": "GitHub Personal Access Token with appropriate permissions"
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Required GitHub token permissions",
+          "enum": [
+            "repo",
+            "workflow",
+            "secrets",
+            "issues:write",
+            "pull-requests:write"
+          ]
+        }
+      },
+      "required": ["required_env_vars", "token_description", "permissions"]
+    },
+    "error_handling": {
+      "type": "object",
+      "properties": {
+        "enterprise_grade": {
+          "type": "boolean",
+          "const": true,
+          "description": "Enterprise-grade error handling enabled"
+        },
+        "retry_policy": {
+          "type": "object",
+          "properties": {
+            "max_retries": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10,
+              "default": 3
+            },
+            "backoff_strategy": {
+              "type": "string",
+              "enum": ["exponential", "linear", "fixed"],
+              "default": "exponential"
+            },
+            "base_delay": {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 5000,
+              "default": 1000
+            }
+          }
+        },
+        "error_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Supported error types",
+          "enum": [
+            "authentication_error",
+            "authorization_error",
+            "rate_limit_error",
+            "not_found_error",
+            "validation_error",
+            "server_error",
+            "network_error"
+          ]
+        }
+      }
+    }
+  },
+  "required": ["connector", "operations", "authentication", "error_handling"],
+  "additionalProperties": false
+}

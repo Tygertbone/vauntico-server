@@ -1,0 +1,28 @@
+{
+  "name": "mcp-monitoring",
+  "version": "1.0.0",
+  "description": "Observability across Prometheus, Grafana, Sentry",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "node-fetch": "^3.3.2",
+    "crypto": "^1.0.1"
+  },
+  "keywords": [
+    "mcp",
+    "monitoring",
+    "prometheus",
+    "grafana",
+    "sentry",
+    "metrics",
+    "alerts",
+    "observability"
+  ],
+  "author": "Vauntico",
+  "license": "MIT"
+}

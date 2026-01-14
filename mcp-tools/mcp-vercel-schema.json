@@ -1,0 +1,521 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vauntico.com/schemas/mcp-vercel.json",
+  "title": "Vauntico MCP Vercel Connector Schema",
+  "description": "JSON Schema for Vercel MCP connector operations including projects, deployments, environment variables, and domain management",
+  "type": "object",
+  "properties": {
+    "connector": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "mcp-vercel",
+          "description": "Connector identifier"
+        },
+        "version": {
+          "type": "string",
+          "const": "1.0.0",
+          "description": "Connector version"
+        },
+        "description": {
+          "type": "string",
+          "const": "Vercel platform integration for project management, deployments, environment variables, and domain configuration",
+          "description": "Connector description"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of supported capabilities",
+          "enum": [
+            "project_management",
+            "deployment_management",
+            "environment_variables",
+            "domain_management",
+            "analytics_monitoring",
+            "edge_functions",
+            "log_access"
+          ]
+        }
+      },
+      "required": ["name", "version", "description", "capabilities"]
+    },
+    "operations": {
+      "type": "object",
+      "properties": {
+        "list_projects": {
+          "type": "object",
+          "description": "List all Vercel projects",
+          "properties": {
+            "team_id": {
+              "type": "string",
+              "description": "Filter by team ID"
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Maximum number of projects",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        },
+        "get_project": {
+          "type": "object",
+          "description": "Get detailed project information",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "description": "Project ID or name",
+              "minLength": 1
+            },
+            "include_deployments": {
+              "type": "boolean",
+              "description": "Include deployment history",
+              "default": false
+            }
+          },
+          "required": ["project_id"]
+        },
+        "create_project": {
+          "type": "object",
+          "description": "Create a new Vercel project",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Project name",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "framework": {
+              "type": "string",
+              "description": "Framework preset",
+              "enum": ["nextjs", "react", "vue", "svelte", "angular", "other"],
+              "default": "nextjs"
+            },
+            "build_command": {
+              "type": "string",
+              "description": "Custom build command"
+            },
+            "output_directory": {
+              "type": "string",
+              "description": "Output directory",
+              "default": "."
+            },
+            "root_directory": {
+              "type": "string",
+              "description": "Root directory",
+              "default": "/"
+            }
+          },
+          "required": ["name"]
+        },
+        "deploy": {
+          "type": "object",
+          "description": "Trigger a deployment",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "description": "Project ID or name",
+              "minLength": 1
+            },
+            "branch": {
+              "type": "string",
+              "description": "Git branch to deploy",
+              "default": "main"
+            },
+            "force": {
+              "type": "boolean",
+              "description": "Force new deployment",
+              "default": false
+            }
+          },
+          "required": ["project_id"]
+        },
+        "list_deployments": {
+          "type": "object",
+          "description": "List deployment history",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "description": "Project ID or name",
+              "minLength": 1
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Maximum number of deployments",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            },
+            "state": {
+              "type": "string",
+              "description": "Filter by deployment state",
+              "enum": ["READY", "BUILDING", "ERROR", "CANCELED"]
+            }
+          },
+          "required": ["project_id"]
+        },
+        "rollback_deployment": {
+          "type": "object",
+          "description": "Rollback to a previous deployment",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "description": "Project ID or name",
+              "minLength": 1
+            },
+            "deployment_id": {
+              "type": "string",
+              "description": "Deployment ID to rollback to",
+              "minLength": 1
+            }
+          },
+          "required": ["project_id", "deployment_id"]
+        },
+        "list_env": {
+          "type": "object",
+          "description": "List environment variables",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "description": "Project ID or name",
+              "minLength": 1
+            },
+            "environment": {
+              "type": "string",
+              "description": "Environment (production, preview, development)",
+              "enum": ["production", "preview", "development"]
+            },
+            "include_sensitive": {
+              "type": "boolean",
+              "description": "Include sensitive variables",
+              "default": false
+            }
+          },
+          "required": ["project_id"]
+        },
+        "set_env": {
+          "type": "object",
+          "description": "Create or update environment variable",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "description": "Project ID or name",
+              "minLength": 1
+            },
+            "key": {
+              "type": "string",
+              "description": "Variable name",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "value": {
+              "type": "string",
+              "description": "Variable value",
+              "minLength": 1
+            },
+            "environment": {
+              "type": "string",
+              "description": "Target environment",
+              "enum": ["production", "preview", "development"],
+              "default": "production"
+            },
+            "sensitive": {
+              "type": "boolean",
+              "description": "Mark as sensitive",
+              "default": false
+            }
+          },
+          "required": ["project_id", "key", "value"]
+        },
+        "delete_env": {
+          "type": "object",
+          "description": "Delete environment variable",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "description": "Project ID or name",
+              "minLength": 1
+            },
+            "key": {
+              "type": "string",
+              "description": "Variable name",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "environment": {
+              "type": "string",
+              "description": "Target environment",
+              "enum": ["production", "preview", "development"],
+              "default": "production"
+            }
+          },
+          "required": ["project_id", "key"]
+        },
+        "list_domains": {
+          "type": "object",
+          "description": "List custom domains",
+          "properties": {
+            "team_id": {
+              "type": "string",
+              "description": "Filter by team ID"
+            }
+          }
+        },
+        "add_domain": {
+          "type": "object",
+          "description": "Add a custom domain",
+          "properties": {
+            "domain": {
+              "type": "string",
+              "description": "Domain name",
+              "minLength": 1,
+              "maxLength": 253,
+              "format": "hostname"
+            },
+            "project_id": {
+              "type": "string",
+              "description": "Project ID to assign to",
+              "minLength": 1
+            }
+          },
+          "required": ["domain"]
+        },
+        "get_project_analytics": {
+          "type": "object",
+          "description": "Get project analytics",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "description": "Project ID or name",
+              "minLength": 1
+            },
+            "period": {
+              "type": "string",
+              "description": "Time period",
+              "enum": ["24h", "7d", "30d", "90d"],
+              "default": "7d"
+            }
+          },
+          "required": ["project_id"]
+        },
+        "get_deployment_logs": {
+          "type": "object",
+          "description": "Get deployment logs",
+          "properties": {
+            "deployment_id": {
+              "type": "string",
+              "description": "Deployment ID",
+              "minLength": 1
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Maximum number of log entries",
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100
+            },
+            "follow": {
+              "type": "boolean",
+              "description": "Follow log stream",
+              "default": false
+            }
+          },
+          "required": ["deployment_id"]
+        },
+        "list_functions": {
+          "type": "object",
+          "description": "List Edge Functions",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "description": "Project ID or name",
+              "minLength": 1
+            }
+          },
+          "required": ["project_id"]
+        },
+        "create_function": {
+          "type": "object",
+          "description": "Create a new Edge Function",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "description": "Project ID or name",
+              "minLength": 1
+            },
+            "name": {
+              "type": "string",
+              "description": "Function name",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "runtime": {
+              "type": "string",
+              "description": "Function runtime",
+              "enum": ["nodejs18.x", "nodejs20.x", "python3.9", "python3.10"],
+              "default": "nodejs18.x"
+            },
+            "code": {
+              "type": "string",
+              "description": "Function code",
+              "minLength": 1
+            }
+          },
+          "required": ["project_id", "name", "code"]
+        }
+      }
+    },
+    "authentication": {
+      "type": "object",
+      "properties": {
+        "required_env_vars": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Required environment variables for authentication",
+          "enum": ["VERCEL_TOKEN"]
+        },
+        "token_description": {
+          "type": "string",
+          "description": "Description of the required token",
+          "const": "Vercel Access Token with appropriate project permissions"
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Required Vercel token permissions",
+          "enum": [
+            "project:read",
+            "project:write",
+            "deployment:read",
+            "deployment:write",
+            "env:read",
+            "env:write",
+            "domain:read",
+            "domain:write",
+            "function:read",
+            "function:write"
+          ]
+        }
+      },
+      "required": ["required_env_vars", "token_description", "permissions"]
+    },
+    "deployment_features": {
+      "type": "object",
+      "properties": {
+        "frameworks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Supported frameworks",
+          "enum": [
+            "nextjs",
+            "react",
+            "vue",
+            "svelte",
+            "angular",
+            "nuxt",
+            "sveltekit",
+            "astro",
+            "gatsby",
+            "remix",
+            "other"
+          ]
+        },
+        "environments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Supported deployment environments",
+          "enum": ["production", "preview", "development"]
+        },
+        "build_tools": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Supported build tools",
+          "enum": [
+            "npm",
+            "yarn",
+            "pnpm",
+            "bun",
+            "make",
+            "cmake",
+            "cargo",
+            "go",
+            "python",
+            "docker"
+          ]
+        }
+      }
+    },
+    "error_handling": {
+      "type": "object",
+      "properties": {
+        "enterprise_grade": {
+          "type": "boolean",
+          "const": true,
+          "description": "Enterprise-grade error handling enabled"
+        },
+        "retry_policy": {
+          "type": "object",
+          "properties": {
+            "max_retries": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10,
+              "default": 3
+            },
+            "backoff_strategy": {
+              "type": "string",
+              "enum": ["exponential", "linear", "fixed"],
+              "default": "exponential"
+            },
+            "base_delay": {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 5000,
+              "default": 1000
+            }
+          }
+        },
+        "error_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Supported error types",
+          "enum": [
+            "authentication_error",
+            "authorization_error",
+            "rate_limit_error",
+            "not_found_error",
+            "validation_error",
+            "deployment_error",
+            "build_error",
+            "domain_error",
+            "function_error"
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "connector",
+    "operations",
+    "authentication",
+    "deployment_features",
+    "error_handling"
+  ],
+  "additionalProperties": false
+}

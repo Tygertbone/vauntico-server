@@ -1,0 +1,75 @@
+{
+  "name": "mcp-onboarding",
+  "version": "1.0.0",
+  "description": "MCP connector for contributor onboarding and user management",
+  "capabilities": {
+    "authentication": {
+      "method": "none",
+      "notes": "No authentication required for onboarding operations"
+    },
+    "user_management": {
+      "register": {
+        "description": "Register a new contributor in the onboarding system",
+        "parameters": ["username", "email", "role", "skills", "interests"]
+      },
+      "welcome": {
+        "description": "Send personalized welcome messages",
+        "parameters": ["username", "channel", "template"]
+      }
+    },
+    "onboarding": {
+      "tasks": {
+        "description": "Generate personalized onboarding tasks",
+        "parameters": ["username", "role", "skills", "difficulty"]
+      },
+      "progress": {
+        "description": "Track and update onboarding progress",
+        "parameters": ["username", "task_id", "status", "notes"]
+      },
+      "checklist": {
+        "description": "Generate personalized onboarding checklist",
+        "parameters": [
+          "username",
+          "role",
+          "include_setup",
+          "include_documentation"
+        ]
+      }
+    },
+    "resources": {
+      "recommend": {
+        "description": "Recommend learning resources based on role and skills",
+        "parameters": ["role", "skills", "interests", "resource_type"]
+      }
+    },
+    "mentorship": {
+      "assign": {
+        "description": "Assign a mentor to a new contributor",
+        "parameters": [
+          "mentee_username",
+          "mentor_username",
+          "focus_areas",
+          "duration_weeks"
+        ]
+      }
+    },
+    "community": {
+      "introduction": {
+        "description": "Schedule introduction to community channels",
+        "parameters": ["username", "channels", "introduction_type"]
+      },
+      "feedback": {
+        "description": "Collect feedback on onboarding experience",
+        "parameters": ["username", "feedback_type", "questions"]
+      }
+    }
+  },
+  "security": {
+    "notes": [
+      "Validate user inputs for malicious content",
+      "Sanitize all user-provided data",
+      "Rate limit welcome message sending",
+      "Protect personal information (PII)"
+    ]
+  }
+}

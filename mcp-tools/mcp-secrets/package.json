@@ -1,0 +1,31 @@
+{
+  "name": "mcp-secrets",
+  "version": "1.0.0",
+  "description": "Centralized secrets management across GitHub, Neon (Postgres), Stripe, Resend, Paystack",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "@octokit/rest": "^20.0.0",
+    "node-fetch": "^3.3.2",
+    "crypto": "^1.0.1"
+  },
+  "keywords": [
+    "mcp",
+    "secrets",
+    "github",
+    "postgres",
+    "stripe",
+    "resend",
+    "paystack",
+    "security",
+    "rotation",
+    "audit"
+  ],
+  "author": "Vauntico",
+  "license": "MIT"
+}

@@ -1,0 +1,27 @@
+{
+  "name": "mcp-vercel",
+  "version": "1.0.0",
+  "description": "MCP connector for Vercel deployments, projects, and environment variables",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "node-fetch": "^3.3.2",
+    "crypto": "^1.0.1"
+  },
+  "keywords": [
+    "mcp",
+    "vercel",
+    "deployment",
+    "projects",
+    "environment-variables",
+    "serverless",
+    "edge-functions"
+  ],
+  "author": "Vauntico",
+  "license": "MIT"
+}

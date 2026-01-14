@@ -26,7 +26,11 @@
     "test:coverage": "npm run test:coverage --workspaces --if-present",
     "test:throughput": "node tests/performance/throughput-test.js",
     "test:db-performance": "node tests/performance/db-performance-test.js",
-    "test:widget-load": "node tests/performance/widget-load-test.js"
+    "test:widget-load": "node tests/performance/widget-load-test.js",
+    "hygiene": "bash scripts/pre-push-hygiene.sh",
+    "validate-commits": "bash scripts/validate-semantic-commits.sh",
+    "merge-strategy": "bash scripts/merge-strategy-workflow.sh",
+    "go-live": "bash scripts/go-live-validation.sh"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.27.0",

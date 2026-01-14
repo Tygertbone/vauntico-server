@@ -1,0 +1,93 @@
+{
+  "name": "mcp-github",
+  "version": "1.0.0",
+  "description": "MCP connector for GitHub APIs including Secrets, Issues, PRs, and Actions",
+  "capabilities": {
+    "authentication": {
+      "method": "token",
+      "env": "GITHUB_TOKEN",
+      "notes": "Use a GitHub Personal Access Token or GitHub App credentials with appropriate scopes"
+    },
+    "secrets": {
+      "list": {
+        "endpoint": "GET /repos/{owner}/{repo}/actions/secrets",
+        "description": "List all repository secrets"
+      },
+      "get": {
+        "endpoint": "GET /repos/{owner}/{repo}/actions/secrets/{secret_name}",
+        "description": "Retrieve a specific secret metadata"
+      },
+      "set": {
+        "endpoint": "PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}",
+        "description": "Create or update a repository secret"
+      },
+      "delete": {
+        "endpoint": "DELETE /repos/{owner}/{repo}/actions/secrets/{secret_name}",
+        "description": "Delete a repository secret"
+      }
+    },
+    "repos": {
+      "list": {
+        "endpoint": "GET /user/repos",
+        "description": "List repositories accessible to the authenticated user"
+      },
+      "branches": {
+        "endpoint": "GET /repos/{owner}/{repo}/branches",
+        "description": "List branches in a repository"
+      },
+      "commits": {
+        "endpoint": "GET /repos/{owner}/{repo}/commits",
+        "description": "List commits in a repository"
+      }
+    },
+    "issues": {
+      "create": {
+        "endpoint": "POST /repos/{owner}/{repo}/issues",
+        "description": "Create a new issue"
+      },
+      "update": {
+        "endpoint": "PATCH /repos/{owner}/{repo}/issues/{issue_number}",
+        "description": "Update an existing issue"
+      },
+      "close": {
+        "endpoint": "PATCH /repos/{owner}/{repo}/issues/{issue_number}",
+        "description": "Close an issue"
+      }
+    },
+    "pull_requests": {
+      "list": {
+        "endpoint": "GET /repos/{owner}/{repo}/pulls",
+        "description": "List open pull requests"
+      },
+      "merge": {
+        "endpoint": "PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge",
+        "description": "Merge a pull request"
+      }
+    },
+    "actions": {
+      "workflows": {
+        "endpoint": "GET /repos/{owner}/{repo}/actions/workflows",
+        "description": "List workflows in a repository"
+      },
+      "trigger": {
+        "endpoint": "POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches",
+        "description": "Trigger a workflow run"
+      },
+      "runs": {
+        "endpoint": "GET /repos/{owner}/{repo}/actions/runs",
+        "description": "List workflow runs"
+      }
+    },
+    "graphql": {
+      "endpoint": "POST /graphql",
+      "description": "Run advanced queries using GitHub GraphQL API"
+    }
+  },
+  "security": {
+    "notes": [
+      "Never log secret values",
+      "Validate token scope before operations",
+      "Fail gracefully if permissions are insufficient"
+    ]
+  }
+}

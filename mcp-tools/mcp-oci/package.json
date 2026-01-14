@@ -1,0 +1,28 @@
+{
+  "name": "mcp-oci",
+  "version": "1.0.0",
+  "description": "MCP connector for Oracle Cloud Infrastructure operations",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "node-fetch": "^3.3.2",
+    "crypto": "^1.0.1"
+  },
+  "keywords": [
+    "mcp",
+    "oci",
+    "oracle",
+    "cloud",
+    "infrastructure",
+    "compute",
+    "storage",
+    "networking"
+  ],
+  "author": "Vauntico",
+  "license": "MIT"
+}

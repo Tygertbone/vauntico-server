@@ -1,0 +1,308 @@
+{
+  "version": 1,
+  "mcp_connectors": [
+    {
+      "name": "github",
+      "description": "Enforces repo hygiene, semantic commits, PR templates, branch discipline, Dependabot updates, CI/CD triggers, secret scanning.",
+      "config": {
+        "workflows": [
+          "lint.yml",
+          "test.yml",
+          "build-verification.yml",
+          "security-scan.yml",
+          "deploy.yml",
+          "production-deploy.yml"
+        ],
+        "dependabot": true,
+        "semantic_commits": "strict",
+        "branch_protection": {
+          "main": {
+            "required_reviews": 2,
+            "required_status_checks": [
+              "lint",
+              "test",
+              "build-verification",
+              "security-scan"
+            ],
+            "enforce_admins": true
+          }
+        },
+        "pr_templates": {
+          "feature": ".github/pull_request_template.md",
+          "hotfix": ".github/HOTFIX_TEMPLATE.md",
+          "simple_fix": ".github/SIMPLE_FIX_TEMPLATE.md"
+        },
+        "secret_scanning": {
+          "enabled": true,
+          "patterns": [
+            "AWS_ACCESS_KEY_ID",
+            "AWS_SECRET_ACCESS_KEY",
+            "OCI_PRIVATE_KEY",
+            "SLACK_WEBHOOK_URL",
+            "VERCEL_TOKEN"
+          ]
+        }
+      }
+    },
+    {
+      "name": "vercel",
+      "description": "Handles deployment orchestration, domain verification, routing, SSL certificates, environment variable injection.",
+      "config": {
+        "project_type": "vite-react",
+        "domain": "vauntico.cm",
+        "ssl": "required",
+        "environment_variables": {
+          "production": [
+            "DATABASE_URL",
+            "JWT_SECRET",
+            "STRIPE_API_KEY",
+            "SLACK_WEBHOOK_URL"
+          ],
+          "preview": [
+            "TEST_DATABASE_URL",
+            "TEST_JWT_SECRET",
+            "STRIPE_TEST_API_KEY"
+          ]
+        },
+        "rewrites": [
+          {
+            "source": "/(.*)",
+            "destination": "/index.html"
+          }
+        ],
+        "functions": {
+          "server-v2/src/routes/*.ts": {
+            "runtime": "nodejs18.x"
+          }
+        }
+      }
+    },
+    {
+      "name": "oci",
+      "description": "Container registry authentication, image build/push automation, rollback procedures.",
+      "config": {
+        "registry": "oci",
+        "rollback": "enabled",
+        "authentication": {
+          "private_key_secret": "OCI_PRIVATE_KEY",
+          "user_ocid_secret": "OCI_USER_OCID",
+          "tenancy_ocid_secret": "OCI_TENANCY_OCID",
+          "fingerprint_secret": "OCI_FINGERPRINT",
+          "region_secret": "OCI_REGION"
+        },
+        "compartment_id": "OCI_COMPARTMENT_ID",
+        "bastion_config": {
+          "config_secret": "OCI_BASTION_CONFIG",
+          "cidr_secret": "OCI_BASTION_CIDR"
+        },
+        "image_build": {
+          "dockerfile": "Dockerfile.vauntico-server",
+          "context": ".",
+          "tags": ["latest", "${{ github.sha }}", "${{ github.ref_name }}"]
+        }
+      }
+    },
+    {
+      "name": "secrets",
+      "description": "Credential rotation, scrubbing, guardrail enforcement, .gitignore hardening, GitGuardian scans.",
+      "config": {
+        "rotation": "auto",
+        "gitguardian": "enabled",
+        "gitignore_hardening": {
+          "patterns": [
+            "*.env",
+            "*.pem",
+            "*.key",
+            "*.log",
+            "node_modules/",
+            "dist/",
+            ".vercel/",
+            "coverage/",
+            "*.sql"
+          ]
+        },
+        "scrubbing": {
+          "patterns": ["password", "secret", "token", "api_key", "private_key"]
+        },
+        "guardrails": {
+          "pre_commit": ["git-secrets", "detect-secrets", "trufflehog"],
+          "pre_push": ["git-secrets", "detect-secrets", "trufflehog"]
+        }
+      }
+    },
+    {
+      "name": "cicd",
+      "description": "Workflow dependency enforcement, artifact validation, rollback automation.",
+      "config": {
+        "order": [
+          "lint",
+          "test",
+          "build-verification",
+          "security-scan",
+          "deploy",
+          "production-deploy"
+        ],
+        "artifact_validation": {
+          "enabled": true,
+          "checks": ["size", "checksum", "vulnerability_scan"]
+        },
+        "rollback": {
+          "enabled": true,
+          "strategy": "blue-green",
+          "max_history": 5
+        },
+        "dependency_enforcement": {
+          "lint": {
+            "requires": []
+          },
+          "test": {
+            "requires": ["lint"]
+          },
+          "build-verification": {
+            "requires": ["lint", "test"]
+          },
+          "security-scan": {
+            "requires": ["build-verification"]
+          },
+          "deploy": {
+            "requires": ["lint", "test", "build-verification", "security-scan"]
+          },
+          "production-deploy": {
+            "requires": ["deploy"]
+          }
+        }
+      }
+    },
+    {
+      "name": "monitoring",
+      "description": "Prometheus alert rules, Grafana dashboards, Sentry error tracking, SLA/SLO validation.",
+      "config": {
+        "alerts": ["cpu", "memory", "error_rate", "latency", "uptime"],
+        "dashboards": "grafana",
+        "error_tracking": "sentry",
+        "prometheus": {
+          "scrape_interval": "15s",
+          "evaluation_interval": "15s",
+          "rule_files": ["monitoring/alert_rules.yml"],
+          "scrape_configs": [
+            {
+              "job_name": "trust-score-backend",
+              "metrics_path": "/metrics",
+              "static_configs": [
+                {
+                  "targets": ["trust-score-backend:8080"]
+                }
+              ]
+            },
+            {
+              "job_name": "vauntico-server",
+              "metrics_path": "/metrics",
+              "static_configs": [
+                {
+                  "targets": ["vauntico-server:8080"]
+                }
+              ]
+            },
+            {
+              "job_name": "fulfillment-engine",
+              "metrics_path": "/metrics",
+              "static_configs": [
+                {
+                  "targets": ["fulfillment-engine:8080"]
+                }
+              ]
+            }
+          ]
+        },
+        "grafana": {
+          "dashboards": [
+            "monitoring/grafana/dashboards/vauntico-phase1-kpi-standardized.json",
+            "monitoring/grafana/dashboards/vauntico-phase2-kpi.json",
+            "monitoring/grafana/dashboards/vauntico-phase3-enterprise.json",
+            "monitoring/grafana/dashboards/vauntico-phase4-creator-economy.json"
+          ],
+          "provisioning": {
+            "dashboards": "monitoring/grafana/provisioning/dashboards/dashboard.yml",
+            "datasources": "monitoring/grafana/provisioning/datasources/prometheus.yml"
+          }
+        },
+        "sentry": {
+          "dsn": "SENTRY_DSN",
+          "environment": "${{ github.ref_name }}",
+          "traces_sample_rate": 1.0,
+          "profiles_sample_rate": 1.0
+        },
+        "sla": {
+          "uptime": 99.9,
+          "response_time": 200,
+          "error_rate": 1.0
+        },
+        "slo": {
+          "availability": 99.95,
+          "latency": 150,
+          "error_budget": 0.05
+        }
+      }
+    },
+    {
+      "name": "onboarding",
+      "description": "Contributor guide integration, systematic Push–Pull–Merge–PR Flow enforcement, PR templates, hygiene scripts.",
+      "config": {
+        "guides": [
+          "CONTRIBUTOR_GUIDE.md",
+          "SYSTEMATIC_PUSH_PULL_MERGE_PR_FLOW.md"
+        ],
+        "scripts": ["pre-push-hygiene.sh", "validate-semantic-commits.sh"],
+        "push_pull_merge_pr_flow": {
+          "steps": [
+            "git pull --rebase",
+            "git checkout -b feature-branch",
+            "git commit -m 'feat: add new feature'",
+            "git push origin feature-branch",
+            "gh pr create --fill",
+            "gh pr merge --squash"
+          ]
+        },
+        "contributor_guide": {
+          "sections": [
+            "Getting Started",
+            "Development Setup",
+            "Coding Standards",
+            "Testing Guidelines",
+            "Deployment Process"
+          ]
+        }
+      }
+    },
+    {
+      "name": "automation",
+      "description": "Merge strategy workflow, go-live validation, batch commit enforcement, incident response playbook integration.",
+      "config": {
+        "scripts": ["merge-strategy-workflow.sh", "go-live-validation.sh"],
+        "playbook": "INCIDENT_RESPONSE_PLAYBOOK.md",
+        "merge_strategy": {
+          "default": "squash",
+          "options": ["squash", "merge", "rebase"]
+        },
+        "go_live_validation": {
+          "checks": [
+            "health_endpoint",
+            "database_connection",
+            "api_functionality",
+            "monitoring_setup"
+          ]
+        },
+        "batch_commit": {
+          "enabled": true,
+          "max_size": 10,
+          "frequency": "daily"
+        },
+        "incident_response": {
+          "playbook": "INCIDENT_RESPONSE_PLAYBOOK.md",
+          "severity_levels": ["critical", "high", "medium", "low"],
+          "response_team": ["devops", "backend", "frontend", "security"]
+        }
+      }
+    }
+  ]
+}

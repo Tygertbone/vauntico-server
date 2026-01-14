@@ -2,9 +2,9 @@ name: Phase 2 Validation - Widget, API, KPI
 
 on:
   push:
-    branches: [feature/phase2-widget-and-kpi]
+    branches: [main, develop, feature/*]
   pull_request:
-    branches: [feature/phase2-widget-and-kpi]
+    branches: [main, develop]
   workflow_dispatch:
     inputs:
       validation_type:
@@ -23,6 +23,100 @@ env:
   MRR_TARGET: 500K
 
 jobs:
+  # Governance validation according to contributor guide
+  governance-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate commit messages
+        run: |
+          # Get commit messages for this push/PR
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            COMMITS=$(git log --format='%s' origin/${{ github.base_ref }}..HEAD)
+          else
+            COMMITS=$(git log --format='%s' -n 10)
+          fi
+          
+          echo "Checking commit messages..."
+          echo "$COMMITS"
+          
+          # Validate semantic commit format
+          while IFS= read -r commit; do
+            if [[ -n "$commit" ]]; then
+              # Check for semantic commit format: type(scope): description
+              if ! echo "$commit" | grep -E '^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\([^)]+\))?: .+'; then
+                echo "❌ Invalid commit format: $commit"
+                echo "Expected format: type(scope): description"
+                exit 1
+              fi
+            fi
+          done <<< "$COMMITS"
+          
+          echo "✅ All commit messages follow semantic format"
+
+      - name: Validate branch naming
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          echo "Validating branch name: $BRANCH_NAME"
+          
+          # Skip validation for main/develop
+          if [[ "$BRANCH_NAME" == "main" || "$BRANCH_NAME" == "develop" ]]; then
+            echo "✅ Main/develop branch - skipping naming validation"
+            exit 0
+          fi
+          
+          # Validate feature branch naming
+          if echo "$BRANCH_NAME" | grep -E '^feature/[a-z0-9-]+$'; then
+            echo "✅ Branch name follows convention"
+          else
+            echo "❌ Invalid branch name: $BRANCH_NAME"
+            echo "Expected format: feature/feature-name"
+            exit 1
+          fi
+
+      - name: Check required documentation
+        run: |
+          echo "Checking required documentation..."
+          
+          # Check if CONTRIBUTOR_GUIDE.md exists
+          if [ -f "CONTRIBUTOR_GUIDE.md" ]; then
+            echo "✅ CONTRIBUTOR_GUIDE.md found"
+          else
+            echo "❌ CONTRIBUTOR_GUIDE.md not found"
+            exit 1
+          fi
+          
+          # Check if README.md exists
+          if [ -f "README.md" ]; then
+            echo "✅ README.md found"
+          else
+            echo "❌ README.md not found"
+            exit 1
+          fi
+
+      - name: Validate ESLint configuration
+        run: |
+          echo "Checking ESLint configuration..."
+          
+          if [ -f ".eslintrc.json" ]; then
+            echo "✅ .eslintrc.json found"
+            
+            # Check for required ESLint rules
+            if jq -e '.extends | contains("eslint:recommended")' .eslintrc.json > /dev/null; then
+              echo "✅ Base ESLint rules configured"
+            else
+              echo "❌ ESLint recommended rules not found"
+              exit 1
+            fi
+          else
+            echo "❌ .eslintrc.json not found"
+            exit 1
+          fi
+
   validate-widget:
     if: ${{ github.event.inputs.validation_type == 'widget-build' || github.event.inputs.validation_type == 'all-phase2' }}
     runs-on: ubuntu-latest
@@ -184,12 +278,12 @@ jobs:
             basic_trust_score.json
             pro_widget_usage.json
             enterprise_analytics.json
-          src/openapi/v2-phase2.yaml
-          server-v2/tests/integration/widget-integration.test.ts
-          server-v2/src/routes/widget.ts
-          server-v2/src/services/apiUsageService.ts
-          monitoring/grafana/dashboards/vauntico-phase2-kpi.json
-          widget/
+            src/openapi/v2-phase2.yaml
+            server-v2/tests/integration/widget-integration.test.ts
+            server-v2/src/routes/widget.ts
+            server-v2/src/services/apiUsageService.ts
+            monitoring/grafana/dashboards/vauntico-phase2-kpi.json
+            widget/
           retention-days: 30
 
   validate-kpi-dashboard:
@@ -358,7 +452,7 @@ jobs:
           retention-days: 30
 
   notify-success:
-    needs: [validate-widget, validate-api-integration, validate-kpi-dashboard, comprehensive-validation]
+    needs: [governance-validation, validate-widget, validate-api-integration, validate-kpi-dashboard, comprehensive-validation]
     if: ${{ success() }}
     runs-on: ubuntu-latest
     steps:
@@ -387,6 +481,3 @@ jobs:
             - KPI dashboard configured with Phase 2 metrics
             - OpenAPI documentation complete and valid
             " || true
-
-  summary:
-    Phase 2 validation completed for B2B API Licensing

@@ -1,6 +1,16 @@
-interface TrustScore {
+import { pool } from '../db/pool';
+import { logger } from '../utils/logger';
+import { UserProfile } from '../types/service';
+
+export interface TrustScore {
   score: number;
-  factors: any;
+  factors: {
+    content_quality: number;
+    engagement: number;
+    consistency: number;
+    follower_count: number;
+    post_frequency: number;
+  };
   calculatedAt: Date;
   expiresAt: Date;
   creditsRemaining?: number;
@@ -8,14 +18,14 @@ interface TrustScore {
   rateLimitRemaining?: number;
 }
 
-interface TrustScoreHistory {
+export interface TrustScoreHistory {
   scores: TrustScore[];
   total: number;
   hasMore: boolean;
   creditsUsed?: number;
 }
 
-interface CalculationRequest {
+export interface CalculationRequest {
   id: string;
   userId: string;
   tier: string;
@@ -27,243 +37,559 @@ interface CalculationRequest {
   webhookUrl?: string;
 }
 
-interface QuotaCheck {
+export interface QuotaCheck {
   allowed: boolean;
   message?: string;
   creditsRemaining?: number;
   rateLimitRemaining?: number;
 }
 
-// Mock database for Phase 2 demo
-// In production, this would connect to actual database
-class MockTrustScoreDatabase {
-  private trustScores = new Map<string, TrustScore>();
-  private calculations = new Map<string, CalculationRequest>();
-  private userQuotas = new Map<string, { monthlyCalculations: number; creditsRemaining: number }>();
+export interface ScoreCalculationFactors {
+  content_quality: number;
+  engagement: number;
+  consistency: number;
+  follower_count: number;
+  post_frequency: number;
+}
 
-  constructor() {
-    this.initializeMockData();
-  }
-
-  private initializeMockData() {
-    // Mock user data for demo
-    const mockUsers = [
-      'user_001',
-      'user_002', 
-      'user_003',
-      'user_004',
-      'user_005'
-    ];
-
-    mockUsers.forEach(userId => {
-      this.trustScores.set(userId, {
-        score: Math.floor(Math.random() * 40) + 60, // Random score between 60-100
-        factors: {
-          content_quality: Math.floor(Math.random() * 20) + 80,
-          engagement: Math.floor(Math.random() * 20) + 80,
-          consistency: Math.floor(Math.random() * 20) + 80,
-          follower_count: Math.floor(Math.random() * 1000) + 500,
-          post_frequency: Math.floor(Math.random() * 5) + 1
-        },
-        calculatedAt: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000), // Random time in last week
-        expiresAt: new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000), // Random expiry in next 30 days
-        creditsRemaining: Math.floor(Math.random() * 10) + 5,
-        nextCalculationCost: 1
-      });
-
-      this.userQuotas.set(userId, {
-        monthlyCalculations: Math.floor(Math.random() * 5) + 1,
-        creditsRemaining: Math.floor(Math.random() * 10) + 5
-      });
-    });
-  }
-
-  async getTrustScore(userId: string, tier: string): Promise<TrustScore | null> {
-    // Simulate database query delay
-    await new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 200));
-    
-    const score = this.trustScores.get(userId);
-    if (!score) return null;
-
-    // Add monetization context based on tier
-    const tierBenefits = {
-      basic: { maxDailyRequests: 100, costPerCalculation: 1 },
-      pro: { maxDailyRequests: 1000, costPerCalculation: 0.5 },
-      enterprise: { maxDailyRequests: 10000, costPerCalculation: 0.1 }
-    };
-
-    const benefits = tierBenefits[tier as keyof typeof tierBenefits] || tierBenefits.basic;
-
-    return {
-      ...score,
-      rateLimitRemaining: benefits.maxDailyRequests - (Math.floor(Math.random() * 10) + 1),
-      creditsRemaining: score.creditsRemaining || 0,
-      nextCalculationCost: benefits.costPerCalculation
-    };
-  }
-
-  async calculateTrustScore(userId: string, tier: string): Promise<CalculationRequest> {
-    const calculationId = `calc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    // Check quota
-    const quotaCheck = await this.checkCalculationQuota(userId, tier);
-    if (!quotaCheck.allowed) {
-      throw new Error(quotaCheck.message || 'Calculation quota exceeded');
-    }
-
-    const calculation: CalculationRequest = {
-      id: calculationId,
-      userId,
-      tier,
-      status: 'processing',
-      cost: quotaCheck.creditsRemaining ? 1 : 0,
-      startedAt: new Date(),
-      estimatedTime: 30 + Math.random() * 60 // 30-90 seconds
-    };
-
-    this.calculations.set(calculationId, calculation);
-
-    // Simulate async processing
-    setTimeout(async () => {
-      try {
-        // Update calculation status to completed
-        calculation.status = 'completed';
-        calculation.completedAt = new Date();
-        
-        // Calculate new score (simple demo logic)
-        const currentScore = this.trustScores.get(userId);
-        if (!currentScore) {
-          console.error(`No current score found for user ${userId}`);
-          return;
-        }
-        const newScore = Math.floor(Math.random() * 20) + 70; // Random improvement
-
-        // Update trust score
-        this.trustScores.set(userId, {
-          ...currentScore,
-          score: newScore,
-          calculatedAt: new Date(),
-          expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-          factors: {
-            content_quality: Math.floor(Math.random() * 20) + 80,
-            engagement: Math.floor(Math.random() * 20) + 80,
-            consistency: Math.floor(Math.random() * 20) + 80,
-            follower_count: Math.floor(Math.random() * 1000) + 500,
-            post_frequency: Math.floor(Math.random() * 5) + 1
-          }
-        });
-
-        console.log(`Trust score calculated for user ${userId}: ${currentScore.score} -> ${newScore}`);
-        
-      } catch (error) {
-        calculation.status = 'failed';
-        console.error('Calculation failed:', error);
-      }
-    }, (calculation.estimatedTime || 60) * 1000);
-
-    return calculation;
-  }
-
-  async checkCalculationQuota(userId: string, tier: string): Promise<QuotaCheck> {
-    await new Promise(resolve => setTimeout(resolve, 50));
-    
-    const quota = this.userQuotas.get(userId);
-    if (!quota) {
-      return { allowed: false, message: 'User quota not found' };
-    }
-
-    const tierLimits = {
-      basic: { maxCalculations: 5, maxCredits: 10 },
-      pro: { maxCalculations: 50, maxCredits: 100 },
-      enterprise: { maxCalculations: 500, maxCredits: 1000 }
-    };
-
-    const limits = tierLimits[tier as keyof typeof tierLimits] || tierLimits.basic;
-    
-    // Count calculations in current month
-    const currentMonthCalculations = Array.from(this.calculations.values())
-      .filter(calc => calc.userId === userId && 
-                   calc.startedAt.getMonth() === new Date().getMonth() &&
-                   calc.startedAt.getFullYear() === new Date().getFullYear())
-      .length;
-
-    if (currentMonthCalculations >= limits.maxCalculations || quota.creditsRemaining <= 0) {
-      return { 
-        allowed: false, 
-        message: 'Monthly calculation quota exceeded',
-        creditsRemaining: quota.creditsRemaining 
-      };
-    }
-
-    return { 
-      allowed: true, 
-      creditsRemaining: quota.creditsRemaining,
-      rateLimitRemaining: limits.maxCalculations - currentMonthCalculations
-    };
-  }
-
-  async getTrustScoreHistory(
-    userId: string, 
-    tier: string, 
-    limit: number, 
-    offset: number
-  ): Promise<TrustScoreHistory> {
-    await new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 200));
-
-    // Get user's score history (mock implementation)
-    const allScores = Array.from(this.trustScores.entries())
-      .filter(([id, score]) => id === userId)
-      .map(([id, score]) => score);
-
-    // Sort by calculated date (newest first)
-    allScores.sort((a, b) => b.calculatedAt.getTime() - a.calculatedAt.getTime());
-
-    const total = allScores.length;
-    const startIndex = offset;
-    const endIndex = Math.min(startIndex + limit, total);
-    const scores = allScores.slice(startIndex, endIndex);
-    const hasMore = endIndex < total;
-
-    // Calculate credits used for history
-    const creditsUsed = scores.length * (tier === 'basic' ? 1 : tier === 'pro' ? 0.5 : 0.1);
-
-    return {
-      scores,
-      total,
-      hasMore,
-      creditsUsed
-    };
-  }
+export interface UserActivityData {
+  userId: string;
+  totalPosts: number;
+  totalFollowers: number;
+  avgPostQuality: number;
+  totalInteractions: number;
+  lastActiveDate: Date;
 }
 
 export class TrustScoreService {
-  private static instance: MockTrustScoreDatabase;
-
-  private static getInstance(): MockTrustScoreDatabase {
-    if (!TrustScoreService.instance) {
-      TrustScoreService.instance = new MockTrustScoreDatabase();
-    }
-    return TrustScoreService.instance;
-  }
-
-  static async getTrustScore(userId: string, tier: string): Promise<TrustScore | null> {
-    return await TrustScoreService.getInstance().getTrustScore(userId, tier);
-  }
-
+  /**
+   * Calculates trust score based on multiple factors
+   */
   static async calculateTrustScore(userId: string, tier: string): Promise<CalculationRequest> {
-    return await TrustScoreService.getInstance().calculateTrustScore(userId, tier);
+    const requestId = `calc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    try {
+      // Get user activity data
+      const activityData = await this.getUserActivityData(userId);
+      
+      // Check quota limits
+      const quotaCheck = await this.checkCalculationQuota(userId, tier);
+      if (!quotaCheck.allowed) {
+        return {
+          id: requestId,
+          userId,
+          tier,
+          status: 'failed',
+          cost: 0,
+          startedAt: new Date(),
+          completedAt: new Date(),
+          message: quotaCheck.message || 'Calculation quota exceeded'
+        };
+      }
+
+      // Calculate score factors
+      const factors = this.calculateScoreFactors(activityData, tier);
+      
+      // Calculate final trust score
+      const score = this.calculateFinalScore(factors);
+      
+      const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)); // 30 days
+
+      // Save calculation request
+      await this.saveCalculationRequest({
+        id: requestId,
+        userId,
+        tier,
+        status: 'processing',
+        cost: factors.score > 70 ? 0.1 : 0, // Cost credits only for high scores
+        startedAt: new Date(),
+        estimatedTime: 30 + Math.random() * 10 // 30-40 seconds
+      });
+
+      // Simulate processing time
+      await new Promise(resolve => setTimeout(resolve, (3000 + Math.random() * 1000))); // 3-4 seconds
+
+      // Complete calculation
+      await this.saveCalculationRequest({
+        id: requestId,
+        userId,
+        tier,
+        status: 'completed',
+        cost: factors.score > 70 ? 0.1 : 0,
+        startedAt: new Date(),
+        completedAt: new Date(),
+        message: `Trust score calculation completed with score: ${score}`
+      });
+
+      // Update user's trust score
+      await this.updateUserTrustScore(userId, score, expiresAt, factors);
+
+      return {
+        id: requestId,
+        userId,
+        tier,
+        status: 'completed',
+        cost: factors.score > 70 ? 0.1 : 0,
+        startedAt: new Date(),
+        completedAt: new Date(),
+        message: `Trust score calculation completed with score: ${score}`
+      };
+
+    } catch (error) {
+      logger.error('Trust score calculation failed', {
+        userId,
+        tier,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+
+      return {
+        id: requestId,
+        userId,
+        tier,
+        status: 'failed',
+        cost: 0,
+        startedAt: new Date(),
+        completedAt: new Date(),
+        message: error instanceof Error ? error.message : 'Unknown error'
+      };
+    }
   }
 
-  static async checkCalculationQuota(userId: string, tier: string): Promise<QuotaCheck> {
-    return await TrustScoreService.getInstance().checkCalculationQuota(userId, tier);
+  /**
+   * Gets user's current trust score
+   */
+  static async getTrustScore(userId: string): Promise<TrustScore | null> {
+    try {
+      const result = await pool.query(
+        `SELECT score, factors, calculated_at, expires_at 
+         FROM user_trust_scores 
+         WHERE user_id = $1 
+         ORDER BY calculated_at DESC 
+         LIMIT 1`,
+        [userId]
+      );
+
+      if (result.rows.length === 0) {
+        return null;
+      }
+
+      const row = result.rows[0];
+      
+      return {
+        score: row.score,
+        factors: row.factors,
+        calculatedAt: row.calculated_at,
+        expiresAt: row.expires_at
+      };
+    } catch (error) {
+      logger.error('Failed to get trust score', {
+        userId,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+      return null;
+    }
   }
 
+  /**
+   * Gets user's trust score history
+   */
   static async getTrustScoreHistory(
     userId: string,
     tier: string,
     limit: number,
     offset: number
   ): Promise<TrustScoreHistory> {
-    return await TrustScoreService.getInstance().getTrustScoreHistory(userId, tier, limit, offset);
+    try {
+      const result = await pool.query(
+        `SELECT score, factors, calculated_at, expires_at 
+         FROM user_trust_scores 
+         WHERE user_id = $1 
+         ORDER BY calculated_at DESC 
+         LIMIT $1 OFFSET $2`,
+        [limit, offset]
+      );
+
+      const total = await pool.query(
+        `SELECT COUNT(*) as total 
+         FROM user_trust_scores 
+         WHERE user_id = $1`,
+        [userId]
+      );
+
+      const totalCount = parseInt(total.rows[0]?.total || '0');
+
+      const scores = result.rows.map(row => ({
+        score: row.score,
+        factors: row.factors,
+        calculatedAt: row.calculated_at,
+        expiresAt: row.expires_at
+      }));
+
+      const hasMore = result.rows.length >= (offset + limit);
+
+      // Calculate credits used (simplified)
+      const creditsUsed = scores.length * 0.1; // 0.1 credits per calculation
+
+      return {
+        scores,
+        total: totalCount,
+        hasMore,
+        creditsUsed
+      };
+    } catch (error) {
+      logger.error('Failed to get trust score history', {
+        userId,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+
+      return {
+        scores: [],
+        total: 0,
+        hasMore: false,
+        creditsUsed: 0
+      };
+    }
+  }
+
+  /**
+   * Gets user activity data for score calculation
+   */
+  private static async getUserActivityData(userId: string): Promise<UserActivityData> {
+    try {
+      // Get user's basic data
+      const userResult = await pool.query(
+        `SELECT email, created_at 
+         FROM users 
+         WHERE id = $1`,
+        [userId]
+      );
+
+      if (userResult.rows.length === 0) {
+        throw new Error('User not found');
+      }
+
+      const user = userResult.rows[0];
+      const daysSinceCreation = Math.floor((Date.now() - new Date(user.created_at).getTime()) / (1000 * 60 * 60 * 24));
+
+      // Calculate various activity metrics (mock implementation for Phase 2)
+      const totalPosts = Math.floor(Math.random() * 50) + daysSinceCreation * 2;
+      const totalFollowers = Math.floor(Math.random() * 30) + daysSinceCreation * 5;
+      const avgPostQuality = 70 + Math.floor(Math.random() * 20);
+      const totalInteractions = Math.floor(Math.random() * 200) + daysSinceCreation * 10;
+      const lastActiveDate = new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000);
+
+      return {
+        userId,
+        totalPosts,
+        totalFollowers,
+        avgPostQuality,
+        totalInteractions,
+        lastActiveDate
+      };
+    } catch (error) {
+      logger.error('Failed to get user activity data', {
+        userId,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+      
+      // Return default values for demo
+      return {
+        userId,
+        totalPosts: 10,
+        totalFollowers: 5,
+        avgPostQuality: 75,
+        totalInteractions: 50,
+        lastActiveDate: new Date()
+      };
+    }
+  }
+
+  /**
+   * Calculates score factors based on user activity
+   */
+  private static calculateScoreFactors(activityData: UserActivityData, tier: string): ScoreCalculationFactors {
+    // Content quality factor (based on post quality and engagement)
+    const contentQuality = Math.min(100, 
+      Math.floor(activityData.avgPostQuality * 0.4) + 
+      Math.floor((activityData.totalInteractions / activityData.totalPosts) * 20));
+
+    // Engagement factor (based on post frequency and interactions)
+    const engagement = Math.min(100, 
+      Math.floor((activityData.totalPosts / 30) * 15) + 
+      Math.floor((activityData.totalInteractions / 100) * 25));
+
+    // Consistency factor (based on regular activity)
+    const consistency = Math.min(100, 
+      Math.floor((activityData.lastActiveDate ? 
+        (Date.now() - activityData.lastActiveDate.getTime()) / (7 * 24 * 60 * 60 * 1000) * 10 : 0));
+
+    // Follower factor (normalized)
+    const followerFactor = Math.min(100, Math.floor(activityData.totalFollowers / 50));
+
+    // Post frequency factor
+    const postFrequency = Math.min(100, Math.floor(activityData.totalPosts / (daysSinceCreation || 1)));
+
+    return {
+      content_quality,
+      engagement,
+      consistency,
+      follower_count: followerFactor,
+      post_frequency
+    };
+  }
+
+  /**
+   * Calculates final trust score from factors
+   */
+  private static calculateFinalScore(factors: ScoreCalculationFactors): number {
+    // Weighted score calculation
+    const weights = {
+      content_quality: 0.25,
+      engagement: 0.3,
+      consistency: 0.2,
+      follower_count: 0.15,
+      post_frequency: 0.1
+    };
+
+    return Math.round(
+      factors.content_quality * weights.content_quality +
+      factors.engagement * weights.engagement +
+      factors.consistency * weights.consistency +
+      factors.follower_count * weights.follower_count +
+      factors.post_frequency * weights.post_frequency
+    );
+  }
+
+  /**
+   * Updates user's trust score in database
+   */
+  private static async updateUserTrustScore(
+    userId: string, 
+    score: number, 
+    expiresAt: Date, 
+    factors: ScoreCalculationFactors
+  ): Promise<void> {
+    try {
+      await pool.query(
+        `UPDATE users 
+         SET trust_score = $1, trust_score_factors = $2, trust_score_expires_at = $3
+         WHERE id = $4`,
+        [score, JSON.stringify(factors), expiresAt.toISOString()]
+      );
+
+      // Update or insert trust score history
+      const existingScore = await pool.query(
+        `SELECT id FROM user_trust_scores 
+         WHERE user_id = $1 
+         ORDER BY calculated_at DESC 
+         LIMIT 1`,
+        [userId]
+      );
+
+      if (existingScore.rows.length > 0) {
+        await pool.query(
+          `UPDATE user_trust_scores 
+             SET expires_at = NOW() 
+             WHERE id = $1`,
+          [existingScore.rows[0].id]
+        );
+      } else {
+        // Insert new score
+        await pool.query(
+          `INSERT INTO user_trust_scores 
+             (user_id, score, factors, calculated_at, expires_at)
+             VALUES ($1, $2, $3, NOW(), NOW())`,
+          [userId, score, JSON.stringify(factors), new Date()]
+        );
+      }
+
+      logger.info('Trust score updated', {
+        userId,
+        score,
+        expiresAt
+      });
+
+    } catch (error) {
+      logger.error('Failed to update trust score', {
+        userId,
+        score,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+
+  /**
+   * Checks calculation quota for a user
+   */
+  private static async checkCalculationQuota(userId: string, tier: string): Promise<QuotaCheck> {
+    try {
+      const result = await pool.query(
+        `SELECT COUNT(*) as calculations_this_month 
+         FROM user_trust_scores 
+         WHERE user_id = $1 
+         AND calculated_at >= DATE_TRUNC('month', CURRENT_DATE)`,
+        [userId]
+      );
+
+      const monthlyCalculations = parseInt(result.rows[0]?.calculations_this_month || '0');
+      
+      const tierLimits = {
+        basic: 5,
+        pro: 10,
+        enterprise: 20
+      };
+
+      const limits = tierLimits[tier as keyof typeof tierLimits] || tierLimits.basic;
+      
+      if (monthlyCalculations >= limits) {
+        return { 
+          allowed: false, 
+          message: `Monthly calculation quota exceeded (${monthlyCalculations}/${limits})`,
+          creditsRemaining: 0,
+          rateLimitRemaining: 0
+        };
+      }
+
+      return { 
+        allowed: true, 
+        creditsRemaining: limits - monthlyCalculations,
+        rateLimitRemaining: 0
+      };
+
+    } catch (error) {
+      logger.error('Failed to check calculation quota', {
+        userId,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+      
+      return { 
+        allowed: true, 
+        creditsRemaining: 5, // Default
+        rateLimitRemaining: 0
+      };
+    }
+  }
+
+  /**
+   * Saves calculation request for tracking
+   */
+  private static async saveCalculationRequest(request: {
+    id: string;
+    userId: string;
+    tier: string;
+    status: string;
+    cost: number;
+    startedAt: Date;
+    completedAt?: Date;
+    estimatedTime?: number;
+    message?: string;
+  }): Promise<void> {
+    try {
+      const query = `
+        INSERT INTO score_calculation_requests 
+             (id, user_id, tier, status, cost, started_at, completed_at, estimated_time, message)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        `;
+
+      const values = [
+        request.id,
+        request.userId,
+        request.tier,
+        request.status,
+        request.cost,
+        request.startedAt,
+        request.completedAt,
+        request.estimatedTime,
+        request.message
+      ];
+
+      await pool.query(query, values);
+
+      logger.info('Calculation request saved', {
+        requestId: request.id,
+        userId: request.userId,
+        tier: request.tier,
+        status: request.status
+      });
+
+    } catch (error) {
+      logger.error('Failed to save calculation request', {
+        requestId: request.id,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+
+  /**
+   * Gets calculation request by ID
+   */
+  static async getCalculationRequest(requestId: string): Promise<CalculationRequest | null> {
+    try {
+      const result = await pool.query(
+        `SELECT id, user_id, tier, status, cost, started_at, completed_at, estimated_time, message
+         FROM score_calculation_requests 
+         WHERE id = $1`,
+        [requestId]
+      );
+
+      if (result.rows.length === 0) {
+        return null;
+      }
+
+      const request = result.rows[0];
+      
+      return {
+        id: request.id,
+        userId: request.user_id,
+        tier: request.tier,
+        status: request.status,
+        cost: request.cost,
+        startedAt: request.started_at,
+        completedAt: request.completed_at,
+        estimatedTime: request.estimated_time,
+        message: request.message
+      };
+    } catch (error) {
+      logger.error('Failed to get calculation request', {
+        requestId,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+      return null;
+    }
+  }
+
+  /**
+   * Updates calculation request status
+   */
+  static async updateCalculationRequest(
+    requestId: string, 
+    status: 'completed' | 'failed',
+    completedAt?: Date,
+    message?: string
+  ): Promise<void> {
+    try {
+      await pool.query(
+        `UPDATE score_calculation_requests 
+         SET status = $1, completed_at = $2, message = $3
+         WHERE id = $4`,
+        [status, completedAt, message, requestId]
+      );
+
+      logger.info('Calculation request updated', {
+        requestId,
+        status,
+        completedAt,
+        message
+      });
+
+    } catch (error) {
+      logger.error('Failed to update calculation request', {
+        requestId,
+        status,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
   }
 }
+
+export default TrustScoreService;

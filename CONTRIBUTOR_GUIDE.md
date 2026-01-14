@@ -188,6 +188,9 @@ npm run lint
 - Destructure objects and arrays
 - Use template literals for strings
 - Add JSDoc comments for functions
+- Enable TypeScript strict mode for all projects
+- Use explicit type annotations for function parameters and return types
+- Avoid `any` type - use specific types or generics
 
 ### React
 - Use functional components with hooks
@@ -230,6 +233,12 @@ test(widget): add unit tests for trust score calculator
 - Run with: `npm test`
 - Use React Testing Library for component tests
 - Ensure test stability with consistent API key patterns and metric validation
+
+### Integration Tests
+- Located in `tests/integration/` directory
+- Test API endpoints and workflows
+- Use consistent mocking patterns for API keys and authentication
+- Validate response schemas and error handling
 
 ### Integration Tests
 - Located in `tests/integration/`

@@ -185,7 +185,9 @@ router.post('/api/v1/metrics/widget-usage', async (req: Request, res: Response) 
       monetization: {
         tier: normalizeQueryParam(usageData.tier) || '',
         creditsUsed: usageData.action === 'refresh' ? 1 : 0, // Refresh uses 1 credit
-        widgetUsageCount: metrics.totalUsage || 1
+        widgetUsageCount: metrics.totalUsage || 1,
+        target500K: '500K MRR from businesses',
+        currentMRR: (metrics.tierDistribution.enterprise || 0) * 499 + (metrics.tierDistribution.pro || 0) * 99 + (metrics.tierDistribution.basic || 0) * 29
       },
       metadata: {
         version: '2.0.0',

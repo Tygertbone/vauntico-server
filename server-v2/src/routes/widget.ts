@@ -4,7 +4,7 @@ import ApiUsageService from '../services/apiUsageService';
 import { normalizeQueryParam } from '../utils/queryParams';
 
 // Query parameter helper function
-const qp = (param: any): string => {
+const qp = (param: unknown): string => {
   if (Array.isArray(param)) {
     return param[0] || '';
   }
@@ -156,13 +156,17 @@ router.post('/api/v1/metrics/widget-usage', async (req: Request, res: Response) 
     };
 
     // Log widget usage for KPI tracking
-    await ApiUsageService.logWidgetUsage(Array.isArray(apiKey) ? apiKey[0] : apiKey, {
+    const apiKeyString = Array.isArray(apiKey) ? apiKey[0] : apiKey;
+    if (!apiKeyString) {
+      throw new Error('API key is required');
+    }
+    await ApiUsageService.logWidgetUsage(apiKeyString, {
       ...usageData,
       metadata
     });
 
     // Get current widget metrics
-    const metrics = await ApiUsageService.getWidgetMetrics(Array.isArray(apiKey) ? apiKey[0] : apiKey);
+    const metrics = await ApiUsageService.getWidgetMetrics(apiKeyString);
 
     // Phase 2 specific KPI tracking
     const phase2Metrics = {

@@ -77,7 +77,7 @@ export async function checkDatabaseHealth(): Promise<{
 // Query helper with error handling and performance monitoring
 export async function query<T = any>(
   text: string,
-  params?: any[],
+  params?: any[]
 ): Promise<{ rows: T[]; rowCount: number | null }> {
   const { monitoredQuery } = await import("../utils/database-monitoring");
   return monitoredQuery(() => pool.query(text, params), text, params);
@@ -90,7 +90,7 @@ export function createPool(): DatabasePool {
 
 // Transaction helper
 export async function transaction<T>(
-  callback: (client: DatabaseConnection) => Promise<T>,
+  callback: (client: DatabaseConnection) => Promise<T>
 ): Promise<T> {
   const client = await pool.connect();
 

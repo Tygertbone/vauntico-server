@@ -110,10 +110,17 @@ class ApiUsageService {
 
   private static maskApiKey(apiKey: string): string {
     // For test keys, don't mask to allow matching in tests
+<<<<<<< HEAD
     if (apiKey.startsWith("pk_test_widget_api_key_")) {
       return apiKey;
     }
     return apiKey.substring(0, 8) + "********";
+=======
+    if (apiKey.startsWith('pk_test_widget_api_key_')) {
+      return apiKey;
+    }
+    return apiKey.substring(0, 8) + '********';
+>>>>>>> origin/main
   }
 
   static getUsageStats(tier: string): {

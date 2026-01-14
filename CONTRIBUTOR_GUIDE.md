@@ -303,7 +303,7 @@ We follow a strict branching discipline to reduce config drift and ensure stable
    git checkout main
    git pull origin main
    git checkout -b hotfix/critical-bug
-   # ...fix the issue...
+   # ...fix issue...
    git push origin hotfix/critical-bug
    # Merge to main and develop
    ```
@@ -429,7 +429,7 @@ Request code review for:
 
 ### Making Changes
 
-1. Follow the coding standards outlined above
+1. Follow coding standards outlined above
 2. Ensure all tests pass
 3. Keep changes focused and atomic
 4. Update documentation as needed

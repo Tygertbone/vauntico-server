@@ -27,7 +27,7 @@ export interface JWTPayload extends TokenPayload {}
 
 // Generate access token
 export function generateAccessToken(
-  payload: Omit<JWTPayload, "iat" | "exp">,
+  payload: Omit<JWTPayload, "iat" | "exp">
 ): string {
   try {
     const token = jwt.sign(payload, JWT_CONFIG.accessToken.secret, {
@@ -52,7 +52,7 @@ export function generateAccessToken(
 
 // Generate refresh token (longer-lived)
 export function generateRefreshToken(
-  payload: Omit<RefreshTokenPayload, "iat" | "exp">,
+  payload: Omit<RefreshTokenPayload, "iat" | "exp">
 ): string {
   try {
     const token = jwt.sign(payload, JWT_CONFIG.refreshToken.secret, {
@@ -81,7 +81,7 @@ export function verifyAccessToken(token: string): JWTPayload | null {
   try {
     const decoded = jwt.verify(
       token,
-      JWT_CONFIG.accessToken.secret,
+      JWT_CONFIG.accessToken.secret
     ) as JWTPayload;
 
     logger.debug("Access token verified", {
@@ -100,12 +100,12 @@ export function verifyAccessToken(token: string): JWTPayload | null {
 
 // Verify refresh token (more sensitive, includes version for invalidation)
 export async function verifyRefreshToken(
-  token: string,
+  token: string
 ): Promise<RefreshTokenPayload | null> {
   try {
     const decoded = jwt.verify(
       token,
-      JWT_CONFIG.refreshToken.secret,
+      JWT_CONFIG.refreshToken.secret
     ) as RefreshTokenPayload;
 
     // Check if token has been invalidated (in Redis cache)
@@ -154,7 +154,7 @@ export function verifyCronToken(token: string): boolean {
 // Invalidate refresh token (for logout)
 export async function invalidateRefreshToken(
   userId: string,
-  token: string,
+  token: string
 ): Promise<void> {
   try {
     // Store invalidation flag in Redis with token identifier
@@ -241,7 +241,7 @@ export async function hashPassword(password: string): Promise<string> {
 
 export async function verifyPassword(
   password: string,
-  hashedPassword: string,
+  hashedPassword: string
 ): Promise<boolean> {
   try {
     const isValid = await bcrypt.compare(password, hashedPassword);
@@ -278,7 +278,7 @@ export async function encryptOAuthToken(token: string): Promise<string> {
 }
 
 export async function decryptOAuthToken(
-  encryptedToken: string,
+  encryptedToken: string
 ): Promise<string> {
   try {
     const salt = process.env.OAUTH_ENCRYPTION_SALT || "oauthtrustscore";

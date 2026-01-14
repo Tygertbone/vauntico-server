@@ -2,19 +2,19 @@ import { Resend } from 'resend';
 import { pool } from '../db/pool';
 import { logger } from '../utils/logger';
 import { sendSlackAlert } from '../utils/slack-alerts';
+import { EmailRequest } from '../types/service';
 
 // Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-interface EmailTemplateData {
+export interface EmailTemplateData {
   firstName?: string;
-  upgradeUrl: string;
+  upgradeUrl?: string;
   unsubscribeUrl?: string;
-  loginUrl?: string;
   [key: string]: any;
 }
 
-interface EmailCampaign {
+export interface EmailCampaign {
   id: number;
   campaignName: string;
   campaignType: string;
@@ -26,7 +26,7 @@ interface EmailCampaign {
   targetUserType: string;
 }
 
-interface EmailSend {
+export interface EmailSend {
   id: number;
   userId: number;
   campaignId: number;
@@ -120,7 +120,7 @@ Vauntico - Ship 10x Faster with AI
 ${process.env.FRONTEND_URL || 'https://vauntico.com'}`;
 
       // Send email via Resend with tracking
-      const emailData = {
+      const emailData: EmailRequest = {
         from: `${process.env.EMAIL_FROM_NAME || 'Vauntico'} <noreply@vauntico.com>`,
         to: userEmail,
         subject,
@@ -250,14 +250,14 @@ ${process.env.FRONTEND_URL || 'https://vauntico.com'}`;
   private async triggerUpgradeEmail(userId: number, featureName: string, usageCount: number): Promise<void> {
     try {
       // Create a custom upgrade email for limit approaching
-      const campaign = {
+      const campaign: EmailCampaign = {
         id: 0, // This won't be stored in database
         campaignName: `limit_approaching_${featureName}`,
         campaignType: 'upgrade_reminder',
         subjectTemplate: `You're approaching your Vauntico limit ⚠️`,
         bodyTemplate: `Hi {{firstName}},
 
-You've used ${usageCount} ${featureName.replace('_', ' ')}s this month. You're getting close to the free tier limit!
+You've used ${usageCount} ${featureName.replace('_', ' ')}s this month. You're getting close to your free tier limit!
 
 Free tier limits:
 • 50 AI generations/month

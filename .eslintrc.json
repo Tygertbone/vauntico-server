@@ -7,7 +7,8 @@
     "jest": true
   },
   "extends": [
-    "eslint:recommended"
+    "eslint:recommended",
+    "@typescript-eslint/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -43,7 +44,8 @@
       },
       "env": {
         "browser": true,
-        "es2022": true
+        "es2022": true,
+        "node": true
       },
       "rules": {
         "no-unused-vars": "warn",
@@ -71,9 +73,7 @@
       "rules": {
         "@typescript-eslint/no-unused-vars": "warn",
         "@typescript-eslint/no-console": "warn",
-        "@typescript-eslint/prefer-const": "error",
-        "no-unused-vars": "off",
-        "no-console": "off"
+        "@typescript-eslint/prefer-const": "warn"
       }
     },
     {
@@ -91,14 +91,13 @@
       "extends": ["plugin:react/recommended", "plugin:@typescript-eslint/recommended"],
       "env": {
         "browser": true,
-        "es2022": true
+        "es2022": true,
+        "node": true
       },
       "rules": {
         "@typescript-eslint/no-unused-vars": "warn",
         "@typescript-eslint/no-console": "warn",
-        "@typescript-eslint/prefer-const": "error",
-        "no-unused-vars": "off",
-        "no-console": "off"
+        "@typescript-eslint/prefer-const": "warn"
       }
     },
     {
@@ -114,7 +113,8 @@
     {
       "files": ["tools/**/*.js"],
       "env": {
-        "node": true
+        "node": true,
+        "browser": true
       },
       "globals": {
         "__VU": "readonly",

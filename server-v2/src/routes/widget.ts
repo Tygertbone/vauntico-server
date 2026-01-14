@@ -110,16 +110,17 @@ const router: Router = Router();
  */
 
 // Widget usage tracking endpoint
-router.post('/api/v1/metrics/widget-usage', async (req: Request, res: Response) => {
+router.post('/api/v1/metrics/widget-usage', async (req: Request, res: Response): Promise<void> => {
   try {
     const apiKey = req.headers['x-api-key'];
     
     // Validate API key
     if (!apiKey || !await authenticateApiKey(apiKey)) {
-      return res.status(401).json({
+      res.status(401).json({
         error: 'Unauthorized',
         message: 'Invalid or missing API key'
       });
+      return;
     }
 
     const usageData = req.body;
@@ -129,21 +130,23 @@ router.post('/api/v1/metrics/widget-usage', async (req: Request, res: Response) 
     const missingFields = requiredFields.filter(field => !usageData[field]);
     
     if (missingFields.length > 0) {
-      return res.status(400).json({
+      res.status(400).json({
         error: 'Bad Request',
         message: `Missing required fields: ${missingFields.join(', ')}`,
         required_fields: requiredFields
       });
+      return;
     }
 
     // Validate action type
     const validActions = ['load', 'refresh', 'error', 'config_change', 'interaction'];
     if (!validActions.includes(usageData.action)) {
-      return res.status(400).json({
+      res.status(400).json({
         error: 'Bad Request',
         message: `Invalid action. Must be one of: ${validActions.join(', ')}`,
         valid_actions: validActions
       });
+      return;
     }
 
     // Extract additional metadata
@@ -209,7 +212,7 @@ router.post('/api/v1/metrics/widget-usage', async (req: Request, res: Response) 
 });
 
 // Additional endpoint for widget-specific data
-router.get('/api/v1/widget/data', async (req: Request, res: Response) => {
+router.get('/api/v1/widget/data', async (req: Request, res: Response): Promise<void> => {
   try {
     const widgetId: string = qp(req.query.widgetId);
     const userId: string = qp(req.query.userId);
@@ -217,25 +220,33 @@ router.get('/api/v1/widget/data', async (req: Request, res: Response) => {
     
     // Validate API key
     if (!apiKey || !await authenticateApiKey(apiKey)) {
-      return res.status(401).json({
+      res.status(401).json({
         error: 'Unauthorized',
         message: 'Invalid or missing API key'
       });
+      return;
     }
 
     // Validate required parameters
     if (!widgetId || !userId) {
-      return res.status(400).json({
+      res.status(400).json({
         error: 'Bad Request',
         message: 'widgetId and userId parameters are required'
       });
+      return;
+    }
+
+    // Ensure apiKey is a string and not undefined
+    const apiKeyString = Array.isArray(apiKey) ? apiKey[0] : apiKey;
+    if (!apiKeyString) {
+      throw new Error('API key is required');
     }
 
     // Log API usage
-    await ApiUsageService.logUsage(Array.isArray(apiKey) ? apiKey[0] : apiKey, 'widget-data', 'basic');
+    await ApiUsageService.logUsage(apiKeyString, 'widget-data', 'basic');
 
     // Get widget data (using existing getWidgetMetrics method)
-    const widgetMetrics = await ApiUsageService.getWidgetMetrics(Array.isArray(apiKey) ? apiKey[0] : apiKey);
+    const widgetMetrics = await ApiUsageService.getWidgetMetrics(apiKeyString);
 
     res.json({
       widgetId,
@@ -332,23 +343,30 @@ router.get('/api/v1/widget/data', async (req: Request, res: Response) => {
  */
 
 // Get widget analytics dashboard
-router.get('/api/v1/metrics/widget-analytics', async (req: Request, res: Response) => {
+router.get('/api/v1/metrics/widget-analytics', async (req: Request, res: Response): Promise<void> => {
   try {
     const apiKey = req.headers['x-api-key'];
     
     // Validate API key
     if (!apiKey || !await authenticateApiKey(apiKey)) {
-      return res.status(401).json({
+      res.status(401).json({
         error: 'Unauthorized',
         message: 'Invalid or missing API key'
       });
+      return;
     }
 
     const timeframe = qp(req.query.timeframe) || '24h';
     const tier = qp(req.query.tier) || 'all';
     
+    // Ensure apiKey is a string and not undefined
+    const apiKeyString = Array.isArray(apiKey) ? apiKey[0] : apiKey;
+    if (!apiKeyString) {
+      throw new Error('API key is required');
+    }
+    
     // Get comprehensive analytics (using existing getWidgetAnalytics method)
-    const analytics = await ApiUsageService.getWidgetAnalytics(Array.isArray(apiKey) ? apiKey[0] : apiKey, {
+    const analytics = await ApiUsageService.getWidgetAnalytics(apiKeyString, {
       timeframe: timeframe,
       tier: tier
     });
@@ -403,32 +421,40 @@ router.get('/api/v1/metrics/widget-analytics', async (req: Request, res: Respons
 });
 
 // Additional endpoint for tier-specific widget data
-router.get('/api/v1/widget/tier', async (req: Request, res: Response) => {
+router.get('/api/v1/widget/tier', async (req: Request, res: Response): Promise<void> => {
   try {
     const tier: string = qp(req.query.tier);
     const apiKey = req.headers['x-api-key'];
     
     // Validate API key
     if (!apiKey || !await authenticateApiKey(apiKey)) {
-      return res.status(401).json({
+      res.status(401).json({
         error: 'Unauthorized',
         message: 'Invalid or missing API key'
       });
+      return;
     }
 
     // Validate tier
     if (!tier || !['basic', 'pro', 'enterprise'].includes(tier)) {
-      return res.status(400).json({
+      res.status(400).json({
         error: 'Bad Request',
         message: 'Invalid tier. Must be one of: basic, pro, enterprise'
       });
+      return;
+    }
+
+    // Ensure apiKey is a string and not undefined
+    const apiKeyString = Array.isArray(apiKey) ? apiKey[0] : apiKey;
+    if (!apiKeyString) {
+      throw new Error('API key is required');
     }
 
     // Log API usage
-    await ApiUsageService.logUsage(Array.isArray(apiKey) ? apiKey[0] : apiKey, 'widget-tier', tier);
+    await ApiUsageService.logUsage(apiKeyString, 'widget-tier', tier);
 
     // Get tier-specific widget data (using existing getWidgetAnalytics method)
-    const tierData = await ApiUsageService.getWidgetAnalytics(Array.isArray(apiKey) ? apiKey[0] : apiKey, {
+    const tierData = await ApiUsageService.getWidgetAnalytics(apiKeyString, {
       timeframe: '24h',
       tier: tier
     });
@@ -497,7 +523,7 @@ router.get('/api/v1/widget/tier', async (req: Request, res: Response) => {
  */
 
 // Widget health check
-router.get('/api/v1/widget/health', async (req: Request, res: Response) => {
+router.get('/api/v1/widget/health', async (req: Request, res: Response): Promise<void> => {
   try {
     // Check widget service health
     const widgetHealth = {

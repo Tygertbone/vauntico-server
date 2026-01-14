@@ -271,3 +271,161 @@ set-oci-secrets.ps1
 .env*.local
 SECRETS_CONFIGURATION_ANALYSIS.md
 VAUNTICO_LIGHTWEIGHT_AUDIT_SUMMARY.md
+
+# 🔒 ENHANCED SECURITY RULES 🔒
+# Added during emergency security response 2026/01/14
+
+# All environment files (even more aggressive)
+*.env*
+!.env.example
+!.env.template
+!.env.test
+
+# Secret files with common patterns
+*secret*
+*credential*
+*key*
+*password*
+*token*
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Configuration files that might contain secrets
+config.json
+secrets.json
+credentials.json
+aws.json
+azure.json
+gcp.json
+
+# Database connection files
+database.json
+db-config.json
+connection.json
+
+# API key files
+api-keys.json
+keys.json
+tokens.json
+
+# Backup and temporary files with sensitive data
+*.backup
+*.bak
+*.tmp
+*.temp
+*.old
+*.orig
+*.rej
+
+# IDE workspace files that might contain credentials
+*.code-workspace
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# Cloud provider specific
+.aws/
+.azure/
+.gcp/
+.google/
+kubeconfig
+*.kubeconfig
+
+# Build artifacts that might contain embedded secrets
+dist/
+build/
+*.jar
+*.war
+*.egg
+*.whl
+
+# Logs that might contain sensitive information
+*.log
+logs/
+
+# Docker compose override files with secrets
+docker-compose.override.yml
+docker-compose.prod.yml
+docker-compose.staging.yml
+
+# Terraform state files (might contain sensitive data)
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+terraform.tfstate.d/
+
+# CI/CD files with hardcoded secrets
+.github/workflows/*.yml
+.github/workflows/*.yaml
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+bitbucket-pipelines.yml
+
+# Package manager lock files (might contain embedded secrets)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+Pipfile.lock
+Cargo.lock
+
+# Mobile app configuration files
+google-services.json
+GoogleService-Info.plist
+AdMob-Info.plist
+
+# Server configuration files
+nginx.conf
+apache.conf
+httpd.conf
+
+# Environment-specific directories
+.env.local/
+.env.development/
+.env.production/
+.env.staging/
+
+# Secret management tool files
+vault.json
+consul.json
+etcd.json
+
+# Monitoring and analytics configuration
+datadog.json
+newrelic.json
+splunk.json
+sumologic.json
+
+# Security tool configurations
+sonar-project.properties
+bandit.yaml
+safety.yml
+
+# Database migration files that might contain credentials
+migrations/*secret*
+migrations/*password*
+migrations/*key*
+
+# Test configuration files with test credentials
+jest.config.js
+cypress.json
+playwright.config.js
+
+# Documentation files that might accidentally contain secrets
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+
+# Script files that might contain embedded secrets
+*.sh
+*.bat
+*.ps1
+*.py
+*.js
+*.ts

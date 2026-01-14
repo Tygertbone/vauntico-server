@@ -1,0 +1,19 @@
+{
+  "servers": [
+    {
+      "name": "docs",
+      "type": "filesystem",
+      "path": "./docs"
+    },
+    {
+      "name": "postgres",
+      "type": "database",
+      "connectionString": "${DB_URL}"
+    },
+    {
+      "name": "api",
+      "type": "http",
+      "baseUrl": "https://api.vauntico.com/v1"
+    }
+  ]
+}

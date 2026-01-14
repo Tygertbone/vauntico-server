@@ -192,8 +192,9 @@ npm run lint
 ### React
 - Use functional components with hooks
 - Follow React best practices
-- Use PropTypes or TypeScript interfaces
+- Use TypeScript interfaces for prop typing (preferred over PropTypes)
 - Avoid inline styles, use CSS modules
+- Ensure consistent prop typing across all components
 
 ### File Organization
 - Group related files together
@@ -227,6 +228,8 @@ test(widget): add unit tests for trust score calculator
 - Located alongside source files
 - Use `.test.js` or `.test.ts` suffix
 - Run with: `npm test`
+- Use React Testing Library for component tests
+- Ensure test stability with consistent API key patterns and metric validation
 
 ### Integration Tests
 - Located in `tests/integration/`

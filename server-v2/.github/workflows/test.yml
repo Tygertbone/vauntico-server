@@ -1,0 +1,78 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [24.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          cd server-v2
+          npm ci
+
+      - name: Run tests
+        run: |
+          cd server-v2
+          npm run test
+
+      - name: Run test coverage
+        run: |
+          cd server-v2
+          npm run test:coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ./server-v2/coverage
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+
+      - name: Check coverage threshold
+        run: |
+          cd server-v2
+          # Check if coverage meets minimum threshold (60% statements, 70% branches)
+          COVERAGE_THRESHOLD_STATEMENTS=60
+          COVERAGE_THRESHOLD_BRANCHES=70
+
+          # Extract coverage percentages from coverage summary
+          STATEMENTS_COVERAGE=$(cat coverage/lcov-report/index.html | grep -o 'statements">[0-9]*\.[0-9]*%' | sed 's/statements">//' | sed 's/%//')
+          BRANCHES_COVERAGE=$(cat coverage/lcov-report/index.html | grep -o 'branch">[0-9]*\.[0-9]*%' | sed 's/branch">//' | sed 's/%//')
+
+          echo "Statements coverage: $STATEMENTS_COVERAGE%"
+          echo "Branches coverage: $BRANCHES_COVERAGE%"
+
+          # Convert to integer for comparison
+          STATEMENTS_INT=$(echo "$STATEMENTS_COVERAGE" | cut -d. -f1)
+          BRANCHES_INT=$(echo "$BRANCHES_COVERAGE" | cut -d. -f1)
+
+          if [ "$STATEMENTS_INT" -lt "$COVERAGE_THRESHOLD_STATEMENTS" ]; then
+            echo "❌ Statements coverage $STATEMENTS_COVERAGE% is below threshold $COVERAGE_THRESHOLD_STATEMENTS%"
+            exit 1
+          fi
+
+          if [ "$BRANCHES_INT" -lt "$COVERAGE_THRESHOLD_BRANCHES" ]; then
+            echo "❌ Branches coverage $BRANCHES_COVERAGE% is below threshold $COVERAGE_THRESHOLD_BRANCHES%"
+            exit 1
+          fi
+
+          echo "✅ Coverage thresholds passed!"

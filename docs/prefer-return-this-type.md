@@ -1,5 +1,5 @@
 ---
-description: 'Enforce that `this` is used when only `this` type is returned.'
+description: "Enforce that `this` is used when only `this` type is returned."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -24,7 +24,7 @@ class Animal {
 
 class Cat extends Animal {
   meow(): Cat {
-    console.log('Meow~');
+    console.log("Meow~");
     return this;
   }
 }

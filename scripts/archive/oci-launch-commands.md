@@ -1,6 +1,7 @@
 # Vauntico MVP - OCI Launch Commands (Architecture Compatibility Fix)
 
 ## 🎯 Problem Solved
+
 **CannotParseRequest Blocker**: The issue occurs when trying to launch an ARM64 image on an x86 compute shape (or vice-versa). This document provides ready-to-drop OCI CLI commands for both architecture variants.
 
 ---
@@ -8,6 +9,7 @@
 ## 🚀 Option 1: x86 Ubuntu + VM.Standard.E2.1.Micro (Recommended for Testing)
 
 ### Prerequisites
+
 ```bash
 # Set your compartment ID
 export COMPARTMENT_ID="ocid1.compartment.oc1..your-compartment-id"
@@ -17,6 +19,7 @@ export SSH_PUBLIC_KEY="$(cat ~/.ssh/id_rsa.pub)"
 ```
 
 ### Launch Command (Copy & Paste)
+
 ```bash
 # x86 Ubuntu 22.04 with VM.Standard.E2.1.Micro
 oci compute instance launch \
@@ -36,6 +39,7 @@ oci compute instance launch \
 ```
 
 ### Launch All 4 Services (x86)
+
 ```bash
 # Trust Score Service
 oci compute instance launch \
@@ -111,6 +115,7 @@ oci compute instance launch \
 ## 🚀 Option 2: ARM64 Ubuntu + VM.Standard.A1.Flex (Cost-Optimized)
 
 ### Launch Command (Copy & Paste)
+
 ```bash
 # ARM64 Ubuntu 22.04 with VM.Standard.A1.Flex
 oci compute instance launch \
@@ -134,6 +139,7 @@ oci compute instance launch \
 ```
 
 ### Launch All 4 Services (ARM64)
+
 ```bash
 # Trust Score Service
 oci compute instance launch \
@@ -225,6 +231,7 @@ oci compute instance launch \
 ## 🔧 Quick Setup Script
 
 ### 1. Set Your Environment Variables
+
 ```bash
 # Edit these values before running
 export COMPARTMENT_ID="ocid1.compartment.oc1..your-compartment-id"
@@ -240,6 +247,7 @@ echo "SSH Key: ${SSH_PUBLIC_KEY:0:50}..."
 ```
 
 ### 2. Choose Your Architecture
+
 ```bash
 # Option A: x86 Architecture (Recommended for testing)
 ARCH="x86"
@@ -255,6 +263,7 @@ SHAPE_CONFIG=""
 ```
 
 ### 3. Launch Test Instance
+
 ```bash
 # Launch single test instance first
 oci compute instance launch \
@@ -279,6 +288,7 @@ echo "✅ Test instance launched successfully!"
 ## 📋 Post-Launch Validation
 
 ### 1. Get Public IPs
+
 ```bash
 # List all Vauntico instances with IPs
 oci compute instance list \
@@ -289,6 +299,7 @@ oci compute instance list \
 ```
 
 ### 2. Health Checks
+
 ```bash
 # Get public IPs and test health endpoints
 for ip in $(oci compute instance list --compartment-id $COMPARTMENT_ID --display-name "vauntico-*" --query "data [*].\"public-ip\"" --output raw); do
@@ -301,6 +312,7 @@ done
 ```
 
 ### 3. Service Status Check
+
 ```bash
 # SSH into first instance to check Docker containers
 FIRST_IP=$(oci compute instance list --compartment-id $COMPARTMENT_ID --display-name "vauntico-*" --query "data [0].\"public-ip\"" --output raw)
@@ -325,6 +337,7 @@ EOF
 ## 🌐 DNS Configuration (Cloudflare)
 
 ### 1. Update DNS Records
+
 ```bash
 # Get all public IPs
 TRUST_SCORE_IP=$(oci compute instance list --compartment-id $COMPARTMENT_ID --display-name "vauntico-trust-score-*" --query "data [0].\"public-ip\"" --output raw)
@@ -340,6 +353,7 @@ echo "legacy.vauntico.com → $LEGACY_IP"
 ```
 
 ### 2. Cloudflare API Update (Optional)
+
 ```bash
 # If you have Cloudflare API access
 CLOUDFLARE_ZONE_ID="your-zone-id"
@@ -358,14 +372,15 @@ curl -X POST "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/dns
 
 ### Common Issues & Solutions
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `CannotParseRequest` | Architecture mismatch | Use correct image/shape pairing from this doc |
-| `InstanceNotRunning` | Still provisioning | Wait 2-3 minutes, check with `--wait-for-state RUNNING` |
-| `SSH Connection refused` | SSH key issue | Verify public key format and instance access |
-| `Docker pull failed` | Network/private registry | Check internet connectivity and image names |
+| Error                    | Cause                    | Solution                                                |
+| ------------------------ | ------------------------ | ------------------------------------------------------- |
+| `CannotParseRequest`     | Architecture mismatch    | Use correct image/shape pairing from this doc           |
+| `InstanceNotRunning`     | Still provisioning       | Wait 2-3 minutes, check with `--wait-for-state RUNNING` |
+| `SSH Connection refused` | SSH key issue            | Verify public key format and instance access            |
+| `Docker pull failed`     | Network/private registry | Check internet connectivity and image names             |
 
 ### Manual OCI Console Validation
+
 1. Go to OCI Console → Compute → Instances
 2. Check instance state is "RUNNING"
 3. Verify public IP is assigned
@@ -376,10 +391,10 @@ curl -X POST "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/dns
 
 ## 📊 Cost Comparison
 
-| Shape | Architecture | Monthly Cost (4 instances) | Performance |
-|-------|-------------|---------------------------|------------|
-| VM.Standard.E2.1.Micro | x86 | ~$28-35 | Good for testing |
-| VM.Standard.A1.Flex | ARM64 | ~$20-25 | Cost-optimized production |
+| Shape                  | Architecture | Monthly Cost (4 instances) | Performance               |
+| ---------------------- | ------------ | -------------------------- | ------------------------- |
+| VM.Standard.E2.1.Micro | x86          | ~$28-35                    | Good for testing          |
+| VM.Standard.A1.Flex    | ARM64        | ~$20-25                    | Cost-optimized production |
 
 ---
 

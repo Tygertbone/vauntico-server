@@ -3,6 +3,7 @@
 ## Current Status: ✅ READY TO DEPLOY
 
 Your project is properly configured with:
+
 - ✅ `vite.config.js` - React + Vite setup
 - ✅ `vercel.json` - Deployment configuration
 - ✅ `package.json` - Build scripts and dependencies
@@ -35,6 +36,7 @@ From your current Vercel import screen:
 **CRITICAL:** Add these before clicking Deploy:
 
 #### Required for Production:
+
 ```env
 # Paystack Live Keys (replace with your actual keys)
 VITE_PAYSTACK_PUBLIC_KEY=pk_live_xxxxxxxxxxxxx
@@ -51,6 +53,7 @@ VITE_CURRENCY=NGN
 ```
 
 #### Optional (Add if you have these services):
+
 ```env
 # Email Marketing
 VITE_BUTTONDOWN_API_KEY=your_key
@@ -72,6 +75,7 @@ VITE_ENABLE_EMAIL_SERVICE=true
 ```
 
 **Where to add:**
+
 1. Click "Environment Variables" dropdown on Vercel screen
 2. Add each variable (Name → Value)
 3. Select "Production" environment
@@ -84,6 +88,7 @@ VITE_ENABLE_EMAIL_SERVICE=true
 **ACTION:** Click the **"Deploy"** button at the bottom of the screen.
 
 Vercel will:
+
 1. ✅ Clone your GitHub repo
 2. ✅ Install dependencies with `pnpm install`
 3. ✅ Run `pnpm run build` (Vite build)
@@ -98,12 +103,14 @@ Vercel will:
 ### 4. Monitor the Build
 
 Watch the deployment logs for:
+
 - ✅ Dependencies installed successfully
 - ✅ Build completed without errors
 - ✅ All routes properly configured
 - ✅ Assets uploaded to CDN
 
 **Common Build Issues:**
+
 ```bash
 # If build fails, check:
 - All environment variables are prefixed with VITE_
@@ -118,11 +125,13 @@ Watch the deployment logs for:
 After successful deployment:
 
 #### A. Remove from Old Project (if needed)
+
 1. Go to Vercel Dashboard
 2. Find old project using `vault.vauntico.com`
 3. Settings → Domains → Remove domain
 
 #### B. Add to New Project
+
 1. Go to your new `vauntico-mvp` project
 2. Settings → Domains
 3. Click "Add Domain"
@@ -132,6 +141,7 @@ After successful deployment:
 #### C. Configure DNS (if not auto-detected)
 
 **Option 1: Vercel Nameservers (Recommended)**
+
 ```
 Update your domain's nameservers to:
 ns1.vercel-dns.com
@@ -139,6 +149,7 @@ ns2.vercel-dns.com
 ```
 
 **Option 2: CNAME Record**
+
 ```
 Type: CNAME
 Name: vault
@@ -146,6 +157,7 @@ Value: cname.vercel-dns.com
 ```
 
 **Option 3: A Record**
+
 ```
 Type: A
 Name: vault
@@ -153,6 +165,7 @@ Value: 76.76.21.21
 ```
 
 #### D. Wait for Verification
+
 - DNS propagation: 5 minutes - 48 hours
 - SSL certificate: Auto-issued by Vercel
 - Status: Check Settings → Domains
@@ -164,6 +177,7 @@ Value: 76.76.21.21
 Visit `https://vault.vauntico.com` and verify:
 
 #### ✅ Core Functionality
+
 - [ ] Homepage loads correctly
 - [ ] Navigation works (all routes)
 - [ ] Latest scrolls/CLI visible
@@ -171,6 +185,7 @@ Visit `https://vault.vauntico.com` and verify:
 - [ ] HTTPS active (green lock icon)
 
 #### ✅ Payment Flow
+
 - [ ] "Buy Access" button works
 - [ ] Paystack popup appears
 - [ ] Test payment succeeds
@@ -178,15 +193,18 @@ Visit `https://vault.vauntico.com` and verify:
 - [ ] Notion embed loads
 
 #### ✅ Technical Checks
+
 Open Browser DevTools (F12):
 
 **Console Tab:**
+
 ```javascript
 // Should see no errors
 // May see info logs if analytics enabled
 ```
 
 **Network Tab:**
+
 ```
 ✅ index.html - 200 OK
 ✅ main.js - 200 OK
@@ -196,6 +214,7 @@ Open Browser DevTools (F12):
 ```
 
 **Performance:**
+
 - First Load: < 3 seconds
 - Lighthouse Score: > 90
 
@@ -204,7 +223,9 @@ Open Browser DevTools (F12):
 ## 🔧 Post-Deployment Configuration
 
 ### 1. Automatic Deployments
+
 Vercel automatically deploys on:
+
 - ✅ Push to `main` branch
 - ✅ Pull request previews
 - ✅ GitHub commits
@@ -215,6 +236,7 @@ Settings → Git → Production Branch → `main`
 ### 2. Paystack Webhook Setup
 
 **Add Webhook URL:**
+
 ```
 https://vault.vauntico.com/api/paystack/webhook
 ```
@@ -224,24 +246,28 @@ https://vault.vauntico.com/api/paystack/webhook
 ### 3. Enable Analytics
 
 **Vercel Analytics:**
+
 1. Settings → Analytics
 2. Enable Web Analytics
 3. Add to your code (optional - Vercel auto-injects)
 
 **Add to code (optional):**
+
 ```javascript
 // src/main.jsx
-import { inject } from '@vercel/analytics';
+import { inject } from "@vercel/analytics";
 inject();
 ```
 
 ### 4. Set Up Monitoring
 
 **Vercel Logs:**
+
 - Settings → Functions → View Logs
 - Monitor errors and performance
 
 **Speed Insights:**
+
 - Settings → Speed Insights
 - Enable real user monitoring
 
@@ -252,6 +278,7 @@ inject();
 ### Build Fails
 
 **Error: "Cannot find module 'X'"**
+
 ```bash
 # Fix: Check package.json dependencies
 pnpm install
@@ -259,6 +286,7 @@ pnpm run build  # Test locally first
 ```
 
 **Error: "Environment variable not found"**
+
 ```bash
 # Fix: Add VITE_ prefix
 # ❌ PAYSTACK_KEY
@@ -268,6 +296,7 @@ pnpm run build  # Test locally first
 ### Domain Not Working
 
 **"Domain already in use"**
+
 ```
 1. Find old project in Vercel dashboard
 2. Remove domain from old project
@@ -276,6 +305,7 @@ pnpm run build  # Test locally first
 ```
 
 **SSL Certificate Pending**
+
 ```
 1. Wait 10-20 minutes
 2. Check DNS propagation: whatsmydns.net
@@ -287,6 +317,7 @@ pnpm run build  # Test locally first
 **Issue:** `/vault-access` returns 404
 
 **Fix:** Already handled in `vercel.json`:
+
 ```json
 "rewrites": [
   { "source": "/(.*)", "destination": "/" }
@@ -294,6 +325,7 @@ pnpm run build  # Test locally first
 ```
 
 If still failing:
+
 1. Check `vercel.json` is in root
 2. Redeploy with Settings → Deployments → Redeploy
 
@@ -327,7 +359,7 @@ Your deployment is successful when:
 ✅ Mobile responsive  
 ✅ No console errors  
 ✅ Lighthouse score > 85  
-✅ Auto-deploys on git push  
+✅ Auto-deploys on git push
 
 ---
 
@@ -346,15 +378,18 @@ If something breaks:
 ## 📞 Support Contacts
 
 **Vercel Support:**
+
 - Dashboard → Help → Contact Support
 - Twitter: @vercel
 - Discord: vercel.com/discord
 
 **Payment Issues:**
+
 - Paystack: support@paystack.com
 - Check webhook logs in Paystack dashboard
 
 **Domain Issues:**
+
 - Your domain registrar support
 - Use DNS checker: dnschecker.org
 
@@ -388,13 +423,13 @@ If something breaks:
 
 With your current setup:
 
-| Metric | Target | Your Config |
-|--------|--------|-------------|
-| First Load | < 3s | ✅ Vite optimized |
-| Lighthouse | > 90 | ✅ SSG + CDN |
-| Build Time | < 5min | ✅ ~2-3 min |
-| Deploy Time | < 1min | ✅ Edge network |
-| Uptime | 99.9% | ✅ Vercel SLA |
+| Metric      | Target | Your Config       |
+| ----------- | ------ | ----------------- |
+| First Load  | < 3s   | ✅ Vite optimized |
+| Lighthouse  | > 90   | ✅ SSG + CDN      |
+| Build Time  | < 5min | ✅ ~2-3 min       |
+| Deploy Time | < 1min | ✅ Edge network   |
+| Uptime      | 99.9%  | ✅ Vercel SLA     |
 
 ---
 
@@ -412,6 +447,6 @@ Your project is configured correctly. Just:
 
 ---
 
-*Last Updated: 2025-01-XX*  
-*Project: Vauntico MVP*  
-*Platform: Vercel + Vite + React*
+_Last Updated: 2025-01-XX_  
+_Project: Vauntico MVP_  
+_Platform: Vercel + Vite + React_

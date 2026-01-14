@@ -1,5 +1,5 @@
 ---
-description: 'Disallow non-null assertions using the `!` postfix operator.'
+description: "Disallow non-null assertions using the `!` postfix operator."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -22,7 +22,7 @@ interface Example {
 }
 
 declare const example: Example;
-const includesBaz = example.property!.includes('baz');
+const includesBaz = example.property!.includes("baz");
 ```
 
 ### ✅ Correct
@@ -33,7 +33,7 @@ interface Example {
 }
 
 declare const example: Example;
-const includesBaz = example.property?.includes('baz') ?? false;
+const includesBaz = example.property?.includes("baz") ?? false;
 ```
 
 ## When Not To Use It

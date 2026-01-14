@@ -3,26 +3,27 @@
  * Handles authentication, trust scores, and API communication
  */
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://api.vauntico.com';
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL || "https://api.vauntico.com";
 
 class ApiClient {
   constructor() {
     this.baseURL = API_BASE;
-    this.token = localStorage.getItem('authToken');
+    this.token = localStorage.getItem("authToken");
   }
 
   setToken(token) {
     this.token = token;
     if (token) {
-      localStorage.setItem('authToken', token);
+      localStorage.setItem("authToken", token);
     } else {
-      localStorage.removeItem('authToken');
+      localStorage.removeItem("authToken");
     }
   }
 
   getAuthHeaders() {
     const headers = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     };
     if (this.token) {
       headers.Authorization = `Bearer ${this.token}`;
@@ -55,14 +56,14 @@ class ApiClient {
 
   // Auth methods
   async login(credentials) {
-    const response = await this.request('/auth/login', {
-      method: 'POST',
+    const response = await this.request("/auth/login", {
+      method: "POST",
       body: JSON.stringify(credentials),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Login failed');
+      throw new Error(error.message || "Login failed");
     }
 
     const data = await response.json();
@@ -71,12 +72,12 @@ class ApiClient {
   }
 
   async refreshToken() {
-    const response = await this.request('/auth/refresh', {
-      method: 'POST',
+    const response = await this.request("/auth/refresh", {
+      method: "POST",
     });
 
     if (!response.ok) {
-      throw new Error('Token refresh failed');
+      throw new Error("Token refresh failed");
     }
 
     const data = await response.json();
@@ -86,14 +87,14 @@ class ApiClient {
 
   // Trust score methods
   async calculateTrustScore(payload) {
-    const response = await this.request('/trustscore/calculate', {
-      method: 'POST',
+    const response = await this.request("/trustscore/calculate", {
+      method: "POST",
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Trust score calculation failed');
+      throw new Error(error.message || "Trust score calculation failed");
     }
 
     return response.json();
@@ -103,7 +104,7 @@ class ApiClient {
     const response = await this.request(`/trustscore/history/${userId}`);
 
     if (!response.ok) {
-      throw new Error('Failed to fetch trust score history');
+      throw new Error("Failed to fetch trust score history");
     }
 
     return response.json();
@@ -111,9 +112,9 @@ class ApiClient {
 
   // Health check
   async healthCheck() {
-    const response = await this.request('/health');
+    const response = await this.request("/health");
     if (!response.ok) {
-      throw new Error('API health check failed');
+      throw new Error("API health check failed");
     }
     return response.json();
   }

@@ -1,5 +1,5 @@
 ---
-description: 'Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean.'
+description: "Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -26,12 +26,12 @@ const a: null = null;
 const a: number = 10;
 const a: number = Infinity;
 const a: number = NaN;
-const a: number = Number('1');
+const a: number = Number("1");
 const a: RegExp = /a/;
-const a: RegExp = new RegExp('a');
+const a: RegExp = new RegExp("a");
 const a: string = `str`;
 const a: string = String(1);
-const a: symbol = Symbol('a');
+const a: symbol = Symbol("a");
 const a: undefined = undefined;
 const a: undefined = void someValue;
 
@@ -54,12 +54,12 @@ const a = null;
 const a = 10;
 const a = Infinity;
 const a = NaN;
-const a = Number('1');
+const a = Number("1");
 const a = /a/;
-const a = new RegExp('a');
+const a = new RegExp("a");
 const a = `str`;
 const a = String(1);
-const a = Symbol('a');
+const a = Symbol("a");
 const a = undefined;
 const a = void someValue;
 

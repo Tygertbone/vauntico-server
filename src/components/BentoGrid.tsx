@@ -1,7 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Code, Zap, Shield, Globe, Users, TrendingUp, Sparkles, Heart, Star } from 'lucide-react';
-import { CustomIcons } from './CustomIcons';
-import { useHapticHover } from '../hooks/useHapticFeedback';
+import React, { useState, useRef, useEffect } from "react";
+import {
+  Code,
+  Zap,
+  Shield,
+  Globe,
+  Users,
+  TrendingUp,
+  Sparkles,
+  Heart,
+  Star,
+} from "lucide-react";
+import { CustomIcons } from "./CustomIcons";
+import { useHapticHover } from "../hooks/useHapticFeedback";
 
 interface FeatureCard {
   id: string;
@@ -16,89 +26,89 @@ interface FeatureCard {
 
 const features: FeatureCard[] = [
   {
-    id: 'trust-scoring',
-    title: 'AI Trust Scoring',
-    description: 'Advanced algorithmic credibility assessment',
+    id: "trust-scoring",
+    title: "AI Trust Scoring",
+    description: "Advanced algorithmic credibility assessment",
     icon: <CustomIcons.TrustFlow className="w-8 h-8" />,
-    gradient: 'from-purple-600 to-pink-600',
+    gradient: "from-purple-600 to-pink-600",
     features: [
-      'Real-time reputation analysis',
-      'ML-powered threat detection',
-      'Social proof verification',
-      'Trust trend predictions'
+      "Real-time reputation analysis",
+      "ML-powered threat detection",
+      "Social proof verification",
+      "Trust trend predictions",
     ],
-    trustBoost: 25
+    trustBoost: 25,
   },
   {
-    id: 'workshops',
-    title: 'Sacred Workshops',
-    description: 'Interactive creator education platforms',
+    id: "workshops",
+    title: "Sacred Workshops",
+    description: "Interactive creator education platforms",
     icon: <CustomIcons.SacredGeometry className="w-8 h-8" />,
-    gradient: 'from-blue-600 to-cyan-600',
+    gradient: "from-blue-600 to-cyan-600",
     features: [
-      'Live streaming capabilities',
-      'Interactive whiteboard',
-      'Recording & archiving',
-      'Participant analytics'
+      "Live streaming capabilities",
+      "Interactive whiteboard",
+      "Recording & archiving",
+      "Participant analytics",
     ],
-    trustBoost: 15
+    trustBoost: 15,
   },
   {
-    id: 'content-vaults',
-    title: 'Lore Vaults',
-    description: 'Immutable content storage',
+    id: "content-vaults",
+    title: "Lore Vaults",
+    description: "Immutable content storage",
     icon: <CustomIcons.LegacyTree className="w-8 h-8" />,
-    gradient: 'from-green-600 to-emerald-600',
+    gradient: "from-green-600 to-emerald-600",
     features: [
-      'Blockchain verification',
-      'NFT integration',
-      'Content monetization',
-      'Version control history'
+      "Blockchain verification",
+      "NFT integration",
+      "Content monetization",
+      "Version control history",
     ],
-    trustBoost: 20
+    trustBoost: 20,
   },
   {
-    id: 'community',
-    title: 'Ubuntu Circle',
-    description: 'Collective abundance network',
+    id: "community",
+    title: "Ubuntu Circle",
+    description: "Collective abundance network",
     icon: <CustomIcons.Ubuntu className="w-8 h-8" />,
-    gradient: 'from-orange-600 to-red-600',
+    gradient: "from-orange-600 to-red-600",
     features: [
-      'Community trust scoring',
-      'Collaborative rituals',
-      'Shared resource pools',
-      'Ubuntu governance'
+      "Community trust scoring",
+      "Collaborative rituals",
+      "Shared resource pools",
+      "Ubuntu governance",
     ],
-    trustBoost: 30
+    trustBoost: 30,
   },
   {
-    id: 'analytics',
-    title: 'Abundance Analytics',
-    description: 'Advanced performance metrics',
+    id: "analytics",
+    title: "Abundance Analytics",
+    description: "Advanced performance metrics",
     icon: <TrendingUp className="w-8 h-8" />,
-    gradient: 'from-indigo-600 to-purple-600',
+    gradient: "from-indigo-600 to-purple-600",
     features: [
-      'Real-time revenue tracking',
-      'LTV predictions',
-      'Engagement analytics',
-      'ROI calculations'
+      "Real-time revenue tracking",
+      "LTV predictions",
+      "Engagement analytics",
+      "ROI calculations",
     ],
-    trustBoost: 10
+    trustBoost: 10,
   },
   {
-    id: 'security',
-    title: 'Quantum Security',
-    description: 'Advanced protection systems',
+    id: "security",
+    title: "Quantum Security",
+    description: "Advanced protection systems",
     icon: <Shield className="w-8 h-8" />,
-    gradient: 'from-gray-600 to-slate-600',
+    gradient: "from-gray-600 to-slate-600",
     features: [
-      'End-to-end encryption',
-      'Biometric authentication',
-      'Quantum key management',
-      'Zero-knowledge architecture'
+      "End-to-end encryption",
+      "Biometric authentication",
+      "Quantum key management",
+      "Zero-knowledge architecture",
     ],
-    trustBoost: 35
-  }
+    trustBoost: 35,
+  },
 ];
 
 export default function BentoGrid() {
@@ -134,7 +144,8 @@ export default function BentoGrid() {
             <Sparkles className="w-8 h-8 text-yellow-400" />
           </div>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Premium tools and services designed to amplify your creative impact and build lasting legacy
+            Premium tools and services designed to amplify your creative impact
+            and build lasting legacy
           </p>
         </div>
 
@@ -144,14 +155,16 @@ export default function BentoGrid() {
             <div
               key={feature.id}
               className={`group relative bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 transition-all duration-300 hover:scale-105 ${
-                hoveredCard === feature.id ? 'ring-2 ring-purple-400/50' : ''
+                hoveredCard === feature.id ? "ring-2 ring-purple-400/50" : ""
               }`}
               onMouseEnter={() => handleCardHover(feature.id)}
               onMouseLeave={handleCardLeave}
             >
               {/* Glassmorphism Background */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-10 rounded-3xl`} />
-              
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-10 rounded-3xl`}
+              />
+
               {/* Content */}
               <div className="relative z-10 p-8">
                 {/* Icon */}
@@ -166,7 +179,9 @@ export default function BentoGrid() {
 
                 {/* Title & Trust Boost */}
                 <div className="text-center mb-4">
-                  <h3 className="text-2xl font-bold text-white mb-2">{feature.title}</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    {feature.title}
+                  </h3>
                   {feature.trustBoost && (
                     <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-full px-3 py-1">
                       <TrendingUp className="w-4 h-4 text-white" />
@@ -196,8 +211,8 @@ export default function BentoGrid() {
                 <button
                   className={`w-full py-3 px-6 rounded-xl font-semibold transition-all ${
                     feature.isComingSoon
-                      ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 hover:scale-105'
+                      ? "bg-gray-600 text-gray-400 cursor-not-allowed"
+                      : "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 hover:scale-105"
                   }`}
                   disabled={feature.isComingSoon}
                 >
@@ -208,12 +223,19 @@ export default function BentoGrid() {
                     </div>
                   ) : (
                     <div className="flex items-center justify-center space-x-2">
-                      <span>{feature.id === 'trust-scoring' ? 'Calculate Score' : 
-                             feature.id === 'workshops' ? 'Host Workshop' : 
-                             feature.id === 'content-vaults' ? 'Create Vault' : 
-                             feature.id === 'community' ? 'Join Circle' : 
-                             feature.id === 'analytics' ? 'View Analytics' : 
-                             'Explore Security'}</span>
+                      <span>
+                        {feature.id === "trust-scoring"
+                          ? "Calculate Score"
+                          : feature.id === "workshops"
+                            ? "Host Workshop"
+                            : feature.id === "content-vaults"
+                              ? "Create Vault"
+                              : feature.id === "community"
+                                ? "Join Circle"
+                                : feature.id === "analytics"
+                                  ? "View Analytics"
+                                  : "Explore Security"}
+                      </span>
                       <Zap className="w-5 h-5" />
                     </div>
                   )}
@@ -233,13 +255,16 @@ export default function BentoGrid() {
           <div className="bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 p-8 max-w-4xl mx-auto">
             <div className="flex items-center justify-center space-x-4 mb-6">
               <CustomIcons.Ubuntu className="w-10 h-10 text-purple-400" />
-              <h3 className="text-2xl font-bold text-white">Ubuntu Philosophy</h3>
+              <h3 className="text-2xl font-bold text-white">
+                Ubuntu Philosophy
+              </h3>
               <Heart className="w-8 h-8 text-pink-400" />
               <CustomIcons.Ubuntu className="w-10 h-10 text-purple-400" />
             </div>
             <p className="text-lg text-gray-300 leading-relaxed">
-              "I am because we are. Each feature in this grid represents our collective commitment to 
-              elevating every creator's potential through sacred technology and community support."
+              "I am because we are. Each feature in this grid represents our
+              collective commitment to elevating every creator's potential
+              through sacred technology and community support."
             </p>
             <div className="mt-6 flex items-center justify-center space-x-4">
               <Users className="w-6 h-6 text-blue-400" />

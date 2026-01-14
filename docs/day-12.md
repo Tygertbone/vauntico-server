@@ -15,6 +15,7 @@ objective: "Understand the algorithm to consistently get more reach and views"
 It's not luck. It's not magic. It's **THE ALGORITHM.**
 
 **Today you learn:**
+
 - How TikTok & Instagram decide who sees your content
 - The 7 ranking factors that matter most
 - How to "hack" the algorithm (ethically)
@@ -29,6 +30,7 @@ It's not luck. It's not magic. It's **THE ALGORITHM.**
 **The algorithm = A computer program that decides which videos to show to which people**
 
 **Think of it like a DJ at a party:**
+
 - The DJ plays a song (your video)
 - If people dance (engage), the DJ plays it again for more people
 - If people walk away (scroll past), the DJ stops playing it
@@ -44,11 +46,13 @@ It's not luck. It's not magic. It's **THE ALGORITHM.**
 **What it is:** How long people watch your video
 
 **What the algorithm sees:**
+
 - ✅ 90%+ watch time = "This is GREAT content! Push it!"
 - ⚠️ 50% watch time = "Decent, show to a few more"
 - ❌ 20% watch time = "This sucks, stop showing it"
 
 **How to improve:**
+
 - **Hook in first 3 seconds** (Day 10)
 - **Keep videos short** (30-60 seconds for beginners)
 - **End with a payoff** (don't waste viewer time)
@@ -66,11 +70,13 @@ Kofi's 3-minute video: 40% watch time → 600 views
 **What it is:** Comments + Shares + Saves ÷ Views
 
 **What the algorithm sees:**
+
 - ✅ 5%+ engagement = "People LOVE this! Viral potential!"
 - ⚠️ 2-5% engagement = "Good content, show to more"
 - ❌ <2% engagement = "Boring, stop pushing"
 
 **How to improve:**
+
 - **Use comment bait** (Day 11): "Which one? Comment below!"
 - **Ask questions** at the end
 - **Controversial takes** = more comments
@@ -87,11 +93,13 @@ Video with no call-to-action → 1% engagement rate → 800 views
 **What it is:** How many people watch your ENTIRE video
 
 **What the algorithm sees:**
+
 - ✅ 70%+ completion = "Must-watch content!"
 - ⚠️ 40-70% = "Decent content"
 - ❌ <40% = "Boring, stop showing"
 
 **How to improve:**
+
 - **Loop videos** (end connects to beginning, viewers rewatch)
 - **Tease the payoff** ("Wait for the end!")
 - **Keep it short** (easier to finish a 15-sec video than 3-min)
@@ -104,13 +112,16 @@ Video with no call-to-action → 1% engagement rate → 800 views
 **What it is:** How many people send your video to friends
 
 **What the algorithm sees:**
+
 - ✅ High shares = "This is TOO GOOD not to share! Make it viral!"
 
 **Why shares matter:**
+
 - 1 share = your video shown to 20-100+ new people
 - Shares = fastest way to go viral
 
 **How to improve:**
+
 - **Make shareable content:** Educational, funny, relatable, controversial
 - **Add text:** "Send this to someone who needs this"
 - **Meme-style videos** (people love sharing memes)
@@ -122,13 +133,16 @@ Video with no call-to-action → 1% engagement rate → 800 views
 **What it is:** How many people bookmark your video
 
 **What the algorithm sees:**
+
 - ✅ High saves = "This is VALUABLE! Reference content!"
 
 **Why saves matter:**
+
 - Saves signal your content is worth coming back to
 - Algorithm pushes "valuable" content harder
 
 **How to improve:**
+
 - **Create list/tutorial content:** "5 ways to save money"
 - **End with:** "Save this for later!"
 - **Templates, recipes, scripts** = high save rate
@@ -140,9 +154,11 @@ Video with no call-to-action → 1% engagement rate → 800 views
 **What it is:** How many people follow you AFTER watching
 
 **What the algorithm sees:**
+
 - ✅ High follow rate = "People want MORE from this creator!"
 
 **How to improve:**
+
 - **Strong CTA:** "Follow for daily money tips!"
 - **Series content:** "Part 1 of 3... Follow for Part 2 tomorrow"
 - **Consistent niche** (people follow when they know what to expect)
@@ -154,9 +170,11 @@ Video with no call-to-action → 1% engagement rate → 800 views
 **What it is:** People click your profile after watching
 
 **What the algorithm sees:**
+
 - ✅ High profile visits = "People want to know more about this creator!"
 
 **How to improve:**
+
 - **Tease other content:** "I have 50 more tips like this on my profile"
 - **Series content:** "Part 2 is on my page!"
 - **Strong bio:** Clear what you teach + link to offer
@@ -168,14 +186,17 @@ Video with no call-to-action → 1% engagement rate → 800 views
 **Here's how TikTok/Instagram decide if your video goes viral:**
 
 **Stage 1: The Test (First 30 minutes)**
+
 - Your video is shown to 200-500 people (your followers + similar interests)
 - Algorithm measures: Watch time, engagement, shares, saves
 
 **Stage 2: The Decision (1-3 hours)**
+
 - If metrics are good → shown to 5K-50K people
 - If metrics are bad → stopped
 
 **Stage 3: The Viral Push (3+ hours)**
+
 - If Stage 2 metrics are EXCELLENT → shown to 100K-1M+ people
 - This is where videos "go viral"
 
@@ -186,26 +207,31 @@ Video with no call-to-action → 1% engagement rate → 800 views
 ## 🎯 How to "Hack" the Algorithm (Ethically)
 
 ### **Hack #1: The 3-Second Rule**
+
 - First 3 seconds = most important
 - Use your Hook Library (Day 10)
 - If 80%+ people scroll past in 3 seconds → algorithm kills your video
 
 ### **Hack #2: The Engagement Bomb**
+
 - Post your video
 - Immediately share in WhatsApp group: "New video! Comment, share, save!"
 - 10 people engage in first 10 minutes = algorithm thinks "This is hot!"
 
 ### **Hack #3: The Series Strategy**
+
 - "Part 1 of 3: How I make R2K/month"
 - People watch Part 1, check your profile for Part 2 = high engagement
 - Algorithm loves series content
 
 ### **Hack #4: The Peak Time Post**
+
 - Post when your audience is MOST active
 - Check TikTok/Instagram analytics: Settings → Analytics → Followers → Most Active Times
 - For African creators: Usually 6pm-10pm (after work/school)
 
 ### **Hack #5: The Loop Video**
+
 - Make your video start and end seamlessly
 - Viewers rewatch = 200% watch time = algorithm LOVES this
 - Example: "3 money tips: #1... #2... #3... [loops back to #1]"
@@ -217,18 +243,21 @@ Video with no call-to-action → 1% engagement rate → 800 views
 **Amara** (Lagos, Nigeria - Finance niche)
 
 **Before understanding algorithm:**
+
 - Posted at random times
 - Long intros (weak hooks)
 - No CTAs
 - Average: 200 views/video
 
 **After Day 12:**
+
 - Posts at 7pm (her peak time)
 - Strong 3-second hooks
 - "Comment MONEY for my savings template" (engagement bait)
 - 15-30 second videos (high completion rate)
 
 **Results:**
+
 - Average: 8,000 views/video
 - 4 videos over 50K views in 1 month
 - 18K followers in 3 months
@@ -260,6 +289,7 @@ Video with no call-to-action → 1% engagement rate → 800 views
 ## 🔍 How to Check Your Algorithm Score
 
 **On TikTok:**
+
 1. Go to Profile → ☰ → Creator tools → Analytics
 2. Check:
    - Average watch time
@@ -268,6 +298,7 @@ Video with no call-to-action → 1% engagement rate → 800 views
    - Profile visits
 
 **On Instagram:**
+
 1. Go to Profile → ☰ → Insights → Content
 2. Check:
    - Reach (how many people saw it)
@@ -275,6 +306,7 @@ Video with no call-to-action → 1% engagement rate → 800 views
    - Follows from post
 
 **Goal:**
+
 - Watch time: 70%+
 - Engagement rate: 5%+
 - Profile visits: 10%+ of viewers
@@ -307,6 +339,7 @@ We're tracking metrics, identifying winners, and optimizing your content strateg
 ## 💬 Share Your Algorithm Aha Moment
 
 Post in the community:
+
 ```
 💡 ALGORITHM AHA MOMENT:
 

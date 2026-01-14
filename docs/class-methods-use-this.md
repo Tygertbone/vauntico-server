@@ -1,5 +1,5 @@
 ---
-description: 'Enforce that class methods utilize `this`.'
+description: "Enforce that class methods utilize `this`."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -16,7 +16,7 @@ This rule adds the following options:
 ```ts
 interface Options extends BaseClassMethodsUseThisOptions {
   ignoreOverrideMethods?: boolean;
-  ignoreClassesThatImplementAnInterface?: boolean | 'public-fields';
+  ignoreClassesThatImplementAnInterface?: boolean | "public-fields";
 }
 
 const defaultOptions: Options = {

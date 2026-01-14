@@ -1,4 +1,5 @@
 # The Launch Scroll: Vauntico Ascension
+
 ## Part 1: Product Hunt Strategy
 
 ---
@@ -18,9 +19,11 @@ Visible from distance. Drawing seekers. Burning for generations.
 ### Pre-Launch (14 Days Before)
 
 #### Week 1: Signal Building
+
 **Objective:** Warm the algorithm. Prime the community.
 
 **Actions:**
+
 1. **Create Teaser Campaign**
    - Post in Maker community: "Building something for creators who refuse to rent power"
    - Share origin story (Mahikeng, bartering code, forging in trenches)
@@ -37,9 +40,11 @@ Visible from distance. Drawing seekers. Burning for generations.
    - 3 micro-influencers who'll share on X/LinkedIn
 
 #### Week 2: Asset Forging
+
 **Objective:** Perfect the ritual artifacts.
 
 **Required Assets:**
+
 - **Gallery Images (6 minimum)**
   1. Hero shot: CLI in action (terminal aesthetic)
   2. Dashboard: Credit economy + active projects
@@ -65,27 +70,32 @@ Visible from distance. Drawing seekers. Burning for generations.
 **Timing:** Tuesday or Wednesday, 12:01 AM PST (for full 24-hour window)
 
 #### Hour 0-1: The Ignition
+
 - **00:01 PST:** Go live
 - **00:02:** Post first comment with lore
 - **00:05:** Share to X, LinkedIn with mythic framing
 - **00:15:** Message support crew: "The beacon is lit"
 
 #### Hour 1-6: The Dawn Push
+
 - **Founder Presence:** Tyrone responds to EVERY comment personally
 - **Value Bombs:** Answer questions with scroll-level depth
 - **Live Demo Offers:** "Want to see it in action? DM me for 15-min walkthrough"
 
 #### Hour 6-12: The Momentum Build
+
 - **Testimonial Drops:** Beta users post their wins
 - **Feature Deep Dives:** Reply threads explaining CLI, Workshop Kit, Audits
 - **Competitor Comparisons:** (Respectful) "Here's how we're different..."
 
 #### Hour 12-18: The Rally
+
 - **Influencer Activations:** Partners share their takes
 - **Community Cross-Post:** Reddit (r/SideProject, r/EntrepreneurRideAlong), Indie Hackers
 - **Offer Reveal:** "First 100 supporters get Founder pricing (30% off for life)"
 
 #### Hour 18-24: The Close
+
 - **Gratitude Scroll:** Posted as update thanking everyone
 - **Next Chapter Tease:** "This is just the ignition. Here's what's coming..."
 - **Final Push:** One last share across all channels
@@ -95,11 +105,13 @@ Visible from distance. Drawing seekers. Burning for generations.
 ### Post-Launch (7 Days After)
 
 #### Day 1-3: Relationship Forging
+
 - Thank every upvoter personally
 - Ship trial access to anyone who asked
 - Document feedback in public (transparency = trust)
 
 #### Day 4-7: Syndication Wave 1
+
 - **Blog Post:** "We Launched on Product Hunt. Here's What Happened."
 - **YouTube:** Narrated demo + behind-the-scenes
 - **Newsletter:** To all beta/waitlist: "The forge is open"
@@ -109,12 +121,15 @@ Visible from distance. Drawing seekers. Burning for generations.
 ## Product Hunt Copy: The Sacred Texts
 
 ### Tagline (60 chars max)
-*"Build legacy, not just content. Own your empire."*
+
+_"Build legacy, not just content. Own your empire."_
 
 ### Description (260 chars max)
-*"Vauntico is a ritual engine for creators: CLI for instant infrastructure, Workshop Kit for scaled teaching, Audit-as-a-Service for consulting dominance. No platforms. No gatekeepers. Just you, your craft, and systems that scale with your soul."*
+
+_"Vauntico is a ritual engine for creators: CLI for instant infrastructure, Workshop Kit for scaled teaching, Audit-as-a-Service for consulting dominance. No platforms. No gatekeepers. Just you, your craft, and systems that scale with your soul."_
 
 ### First Comment: The Lore Drop
+
 (Post immediately after launch)
 
 ---
@@ -126,7 +141,8 @@ On a small farm in Mahikeng, South Africa, bartering code for survival, trading 
 
 **The wound I was scratching:**
 
-Every creator I knew was renting power.  
+Every creator I knew was renting power.
+
 - Platforms that changed algorithms overnight
 - Tools that locked them in
 - "Gurus" selling templates without teaching truth

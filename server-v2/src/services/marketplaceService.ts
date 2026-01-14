@@ -1,17 +1,17 @@
-import { pool } from '../utils/database';
-import logger from '../utils/logger';
-import { TrustScoreService } from './trustScoreService';
+import { pool } from "../utils/database";
+import logger from "../utils/logger";
+import { TrustScoreService } from "./trustScoreService";
 
 export interface MarketplaceItem {
   id: string;
   creatorId: string;
   title: string;
   description: string;
-  type: 'widget' | 'badge' | 'integration' | 'template';
+  type: "widget" | "badge" | "integration" | "template";
   price: number;
   currency: string;
-  status: 'pending' | 'approved' | 'rejected' | 'active' | 'inactive';
-  licenseType: 'standard' | 'premium' | 'exclusive';
+  status: "pending" | "approved" | "rejected" | "active" | "inactive";
+  licenseType: "standard" | "premium" | "exclusive";
   revenueSharePercentage: number;
   downloadUrl?: string;
   previewUrl?: string;
@@ -29,7 +29,7 @@ export interface MarketplacePurchase {
   buyerId: string;
   amount: number;
   currency: string;
-  status: 'pending' | 'completed' | 'refunded' | 'cancelled';
+  status: "pending" | "completed" | "refunded" | "cancelled";
   purchasedAt: Date;
   licenseKey?: string;
   expiresAt?: Date;
@@ -39,8 +39,8 @@ export interface MarketplacePurchase {
 export interface ComplianceCheck {
   id: string;
   itemId: string;
-  checkType: 'security' | 'content' | 'license' | 'performance';
-  status: 'pending' | 'passed' | 'failed' | 'requires_review';
+  checkType: "security" | "content" | "license" | "performance";
+  status: "pending" | "passed" | "failed" | "requires_review";
   details: string;
   checkedBy: string;
   checkedAt: Date;
@@ -59,12 +59,17 @@ export interface MarketplaceStats {
 
 class MarketplaceService {
   private readonly REVENUE_SHARE_DEFAULT = 0.3; // 30% default revenue share
-  private readonly COMPLIANCE_CHECK_TYPES = ['security', 'content', 'license', 'performance'] as const;
+  private readonly COMPLIANCE_CHECK_TYPES = [
+    "security",
+    "content",
+    "license",
+    "performance",
+  ] as const;
 
   async getMarketplaceItems(filters?: {
     creatorId?: string;
-    type?: MarketplaceItem['type'];
-    status?: MarketplaceItem['status'];
+    type?: MarketplaceItem["type"];
+    status?: MarketplaceItem["status"];
     tags?: string[];
     minPrice?: number;
     maxPrice?: number;
@@ -115,7 +120,7 @@ class MarketplaceService {
         params.push(filters.maxPrice);
       }
 
-      query += ' GROUP BY mi.id, u.username ORDER BY mi.created_at DESC';
+      query += " GROUP BY mi.id, u.username ORDER BY mi.created_at DESC";
 
       if (filters?.limit) {
         query += ` LIMIT $${paramIndex++}`;
@@ -172,27 +177,37 @@ class MarketplaceService {
 
       return {
         items: result.rows.map(this.mapMarketplaceItem),
-        total: parseInt(countResult.rows[0].total)
+        total: parseInt(countResult.rows[0].total),
       };
     } catch (error) {
-      logger.error('Error fetching marketplace items:', error);
+      logger.error("Error fetching marketplace items:", error);
       throw error;
     }
   }
 
-  async createMarketplaceItem(itemData: Omit<MarketplaceItem, 'id' | 'createdAt' | 'updatedAt' | 'salesCount' | 'rating' | 'reviewCount'>): Promise<MarketplaceItem> {
+  async createMarketplaceItem(
+    itemData: Omit<
+      MarketplaceItem,
+      "id" | "createdAt" | "updatedAt" | "salesCount" | "rating" | "reviewCount"
+    >,
+  ): Promise<MarketplaceItem> {
     try {
       const client = await pool.connect();
-      
+
       try {
-        await client.query('BEGIN');
+        await client.query("BEGIN");
 
         // Validate creator trust score
-        const trustScoreResult = await TrustScoreService.calculateTrustScore(itemData.creatorId, 'pro');
+        const trustScoreResult = await TrustScoreService.calculateTrustScore(
+          itemData.creatorId,
+          "pro",
+        );
         const trustScore = trustScoreResult.cost; // Use cost as proxy for trust score
 
         if (trustScore < 600) {
-          throw new Error('Creator trust score must be at least 600 to list items');
+          throw new Error(
+            "Creator trust score must be at least 600 to list items",
+          );
         }
 
         const id = this.generateId();
@@ -212,13 +227,13 @@ class MarketplaceService {
           itemData.description,
           itemData.type,
           itemData.price,
-          itemData.currency || 'USD',
-          'pending', // All items start as pending
-          itemData.licenseType || 'standard',
+          itemData.currency || "USD",
+          "pending", // All items start as pending
+          itemData.licenseType || "standard",
           itemData.revenueSharePercentage || this.REVENUE_SHARE_DEFAULT,
           itemData.downloadUrl,
           itemData.previewUrl,
-          itemData.tags || []
+          itemData.tags || [],
         ];
 
         const result = await client.query(query, values);
@@ -226,22 +241,25 @@ class MarketplaceService {
         // Initiate compliance checks
         await this.initiateComplianceChecks(client, id);
 
-        await client.query('COMMIT');
+        await client.query("COMMIT");
 
         return this.mapMarketplaceItem(result.rows[0]);
       } catch (error) {
-        await client.query('ROLLBACK');
+        await client.query("ROLLBACK");
         throw error;
       } finally {
         client.release();
       }
     } catch (error) {
-      logger.error('Error creating marketplace item:', error);
+      logger.error("Error creating marketplace item:", error);
       throw error;
     }
   }
 
-  async updateMarketplaceItem(id: string, updates: Partial<MarketplaceItem>): Promise<MarketplaceItem> {
+  async updateMarketplaceItem(
+    id: string,
+    updates: Partial<MarketplaceItem>,
+  ): Promise<MarketplaceItem> {
     try {
       const query = `
         UPDATE marketplace_items 
@@ -269,37 +287,40 @@ class MarketplaceService {
         updates.revenueSharePercentage,
         updates.downloadUrl,
         updates.previewUrl,
-        updates.tags
+        updates.tags,
       ];
 
       const result = await pool.query(query, values);
-      
+
       if (result.rows.length === 0) {
-        throw new Error('Marketplace item not found');
+        throw new Error("Marketplace item not found");
       }
 
       return this.mapMarketplaceItem(result.rows[0]);
     } catch (error) {
-      logger.error('Error updating marketplace item:', error);
+      logger.error("Error updating marketplace item:", error);
       throw error;
     }
   }
 
-  async purchaseItem(itemId: string, buyerId: string): Promise<MarketplacePurchase> {
+  async purchaseItem(
+    itemId: string,
+    buyerId: string,
+  ): Promise<MarketplacePurchase> {
     try {
       const client = await pool.connect();
-      
+
       try {
-        await client.query('BEGIN');
+        await client.query("BEGIN");
 
         // Check if item is available and active
         const itemCheck = await client.query(
-          'SELECT * FROM marketplace_items WHERE id = $1 AND status = $2',
-          [itemId, 'active']
+          "SELECT * FROM marketplace_items WHERE id = $1 AND status = $2",
+          [itemId, "active"],
         );
 
         if (itemCheck.rows.length === 0) {
-          throw new Error('Item not available for purchase');
+          throw new Error("Item not available for purchase");
         }
 
         const item = itemCheck.rows[0];
@@ -316,11 +337,12 @@ class MarketplaceService {
 
         // Calculate expiry based on license type
         const expiresAt = new Date();
-        const durationMonths = {
-          standard: 12,
-          premium: 24,
-          exclusive: 36
-        }[item.license_type] || 12;
+        const durationMonths =
+          {
+            standard: 12,
+            premium: 24,
+            exclusive: 36,
+          }[item.license_type] || 12;
         expiresAt.setMonth(expiresAt.getMonth() + durationMonths);
 
         const values = [
@@ -329,17 +351,17 @@ class MarketplaceService {
           buyerId,
           item.price,
           item.currency,
-          'completed',
+          "completed",
           licenseKey,
-          expiresAt
+          expiresAt,
         ];
 
         const result = await client.query(query, values);
 
         // Update sales count for the item
         await client.query(
-          'UPDATE marketplace_items SET sales_count = COALESCE(sales_count, 0) + 1 WHERE id = $1',
-          [itemId]
+          "UPDATE marketplace_items SET sales_count = COALESCE(sales_count, 0) + 1 WHERE id = $1",
+          [itemId],
         );
 
         // Award credits to buyer
@@ -347,26 +369,29 @@ class MarketplaceService {
           client,
           buyerId,
           Math.floor(item.price * 0.1), // 10% of purchase price as credits
-          'marketplace_purchase',
-          purchaseId
+          "marketplace_purchase",
+          purchaseId,
         );
 
-        await client.query('COMMIT');
+        await client.query("COMMIT");
 
         return this.mapMarketplacePurchase(result.rows[0]);
       } catch (error) {
-        await client.query('ROLLBACK');
+        await client.query("ROLLBACK");
         throw error;
       } finally {
         client.release();
       }
     } catch (error) {
-      logger.error('Error purchasing item:', error);
+      logger.error("Error purchasing item:", error);
       throw error;
     }
   }
 
-  async getComplianceChecks(itemId?: string, status?: ComplianceCheck['status']): Promise<ComplianceCheck[]> {
+  async getComplianceChecks(
+    itemId?: string,
+    status?: ComplianceCheck["status"],
+  ): Promise<ComplianceCheck[]> {
     try {
       let query = `
         SELECT cc.*, u.username as checked_by_username
@@ -387,17 +412,20 @@ class MarketplaceService {
         params.push(status);
       }
 
-      query += ' ORDER BY cc.checked_at DESC';
+      query += " ORDER BY cc.checked_at DESC";
 
       const result = await pool.query(query, params);
       return result.rows.map(this.mapComplianceCheck);
     } catch (error) {
-      logger.error('Error fetching compliance checks:', error);
+      logger.error("Error fetching compliance checks:", error);
       throw error;
     }
   }
 
-  async updateComplianceCheck(checkId: string, updates: Partial<ComplianceCheck>): Promise<ComplianceCheck> {
+  async updateComplianceCheck(
+    checkId: string,
+    updates: Partial<ComplianceCheck>,
+  ): Promise<ComplianceCheck> {
     try {
       const query = `
         UPDATE compliance_checks 
@@ -413,18 +441,18 @@ class MarketplaceService {
         checkId,
         updates.status,
         updates.details,
-        updates.issues ? JSON.stringify(updates.issues) : null
+        updates.issues ? JSON.stringify(updates.issues) : null,
       ];
 
       const result = await pool.query(query, values);
-      
+
       if (result.rows.length === 0) {
-        throw new Error('Compliance check not found');
+        throw new Error("Compliance check not found");
       }
 
       return this.mapComplianceCheck(result.rows[0]);
     } catch (error) {
-      logger.error('Error updating compliance check:', error);
+      logger.error("Error updating compliance check:", error);
       throw error;
     }
   }
@@ -432,14 +460,23 @@ class MarketplaceService {
   async getMarketplaceStats(): Promise<MarketplaceStats> {
     try {
       const [itemsResult, salesResult] = await Promise.all([
-        pool.query('SELECT COUNT(*) as total, COUNT(CASE WHEN status = $1 THEN 1 END) as active FROM marketplace_items', ['active']),
-        pool.query('SELECT COUNT(*) as total, COALESCE(SUM(amount), 0) as revenue FROM marketplace_purchases WHERE status = $1', ['completed'])
+        pool.query(
+          "SELECT COUNT(*) as total, COUNT(CASE WHEN status = $1 THEN 1 END) as active FROM marketplace_items",
+          ["active"],
+        ),
+        pool.query(
+          "SELECT COUNT(*) as total, COALESCE(SUM(amount), 0) as revenue FROM marketplace_purchases WHERE status = $1",
+          ["completed"],
+        ),
       ]);
 
-      const avgRatingResult = await pool.query('SELECT COALESCE(AVG(rating), 0) as avg_rating FROM marketplace_purchases WHERE rating IS NOT NULL');
+      const avgRatingResult = await pool.query(
+        "SELECT COALESCE(AVG(rating), 0) as avg_rating FROM marketplace_purchases WHERE rating IS NOT NULL",
+      );
 
       // Get recent sales
-      const recentSalesResult = await pool.query(`
+      const recentSalesResult = await pool.query(
+        `
         SELECT mp.*, mi.title as item_title, u.username as buyer_username
         FROM marketplace_purchases mp
         JOIN marketplace_items mi ON mp.item_id = mi.id
@@ -447,7 +484,9 @@ class MarketplaceService {
         WHERE mp.status = $1
         ORDER BY mp.purchased_at DESC
         LIMIT 10
-      `, ['completed']);
+      `,
+        ["completed"],
+      );
 
       return {
         totalItems: parseInt(itemsResult.rows[0].total),
@@ -456,30 +495,45 @@ class MarketplaceService {
         totalSales: parseInt(salesResult.rows[0].total),
         averageRating: parseFloat(avgRatingResult.rows[0].avg_rating),
         topCategories: [], // Would need to implement category tracking
-        recentSales: recentSalesResult.rows.map(this.mapMarketplacePurchase)
+        recentSales: recentSalesResult.rows.map(this.mapMarketplacePurchase),
       };
     } catch (error) {
-      logger.error('Error fetching marketplace stats:', error);
+      logger.error("Error fetching marketplace stats:", error);
       throw error;
     }
   }
 
-  private async initiateComplianceChecks(client: any, itemId: string): Promise<void> {
+  private async initiateComplianceChecks(
+    client: any,
+    itemId: string,
+  ): Promise<void> {
     for (const checkType of this.COMPLIANCE_CHECK_TYPES) {
       const checkId = this.generateId();
-      await client.query(`
+      await client.query(
+        `
         INSERT INTO compliance_checks (id, item_id, check_type, status, checked_by, checked_at)
         VALUES ($1, $2, $3, $4, NOW())
-      `, [checkId, itemId, checkType, 'pending', 'system']);
+      `,
+        [checkId, itemId, checkType, "pending", "system"],
+      );
     }
   }
 
-  private async awardCredits(client: any, userId: string, amount: number, source: string, referenceId: string): Promise<void> {
+  private async awardCredits(
+    client: any,
+    userId: string,
+    amount: number,
+    source: string,
+    referenceId: string,
+  ): Promise<void> {
     const creditId = this.generateId();
-    await client.query(`
+    await client.query(
+      `
       INSERT INTO vauntico_credits (id, user_id, amount, source, reference_id, created_at)
       VALUES ($1, $2, $3, $4, $5, NOW())
-    `, [creditId, userId, amount, source, referenceId]);
+    `,
+      [creditId, userId, amount, source, referenceId],
+    );
   }
 
   private generateLicenseKey(): string {
@@ -505,7 +559,7 @@ class MarketplaceService {
       updatedAt: row.updated_at,
       salesCount: parseInt(row.sales_count) || 0,
       rating: parseFloat(row.average_rating) || 0,
-      reviewCount: parseInt(row.review_count) || 0
+      reviewCount: parseInt(row.review_count) || 0,
     };
   }
 
@@ -520,7 +574,7 @@ class MarketplaceService {
       purchasedAt: row.purchased_at,
       licenseKey: row.license_key,
       expiresAt: row.expires_at,
-      refundReason: row.refund_reason
+      refundReason: row.refund_reason,
     };
   }
 
@@ -533,7 +587,7 @@ class MarketplaceService {
       details: row.details,
       checkedBy: row.checked_by,
       checkedAt: row.checked_at,
-      issues: row.issues ? JSON.parse(row.issues) : undefined
+      issues: row.issues ? JSON.parse(row.issues) : undefined,
     };
   }
 

@@ -1,5 +1,5 @@
 ---
-description: 'Enforce the use of top-level import type qualifier when an import only has specifiers with inline type qualifiers.'
+description: "Enforce the use of top-level import type qualifier when an import only has specifiers with inline type qualifiers."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -12,13 +12,13 @@ Namely, it completely removes import declarations with a top-level `type` qualif
 The latter behavior does have one potentially surprising effect in that in certain cases TS can leave behind a "side effect" import at runtime:
 
 ```ts
-import { type A, type B } from 'mod';
+import { type A, type B } from "mod";
 
 // is transpiled to
 
-import {} from 'mod';
+import {} from "mod";
 // which is the same as
-import 'mod';
+import "mod";
 ```
 
 For the rare case of needing to import for side effects, this may be desirable - but for most cases you will not want to leave behind an unnecessary side effect import.
@@ -32,35 +32,35 @@ This rule enforces that you use a top-level `type` qualifier for imports when it
 ### ❌ Incorrect
 
 ```ts
-import { type A } from 'mod';
-import { type A as AA } from 'mod';
-import { type A, type B } from 'mod';
-import { type A as AA, type B as BB } from 'mod';
+import { type A } from "mod";
+import { type A as AA } from "mod";
+import { type A, type B } from "mod";
+import { type A as AA, type B as BB } from "mod";
 ```
 
 ### ✅ Correct
 
 ```ts
-import type { A } from 'mod';
-import type { A as AA } from 'mod';
-import type { A, B } from 'mod';
-import type { A as AA, B as BB } from 'mod';
+import type { A } from "mod";
+import type { A as AA } from "mod";
+import type { A, B } from "mod";
+import type { A as AA, B as BB } from "mod";
 
-import T from 'mod';
-import type T from 'mod';
+import T from "mod";
+import type T from "mod";
 
-import * as T from 'mod';
-import type * as T from 'mod';
+import * as T from "mod";
+import type * as T from "mod";
 
-import { T } from 'mod';
-import type { T } from 'mod';
-import { T, U } from 'mod';
-import type { T, U } from 'mod';
-import { type T, U } from 'mod';
-import { T, type U } from 'mod';
+import { T } from "mod";
+import type { T } from "mod";
+import { T, U } from "mod";
+import type { T, U } from "mod";
+import { type T, U } from "mod";
+import { T, type U } from "mod";
 
-import type T, { U } from 'mod';
-import T, { type U } from 'mod';
+import type T, { U } from "mod";
+import T, { type U } from "mod";
 ```
 
 ## When Not To Use It

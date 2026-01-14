@@ -1,74 +1,95 @@
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Mail, Sparkles, Rocket, TrendingUp } from 'lucide-react'
-import vaunticoBanner from '../assets/vauntico_banner.webp'
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Mail, Sparkles, Rocket, TrendingUp } from "lucide-react";
+import vaunticoBanner from "../assets/vauntico_banner.webp";
 
 const VaultsPage = () => {
-  const [email, setEmail] = useState('')
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleEmailSubmit = async (e) => {
-    e.preventDefault()
-    if (!email) return
-    
-    setIsLoading(true)
-    
+    e.preventDefault();
+    if (!email) return;
+
+    setIsLoading(true);
+
     try {
       // Use Buttondown API for email subscription
-      const response = await fetch('https://api.buttondown.email/v1/subscribers', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Token ${import.meta.env.VITE_BUTTONDOWN_API_KEY}`,
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        "https://api.buttondown.email/v1/subscribers",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Token ${import.meta.env.VITE_BUTTONDOWN_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            tags: ["vip-list", "vault-updates"],
+            notes: "Joined from VaultsPage VIP list",
+          }),
         },
-        body: JSON.stringify({ 
-          email,
-          tags: ['vip-list', 'vault-updates'],
-          notes: 'Joined from VaultsPage VIP list'
-        })
-      })
-      
+      );
+
       if (response.ok) {
-        setIsSubmitted(true)
+        setIsSubmitted(true);
       } else {
-        throw new Error('Email subscription failed')
+        throw new Error("Email subscription failed");
       }
     } catch (error) {
-      console.error('Email subscription error:', error)
+      console.error("Email subscription error:", error);
       // Fallback to simulated success for demo purposes
-      setIsSubmitted(true)
+      setIsSubmitted(true);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const upcomingVaults = [
     {
       title: "E-commerce Empire",
-      description: "Complete prompt library for online store owners, dropshippers, and product creators",
+      description:
+        "Complete prompt library for online store owners, dropshippers, and product creators",
       icon: <TrendingUp className="w-8 h-8 text-blue-600" />,
       color: "bg-blue-50 border-blue-200",
-      features: ["Product descriptions", "Email sequences", "Ad copy", "Customer service"]
+      features: [
+        "Product descriptions",
+        "Email sequences",
+        "Ad copy",
+        "Customer service",
+      ],
     },
     {
       title: "Creator's Toolkit",
-      description: "Essential prompts for content creators, influencers, and personal brands",
+      description:
+        "Essential prompts for content creators, influencers, and personal brands",
       icon: <Sparkles className="w-8 h-8 text-purple-600" />,
       color: "bg-purple-50 border-purple-200",
-      features: ["Social media content", "Video scripts", "Brand voice", "Engagement strategies"]
+      features: [
+        "Social media content",
+        "Video scripts",
+        "Brand voice",
+        "Engagement strategies",
+      ],
     },
     {
       title: "Agency Arsenal",
-      description: "Professional-grade prompts for marketing agencies and consultants",
+      description:
+        "Professional-grade prompts for marketing agencies and consultants",
       icon: <Rocket className="w-8 h-8 text-green-600" />,
       color: "bg-green-50 border-green-200",
-      features: ["Client proposals", "Campaign strategies", "Reports", "Presentations"]
-    }
-  ]
+      features: [
+        "Client proposals",
+        "Campaign strategies",
+        "Reports",
+        "Presentations",
+      ],
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
@@ -76,24 +97,24 @@ const VaultsPage = () => {
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <div className="mb-8">
-            <img 
-              src={vaunticoBanner} 
-              alt="Vauntico Logo" 
+            <img
+              src={vaunticoBanner}
+              alt="Vauntico Logo"
               className="h-16 mx-auto mb-6"
             />
           </div>
-          
+
           <Badge className="mb-6 bg-[var(--vauntico-gold)] text-white px-4 py-2 text-sm font-semibold">
             Coming Soon
           </Badge>
-          
+
           <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900">
             More Vaults Are Coming
           </h1>
-          
+
           <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            We're building specialized prompt libraries for every industry and use case. 
-            Be the first to know when they launch.
+            We're building specialized prompt libraries for every industry and
+            use case. Be the first to know when they launch.
           </p>
         </div>
       </section>
@@ -112,7 +133,8 @@ const VaultsPage = () => {
                 Get Early Access
               </CardTitle>
               <p className="text-gray-600 mt-2">
-                Join our VIP list for exclusive previews, founder pricing, and first access to new vaults.
+                Join our VIP list for exclusive previews, founder pricing, and
+                first access to new vaults.
               </p>
             </CardHeader>
             <CardContent>
@@ -129,16 +151,21 @@ const VaultsPage = () => {
                       aria-label="Email address for VIP list"
                       aria-describedby="email-help"
                     />
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       disabled={isLoading}
                       className="vauntico-btn h-12 px-8 md:w-auto"
-                      aria-label={isLoading ? 'Joining VIP list...' : 'Join VIP list'}
+                      aria-label={
+                        isLoading ? "Joining VIP list..." : "Join VIP list"
+                      }
                     >
-                      {isLoading ? 'Joining...' : 'Join VIP List'}
+                      {isLoading ? "Joining..." : "Join VIP List"}
                     </Button>
                   </div>
-                  <p id="email-help" className="text-sm text-gray-500 text-center">
+                  <p
+                    id="email-help"
+                    className="text-sm text-gray-500 text-center"
+                  >
                     No spam, ever. Unsubscribe anytime.
                   </p>
                 </form>
@@ -151,7 +178,8 @@ const VaultsPage = () => {
                     You're In! 🎉
                   </h3>
                   <p className="text-gray-600">
-                    Thanks for joining our VIP list. You'll be the first to know about new vault releases.
+                    Thanks for joining our VIP list. You'll be the first to know
+                    about new vault releases.
                   </p>
                 </div>
               )}
@@ -166,10 +194,13 @@ const VaultsPage = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
             What's Coming Next
           </h2>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             {upcomingVaults.map((vault, index) => (
-              <Card key={index} className={`${vault.color} border-2 hover:shadow-lg transition-all duration-300 hover:scale-105`}>
+              <Card
+                key={index}
+                className={`${vault.color} border-2 hover:shadow-lg transition-all duration-300 hover:scale-105`}
+              >
                 <CardHeader className="text-center pb-4">
                   <div className="flex justify-center mb-4">
                     <div className="p-3 bg-white rounded-full shadow-md">
@@ -184,14 +215,17 @@ const VaultsPage = () => {
                   <p className="text-gray-700 mb-6 text-center">
                     {vault.description}
                   </p>
-                  
+
                   <div className="space-y-2">
                     <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
                       Includes:
                     </h4>
                     <ul className="space-y-1">
                       {vault.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="text-sm text-gray-600 flex items-center">
+                        <li
+                          key={featureIndex}
+                          className="text-sm text-gray-600 flex items-center"
+                        >
                           <div className="w-1.5 h-1.5 bg-[var(--vauntico-gold)] rounded-full mr-2"></div>
                           {feature}
                         </li>
@@ -202,10 +236,11 @@ const VaultsPage = () => {
               </Card>
             ))}
           </div>
-          
+
           <div className="text-center mt-12">
             <p className="text-lg text-gray-600 mb-6">
-              Each vault will include 50+ premium prompts, templates, and mini brand kits
+              Each vault will include 50+ premium prompts, templates, and mini
+              brand kits
             </p>
             <Badge className="bg-gray-100 text-gray-700 px-4 py-2">
               Expected Launch: Q1 2025
@@ -221,11 +256,14 @@ const VaultsPage = () => {
             Don't Miss Out
           </h2>
           <p className="text-lg text-gray-600 mb-8">
-            VIP members get exclusive previews, founder pricing, and early access to every new vault.
+            VIP members get exclusive previews, founder pricing, and early
+            access to every new vault.
           </p>
           {!isSubmitted && (
-            <Button 
-              onClick={() => document.querySelector('input[type="email"]')?.focus()}
+            <Button
+              onClick={() =>
+                document.querySelector('input[type="email"]')?.focus()
+              }
               className="vauntico-btn"
             >
               Join VIP List Above
@@ -234,7 +272,7 @@ const VaultsPage = () => {
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default VaultsPage
+export default VaultsPage;

@@ -1,15 +1,15 @@
-import { pool } from '../utils/database';
-import logger from '../utils/logger';
-import { TrustScoreService } from './trustScoreService';
+import { pool } from "../utils/database";
+import logger from "../utils/logger";
+import { TrustScoreService } from "./trustScoreService";
 
 export interface Sponsorship {
   id: string;
   sponsorId: string;
   creatorId: string;
-  tier: 'bronze' | 'silver' | 'gold' | 'platinum';
+  tier: "bronze" | "silver" | "gold" | "platinum";
   amount: number;
   currency: string;
-  status: 'pending' | 'active' | 'expired' | 'cancelled';
+  status: "pending" | "active" | "expired" | "cancelled";
   startDate: Date;
   endDate?: Date;
   kpis: SponsorshipKPIs;
@@ -29,60 +29,78 @@ export interface SponsorshipKPIs {
 }
 
 export interface SponsorshipTier {
-  tier: 'bronze' | 'silver' | 'gold' | 'platinum';
+  tier: "bronze" | "silver" | "gold" | "platinum";
   minAmount: number;
   maxAmount: number;
   benefits: string[];
   duration: number; // in months
   vaunticoCreditsBonus: number;
-  analyticsAccess: 'basic' | 'advanced' | 'premium' | 'enterprise';
+  analyticsAccess: "basic" | "advanced" | "premium" | "enterprise";
 }
 
 class SponsorshipService {
   private readonly TIER_CONFIGS: SponsorshipTier[] = [
     {
-      tier: 'bronze',
+      tier: "bronze",
       minAmount: 100,
       maxAmount: 500,
-      benefits: ['Basic analytics', 'Brand mention', 'Monthly report'],
+      benefits: ["Basic analytics", "Brand mention", "Monthly report"],
       duration: 1,
       vaunticoCreditsBonus: 50,
-      analyticsAccess: 'basic'
+      analyticsAccess: "basic",
     },
     {
-      tier: 'silver',
+      tier: "silver",
       minAmount: 500,
       maxAmount: 2000,
-      benefits: ['Advanced analytics', 'Brand mention', 'Bi-weekly report', 'Priority support'],
+      benefits: [
+        "Advanced analytics",
+        "Brand mention",
+        "Bi-weekly report",
+        "Priority support",
+      ],
       duration: 3,
       vaunticoCreditsBonus: 200,
-      analyticsAccess: 'advanced'
+      analyticsAccess: "advanced",
     },
     {
-      tier: 'gold',
+      tier: "gold",
       minAmount: 2000,
       maxAmount: 10000,
-      benefits: ['Premium analytics', 'Brand integration', 'Weekly report', 'Dedicated support', 'Co-branded content'],
+      benefits: [
+        "Premium analytics",
+        "Brand integration",
+        "Weekly report",
+        "Dedicated support",
+        "Co-branded content",
+      ],
       duration: 6,
       vaunticoCreditsBonus: 1000,
-      analyticsAccess: 'premium'
+      analyticsAccess: "premium",
     },
     {
-      tier: 'platinum',
+      tier: "platinum",
       minAmount: 10000,
       maxAmount: 100000,
-      benefits: ['Enterprise analytics', 'Full brand integration', 'Daily report', 'White-glove support', 'Exclusive content', 'Event access'],
+      benefits: [
+        "Enterprise analytics",
+        "Full brand integration",
+        "Daily report",
+        "White-glove support",
+        "Exclusive content",
+        "Event access",
+      ],
       duration: 12,
       vaunticoCreditsBonus: 5000,
-      analyticsAccess: 'enterprise'
-    }
+      analyticsAccess: "enterprise",
+    },
   ];
 
   async getSponsorships(filters?: {
     sponsorId?: string;
     creatorId?: string;
-    status?: Sponsorship['status'];
-    tier?: Sponsorship['tier'];
+    status?: Sponsorship["status"];
+    tier?: Sponsorship["tier"];
     limit?: number;
     offset?: number;
   }): Promise<{ sponsorships: Sponsorship[]; total: number }> {
@@ -119,7 +137,7 @@ class SponsorshipService {
         params.push(filters.tier);
       }
 
-      query += ' ORDER BY s.created_at DESC';
+      query += " ORDER BY s.created_at DESC";
 
       if (filters?.limit) {
         query += ` LIMIT $${paramIndex++}`;
@@ -166,29 +184,41 @@ class SponsorshipService {
 
       return {
         sponsorships: result.rows.map(this.mapSponsorship),
-        total: parseInt(countResult.rows[0].total)
+        total: parseInt(countResult.rows[0].total),
       };
     } catch (error) {
-      logger.error('Error fetching sponsorships:', error);
+      logger.error("Error fetching sponsorships:", error);
       throw error;
     }
   }
 
-  async createSponsorship(sponsorshipData: Omit<Sponsorship, 'id' | 'createdAt' | 'updatedAt' | 'kpis'>): Promise<Sponsorship> {
+  async createSponsorship(
+    sponsorshipData: Omit<
+      Sponsorship,
+      "id" | "createdAt" | "updatedAt" | "kpis"
+    >,
+  ): Promise<Sponsorship> {
     try {
       const client = await pool.connect();
-      
+
       try {
-        await client.query('BEGIN');
+        await client.query("BEGIN");
 
         // Validate tier and amount
-        const tierConfig = this.TIER_CONFIGS.find(t => t.tier === sponsorshipData.tier);
+        const tierConfig = this.TIER_CONFIGS.find(
+          (t) => t.tier === sponsorshipData.tier,
+        );
         if (!tierConfig) {
           throw new Error(`Invalid sponsorship tier: ${sponsorshipData.tier}`);
         }
 
-        if (sponsorshipData.amount < tierConfig.minAmount || sponsorshipData.amount > tierConfig.maxAmount) {
-          throw new Error(`Amount must be between ${tierConfig.minAmount} and ${tierConfig.maxAmount} for ${sponsorshipData.tier} tier`);
+        if (
+          sponsorshipData.amount < tierConfig.minAmount ||
+          sponsorshipData.amount > tierConfig.maxAmount
+        ) {
+          throw new Error(
+            `Amount must be between ${tierConfig.minAmount} and ${tierConfig.maxAmount} for ${sponsorshipData.tier} tier`,
+          );
         }
 
         // Create sponsorship
@@ -207,11 +237,11 @@ class SponsorshipService {
           sponsorshipData.creatorId,
           sponsorshipData.tier,
           sponsorshipData.amount,
-          sponsorshipData.currency || 'USD',
-          sponsorshipData.status || 'pending',
+          sponsorshipData.currency || "USD",
+          sponsorshipData.status || "pending",
           sponsorshipData.startDate,
           sponsorshipData.endDate,
-          JSON.stringify(this.initializeKPIs())
+          JSON.stringify(this.initializeKPIs()),
         ];
 
         const result = await client.query(query, values);
@@ -221,26 +251,29 @@ class SponsorshipService {
           client,
           sponsorshipData.sponsorId,
           tierConfig.vaunticoCreditsBonus,
-          'sponsorship_signup',
-          id
+          "sponsorship_signup",
+          id,
         );
 
-        await client.query('COMMIT');
+        await client.query("COMMIT");
 
         return this.mapSponsorship(result.rows[0]);
       } catch (error) {
-        await client.query('ROLLBACK');
+        await client.query("ROLLBACK");
         throw error;
       } finally {
         client.release();
       }
     } catch (error) {
-      logger.error('Error creating sponsorship:', error);
+      logger.error("Error creating sponsorship:", error);
       throw error;
     }
   }
 
-  async updateSponsorshipKPIs(sponsorshipId: string, kpis: Partial<SponsorshipKPIs>): Promise<Sponsorship> {
+  async updateSponsorshipKPIs(
+    sponsorshipId: string,
+    kpis: Partial<SponsorshipKPIs>,
+  ): Promise<Sponsorship> {
     try {
       const query = `
         UPDATE sponsorships 
@@ -251,14 +284,14 @@ class SponsorshipService {
       `;
 
       const result = await pool.query(query, [JSON.stringify(kpis)]);
-      
+
       if (result.rows.length === 0) {
-        throw new Error('Sponsorship not found');
+        throw new Error("Sponsorship not found");
       }
 
       return this.mapSponsorship(result.rows[0]);
     } catch (error) {
-      logger.error('Error updating sponsorship KPIs:', error);
+      logger.error("Error updating sponsorship KPIs:", error);
       throw error;
     }
   }
@@ -276,47 +309,50 @@ class SponsorshipService {
       `;
 
       const result = await pool.query(query, [sponsorshipId]);
-      
+
       if (result.rows.length === 0) {
-        throw new Error('Sponsorship not found');
+        throw new Error("Sponsorship not found");
       }
 
       const sponsorship = result.rows[0];
       const kpis = sponsorship.kpis as SponsorshipKPIs;
-      
+
       // Simple ROI calculation: (Revenue Generated - Investment) / Investment * 100
       const investment = parseFloat(sponsorship.amount);
       const revenue = kpis.revenueGenerated || 0;
-      
+
       return ((revenue - investment) / investment) * 100;
     } catch (error) {
-      logger.error('Error calculating ROI:', error);
+      logger.error("Error calculating ROI:", error);
       throw error;
     }
   }
 
-  async getSponsorshipAnalytics(sponsorshipId: string, timeframe: '7d' | '30d' | '90d' | '1y' = '30d'): Promise<any> {
+  async getSponsorshipAnalytics(
+    sponsorshipId: string,
+    timeframe: "7d" | "30d" | "90d" | "1y" = "30d",
+  ): Promise<any> {
     try {
       // In a real implementation, this would query actual engagement data
       // For now, return mock analytics data based on sponsorship tier
       const sponsorship = await this.getSponsorshipById(sponsorshipId);
-      
+
       if (!sponsorship) {
-        throw new Error('Sponsorship not found');
+        throw new Error("Sponsorship not found");
       }
 
       const baseMultiplier = {
         bronze: 1.0,
         silver: 1.5,
         gold: 2.5,
-        platinum: 5.0
+        platinum: 5.0,
       }[sponsorship.tier];
 
       const timeframeMultiplier = {
-        '7d': 0.25,
-        '30d': 1.0,
-        '90d': 3.0,
-        '1y': 12.0
+        "7d": 0.25,
+        "30d": 1.0,
+        "90d": 3.0,
+        "1y": 12.0,
       }[timeframe];
 
       return {
@@ -326,33 +362,34 @@ class SponsorshipService {
         impressions: Math.floor(10000 * baseMultiplier * timeframeMultiplier),
         clicks: Math.floor(500 * baseMultiplier * timeframeMultiplier),
         conversions: Math.floor(50 * baseMultiplier * timeframeMultiplier),
-        revenue: sponsorship.amount * 0.1 * baseMultiplier * timeframeMultiplier,
+        revenue:
+          sponsorship.amount * 0.1 * baseMultiplier * timeframeMultiplier,
         engagement: {
           likes: Math.floor(1000 * baseMultiplier * timeframeMultiplier),
           shares: Math.floor(200 * baseMultiplier * timeframeMultiplier),
-          comments: Math.floor(100 * baseMultiplier * timeframeMultiplier)
+          comments: Math.floor(100 * baseMultiplier * timeframeMultiplier),
         },
         demographics: {
           age: {
-            '18-24': 25,
-            '25-34': 35,
-            '35-44': 25,
-            '45+': 15
+            "18-24": 25,
+            "25-34": 35,
+            "35-44": 25,
+            "45+": 15,
           },
           gender: {
             male: 55,
-            female: 45
+            female: 45,
           },
           location: {
-            'US': 40,
-            'UK': 15,
-            'Canada': 10,
-            'Other': 35
-          }
-        }
+            US: 40,
+            UK: 15,
+            Canada: 10,
+            Other: 35,
+          },
+        },
       };
     } catch (error) {
-      logger.error('Error fetching sponsorship analytics:', error);
+      logger.error("Error fetching sponsorship analytics:", error);
       throw error;
     }
   }
@@ -370,14 +407,22 @@ class SponsorshipService {
       `;
 
       const result = await pool.query(query, [id]);
-      return result.rows.length > 0 ? this.mapSponsorship(result.rows[0]) : null;
+      return result.rows.length > 0
+        ? this.mapSponsorship(result.rows[0])
+        : null;
     } catch (error) {
-      logger.error('Error fetching sponsorship by ID:', error);
+      logger.error("Error fetching sponsorship by ID:", error);
       throw error;
     }
   }
 
-  private async awardCredits(client: any, userId: string, amount: number, source: string, referenceId: string): Promise<void> {
+  private async awardCredits(
+    client: any,
+    userId: string,
+    amount: number,
+    source: string,
+    referenceId: string,
+  ): Promise<void> {
     const creditId = this.generateId();
     const query = `
       INSERT INTO vauntico_credits (id, user_id, amount, source, reference_id, created_at)
@@ -396,7 +441,7 @@ class SponsorshipService {
       conversionRate: 0,
       revenueGenerated: 0,
       roiScore: 0,
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
@@ -411,9 +456,9 @@ class SponsorshipService {
       status: row.status,
       startDate: row.start_date,
       endDate: row.end_date,
-      kpis: row.kpis as SponsorshipKPIs || this.initializeKPIs(),
+      kpis: (row.kpis as SponsorshipKPIs) || this.initializeKPIs(),
       createdAt: row.created_at,
-      updatedAt: row.updated_at
+      updatedAt: row.updated_at,
     };
   }
 

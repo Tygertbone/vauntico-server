@@ -1,5 +1,5 @@
 ---
-description: 'Require a consistent member declaration order.'
+description: "Require a consistent member declaration order."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -20,17 +20,17 @@ interface Options {
   typeLiterals?: OrderConfig;
 }
 
-type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
+type OrderConfig = MemberType[] | SortedOrderConfig | "never";
 
 interface SortedOrderConfig {
-  memberTypes?: MemberType[] | 'never';
-  optionalityOrder?: 'optional-first' | 'required-first';
+  memberTypes?: MemberType[] | "never";
+  optionalityOrder?: "optional-first" | "required-first";
   order?:
-    | 'alphabetically'
-    | 'alphabetically-case-insensitive'
-    | 'as-written'
-    | 'natural'
-    | 'natural-case-insensitive';
+    | "alphabetically"
+    | "alphabetically-case-insensitive"
+    | "as-written"
+    | "natural"
+    | "natural-case-insensitive";
 }
 
 // See below for the more specific MemberType strings

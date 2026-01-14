@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
-import { Check, Zap, Crown, Sparkles, Heart, Infinity, Star, Gem } from 'lucide-react';
-import { CustomIcons } from './CustomIcons';
-import { useHapticHover } from '../hooks/useHapticFeedback';
+import React, { useState } from "react";
+import {
+  Check,
+  Zap,
+  Crown,
+  Sparkles,
+  Heart,
+  Infinity,
+  Star,
+  Gem,
+} from "lucide-react";
+import { CustomIcons } from "./CustomIcons";
+import { useHapticHover } from "../hooks/useHapticFeedback";
 
 interface PricingTier {
   id: string;
@@ -17,68 +26,70 @@ interface PricingTier {
 
 const pricingTiers: PricingTier[] = [
   {
-    id: 'basic',
-    name: 'Creator Initiate',
+    id: "basic",
+    name: "Creator Initiate",
     price: 0,
     originalPrice: 29,
     features: [
-      'Trust Score Calculator',
-      'Basic Lore Vault Access',
-      'Community Forum Access',
-      'Monthly Sacred Rituals',
-      'Email Support'
+      "Trust Score Calculator",
+      "Basic Lore Vault Access",
+      "Community Forum Access",
+      "Monthly Sacred Rituals",
+      "Email Support",
     ],
     trustBonus: 0,
-    nftIncluded: false
+    nftIncluded: false,
   },
   {
-    id: 'pro',
-    name: 'Creator Pro',
+    id: "pro",
+    name: "Creator Pro",
     price: 29,
     originalPrice: 79,
     features: [
-      'Everything in Basic, plus:',
-      'AI-Generated Mantras',
-      'Advanced Trust Analytics',
-      'Premium Lore Templates',
-      'Workshop Integration Tools',
-      'Priority Support',
-      'Custom Branding Kit'
+      "Everything in Basic, plus:",
+      "AI-Generated Mantras",
+      "Advanced Trust Analytics",
+      "Premium Lore Templates",
+      "Workshop Integration Tools",
+      "Priority Support",
+      "Custom Branding Kit",
     ],
     popular: true,
     trustBonus: 15,
-    nftIncluded: true
+    nftIncluded: true,
   },
   {
-    id: 'enterprise',
-    name: 'Creator Enterprise',
+    id: "enterprise",
+    name: "Creator Enterprise",
     price: 999,
     originalPrice: 299,
     features: [
-      'Everything in Pro, plus:',
-      'White-Glove Service Guarantee',
-      'Blockchain Verification Badge',
-      'API Access & Webhooks',
-      'Dedicated Account Manager',
-      'Custom Sacred Geometry Branding',
-      'SLA - 99.9% Uptime',
-      'Unlimited Lore Storage',
-      'Global CDN Distribution',
-      'Advanced AI Ritual Generator'
+      "Everything in Pro, plus:",
+      "White-Glove Service Guarantee",
+      "Blockchain Verification Badge",
+      "API Access & Webhooks",
+      "Dedicated Account Manager",
+      "Custom Sacred Geometry Branding",
+      "SLA - 99.9% Uptime",
+      "Unlimited Lore Storage",
+      "Global CDN Distribution",
+      "Advanced AI Ritual Generator",
     ],
     highlighted: true,
     trustBonus: 50,
-    nftIncluded: true
-  }
+    nftIncluded: true,
+  },
 ];
 
 export default function SacredPricing() {
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
-  const [selectedTier, setSelectedTier] = useState<string>('pro');
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">(
+    "monthly",
+  );
+  const [selectedTier, setSelectedTier] = useState<string>("pro");
   const { handleHover } = useHapticHover();
 
-  const formatPrice = (price: number, cycle: 'monthly' | 'annual') => {
-    if (cycle === 'annual') {
+  const formatPrice = (price: number, cycle: "monthly" | "annual") => {
+    if (cycle === "annual") {
       return `$${(price * 12 * 0.8).toFixed(0)}/year`;
     }
     return `$${price}/month`;
@@ -92,7 +103,7 @@ export default function SacredPricing() {
     setSelectedTier(tierId);
   };
 
-  const handleBillingToggle = (cycle: 'monthly' | 'annual') => {
+  const handleBillingToggle = (cycle: "monthly" | "annual") => {
     setBillingCycle(cycle);
   };
 
@@ -116,9 +127,10 @@ export default function SacredPricing() {
             </h1>
             <CustomIcons.HeartVine className="w-12 h-12 text-pink-400" />
           </div>
-          
+
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Choose your path to abundance with pricing that scales with your spiritual growth
+            Choose your path to abundance with pricing that scales with your
+            spiritual growth
           </p>
         </div>
 
@@ -126,23 +138,23 @@ export default function SacredPricing() {
         <div className="flex justify-center mb-12">
           <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-1 inline-flex">
             <button
-              onClick={() => handleBillingToggle('monthly')}
+              onClick={() => handleBillingToggle("monthly")}
               onMouseEnter={() => handleHover()}
               className={`px-6 py-3 rounded-l-xl font-medium transition-all ${
-                billingCycle === 'monthly' 
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' 
-                  : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                billingCycle === "monthly"
+                  ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+                  : "bg-white/10 text-gray-300 hover:bg-white/20"
               }`}
             >
               Monthly
             </button>
             <button
-              onClick={() => handleBillingToggle('annual')}
+              onClick={() => handleBillingToggle("annual")}
               onMouseEnter={() => handleHover()}
               className={`px-6 py-3 rounded-r-xl font-medium transition-all ${
-                billingCycle === 'annual' 
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' 
-                  : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                billingCycle === "annual"
+                  ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+                  : "bg-white/10 text-gray-300 hover:bg-white/20"
               }`}
             >
               Annual <span className="text-yellow-400 text-sm">(Save 20%)</span>
@@ -156,7 +168,7 @@ export default function SacredPricing() {
             <div
               key={tier.id}
               className={`relative bg-white/5 backdrop-blur-xl rounded-3xl border-2 p-8 transition-all hover:scale-105 hover:border-purple-400/30 ${
-                selectedTier === tier.id ? 'ring-2 ring-purple-400' : ''
+                selectedTier === tier.id ? "ring-2 ring-purple-400" : ""
               }`}
               onClick={() => handleTierSelect(tier.id)}
               onMouseEnter={() => handleHover()}
@@ -178,16 +190,22 @@ export default function SacredPricing() {
               {/* Header */}
               <div className="text-center mb-6">
                 <div className="flex items-center justify-center mb-4">
-                  {tier.id === 'enterprise' && <Crown className="w-8 h-8 text-yellow-400" />}
-                  <h3 className="text-2xl font-bold text-white mb-2">{tier.name}</h3>
+                  {tier.id === "enterprise" && (
+                    <Crown className="w-8 h-8 text-yellow-400" />
+                  )}
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    {tier.name}
+                  </h3>
                   {tier.nftIncluded && (
                     <div className="flex items-center space-x-2">
                       <Gem className="w-5 h-5 text-purple-400" />
-                      <span className="text-purple-400 text-sm">NFT Included</span>
+                      <span className="text-purple-400 text-sm">
+                        NFT Included
+                      </span>
                     </div>
                   )}
                 </div>
-                
+
                 <div className="text-3xl font-bold text-white mb-4">
                   {formatPrice(tier.price, billingCycle)}
                   {tier.originalPrice && (
@@ -234,16 +252,18 @@ export default function SacredPricing() {
                 onClick={() => handleTierSelect(tier.id)}
                 onMouseEnter={() => handleHover()}
                 className={`w-full mt-6 py-4 rounded-xl font-semibold transition-all ${
-                  tier.highlighted 
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700' 
+                  tier.highlighted
+                    ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700"
                     : tier.popular
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600'
-                    : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600'
+                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600"
+                      : "bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600"
                 }`}
               >
-                {tier.id === 'basic' ? 'Start Free Journey' : 
-                 tier.id === 'pro' ? 'Unlock Pro Features' : 
-                 'Transform Enterprise'}
+                {tier.id === "basic"
+                  ? "Start Free Journey"
+                  : tier.id === "pro"
+                    ? "Unlock Pro Features"
+                    : "Transform Enterprise"}
               </button>
             </div>
           ))}
@@ -257,22 +277,29 @@ export default function SacredPricing() {
               <Infinity className="w-6 h-6 text-pink-400" />
               <Heart className="w-6 h-6 text-yellow-400" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-4">Sacred Investment Philosophy</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">
+              Sacred Investment Philosophy
+            </h3>
             <p className="text-gray-300 italic text-lg leading-relaxed">
-              "Your investment in self creates ripples of abundance that uplift the entire community. 
-              When one creator rises, we all rise together."
+              "Your investment in self creates ripples of abundance that uplift
+              the entire community. When one creator rises, we all rise
+              together."
             </p>
             <div className="mt-6 flex items-center justify-center space-x-4">
               <div className="text-center">
                 <Zap className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
-                <p className="text-yellow-400 font-semibold">Sacred Geometry NFTs</p>
+                <p className="text-yellow-400 font-semibold">
+                  Sacred Geometry NFTs
+                </p>
                 <p className="text-gray-300 text-sm">
                   Mint unique sacred geometries as proof of your journey
                 </p>
               </div>
               <div className="text-center">
                 <Sparkles className="w-8 h-8 text-purple-400 mx-auto mb-2" />
-                <p className="text-purple-400 font-semibold">Blockchain Verification</p>
+                <p className="text-purple-400 font-semibold">
+                  Blockchain Verification
+                </p>
                 <p className="text-gray-300 text-sm">
                   Immutable trust scores on the blockchain
                 </p>
@@ -285,7 +312,9 @@ export default function SacredPricing() {
         <div className="mt-12 text-center">
           <div className="inline-flex items-center space-x-3 bg-white/10 backdrop-blur-xl rounded-full px-6 py-3">
             <CustomIcons.TrustFlow className="w-6 h-6 text-purple-400" />
-            <span className="text-purple-400 font-semibold">Higher Tiers Include Trust Score Bonuses</span>
+            <span className="text-purple-400 font-semibold">
+              Higher Tiers Include Trust Score Bonuses
+            </span>
           </div>
         </div>
       </div>

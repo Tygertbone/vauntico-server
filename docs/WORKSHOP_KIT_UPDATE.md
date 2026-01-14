@@ -3,10 +3,12 @@
 ## Changes Made:
 
 ### 1. **App.jsx** ✅
+
 - Added maintenance banner at top
 - Message: "⚠️ Payment system upgrade in progress..."
 
 ### 2. **Paystack.js** ✅
+
 - Updated Workshop Kit pricing: R3,500 ZAR / $199 USD
 - Fixed `checkoutWorkshopKit()` function
 - Added currency support
@@ -21,36 +23,38 @@
 **Replace the purchase handler with:**
 
 ```javascript
-import { checkoutWorkshopKit, PAYSTACK_PRICING } from '../utils/paystack'
+import { checkoutWorkshopKit, PAYSTACK_PRICING } from "../utils/paystack";
 
-const [email, setEmail] = useState('')
-const [name, setName] = useState('')
-const [currency, setCurrency] = useState('ZAR')
-const [isPurchasing, setIsPurchasing] = useState(false)
+const [email, setEmail] = useState("");
+const [name, setName] = useState("");
+const [currency, setCurrency] = useState("ZAR");
+const [isPurchasing, setIsPurchasing] = useState(false);
 
 const handlePurchase = async () => {
-  if (!email || !email.includes('@')) {
-    alert('Please enter a valid email address')
-    return
+  if (!email || !email.includes("@")) {
+    alert("Please enter a valid email address");
+    return;
   }
 
-  setIsPurchasing(true)
-  
+  setIsPurchasing(true);
+
   try {
-    await checkoutWorkshopKit(email, currency, name)
+    await checkoutWorkshopKit(email, currency, name);
   } catch (error) {
-    alert('Failed to open payment window. Please try again.')
-    console.error(error)
+    alert("Failed to open payment window. Please try again.");
+    console.error(error);
   } finally {
-    setIsPurchasing(false)
+    setIsPurchasing(false);
   }
-}
+};
 ```
 
 **Simplified CTA section:**
 
 ```jsx
-{/* Email capture form */}
+{
+  /* Email capture form */
+}
 <div className="max-w-md mx-auto mb-8">
   <input
     type="text"
@@ -67,47 +71,50 @@ const handlePurchase = async () => {
     required
     className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-3"
   />
-  
+
   {/* Currency selector */}
   <div className="flex gap-2 mb-4">
     <button
-      onClick={() => setCurrency('ZAR')}
+      onClick={() => setCurrency("ZAR")}
       className={`flex-1 py-2 px-4 rounded-lg ${
-        currency === 'ZAR'
-          ? 'bg-vault-purple text-white'
-          : 'bg-gray-100 text-gray-700'
+        currency === "ZAR"
+          ? "bg-vault-purple text-white"
+          : "bg-gray-100 text-gray-700"
       }`}
     >
       🇿🇦 R3,500 ZAR
     </button>
     <button
-      onClick={() => setCurrency('USD')}
+      onClick={() => setCurrency("USD")}
       className={`flex-1 py-2 px-4 rounded-lg ${
-        currency === 'USD'
-          ? 'bg-vault-purple text-white'
-          : 'bg-gray-100 text-gray-700'
+        currency === "USD"
+          ? "bg-vault-purple text-white"
+          : "bg-gray-100 text-gray-700"
       }`}
     >
       🌍 $199 USD
     </button>
   </div>
-</div>
+</div>;
 
-{/* Single CTA button */}
+{
+  /* Single CTA button */
+}
 <button
   onClick={handlePurchase}
   disabled={isPurchasing || !email}
   className="btn-primary text-lg px-12 py-4 disabled:opacity-50 disabled:cursor-not-allowed"
 >
   {isPurchasing
-    ? '⏳ Opening Payment...'
-    : `🎁 Get Workshop Kit - ${currency === 'ZAR' ? 'R3,500' : '$199'}`}
-</button>
+    ? "⏳ Opening Payment..."
+    : `🎁 Get Workshop Kit - ${currency === "ZAR" ? "R3,500" : "$199"}`}
+</button>;
 ```
 
 ### 4. Update Environment Variables
 
 Add to `.env`:
+
 ```bash
 VITE_PAYSTACK_PUBLIC_KEY=pk_test_YOUR_KEY_HERE
 ```
@@ -146,6 +153,7 @@ Create redirect after purchase shows payment reference and next steps.
 ## Test Card Details:
 
 **Paystack Test Cards:**
+
 - Success: `4084 0840 8408 4081`
 - CVV: `408`
 - Expiry: Any future date
@@ -154,6 +162,7 @@ Create redirect after purchase shows payment reference and next steps.
 ## Manual Fulfillment Process:
 
 After user purchases:
+
 1. Check payment in Paystack Dashboard
 2. Email customer with access details
 3. Manually send Workshop Kit materials
@@ -162,4 +171,3 @@ After user purchases:
 ---
 
 **Status:** ⏳ Ready to implement - waiting for Paystack keys
-

@@ -1,5 +1,5 @@
 ---
-description: 'Disallow iterating over an array with a for-in loop.'
+description: "Disallow iterating over an array with a for-in loop."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

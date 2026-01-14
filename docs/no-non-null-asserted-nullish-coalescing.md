@@ -1,5 +1,5 @@
 ---
-description: 'Disallow non-null assertions in the left operand of a nullish coalescing operator.'
+description: "Disallow non-null assertions in the left operand of a nullish coalescing operator."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -22,11 +22,11 @@ foo!.bazz! ?? bar;
 foo()! ?? bar;
 
 let x!: string;
-x! ?? '';
+x! ?? "";
 
 let x: string;
 x = foo();
-x! ?? '';
+x! ?? "";
 ```
 
 ### ✅ Correct
@@ -40,7 +40,7 @@ foo() ?? bar;
 
 // This is considered correct code because there's no way for the user to satisfy it.
 let x: string;
-x! ?? '';
+x! ?? "";
 ```
 
 ## When Not To Use It

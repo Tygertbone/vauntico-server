@@ -3,6 +3,7 @@
 ## 🎯 5-Minute Deployment
 
 ### Step 1: Environment Variables (2 min)
+
 On the Vercel import screen, click "Environment Variables" and add:
 
 ```env
@@ -15,17 +16,21 @@ VITE_CURRENCY=NGN
 ```
 
 ### Step 2: Deploy (2 min)
+
 1. Click **"Deploy"** button
 2. Wait for build to complete
 3. Get your `.vercel.app` URL
 
 ### Step 3: Add Domain (1 min)
+
 1. Settings → Domains
 2. Add `vault.vauntico.com`
 3. Configure DNS (CNAME to `cname.vercel-dns.com`)
 
 ### Step 4: Test
+
 Visit `https://vault.vauntico.com`:
+
 - ✅ Homepage loads
 - ✅ Payment works
 - ✅ HTTPS enabled
@@ -35,10 +40,12 @@ Visit `https://vault.vauntico.com`:
 ## 🔑 Critical Environment Variables
 
 **Minimum Required:**
+
 - `VITE_PAYSTACK_PUBLIC_KEY` - Your Paystack public key
 - `VITE_PAYSTACK_SECRET_KEY` - Your Paystack secret key
 
 **Highly Recommended:**
+
 - `VITE_APP_URL` - Your custom domain
 - `VITE_PRODUCT_PRICE` - Product price (default: 97)
 - `VITE_CURRENCY` - Currency code (default: NGN)
@@ -64,6 +71,7 @@ Visit `https://vault.vauntico.com`:
 ## 📱 DNS Configuration Options
 
 ### Option 1: CNAME (Recommended)
+
 ```
 Type: CNAME
 Name: vault
@@ -71,6 +79,7 @@ Value: cname.vercel-dns.com
 ```
 
 ### Option 2: A Record
+
 ```
 Type: A
 Name: vault
@@ -78,6 +87,7 @@ Value: 76.76.21.21
 ```
 
 ### Option 3: Vercel Nameservers
+
 ```
 ns1.vercel-dns.com
 ns2.vercel-dns.com
@@ -88,6 +98,7 @@ ns2.vercel-dns.com
 ## ✅ Current Config Status
 
 Your project files are **ready**:
+
 - ✅ `vercel.json` - Optimized for Vite
 - ✅ `vite.config.js` - React + Tailwind
 - ✅ `package.json` - pnpm scripts
@@ -102,6 +113,7 @@ Your project files are **ready**:
 ## 🎉 That's It!
 
 No code changes needed. Just:
+
 1. Add env vars
 2. Click Deploy
 3. Add domain

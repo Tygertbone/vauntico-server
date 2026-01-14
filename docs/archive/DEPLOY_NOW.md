@@ -1,6 +1,7 @@
 # 🚀 DEPLOY NOW - Vauntico MVP to Vercel
 
 ## ✅ BUILD TEST PASSED
+
 ```
 ✓ 1735 modules transformed
 ✓ Built in 3.29s
@@ -16,6 +17,7 @@
 ## 🎯 3-Step Deployment Process
 
 ### Step 1: Add Environment Variables (Required)
+
 On your Vercel import screen, add these **MINIMUM** variables:
 
 ```env
@@ -28,6 +30,7 @@ VITE_CURRENCY=NGN
 ```
 
 **How to add:**
+
 1. Click "Environment Variables" section on Vercel screen
 2. For each variable:
    - Name: `VITE_PAYSTACK_PUBLIC_KEY`
@@ -36,16 +39,18 @@ VITE_CURRENCY=NGN
    - Click "Add"
 3. Repeat for all 6 variables
 
-⚠️ **CRITICAL:** Use your **LIVE** Paystack keys (pk_live_ and sk_live_), not test keys!
+⚠️ **CRITICAL:** Use your **LIVE** Paystack keys (pk*live* and sk*live*), not test keys!
 
 ---
 
 ### Step 2: Deploy
+
 1. Click the **"Deploy"** button at bottom of screen
 2. Watch the deployment logs
 3. Wait 2-4 minutes
 
 **What Vercel does:**
+
 - Clones your GitHub repo
 - Installs dependencies with pnpm
 - Runs `vite build`
@@ -55,6 +60,7 @@ VITE_CURRENCY=NGN
 ---
 
 ### Step 3: Add Custom Domain
+
 After deployment succeeds:
 
 1. Click on your new deployment
@@ -64,6 +70,7 @@ After deployment succeeds:
 5. Click **"Add"**
 
 **If "Domain already in use" error:**
+
 1. Find the old project using this domain
 2. Settings → Domains → Remove it
 3. Wait 5 minutes
@@ -71,6 +78,7 @@ After deployment succeeds:
 
 **DNS Configuration:**
 Add this CNAME record to your DNS:
+
 ```
 Type: CNAME
 Name: vault
@@ -83,6 +91,7 @@ TTL: 3600
 ## 📋 Your Current Configuration
 
 ### ✅ Verified Files
+
 ```
 ✓ package.json       - Build scripts configured
 ✓ vite.config.js     - React + Vite + Tailwind
@@ -93,6 +102,7 @@ TTL: 3600
 ```
 
 ### ✅ Build Settings (Auto-detected by Vercel)
+
 ```
 Framework: Vite
 Build Command: pnpm run build
@@ -102,6 +112,7 @@ Node Version: 18.x (auto)
 ```
 
 ### ✅ Features Enabled
+
 ```
 ✓ SPA Routing (vercel.json rewrites)
 ✓ Asset Caching (31 days)
@@ -116,6 +127,7 @@ Node Version: 18.x (auto)
 ## 🔍 Post-Deployment Validation
 
 ### Test These URLs:
+
 Once deployed, visit and verify:
 
 1. **Homepage**
@@ -135,6 +147,7 @@ Once deployed, visit and verify:
    - Should show success message
 
 ### Test Payment Flow:
+
 1. Click "Buy Access" button
 2. Enter email
 3. Paystack popup appears
@@ -143,6 +156,7 @@ Once deployed, visit and verify:
 6. Notion content visible
 
 ### Check Browser Console (F12):
+
 ```javascript
 // Should see no errors
 // Verify environment variables loaded
@@ -151,6 +165,7 @@ console.log(import.meta.env.VITE_APP_URL);
 ```
 
 ### Check Network Tab:
+
 ```
 ✓ index.html - 200 OK
 ✓ index.js - 200 OK (gzipped)
@@ -164,6 +179,7 @@ console.log(import.meta.env.VITE_APP_URL);
 ## 📊 Expected Performance
 
 ### Build Metrics:
+
 ```
 Build Time: ~3 seconds (local) / ~2-4 min (Vercel)
 Bundle Size: 400 KB JS + 92 KB CSS
@@ -172,6 +188,7 @@ Total Output: ~604 KB
 ```
 
 ### Runtime Performance:
+
 ```
 First Load: < 2 seconds
 Time to Interactive: < 3 seconds
@@ -184,7 +201,9 @@ Uptime: 99.9% (Vercel SLA)
 ## 🐛 Troubleshooting Guide
 
 ### Build Fails
+
 **Error: "Cannot find module"**
+
 ```bash
 # Already tested - your build works!
 # If this happens on Vercel:
@@ -193,13 +212,16 @@ Uptime: 99.9% (Vercel SLA)
 ```
 
 **Error: "Environment variable undefined"**
+
 ```bash
 # Fix: Add VITE_ prefix to all variables
 # Make sure you added them in Vercel dashboard
 ```
 
 ### Domain Issues
+
 **"Domain already in use"**
+
 ```
 1. Vercel Dashboard → Projects
 2. Find old project with vault.vauntico.com
@@ -208,6 +230,7 @@ Uptime: 99.9% (Vercel SLA)
 ```
 
 **"SSL Certificate Pending"**
+
 ```
 Normal - takes 10-20 minutes
 If > 24 hours, check:
@@ -217,7 +240,9 @@ If > 24 hours, check:
 ```
 
 ### Payment Not Working
+
 **"Invalid public key"**
+
 ```
 1. Verify using pk_live_ not pk_test_
 2. Re-copy from Paystack dashboard
@@ -226,7 +251,9 @@ If > 24 hours, check:
 ```
 
 ### Routes Return 404
+
 **Should not happen - already configured!**
+
 ```json
 // vercel.json already has:
 "rewrites": [
@@ -235,6 +262,7 @@ If > 24 hours, check:
 ```
 
 If still issues:
+
 1. Verify vercel.json is in repo root
 2. Check file is committed to GitHub
 3. Redeploy
@@ -277,16 +305,19 @@ Deployments → "..." → "Redeploy"
 ## 📞 Support Resources
 
 ### Vercel Support
+
 - Dashboard → Help → Contact Support
 - Status: status.vercel.com
 - Docs: vercel.com/docs
 
 ### Payment Issues
+
 - Paystack Dashboard: dashboard.paystack.com
 - Support: support@paystack.com
 - Webhook logs: Dashboard → Developers → Webhooks
 
 ### Domain Issues
+
 - DNS Checker: dnschecker.org
 - Propagation: whatsmydns.net
 - Your registrar's support
@@ -296,7 +327,7 @@ Deployments → "..." → "Redeploy"
 ## 🚦 Deployment Decision Tree
 
 ```
-Are all required env vars ready? 
+Are all required env vars ready?
 ├─ NO → Get Paystack keys first
 └─ YES → Continue
 
@@ -319,21 +350,25 @@ After deployment:
 ## ⚡ Quick Commands Reference
 
 ### Test Build Locally:
+
 ```powershell
 pnpm run build
 ```
 
 ### Preview Build:
+
 ```powershell
 pnpm run preview
 ```
 
 ### Check Build Size:
+
 ```powershell
 Get-ChildItem dist -Recurse | Measure-Object -Property Length -Sum
 ```
 
 ### Clean Build:
+
 ```powershell
 Remove-Item dist -Recurse -Force
 pnpm run build
@@ -344,12 +379,14 @@ pnpm run build
 ## 🎯 Your Next Actions
 
 ### Right Now:
+
 1. ✅ Open Vercel import screen (you're already there!)
 2. ✅ Add the 6 required environment variables
 3. ✅ Click **"Deploy"** button
 4. ⏱️ Wait 2-4 minutes
 
 ### After Deployment:
+
 1. ✅ Test the `.vercel.app` URL
 2. ✅ Add custom domain
 3. ✅ Configure DNS
@@ -357,6 +394,7 @@ pnpm run build
 5. ✅ Test `vault.vauntico.com`
 
 ### Final Steps:
+
 1. ✅ Test payment flow
 2. ✅ Share with test users
 3. ✅ Monitor analytics
@@ -367,11 +405,13 @@ pnpm run build
 ## 📈 Post-Launch Monitoring
 
 ### Enable Vercel Analytics:
+
 ```
 Settings → Analytics → Enable
 ```
 
 ### Set Up Alerts:
+
 ```
 Settings → Notifications → Configure
 - Build failures
@@ -380,6 +420,7 @@ Settings → Notifications → Configure
 ```
 
 ### Monitor Performance:
+
 ```
 Deployments → Click deployment → Analytics
 - Page load times
@@ -409,6 +450,7 @@ Everything is configured correctly. Your build passed locally.
 **Just click Deploy and you're live in 3 minutes!**
 
 ### Estimated Timeline:
+
 ```
 00:00 - Click Deploy
 00:30 - Dependencies installing
@@ -425,6 +467,7 @@ Everything is configured correctly. Your build passed locally.
 **Good luck! 🎉**
 
 **Questions? Check:**
+
 - `VERCEL_DEPLOYMENT_GUIDE.md` - Detailed guide
 - `DEPLOYMENT_QUICK_START.md` - Quick reference
 - `VERCEL_ENV_CHECKLIST.md` - Environment variables

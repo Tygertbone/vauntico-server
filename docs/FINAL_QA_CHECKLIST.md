@@ -3,6 +3,7 @@
 ## 📋 PRE-DEPLOYMENT CODE REVIEW
 
 ### Dev Tools Cleanup
+
 - ✅ **window.VaunticoDev** - Gated behind `import.meta.env.DEV` check
 - ✅ **PricingDemo route** - NOT in production App.jsx routes
 - ✅ **Console logs** - Clean production console output
@@ -10,6 +11,7 @@
 - ✅ **Environment checks** - All dev-only code properly gated
 
 ### Build Configuration
+
 - ✅ **Vite config** - Optimized for production (esbuild minification)
 - ✅ **Sourcemaps** - Disabled for security
 - ✅ **Code splitting** - React vendor chunk separated
@@ -17,6 +19,7 @@
 - ✅ **Build success** - ✅ Built in 1.45s, no errors
 
 ### SEO & Metadata
+
 - ✅ **Title tag** - "Vauntico | AI Content Creation Platform"
 - ✅ **Meta description** - Present and descriptive
 - ✅ **Open Graph tags** - Added for social media
@@ -29,9 +32,11 @@
 ## 🧪 FUNCTIONAL TESTING
 
 ### Test 1: Homepage & Navigation
+
 **URL**: `/`
 
 **Steps**:
+
 1. Open homepage
 2. Verify Vauntico logo and header
 3. Test all navigation links:
@@ -51,9 +56,11 @@
 ---
 
 ### Test 2: Pricing Logic & Display
+
 **URL**: `/pricing`
 
 **Steps**:
+
 1. Navigate to Pricing page
 2. Verify Creator Pass pricing displays:
    - [ ] Price shows correctly (USD $29 or ZAR R499)
@@ -69,9 +76,11 @@
 ---
 
 ### Test 3: Regional Currency Detection
+
 **URL**: `/creator-pass`, `/workshop-kit`, `/audit-service`
 
 **Steps**:
+
 1. **Default Test** (from your location):
    - [ ] Note currency shown (USD or ZAR)
    - [ ] Verify it matches expected locale
@@ -92,9 +101,11 @@
 ---
 
 ### Test 4: Access Gates & Paywalls
+
 **URL**: `/workshop-kit`, `/audit-service`
 
 **Steps**:
+
 1. Open `/workshop-kit` in **incognito/private window**
 2. Verify access gate appears:
    - [ ] Paywall message displays
@@ -111,9 +122,11 @@
 ---
 
 ### Test 5: Vaults & Scroll Functionality
+
 **URL**: `/vaults`
 
 **Steps**:
+
 1. Navigate to Vaults page
 2. Click on a vault card to open
 3. Test scroll functionality:
@@ -130,9 +143,11 @@
 ---
 
 ### Test 6: Console & Developer Tools Check
+
 **URL**: Any page
 
 **Steps**:
+
 1. Open browser DevTools (F12)
 2. Check Console tab:
    - [ ] Should see: "✨ Vauntico MVP - Production Mode"
@@ -148,9 +163,11 @@
 ---
 
 ### Test 7: Mobile Responsiveness
+
 **URL**: All pages
 
 **Steps**:
+
 1. Open DevTools → Toggle Device Toolbar (Ctrl+Shift+M)
 2. Test on different viewports:
    - [ ] iPhone SE (375px)
@@ -168,13 +185,16 @@
 ---
 
 ### Test 8: Performance Check
+
 **URL**: Homepage
 
-**Tools**: 
+**Tools**:
+
 - Chrome DevTools Lighthouse
 - PageSpeed Insights (https://pagespeed.web.dev/)
 
 **Steps**:
+
 1. Open DevTools → Lighthouse tab
 2. Run audit for:
    - [ ] Performance
@@ -196,6 +216,7 @@
 ### Post-Deployment Checks (Run AFTER deploying)
 
 #### 1. Live Site Access
+
 **URL**: Your production domain (e.g., https://vauntico.vercel.app)
 
 - [ ] Site loads over HTTPS (padlock icon visible)
@@ -204,7 +225,9 @@
 - [ ] Homepage renders correctly
 
 #### 2. Test All Routes
+
 Visit each route and verify:
+
 - [ ] `/` - Dashboard
 - [ ] `/creator-pass` - Creator Pass page
 - [ ] `/vaults` - Vaults page
@@ -215,6 +238,7 @@ Visit each route and verify:
 - [ ] `/random-404` - Should redirect to home or show 404
 
 #### 3. Meta Tags Verification
+
 **Tool**: https://metatags.io/ or View Page Source
 
 - [ ] Title tag present
@@ -224,9 +248,11 @@ Visit each route and verify:
 - [ ] Favicon loads
 
 #### 4. Performance Testing (Production)
+
 **Tool**: https://pagespeed.web.dev/
 
 Test your live URL:
+
 - [ ] Mobile Performance score
 - [ ] Desktop Performance score
 - [ ] First Contentful Paint < 2s
@@ -234,7 +260,9 @@ Test your live URL:
 - [ ] Total page size < 2MB
 
 #### 5. Cross-Browser Testing
+
 Test on:
+
 - [ ] Chrome (latest)
 - [ ] Firefox (latest)
 - [ ] Safari (latest)
@@ -243,6 +271,7 @@ Test on:
 - [ ] Chrome Mobile (Android)
 
 #### 6. Regional Pricing (Production)
+
 - [ ] Test from US IP (should show USD)
 - [ ] Test from ZA IP (should show ZAR)
 - [ ] Or manually change browser locale and verify
@@ -252,12 +281,14 @@ Test on:
 ## 🐛 KNOWN ISSUES & LIMITATIONS
 
 ### Current Limitations (MVP)
+
 1. **No Backend**: Access control uses localStorage (not persistent)
 2. **No Payment Integration**: "Buy" buttons are placeholders
 3. **Mock Data**: User state is simulated
 4. **No Auth**: Login/signup buttons are non-functional
 
 ### Future Enhancements
+
 - [ ] Backend API integration
 - [ ] Stripe payment processing
 - [ ] Real user authentication
@@ -289,11 +320,11 @@ Before marking deployment as complete:
 
 ✅ **DEPLOYMENT APPROVED** when all items checked above.
 
-**Deployed By**: _________________  
-**Date**: _________________  
+**Deployed By**: ********\_********  
+**Date**: ********\_********  
 **Build Version**: 1.0.0 MVP  
 **Environment**: Production  
-**URL**: _________________  
+**URL**: ********\_********
 
 ---
 
@@ -302,11 +333,13 @@ Before marking deployment as complete:
 If critical issues found post-deployment:
 
 ### Vercel/Netlify
+
 1. Go to Deployments dashboard
 2. Find previous working deployment
 3. Click "Promote to Production" or "Publish Deploy"
 
 ### Manual Rollback
+
 ```bash
 # Revert Git commit
 git revert HEAD

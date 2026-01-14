@@ -1,44 +1,48 @@
-import React from 'react';
-import { TreePine, Heart, Sparkles, Users, ArrowRight } from 'lucide-react';
+import React from "react";
+import { TreePine, Heart, Sparkles, Users, ArrowRight } from "lucide-react";
 
 const SacredFeaturesShowcase = () => {
   const features = [
     {
-      id: 'legacy-tree',
-      name: 'Legacy Tree',
-      description: 'Build your creator legacy with AI-powered lineage tracking and historical credibility mapping.',
+      id: "legacy-tree",
+      name: "Legacy Tree",
+      description:
+        "Build your creator legacy with AI-powered lineage tracking and historical credibility mapping.",
       icon: TreePine,
-      status: 'Beta',
-      color: 'from-green-400 to-emerald-600',
-      link: '/legacy-tree'
+      status: "Beta",
+      color: "from-green-400 to-emerald-600",
+      link: "/legacy-tree",
     },
     {
-      id: 'love-loops',
-      name: 'Love Loops',
-      description: 'Create meaningful engagement cycles that strengthen creator-audience relationships and community bonds.',
+      id: "love-loops",
+      name: "Love Loops",
+      description:
+        "Create meaningful engagement cycles that strengthen creator-audience relationships and community bonds.",
       icon: Heart,
-      status: 'Beta',
-      color: 'from-pink-400 to-rose-600',
-      link: '/love-loops'
+      status: "Beta",
+      color: "from-pink-400 to-rose-600",
+      link: "/love-loops",
     },
     {
-      id: 'lore-generator',
-      name: 'Lore Generator',
-      description: 'Transform your trust data into compelling narratives that showcase your creator journey and achievements.',
+      id: "lore-generator",
+      name: "Lore Generator",
+      description:
+        "Transform your trust data into compelling narratives that showcase your creator journey and achievements.",
       icon: Sparkles,
-      status: 'Beta',
-      color: 'from-purple-400 to-indigo-600',
-      link: '/lore-vault'
+      status: "Beta",
+      color: "from-purple-400 to-indigo-600",
+      link: "/lore-vault",
     },
     {
-      id: 'ubuntu-echo',
-      name: 'Ubuntu Echo',
-      description: 'Amplify your community impact through collective resonance and shared creator wisdom.',
+      id: "ubuntu-echo",
+      name: "Ubuntu Echo",
+      description:
+        "Amplify your community impact through collective resonance and shared creator wisdom.",
       icon: Users,
-      status: 'Beta',
-      color: 'from-blue-400 to-cyan-600',
-      link: '/ubuntu-echo'
-    }
+      status: "Beta",
+      color: "from-blue-400 to-cyan-600",
+      link: "/ubuntu-echo",
+    },
   ];
 
   return (
@@ -47,7 +51,10 @@ const SacredFeaturesShowcase = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-black mb-4">
-            Sacred <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Technology Features</span>
+            Sacred{" "}
+            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              Technology Features
+            </span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Built with Ubuntu philosophy. We live by what we give.
@@ -70,7 +77,9 @@ const SacredFeaturesShowcase = () => {
 
               {/* Feature Icon */}
               <div className="flex items-center justify-center mb-6">
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                <div
+                  className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                >
                   <feature.icon className="w-8 h-8" />
                 </div>
               </div>
@@ -106,10 +115,15 @@ const SacredFeaturesShowcase = () => {
               <Sparkles className="w-6 h-6 text-purple-600" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-purple-900 mb-2">Ubuntu Philosophy</h3>
-              <p className="text-purple-700 font-medium">"I am because we are"</p>
+              <h3 className="text-lg font-bold text-purple-900 mb-2">
+                Ubuntu Philosophy
+              </h3>
+              <p className="text-purple-700 font-medium">
+                "I am because we are"
+              </p>
               <p className="text-purple-600 text-sm mt-2">
-                We believe that creator success is collective. When one creator rises, we all rise together.
+                We believe that creator success is collective. When one creator
+                rises, we all rise together.
               </p>
             </div>
           </div>

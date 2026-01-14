@@ -1,5 +1,5 @@
 ---
-description: 'Require using Error objects as Promise rejection reasons.'
+description: "Require using Error objects as Promise rejection reasons."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -16,16 +16,16 @@ It uses type information to enforce that `Promise`s are only rejected with `Erro
 ### ❌ Incorrect
 
 ```ts
-Promise.reject('error');
+Promise.reject("error");
 
 const err = new Error();
-Promise.reject('an ' + err);
+Promise.reject("an " + err);
 
-new Promise((resolve, reject) => reject('error'));
+new Promise((resolve, reject) => reject("error"));
 
 new Promise((resolve, reject) => {
   const err = new Error();
-  reject('an ' + err);
+  reject("an " + err);
 });
 ```
 

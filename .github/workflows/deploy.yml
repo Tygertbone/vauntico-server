@@ -2,30 +2,30 @@ name: Backend Build & Deploy (OCI)
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     tags:
-      - 'v*.*.*-prod'
+      - "v*.*.*-prod"
   workflow_dispatch:
     inputs:
       monetization_phase:
-        description: 'Monetization Phase (memories.md alignment)'
+        description: "Monetization Phase (memories.md alignment)"
         required: true
-        default: 'Phase 1: Foundation'
+        default: "Phase 1: Foundation"
         type: choice
         options:
-          - 'Phase 1: Foundation'
-          - 'Phase 2: B2B API Licensing'
-          - 'Phase 3: Enterprise Compliance'
-          - 'Phase 4: Creator Economy'
-          - 'Phase 5: Vauntico Credits'
+          - "Phase 1: Foundation"
+          - "Phase 2: B2B API Licensing"
+          - "Phase 3: Enterprise Compliance"
+          - "Phase 4: Creator Economy"
+          - "Phase 5: Vauntico Credits"
       feature_description:
-        description: 'Brief description of feature being deployed'
+        description: "Brief description of feature being deployed"
         required: false
         type: string
 
 env:
-  MONETIZATION_PHASE: 'Phase 1: Foundation'
-  FEATURE_DESCRIPTION: 'Automated deployment'
+  MONETIZATION_PHASE: "Phase 1: Foundation"
+  FEATURE_DESCRIPTION: "Automated deployment"
 
 jobs:
   # Job 0: Extract Monetization Context
@@ -58,7 +58,7 @@ jobs:
             MONETIZATION_PHASE="${{ github.event.inputs.monetization_phase || 'Phase 1: Foundation' }}"
           fi
           echo "📊 Extracting monetization context for $MONETIZATION_PHASE (trigger: ${{ github.ref }})..."
-          
+
           case "$MONETIZATION_PHASE" in
             "Phase 1: Foundation")
               echo "phase-target=100K MRR from creators" >> $GITHUB_OUTPUT
@@ -91,7 +91,7 @@ jobs:
               echo "blind-spots=all_blind_spots" >> $GITHUB_OUTPUT
               ;;
           esac
-          
+
           echo "✅ Context extracted for $MONETIZATION_PHASE"
 
   # Job 0.5: Setup Test Database (for CI/CD testing)
@@ -111,7 +111,7 @@ jobs:
             -e POSTGRES_USER=test \
             -p 5432:5432 \
             postgres:15-alpine
-          
+
           # Wait for database to be ready
           echo "⏳ Waiting for database to be ready..."
           for i in {1..30}; do
@@ -123,7 +123,7 @@ jobs:
               sleep 2
             fi
           done
-          
+
           # Test connection
           docker exec test-postgres psql -U test -d testdb -c "SELECT version();"
           echo "✅ Test database setup completed"
@@ -156,10 +156,10 @@ jobs:
           # Upgrade pip and install OCI CLI
           python3 -m pip install --upgrade pip
           pip install oci-cli
-          
+
           # Verify installation
           oci --version
-          
+
           # Add OCI CLI to PATH
           echo ~/.local/bin >> $GITHUB_PATH
 
@@ -178,14 +178,14 @@ jobs:
             echo "success=false" >> $GITHUB_OUTPUT
             exit 1
           fi
-          
+
           # Create OCI directory
           mkdir -p ~/.oci
-          
+
           # Write private key from secret
           echo "${{ secrets.OCI_PRIVATE_KEY }}" | base64 -d > ~/.oci/oci_api_key.pem
           chmod 600 ~/.oci/oci_api_key.pem
-          
+
           # Create OCI config file
           cat > ~/.oci/config <<EOF
           [DEFAULT]
@@ -195,12 +195,12 @@ jobs:
           region=${{ secrets.OCI_REGION }}
           key_file=~/.oci/oci_api_key.pem
           EOF
-          
+
           chmod 600 ~/.oci/config
-          
+
           # Force API key authentication
           export OCI_CLI_AUTH=api_key
-          
+
           # Validate configuration with timeout and retry logic
           echo "🔍 Testing OCI authentication..."
           for i in {1..3}; do
@@ -245,7 +245,7 @@ jobs:
           mkdir -p ~/.oci
           echo "${{ secrets.OCI_PRIVATE_KEY }}" | base64 -d > ~/.oci/oci_api_key.pem
           chmod 600 ~/.oci/oci_api_key.pem
-          
+
           cat > ~/.oci/config <<EOF
           [DEFAULT]
           user=${{ secrets.OCI_USER_OCID }}
@@ -254,12 +254,12 @@ jobs:
           region=${{ secrets.OCI_REGION }}
           key_file=~/.oci/oci_api_key.pem
           EOF
-          
+
           chmod 600 ~/.oci/config
-          
+
           # Force API key authentication
           export OCI_CLI_AUTH=api_key
-          
+
           # Test authentication with timeout and retry logic
           echo "🔐 Testing OCI authentication..."
           for i in {1..3}; do
@@ -306,8 +306,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
 
       - name: Install dependencies
         run: |
@@ -315,7 +315,7 @@ jobs:
           python3 -m pip install --upgrade pip
           pip install oci-cli
           echo ~/.local/bin >> $GITHUB_PATH
-          
+
           # Install system deps
           sudo apt-get update
           sudo apt-get install -y jq openssh-client
@@ -325,7 +325,7 @@ jobs:
           mkdir -p ~/.oci
           echo "${{ secrets.OCI_PRIVATE_KEY }}" | base64 -d > ~/.oci/oci_api_key.pem
           chmod 600 ~/.oci/oci_api_key.pem
-          
+
           cat > ~/.oci/config <<EOF
           [DEFAULT]
           user=${{ secrets.OCI_USER_OCID }}
@@ -334,9 +334,9 @@ jobs:
           region=${{ secrets.OCI_REGION }}
           key_file=~/.oci/oci_api_key.pem
           EOF
-          
+
           chmod 600 ~/.oci/config
-          
+
           # Force API key authentication
           export OCI_CLI_AUTH=api_key
 
@@ -348,13 +348,13 @@ jobs:
           echo "🚀 Starting deployment process..."
           echo "🎯 Phase: $MONETIZATION_PHASE"
           echo "📝 Feature: $FEATURE_DESCRIPTION"
-          
+
           # Generate unique deployment ID for tracking
           DEPLOYMENT_ID="deploy-$(date +%Y%m%d-%H%M%S)-${{ github.sha }}"
           echo "deployment-id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
-          
+
           echo "🏗️ Deploying to OCI (using bastion method)..."
-          
+
           # Check if OCI bastion secrets are available
           if [ -n "${{ secrets.OCI_BASTION_CONFIG }}" ] && [ -n "${{ secrets.OCI_BASTION_CIDR }}" ]; then
             echo '${{ secrets.OCI_BASTION_CONFIG }}' > bastion-config.json
@@ -410,7 +410,7 @@ jobs:
         run: |
           API_URL="${{ needs.deploy-services.outputs.deployment-url }}"
           echo "🔍 Performing health check against: $API_URL/health"
-          
+
           # Try health check with retries, timeouts, and exponential backoff
           for i in {1..5}; do
             echo "📡 Health check attempt $i/5..."
@@ -436,7 +436,7 @@ jobs:
               sleep 10
             fi
           done
-          
+
           echo "❌ Health check failed after 5 attempts"
           echo "::error::Health check failed - all attempts exhausted"
           exit 1
@@ -445,14 +445,14 @@ jobs:
         run: |
           API_URL="${{ needs.deploy-services.outputs.deployment-url }}"
           echo "🧪 Testing basic API functionality..."
-          
+
           # Test a simple endpoint with timeout
           if timeout 10 curl -f -s "$API_URL/" >/dev/null; then
             echo "✅ Basic API endpoint accessible"
           else
             echo "⚠️  Basic API endpoint not accessible, but deployment may still be valid"
           fi
-          
+
           echo "🎉 Deployment validation completed"
 
       - name: Validate monetization KPI endpoints
@@ -461,13 +461,13 @@ jobs:
           MONETIZATION_PHASE="${{ github.event.inputs.monetization_phase || 'Phase 1: Foundation' }}"
           API_URL="${{ needs.deploy-services.outputs.deployment-url }}"
           echo "📊 Validating monetization KPI endpoints..."
-          
+
           KPI_METRICS="${{ needs.extract-monetization-context.outputs.kpi-metrics }}"
           echo "🎯 KPIs to validate: $KPI_METRICS"
-          
+
           # Check if KPI monitoring endpoints are available
           KPI_ENDPOINTS_AVAILABLE=true
-          
+
           # Test KPI aggregation endpoint with timeout
           if timeout 10 curl -f -s "$API_URL/api/v1/metrics/kpi" >/dev/null; then
             echo "✅ KPI aggregation endpoint accessible"
@@ -475,7 +475,7 @@ jobs:
             echo "⚠️  KPI aggregation endpoint not available (expected for early phases)"
             KPI_ENDPOINTS_AVAILABLE=false
           fi
-          
+
           # Test phase-specific metrics based on current phase
           case "$MONETIZATION_PHASE" in
             "Phase 1: Foundation")
@@ -519,7 +519,7 @@ jobs:
               fi
               ;;
           esac
-          
+
           echo "status=$KPI_ENDPOINTS_AVAILABLE" >> $GITHUB_OUTPUT
           echo "📈 KPI validation completed"
 
@@ -538,7 +538,7 @@ jobs:
           echo "🎯 Phase: $MONETIZATION_PHASE"
           echo "🏷️  Deployment ID: ${{ needs.deploy-services.outputs.monetization-deployment-id }}"
           echo "📈 Target: ${{ needs.extract-monetization-context.outputs.phase-target }}"
-          
+
           # Create KPI monitoring payload
           cat > kpi-payload.json <<EOF
           {
@@ -554,14 +554,14 @@ jobs:
             "github_actor": "${{ github.actor }}"
           }
           EOF
-          
+
           echo "📋 KPI monitoring payload created"
           cat kpi-payload.json
 
       - name: Send KPI data to monitoring system
         run: |
           API_URL="${{ needs.deploy-services.outputs.deployment-url }}"
-          
+
           # Send KPI deployment tracking data with timeout
           if timeout 15 curl -X POST \
             -H "Content-Type: application/json" \
@@ -571,7 +571,7 @@ jobs:
           else
             echo "⚠️  KPI tracking endpoint not available (expected for early phases)"
           fi
-          
+
           # Log to GitHub Actions for audit trail
           MONETIZATION_PHASE="${{ github.event.inputs.monetization_phase || 'Phase 1: Foundation' }}"
           echo "::notice::Monetization deployment tracked: $MONETIZATION_PHASE - ${{ needs.extract-monetization-context.outputs.phase-target }}"
@@ -579,7 +579,7 @@ jobs:
       - name: Check blind spot mitigations
         run: |
           BLIND_SPOTS="${{ needs.extract-monetization-context.outputs.blind-spots }}"
-          
+
           # Check for data privacy mitigations
           if [[ "$BLIND_SPOTS" == *"data_privacy"* ]]; then
             echo "🔒 Validating data privacy mitigations..."
@@ -587,7 +587,7 @@ jobs:
             echo "✅ Opt-in public scores implemented"
             echo "✅ Right to explanation mechanism in place"
           fi
-          
+
           # Check for platform dependency mitigations
           if [[ "$BLIND_SPOTS" == *"platform_dependency"* ]]; then
             echo "🔗 Validating platform dependency mitigations..."
@@ -595,7 +595,7 @@ jobs:
             echo "✅ Fallback estimated scores available"
             echo "✅ Manual verification processes ready"
           fi
-          
+
           # Check for algorithm gaming mitigations
           if [[ "$BLIND_SPOTS" == *"algorithm_gaming"* ]]; then
             echo "🎮 Validating algorithm gaming mitigations..."
@@ -603,7 +603,7 @@ jobs:
             echo "✅ Decay functions implemented"
             echo "✅ Manual audit process available ($99 review)"
           fi
-          
+
           # Check for commoditization mitigations
           if [[ "$BLIND_SPOTS" == *"commodification"* ]]; then
             echo "🛡️  Validating commoditization mitigations..."
@@ -611,7 +611,7 @@ jobs:
             echo "✅ Ubuntu Echo community engagement"
             echo "✅ Predictive analytics in development"
           fi
-          
+
           echo "✅ All blind spot mitigations validated"
 
   # Notification job (runs regardless of deployment outcome)
@@ -720,11 +720,11 @@ jobs:
       - name: Cleanup deployment artifacts
         run: |
           echo "🧹 Cleaning up deployment artifacts..."
-          
+
           # Remove any temporary files
           rm -f bastion-config.json bastion-cidr.json kpi-payload.json
           rm -rf ~/.oci/oci_api_key.pem ~/.oci/config
-          
+
           echo "✅ Cleanup completed"
         continue-on-error: true
 

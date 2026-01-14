@@ -1,6 +1,12 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 
-export default function VaultCard({ title, price, description, buttonText, slug }) {
+export default function VaultCard({
+  title,
+  price,
+  description,
+  buttonText,
+  slug,
+}) {
   return (
     <div className="bg-gray-900 p-6 rounded-lg shadow-md hover:shadow-xl transition">
       <h3 className="text-xl font-bold text-vauntico-gold mb-2">{title}</h3>
@@ -13,7 +19,10 @@ export default function VaultCard({ title, price, description, buttonText, slug 
           </button>
         </Link>
       ) : (
-        <button className="bg-vauntico-gold text-black px-4 py-2 rounded hover:bg-yellow-400 transition" disabled>
+        <button
+          className="bg-vauntico-gold text-black px-4 py-2 rounded hover:bg-yellow-400 transition"
+          disabled
+        >
           {buttonText}
         </button>
       )}

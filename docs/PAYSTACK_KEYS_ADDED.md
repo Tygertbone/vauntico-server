@@ -9,14 +9,17 @@ All Paystack API keys have been successfully added to your Vercel project!
 ## 🔑 KEYS ADDED
 
 ### ✅ Production Environment (LIVE)
+
 - `VITE_PAYSTACK_PUBLIC_KEY` → **pk_live_6170742...** ✅
 - `VITE_PAYSTACK_SECRET_KEY` → **sk_live_f1afbe...** ✅
 
 ### ✅ Preview Environment (TEST)
+
 - `VITE_PAYSTACK_PUBLIC_KEY` → **pk_test_07d449...** ✅
 - `VITE_PAYSTACK_SECRET_KEY` → **sk_test_2bea00...** ✅
 
 ### ✅ Development Environment (TEST)
+
 - `VITE_PAYSTACK_PUBLIC_KEY` → **pk_test_07d449...** ✅
 - `VITE_PAYSTACK_SECRET_KEY` → **sk_test_2bea00...** ✅
 
@@ -29,12 +32,15 @@ Your Vercel free tier has hit the **100 deployments per day** limit.
 **Options:**
 
 ### Option 1: Wait 2 Hours ⏰
+
 The next deployment window opens in ~2 hours. Then Vercel will auto-deploy your latest commit with the new keys.
 
 ### Option 2: Use Git Push (RECOMMENDED) 🚀
+
 Since you've already pushed to GitHub, Vercel will automatically deploy when the limit resets. **The keys are already there and ready!**
 
 ### Option 3: Manual Trigger via Dashboard 🖱️
+
 1. Go to https://vercel.com/dashboard
 2. Find your project: `vauntico-mvp-cursur-build`
 3. Go to **Deployments** tab
@@ -90,6 +96,7 @@ Just wait 2 hours and Vercel will auto-deploy your latest commit (b913cb73) with
 Before you start accepting real money, you should:
 
 ### 1. Create Paystack Payment Plan
+
 For the 3-payment option (3 × R349):
 
 1. Go to: https://dashboard.paystack.com/plans
@@ -103,11 +110,13 @@ For the 3-payment option (3 × R349):
 4. Save the plan
 
 ### 2. Update Plan Code in Code (if different)
+
 If Paystack gives you a different plan code, update this file:
 
 **File:** `src/utils/paystack.js`
 
 Find this line (around line 55):
+
 ```javascript
 plan: paymentType === 'payment_plan' ? 'PLN_workshop_3x349' : undefined,
 ```
@@ -115,6 +124,7 @@ plan: paymentType === 'payment_plan' ? 'PLN_workshop_3x349' : undefined,
 Replace `PLN_workshop_3x349` with your actual plan code from Paystack.
 
 ### 3. Set Up Webhook (IMPORTANT!)
+
 To receive automatic payment notifications:
 
 1. Go to: https://dashboard.paystack.com/settings/developer
@@ -127,9 +137,11 @@ To receive automatic payment notifications:
 5. Save
 
 ### 4. Test Payment Flow
+
 Before accepting real money:
 
 **Test Cards (provided by Paystack):**
+
 - **Success:** `4084084084084081`
 - **Insufficient Funds:** `4084080000000408`
 - **CVV:** 408
@@ -137,6 +149,7 @@ Before accepting real money:
 - **PIN:** 0000
 
 **Test Flow:**
+
 1. Go to your landing page
 2. Fill in name & email
 3. Select payment option (R997 or 3×R349)
@@ -159,6 +172,7 @@ Before accepting real money:
 ## 🔒 SECURITY NOTE
 
 Your API keys are now:
+
 - ✅ Encrypted in Vercel
 - ✅ Not visible in Git
 - ✅ Only accessible during build/runtime
@@ -171,18 +185,21 @@ Your API keys are now:
 ## 💡 RECOMMENDATIONS
 
 ### Immediate (Before Launch):
+
 1. ✅ **Keys added** - DONE!
 2. 🔲 **Create payment plan** in Paystack
 3. 🔲 **Test with test cards**
 4. 🔲 **Set up webhook**
 
 ### Short-term (Within 1 week):
+
 1. 🔲 Add email delivery system (Resend, SendGrid)
 2. 🔲 Create backend payment verification API
 3. 🔲 Build success/thank-you page
 4. 🔲 Add Google Analytics conversion tracking
 
 ### Long-term (Within 1 month):
+
 1. 🔲 A/B test different headlines
 2. 🔲 Add video testimonials
 3. 🔲 Create exit-intent popup
@@ -193,6 +210,7 @@ Your API keys are now:
 ## 🎉 YOU'RE ALMOST LIVE!
 
 **What's left:**
+
 1. ⏰ Wait for deployment window (2 hours) OR manually redeploy via dashboard
 2. 🔧 Create payment plan in Paystack (5 mins)
 3. 🧪 Test payment flow (2 mins)
@@ -203,6 +221,7 @@ Your API keys are now:
 ## 📞 NEED HELP?
 
 If anything goes wrong:
+
 1. Check Vercel deployment logs
 2. Check browser console for errors
 3. Verify Paystack keys are correct in dashboard

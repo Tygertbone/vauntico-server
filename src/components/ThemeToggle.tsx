@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from 'react'
-import { Sun, Moon } from 'lucide-react'
+import React, { useState, useEffect } from "react";
+import { Sun, Moon } from "lucide-react";
 
 interface ThemeToggleProps {
-  className?: string
+  className?: string;
 }
 
-const ThemeToggle: React.FC<ThemeToggleProps> = ({ className = '' }) => {
+const ThemeToggle: React.FC<ThemeToggleProps> = ({ className = "" }) => {
   const [isDark, setIsDark] = useState(() => {
     // Check localStorage and system preference
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('vauntico-theme')
-      if (saved) return saved === 'dark'
-      return window.matchMedia('(prefers-color-scheme: dark)').matches
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("vauntico-theme");
+      if (saved) return saved === "dark";
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
     }
-    return true
-  })
+    return true;
+  });
 
   useEffect(() => {
-    const root = document.documentElement
+    const root = document.documentElement;
     if (isDark) {
-      root.classList.add('dark')
-      localStorage.setItem('vauntico-theme', 'dark')
+      root.classList.add("dark");
+      localStorage.setItem("vauntico-theme", "dark");
     } else {
-      root.classList.remove('dark')
-      localStorage.setItem('vauntico-theme', 'light')
+      root.classList.remove("dark");
+      localStorage.setItem("vauntico-theme", "light");
     }
-  }, [isDark])
+  }, [isDark]);
 
   return (
     <button
@@ -39,7 +39,7 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ className = '' }) => {
         <Moon className="w-5 h-5 text-gray-700" />
       )}
     </button>
-  )
-}
+  );
+};
 
-export default ThemeToggle
+export default ThemeToggle;

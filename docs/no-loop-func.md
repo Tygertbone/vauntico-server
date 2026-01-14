@@ -1,5 +1,5 @@
 ---
-description: 'Disallow function declarations that contain unsafe references inside loop statements.'
+description: "Disallow function declarations that contain unsafe references inside loop statements."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

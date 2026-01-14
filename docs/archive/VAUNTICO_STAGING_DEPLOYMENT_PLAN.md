@@ -1,4 +1,5 @@
 # 🚀 VAUNTICO STAGING DEPLOYMENT PLAN
+
 **Date**: January 1, 2026  
 **Objective**: Fast-track staging launch for public accessibility  
 **Timeline**: Under 1 hour
@@ -8,12 +9,14 @@
 ## 📋 CURRENT STATUS ASSESSMENT
 
 ### ✅ **WHAT'S WORKING**
+
 - Main domain `vauntico.com` → Vercel ( redirects to www.vauntico.com)
 - Frontend is accessible via Vercel
 - GitHub Actions workflows are configured
 - OCI credentials are configured locally
 
 ### ❌ **WHAT'S MISSING**
+
 - API subdomain `api.vauntico.com` - No DNS resolution
 - Load Balancer - Not deployed
 - Backend server - Not publicly accessible
@@ -25,6 +28,7 @@
 ## 🎯 STAGING DEPLOYMENT STRATEGY
 
 Since OCI CLI authentication requires additional setup, we'll use a **hybrid approach**:
+
 1. **Manual OCI Console setup** for critical infrastructure
 2. **GitHub Actions** for automated deployment
 3. **DNS configuration** for public access
@@ -36,6 +40,7 @@ Since OCI CLI authentication requires additional setup, we'll use a **hybrid app
 ### **STEP 1: OCI LOAD BALANCER SETUP** (15 minutes)
 
 #### Option A: OCI Console (Recommended)
+
 1. **Navigate to OCI Console** → Load Balancing → Load Balancers
 2. **Click "Create Load Balancer"**
    - **Name**: `vauntico-staging-lb`
@@ -58,6 +63,7 @@ Since OCI CLI authentication requires additional setup, we'll use a **hybrid app
    - **HTTPS Listener**: Port 443 (will configure SSL later)
 
 #### Option B: OCI CLI Commands (Once Auth is Fixed)
+
 ```bash
 # Get compartment ID
 COMPARTMENT_ID="ocid1.tenancy.oc1..aaaaaaaaqjphq7si5cxb5tvjmoxxhpbohfz637qtx253apiyzzw6myh54zda"
@@ -102,7 +108,9 @@ oci lb listener create \
 ### **STEP 2: DEPLOY BACKEND TO OCI** (10 minutes)
 
 #### Using Existing Deployment Script
+
 1. **Update deploy-to-oci.sh** with actual values:
+
    ```bash
    # Replace these lines with actual values:
    OCI_SERVER="<your-oci-instance-public-ip>"
@@ -116,6 +124,7 @@ oci lb listener create \
    ```
 
 #### Verify Backend is Running
+
 ```bash
 # Test from OCI instance
 curl -I http://localhost:3000/health
@@ -128,6 +137,7 @@ curl -I http://localhost:3000/health
 ### **STEP 3: SSL CERTIFICATE SETUP** (10 minutes)
 
 #### Option A: Let's Encrypt via OCI
+
 1. **OCI Console** → Load Balancing → Load Balancers → Select your LB
 2. **Certificates** → "Create Certificate"
 3. **Certificate Type**: Let's Encrypt
@@ -136,6 +146,7 @@ curl -I http://localhost:3000/health
 6. **Create and Wait** (2-3 minutes)
 
 #### Option B: Manual SSL Upload
+
 ```bash
 # Generate CSR
 openssl req -new -newkey rsa:2048 -nodes -keyout api.vauntico.com.key -out api.vauntico.com.csr
@@ -146,6 +157,7 @@ openssl req -new -newkey rsa:2048 -nodes -keyout api.vauntico.com.key -out api.v
 ```
 
 #### Configure HTTPS Listener
+
 ```bash
 # Create HTTPS Listener with SSL
 oci lb listener create \
@@ -163,6 +175,7 @@ oci lb listener create \
 ### **STEP 4: DNS CONFIGURATION** (5 minutes)
 
 #### Update DNS Records
+
 1. **Go to your DNS provider** (Namecheap, GoDaddy, etc.)
 2. **Add/Update A Record**:
    - **Type**: A
@@ -177,6 +190,7 @@ oci lb listener create \
    - **TTL**: 300
 
 #### Verify DNS Propagation
+
 ```bash
 # Check DNS resolution
 nslookup api.vauntico.com
@@ -189,6 +203,7 @@ nslookup api.vauntico.com
 ### **STEP 5: HTTP TO HTTPS REDIRECT** (5 minutes)
 
 #### Configure Load Balancer Redirect
+
 1. **OCI Console** → Load Balancing → Load Balancers → Select your LB
 2. **Listeners** → Edit HTTP Listener
 3. **Rule Sets** → Create Rule Set
@@ -204,6 +219,7 @@ nslookup api.vauntico.com
 ## 🧪 VALIDATION & TESTING
 
 ### **Health Check Validation**
+
 ```bash
 # Test HTTP (should redirect to HTTPS)
 curl -I http://api.vauntico.com/health
@@ -217,6 +233,7 @@ curl -I https://api.vauntico.com/health
 ```
 
 ### **API Endpoint Testing**
+
 ```bash
 # Test basic API endpoints
 curl https://api.vauntico.com/api/plans
@@ -226,6 +243,7 @@ curl https://api.vauntico.com/trust-score
 ```
 
 ### **Frontend Integration Testing**
+
 1. **Update frontend environment** to point to `https://api.vauntico.com`
 2. **Test payment flows** through Paystack
 3. **Verify email functionality** with Resend
@@ -238,6 +256,7 @@ curl https://api.vauntico.com/trust-score
 ### **Common Issues & Solutions**
 
 #### **Issue 1: Health Check Failing**
+
 ```bash
 # Check if backend is running on OCI instance
 ssh ubuntu@<instance-ip> "pm2 status"
@@ -250,6 +269,7 @@ ssh ubuntu@<instance-ip> "pm2 logs vauntico-backend"
 ```
 
 #### **Issue 2: DNS Not Propagating**
+
 ```bash
 # Flush DNS cache
 sudo dscacheutil -flushcache  # macOS
@@ -260,12 +280,14 @@ nslookup api.vauntico.com 8.8.8.8
 ```
 
 #### **Issue 3: SSL Certificate Not Working**
+
 1. **Check certificate status in OCI Console**
 2. **Verify domain ownership**
 3. **Check DNS CNAME/TXT records for validation**
 4. **Re-create certificate if needed**
 
 #### **Issue 4: Load Balancer Not Working**
+
 1. **Check backend set health status**
 2. **Verify security lists allow traffic**
 3. **Check subnet configuration**
@@ -291,16 +313,16 @@ nslookup api.vauntico.com 8.8.8.8
 
 ### 🎯 **GO-LIVE DECISION MATRIX**
 
-| Component | Status | Impact |
-|------------|--------|---------|
-| Load Balancer | ✅ Deployed | Critical |
-| Backend API | ✅ Running | Critical |
-| SSL Certificate | ✅ Configured | Critical |
-| DNS Resolution | ✅ Working | Critical |
-| Health Checks | ✅ Passing | Critical |
-| Payment Processing | ✅ Working | Business Critical |
-| Email Service | ✅ Functional | Business Critical |
-| AI Integration | ✅ Operational | Feature Critical |
+| Component          | Status         | Impact            |
+| ------------------ | -------------- | ----------------- |
+| Load Balancer      | ✅ Deployed    | Critical          |
+| Backend API        | ✅ Running     | Critical          |
+| SSL Certificate    | ✅ Configured  | Critical          |
+| DNS Resolution     | ✅ Working     | Critical          |
+| Health Checks      | ✅ Passing     | Critical          |
+| Payment Processing | ✅ Working     | Business Critical |
+| Email Service      | ✅ Functional  | Business Critical |
+| AI Integration     | ✅ Operational | Feature Critical  |
 
 ---
 
@@ -334,11 +356,13 @@ curl https://api.vauntico.com/api/plans
 ## 📞 EMERGENCY CONTACTS
 
 ### **Infrastructure Issues**
+
 - **OCI Support**: Oracle Cloud Infrastructure support
 - **Load Balancer**: OCI Load Balancing service
 - **DNS**: Your DNS provider support
 
 ### **Application Issues**
+
 - **Backend**: Check PM2 logs on OCI instance
 - **Frontend**: Vercel dashboard
 - **Payment**: Paystack dashboard
@@ -349,6 +373,7 @@ curl https://api.vauntico.com/api/plans
 ## 🎯 SUCCESS METRICS
 
 ### **Technical Success Criteria**
+
 - ✅ Load Balancer responds within 100ms
 - ✅ Health checks pass with 200 OK
 - ✅ SSL certificate validates correctly
@@ -356,6 +381,7 @@ curl https://api.vauntico.com/api/plans
 - ✅ API endpoints respond correctly
 
 ### **Business Success Criteria**
+
 - ✅ Users can access https://api.vauntico.com
 - ✅ Payment processing works end-to-end
 - ✅ Email confirmations are sent
@@ -373,12 +399,14 @@ curl https://api.vauntico.com/api/plans
 **Risk Level**: Low (controlled staging environment)
 
 ### **Public URLs After Launch**:
+
 - **Main Site**: https://vauntico.com (Vercel)
 - **API Endpoint**: https://api.vauntico.com (OCI Load Balancer)
 - **Health Check**: https://api.vauntico.com/health
 - **API Documentation**: https://api.vauntico.com/api/plans
 
 ### **Next Steps**:
+
 1. Execute deployment plan
 2. Monitor health checks
 3. Validate all integrations

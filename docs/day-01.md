@@ -33,6 +33,7 @@ This is the foundation of everything. Get this right, and the next 59 days flow 
 - The top 1% who hit R2,000/month? They all have ONE clear niche.
 
 **Your niche is your North Star.** It tells you:
+
 - What content to create (no more guessing)
 - Who to create for (clear target audience)
 - How to monetize (specific income streams)
@@ -47,60 +48,73 @@ This is the foundation of everything. Get this right, and the next 59 days flow 
 Open your phone's notes app. Answer these 4 questions honestly:
 
 #### 1. **Skills & Knowledge**
-*What can you teach or do that others struggle with?*
+
+_What can you teach or do that others struggle with?_
 
 Examples:
+
 - "I can create viral TikTok videos"
 - "I know how to save money on groceries"
 - "I understand cryptocurrency basics"
 - "I can do makeup with cheap products"
 
 **Your answer:**
+
 ```
 [Write here]
 ```
 
 #### 2. **Passion & Interest**
-*What topic could you talk about for hours without getting bored?*
+
+_What topic could you talk about for hours without getting bored?_
 
 Examples:
+
 - Nigerian street food
 - South African township fashion
 - Kenyan tech startups
 - Ghanaian music production
 
 **Your answer:**
+
 ```
 [Write here]
 ```
 
 #### 3. **Market Demand**
-*What problems do Africans actively search for solutions to?*
+
+_What problems do Africans actively search for solutions to?_
 
 Think about:
+
 - What questions do your friends always ask you?
 - What do people complain about in your community?
 - What do you see trending on Twitter/TikTok?
 
 Examples:
+
 - "How to make money online in Nigeria"
 - "Cheap healthy meals in South Africa"
 - "Where to buy authentic African fashion"
 
 **Your answer:**
+
 ```
 [Write here]
 ```
 
 #### 4. **Proof of Concept**
-*Do you have ANY results in this area?*
+
+_Do you have ANY results in this area?_
 
 Even small wins count:
+
 - "I saved R500 last month using my budgeting method"
 - "My TikTok got 10K views"
 - "3 friends asked me to teach them"
 
 **Your answer:**
+
 ```
 [Write here]
 ```
@@ -112,6 +126,7 @@ Even small wins count:
 Look at your 4 answers. Your niche is where they **OVERLAP**.
 
 **Example - Amara from Lagos:**
+
 1. Skills: "I'm good at finding cheap but quality products"
 2. Passion: "I love helping students save money"
 3. Market: "Nigerian students always ask where to buy affordable stuff"
@@ -122,6 +137,7 @@ Look at your 4 answers. Your niche is where they **OVERLAP**.
 **Now find YOURS:**
 
 My niche is:
+
 ```
 [Write here - be specific!]
 ```
@@ -142,16 +158,19 @@ My niche is:
    - Comments asking questions
 
 **What you want to see:**
+
 - ✅ 5-10 creators already in this space (proves demand)
 - ✅ Engaged audiences asking questions
 - ✅ Mix of new and established creators (room for you)
 
 **What you DON'T want:**
+
 - ❌ Zero creators (no market)
 - ❌ Only mega-influencers with 1M+ (too saturated)
 - ❌ No engagement on posts (dead niche)
 
 **Validation results:**
+
 ```
 Found [X] creators in my niche
 Average engagement: [High/Medium/Low]
@@ -172,12 +191,15 @@ This is your **Creator Mission Statement**. It tells everyone what you do in one
 **Real Examples from Successful African Creators:**
 
 **Example 1 - Tosin (Lagos, 45K followers)**
+
 > "I help Nigerian students make ₦50k/month through phone-only side hustles without expensive equipment."
 
 **Example 2 - Lerato (Johannesburg, 32K followers)**
+
 > "I help South African moms cook healthy meals on R500/week without complicated recipes."
 
 **Example 3 - Wanjiku (Nairobi, 28K followers)**
+
 > "I help Kenyan freelancers get international clients through LinkedIn without a fancy portfolio."
 
 ---
@@ -185,6 +207,7 @@ This is your **Creator Mission Statement**. It tells everyone what you do in one
 **Now create YOURS:**
 
 **My Positioning Statement:**
+
 ```
 I help __________________ [target audience]
 
@@ -196,6 +219,7 @@ without __________________ [common obstacle].
 ```
 
 **Example to fill in:**
+
 - Target audience: "Lagos Gen-Z who want to make money"
 - Specific result: "R500-R2,000 per month"
 - Unique method: "phone-only content creation"
@@ -238,6 +262,7 @@ Ready for Day 2! 🚀
 ```
 
 Tag 3 people and ask them:
+
 - "Does my niche make sense?"
 - "Would you follow a creator like this?"
 - "What would you want to see from me?"
@@ -251,6 +276,7 @@ Tag 3 people and ask them:
 You'll transform your smartphone into a professional content creation tool using only FREE apps.
 
 We'll cover:
+
 - Free editing apps (CapCut, InShot)
 - Phone filming hacks (tripod alternatives, lighting)
 - Sound quality tricks (built-in mic optimization)
@@ -272,7 +298,7 @@ Your fellow creators and our team are here to help.
 
 ## 🦄 Ubuntu Spirit
 
-*"I am because we are."*
+_"I am because we are."_
 
 Your success is our success. When you win, we all win. Share your journey, help others, and watch the community lift you up.
 
@@ -282,4 +308,4 @@ Your success is our success. When you win, we all win. Share your journey, help 
 
 **See you tomorrow for Day 2!** 🚀
 
-*P.S. - The creators who complete Day 1 within 24 hours have a 78% higher chance of hitting R2,000/month. Don't wait - do it NOW!*
+_P.S. - The creators who complete Day 1 within 24 hours have a 78% higher chance of hitting R2,000/month. Don't wait - do it NOW!_

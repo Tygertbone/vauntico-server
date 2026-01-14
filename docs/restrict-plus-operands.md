@@ -1,5 +1,5 @@
 ---
-description: 'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`.'
+description: "Require both operands of addition to be the same type and be `bigint`, `number`, or `string`."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -18,14 +18,14 @@ This rule reports when a `+` operation combines two values of different types, o
 ### ❌ Incorrect
 
 ```ts
-let foo = '5.5' + 5;
+let foo = "5.5" + 5;
 let foo = 1n + 1;
 ```
 
 ### ✅ Correct
 
 ```ts
-let foo = parseInt('5.5', 10) + 10;
+let foo = parseInt("5.5", 10) + 10;
 let foo = 1n + 1n;
 ```
 
@@ -40,22 +40,22 @@ Safer alternatives to using the `allow*` options include:
 - Using variadic forms of logging APIs to avoid needing to `+` values.
   ```ts
   // Remove this line
-  console.log('The result is ' + true);
+  console.log("The result is " + true);
   // Add this line
-  console.log('The result is', true);
+  console.log("The result is", true);
   ```
 - Using `.toFixed()` to coerce numbers to well-formed string representations:
   ```ts
   const number = 1.123456789;
-  const result = 'The number is ' + number.toFixed(2);
+  const result = "The number is " + number.toFixed(2);
   // result === 'The number is 1.12'
   ```
 - Calling `.toString()` on other types to mark explicit and intentional string coercion:
   ```ts
-  const arg = '11';
+  const arg = "11";
   const regex = /[0-9]/;
   const result =
-    'The result of ' +
+    "The result of " +
     regex.toString() +
     '.test("' +
     arg +
@@ -178,9 +178,9 @@ Examples of code for this rule with `{ skipCompoundAssignments: false }`:
 
 ```ts option='{ "skipCompoundAssignments": true }'
 let foo: string | undefined;
-foo += 'some data';
+foo += "some data";
 
-let bar: string = '';
+let bar: string = "";
 bar += 0;
 ```
 
@@ -190,8 +190,8 @@ bar += 0;
 let foo: number = 0;
 foo += 1;
 
-let bar = '';
-bar += 'test';
+let bar = "";
+bar += "test";
 ```
 
 ## When Not To Use It

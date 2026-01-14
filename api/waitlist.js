@@ -1,18 +1,18 @@
-const fs = require('fs').promises;
-const path = require('path');
-const { Resend } = require('resend');
+const fs = require("fs").promises;
+const path = require("path");
+const { Resend } = require("resend");
 
 // Initialize Resend with API key from environment
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Simple file-based storage for waitlist
-const filePath = path.join(process.cwd(), 'public', 'waitlist.json');
+const filePath = path.join(process.cwd(), "public", "waitlist.json");
 
 module.exports = async (req, res) => {
   // Only allow POST requests
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
@@ -20,25 +20,25 @@ module.exports = async (req, res) => {
 
     // Validate email
     if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-      return res.status(400).json({ error: 'Invalid email address' });
+      return res.status(400).json({ error: "Invalid email address" });
     }
 
     // Read existing waitlist
     let waitlist = [];
     try {
-      const data = await fs.readFile(filePath, 'utf8');
+      const data = await fs.readFile(filePath, "utf8");
       waitlist = JSON.parse(data);
     } catch (err) {
       // File doesn't exist yet, start with empty array
     }
 
     // Check if email already exists
-    const existingEntry = waitlist.find(entry => entry.email === email);
+    const existingEntry = waitlist.find((entry) => entry.email === email);
     if (existingEntry) {
-      return res.status(200).json({ 
-        success: true, 
-        position: waitlist.findIndex(entry => entry.email === email) + 1,
-        message: 'Already on waitlist'
+      return res.status(200).json({
+        success: true,
+        position: waitlist.findIndex((entry) => entry.email === email) + 1,
+        message: "Already on waitlist",
       });
     }
 
@@ -46,7 +46,7 @@ module.exports = async (req, res) => {
     const newEntry = {
       email,
       timestamp: new Date().toISOString(),
-      position: waitlist.length + 1
+      position: waitlist.length + 1,
     };
 
     waitlist.push(newEntry);
@@ -57,7 +57,7 @@ module.exports = async (req, res) => {
     // Send confirmation email using Resend
     try {
       await resend.emails.send({
-        from: 'Vauntico <hello@vauntico.com>',
+        from: "Vauntico <hello@vauntico.com>",
         to: [email],
         subject: `You're #${newEntry.position} on the Vauntico Waitlist! 🚀`,
         html: `
@@ -97,11 +97,11 @@ module.exports = async (req, res) => {
               </p>
             </div>
           </div>
-        `
+        `,
       });
       console.log(`✅ Confirmation email sent to ${email}`);
     } catch (emailError) {
-      console.error('Email send error:', emailError);
+      console.error("Email send error:", emailError);
       // Continue even if email fails - user is still added to waitlist
     }
 
@@ -109,11 +109,10 @@ module.exports = async (req, res) => {
     res.status(200).json({
       success: true,
       position: newEntry.position,
-      message: `Welcome! You're #${newEntry.position} on the waitlist. Check your email for confirmation.`
+      message: `Welcome! You're #${newEntry.position} on the waitlist. Check your email for confirmation.`,
     });
-
   } catch (error) {
-    console.error('Waitlist error:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Waitlist error:", error);
+    res.status(500).json({ error: "Server error" });
   }
 };

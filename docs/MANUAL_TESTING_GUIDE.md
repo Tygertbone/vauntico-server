@@ -1,7 +1,9 @@
 ﻿# MANUAL VERIFICATION GUIDE
+
 # =========================
 
 ## Quick Start
+
 1. Open terminal in project directory
 2. Run: npm run dev
 3. Browser will open to http://localhost:5173
@@ -9,43 +11,53 @@
 ## Routes to Test Manually
 
 ### ✅ Homepage (PromptVaultPage)
+
 URL: http://localhost:5173/
 Expected: Should show the Prompt Vault landing page with email signup
 
 ### ✅ Prompt Vault
+
 URL: http://localhost:5173/prompt-vault
 Expected: Same as homepage, should show prompt vault features
 
-### ✅ Vaults Page  
+### ✅ Vaults Page
+
 URL: http://localhost:5173/vaults
 Expected: Should show vault listings or vault management interface
 
 ### ✅ Creator Pass
+
 URL: http://localhost:5173/creator-pass
 Expected: Should show creator pass purchase/subscription page
 
 ### ✅ Vault Success
+
 URL: http://localhost:5173/vault-success
 Expected: Should show success confirmation after vault action
 
 ### ✅ Dashboard (VaultDashboard)
+
 URL: http://localhost:5173/dashboard
 Expected: Should show webhook monitoring dashboard with:
-  - Overview tab with metrics (Total Requests, Success Rate, etc.)
-  - Audit Logs tab with request history
-  - Replay Protection tab with security settings
-  - Analytics tab with status distribution
+
+- Overview tab with metrics (Total Requests, Success Rate, etc.)
+- Audit Logs tab with request history
+- Replay Protection tab with security settings
+- Analytics tab with status distribution
 
 ### ✅ Workshop Page
+
 URL: http://localhost:5173/workshop
 Expected: Should show workshop information/booking page
 
-### ✅ Audit Service Page  
+### ✅ Audit Service Page
+
 URL: http://localhost:5173/audit-service
 Expected: Should show audit service offerings with:
-  - Security audit features
-  - Pricing tiers
-  - Response time guarantees (<1hr support)
+
+- Security audit features
+- Pricing tiers
+- Response time guarantees (<1hr support)
 
 ## Verification Checklist
 
@@ -82,4 +94,3 @@ Expected: Should show audit service offerings with:
 ✓ Components render their expected content
 ✓ Navigation works smoothly
 ✓ Build completes successfully (npm run build)
-

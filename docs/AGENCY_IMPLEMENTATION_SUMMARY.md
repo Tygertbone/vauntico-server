@@ -9,9 +9,11 @@ The **Agency Scroll** (10-agency-scroll.md) has been successfully forged and int
 ## 📦 What Was Delivered
 
 ### 1. Main Agency Scroll
+
 **File:** scrolls/10-agency-scroll.md (12,500+ words)
 
 **Contains:**
+
 - 🧭 The Revelation (positioning & philosophy)
 - 🏢 5 Agency Archetypes (Funnel Forge, Brand Oracle, Growth Alchemist, Consultant Mystic, Creator-Preneur)
 - 🧱 7 Core Modules with pricing & use cases
@@ -27,9 +29,11 @@ The **Agency Scroll** (10-agency-scroll.md) has been successfully forged and int
 - 🎯 Call-to-action framework
 
 ### 2. Agency CLI Quick Start Guide
+
 **File:** scrolls/AGENCY_CLI_QUICKSTART.md
 
 **Contains:**
+
 - Installation & authentication
 - Essential commands (client management, audits, workshops, distribution)
 - Batch operations & automation
@@ -40,18 +44,22 @@ The **Agency Scroll** (10-agency-scroll.md) has been successfully forged and int
 - First-week quick wins
 
 ### 3. Updated Scroll Index
+
 **File:** scrolls/00-index.md
 
 **Changes:**
+
 - Added new "Agency & B2B Scrolls" section
 - Included Agency Scroll in quick-start guides
 - New use case: "I want to become a Vauntico reseller"
 - Agency-specific success metrics
 
 ### 4. Completion Report
+
 **File:** AGENCY_SCROLL_COMPLETE.md
 
 **Contains:**
+
 - Implementation summary
 - Key sections overview
 - Revenue model breakdown
@@ -63,11 +71,11 @@ The **Agency Scroll** (10-agency-scroll.md) has been successfully forged and int
 
 ## 💰 Revenue Models Documented
 
-| Model | Services | Annual Net Profit |
-|-------|----------|------------------|
-| **Conservative** | 10 audits/month @ R7,500 | **R864,012** |
-| **Moderate** | 20 audits + 5 workshops/month | **R2.4M** |
-| **Aggressive** | 30 audits + 10 workshops + 8 distribution | **R5.2M** |
+| Model            | Services                                  | Annual Net Profit |
+| ---------------- | ----------------------------------------- | ----------------- |
+| **Conservative** | 10 audits/month @ R7,500                  | **R864,012**      |
+| **Moderate**     | 20 audits + 5 workshops/month             | **R2.4M**         |
+| **Aggressive**   | 30 audits + 10 workshops + 8 distribution | **R5.2M**         |
 
 **Key Insight:** After Legacy tier subscription (R2,999/month), agencies keep 100% margin on all services.
 
@@ -76,6 +84,7 @@ The **Agency Scroll** (10-agency-scroll.md) has been successfully forged and int
 ## 🎯 Target Markets
 
 ### Primary Audiences
+
 1. **Digital Agencies** (web design, development)
 2. **Brand Consultants** (identity & strategy)
 3. **Marketing Agencies** (performance marketing)
@@ -83,12 +92,15 @@ The **Agency Scroll** (10-agency-scroll.md) has been successfully forged and int
 5. **Creator-Preneurs** (building agency side-hustles)
 
 ### Market Size (South Africa)
+
 - **Total agencies:** 500-800 (digital/marketing)
 - **Target segment:** 50-100 (growth-focused, 5-30 employees)
 - **Addressable market:** R50K-R300K/month per agency
 
 ### Potential Impact
+
 If **25 agencies** adopt at moderate model:
+
 - **Combined agency revenue:** R5.1M/month
 - **Vauntico revenue:** R74,975/month (subscriptions)
 - **Client reach:** 500 end clients (via agencies)
@@ -105,6 +117,7 @@ The scroll maintains Vauntico's mythic voice throughout:
 ✅ **Legacy-focused** - "Transform agencies into legacy builders"
 
 **Key phrases used:**
+
 - "Soul-label" (not just white-label)
 - "Syndicate systems"
 - "Forge," "ritual," "empire," "ascension"
@@ -115,6 +128,7 @@ The scroll maintains Vauntico's mythic voice throughout:
 ## 🔧 Technical Integration Points
 
 ### CLI Commands Documented
+
 `ash
 vauntico agency onboard --client "name" --modules "audit,workshop"
 vauntico agency clients
@@ -125,6 +139,7 @@ vauntico brand configure --name "Agency" --logo ./logo.png
 `
 
 ### API Endpoints (Implied for Future Development)
+
 - /api/agency/onboard
 - /api/agency/clients
 - /api/agency/reports
@@ -136,6 +151,7 @@ vauntico brand configure --name "Agency" --logo ./logo.png
 ## 📚 Integration with Existing Content
 
 ### Cross-References
+
 - **04-audit-service-scroll.md** - Audit methodology details
 - **03-workshop-kit-scroll.md** - Workshop templates
 - **02-pricing-tiers.md** - Credit economy & tiers
@@ -143,6 +159,7 @@ vauntico brand configure --name "Agency" --logo ./logo.png
 - **dream-mover-cli.md** - CLI architecture
 
 ### New Use Cases Added to Index
+
 1. "I'm pitching to agencies/B2B" → Start with Agency Scroll
 2. "I want to become a Vauntico reseller" → Agency Scroll + Affiliate Scroll
 
@@ -151,24 +168,28 @@ vauntico brand configure --name "Agency" --logo ./logo.png
 ## 🚀 Recommended Next Steps
 
 ### Immediate (Week 1)
+
 - [ ] Review Agency Scroll for accuracy
 - [ ] Validate pricing for SA market
 - [ ] Gather real agency testimonials (if available)
 - [ ] Create visual assets (diagrams, infographics)
 
 ### Short-term (Week 2-4)
+
 - [ ] Build /agency landing page on website
 - [ ] Create agency onboarding flow in dashboard
 - [ ] Record CLI tutorial videos
 - [ ] Design agency pitch deck (PDF export from scroll)
 
 ### Medium-term (Month 2-3)
+
 - [ ] Launch agency partnership program
 - [ ] Outreach to 50 target agencies
 - [ ] Host agency webinar ("How to Add R2M+ Revenue Without Hiring")
 - [ ] Build white-label demo environment
 
 ### Long-term (Month 4+)
+
 - [ ] Onboard first 10 agency partners
 - [ ] Create agency success stories (real case studies)
 - [ ] Launch agency-specific affiliate tier
@@ -179,24 +200,28 @@ vauntico brand configure --name "Agency" --logo ./logo.png
 ## 📈 Success Metrics to Track
 
 ### Acquisition Metrics
+
 - Agency partnership applications
 - Demo call bookings
 - Trial signups (Pro/Legacy)
 - White-label activations
 
 ### Activation Metrics
+
 - Clients onboarded by agencies
 - Audits run by partners
 - Workshops created via agencies
 - Revenue generated via resellers
 
 ### Retention Metrics
+
 - Agency tier retention rate (goal: >85%)
 - Client churn via agencies (goal: <5%)
 - Expansion revenue (tier upgrades)
 - Referrals from agencies
 
 ### Revenue Metrics
+
 - MRR from agency subscriptions
 - Average revenue per agency (ARPA)
 - Client lifetime value (via agencies)
@@ -209,6 +234,7 @@ vauntico brand configure --name "Agency" --logo ./logo.png
 ### Unique Value Propositions
 
 **For Agencies:**
+
 1. **100% margin** on services after subscription breakeven
 2. **15-30 hours saved** per project
 3. **Transform** from project-based to recurring revenue
@@ -216,6 +242,7 @@ vauntico brand configure --name "Agency" --logo ./logo.png
 5. **White-label** everything (your brand, not ours)
 
 **For Vauntico:**
+
 1. **Channel partner model** - agencies become sales force
 2. **Higher LTV** - B2B customers stay longer
 3. **Market penetration** - reach SMBs via agencies
@@ -225,52 +252,63 @@ vauntico brand configure --name "Agency" --logo ./logo.png
 ### Positioning Strategy
 
 **Don't position as:**
+
 - White-label reseller platform
 - Third-party tool integration
 - Commoditized SaaS
 
 **Do position as:**
+
 - Agency leverage multiplier
 - Infrastructure for empire-building
 - Secret weapon for scaling wisdom
 
-**Tagline:** *"Resell the ritual. White-label the wisdom. Scale with clients."*
+**Tagline:** _"Resell the ritual. White-label the wisdom. Scale with clients."_
 
 ---
 
 ## 🎬 Sample Use Cases
 
 ### Use Case 1: Web Design Agency
+
 **Before Vauntico:**
+
 - Build site → deliver → invoice → done
 - Revenue: One-time project fee
 - Margin: 20-30% (after overhead)
 
 **After Vauntico:**
+
 - Run pre-project audit (R8,500) → identify issues
 - Build site with fixes included → deliver
 - Offer ongoing monitoring (R3,999/month)
 - Result: R8,500 upfront + R47,988/year recurring
 
 ### Use Case 2: Brand Consultant
+
 **Before Vauntico:**
+
 - Strategy session → brand guidelines → invoice
 - Revenue: One-time consulting fee
 - Limitation: Can't scale beyond time
 
 **After Vauntico:**
+
 - "Brand Health Diagnostic" (R12,000)
 - "Brand Alchemy Workshop" (R15,000)
 - Ongoing Creator Pass access (R2,999/month)
 - Result: R27,000 upfront + R35,988/year recurring
 
 ### Use Case 3: Marketing Agency
+
 **Before Vauntico:**
+
 - Ad management → reporting → retention struggle
 - Revenue: Monthly retainer (unpredictable)
 - Problem: High churn
 
 **After Vauntico:**
+
 - "Performance Stack" - audit + workshop + distribution
 - R9,999/month SaaS subscription
 - Lower churn (tangible value, not just ads)
@@ -280,15 +318,15 @@ vauntico brand configure --name "Agency" --logo ./logo.png
 
 ## 🔥 Power Quotes from the Scroll
 
-> *"Agencies don't just serve clients. They syndicate systems."*
+> _"Agencies don't just serve clients. They syndicate systems."_
 
-> *"This isn't white-label. It's soul-label—products and systems that carry your brand, embody your wisdom, and scale your impact without scaling your headcount."*
+> _"This isn't white-label. It's soul-label—products and systems that carry your brand, embody your wisdom, and scale your impact without scaling your headcount."_
 
-> *"You bring the brand, the clients, the vision. We bring the engine, the automation, the scale."*
+> _"You bring the brand, the clients, the vision. We bring the engine, the automation, the scale."_
 
-> *"Every agency reaches a ceiling. The ceiling where your time becomes the bottleneck. Until now."*
+> _"Every agency reaches a ceiling. The ceiling where your time becomes the bottleneck. Until now."_
 
-> *"The forge is ready. The systems are waiting. Your empire is calling."*
+> _"The forge is ready. The systems are waiting. Your empire is calling."_
 
 ---
 
@@ -314,6 +352,7 @@ vauntico brand configure --name "Agency" --logo ./logo.png
 ## 🏆 Final Assessment
 
 **The Agency Scroll is:**
+
 - ✅ Comprehensive (12,500+ words, 11 major sections)
 - ✅ Actionable (checklists, templates, commands)
 - ✅ Profitable (R864K - R5.2M/year revenue models)
@@ -321,6 +360,7 @@ vauntico brand configure --name "Agency" --logo ./logo.png
 - ✅ Integrated (links to 5+ existing scrolls)
 
 **Ready for:**
+
 - Website /agency page
 - Sales deck creation
 - Partner recruitment
@@ -335,8 +375,8 @@ vauntico brand configure --name "Agency" --logo ./logo.png
 
 ---
 
-*Forged in one session. Ready to scale agencies worldwide.*  
-*This isn't just documentation. It's a movement.*
+_Forged in one session. Ready to scale agencies worldwide._  
+_This isn't just documentation. It's a movement._
 
 **Date:** 2025-01-25  
 **Status:** ✅ Complete & Ready for Launch  

@@ -1,12 +1,14 @@
 # OCI Bastion Deployment Guide for Vauntico Trust-Score Backend
 
 ## 🚨 Current Status
+
 - **OCI Instance**: Running at 84.8.135.161
 - **SSH Port 22**: Blocked (confirmed)
 - **Cloudflare DNS**: Configured (returns 522 - origin not responding)
 - **Goal**: Deploy backend service securely via OCI Bastion
 
 ## 📋 Prerequisites Verified
+
 ✅ **OCI CLI**: Version 3.71.4 installed and configured
 ✅ **Compartment**: Vauntico-MVP (ocid1.compartment.oc1..aaaaaaaaqjphq7si5cxb5tvjmoxxhpbohfz637qtx253apiyzzw6myh54zda)
 ✅ **Subnet**: vaunticosubnet (ocid1.subnet.oc1.af-johannesburg-1.aaaaaaaaosgyyaqwy7zq5ug4seimcwxhc47itvxny2vivusdnriynp3by7zq)
@@ -15,6 +17,7 @@
 ## 🔧 Step 1: Create OCI Bastion
 
 ### Method 1: Using OCI Console (Recommended)
+
 1. **Navigate to OCI Console**
    - Go to: https://console.oracle-cloud.com
    - Sign in with your OCI credentials
@@ -52,6 +55,7 @@ oci bastion bastion create \
 Once the bastion is **ACTIVE**, create a managed SSH session:
 
 ### Using OCI Console:
+
 1. **Navigate to your created bastion**
    - Go to **Identity & Security → Bastion**
    - Click on `vauntico-bastion`
@@ -64,6 +68,7 @@ Once the bastion is **ACTIVE**, create a managed SSH session:
    - **SSH Public Key**: Upload your SSH public key
 
 ### Using OCI CLI:
+
 ```bash
 # First, get the bastion OCID after it's created
 BASTION_ID=$(oci bastion bastion list \
@@ -84,6 +89,7 @@ oci bastion session create-port-forwarding \
 ## 🔧 Step 3: Connect via SSH Using Bastion Tunnel
 
 ### Get Connection Details:
+
 After creating the session, you'll receive connection details. Use this format:
 
 ```bash
@@ -185,6 +191,7 @@ curl -I https://trust-score.vauntico.com/api/v1/status
 ## 🚨 Troubleshooting
 
 ### If Bastion Creation Fails:
+
 ```bash
 # Check subnet permissions
 oci network subnet get \
@@ -198,6 +205,7 @@ oci iam compartment get \
 ```
 
 ### If SSH Connection Fails:
+
 ```bash
 # Check bastion status
 oci bastion bastion get \
@@ -211,6 +219,7 @@ oci bastion session get \
 ```
 
 ### If Deployment Fails:
+
 ```bash
 # Check instance logs
 oci compute instance console-history get \
@@ -225,6 +234,7 @@ pm2 status
 ## 📞 Additional Commands
 
 ### Cleanup Bastion (when done):
+
 ```bash
 # Delete session
 oci bastion session delete --session-id $SESSION_ID --region af-johannesburg-1
@@ -234,6 +244,7 @@ oci bastion bastion delete --bastion-id $BASTION_ID --region af-johannesburg-1
 ```
 
 ### Monitoring Deployment:
+
 ```bash
 # PM2 monitoring
 pm2 monit

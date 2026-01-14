@@ -1,34 +1,38 @@
-import React, { useState, useEffect } from 'react'
-import { Pause, Play, Volume2, VolumeX } from 'lucide-react'
+import React, { useState, useEffect } from "react";
+import { Pause, Play, Volume2, VolumeX } from "lucide-react";
 
 interface PeaceModeProps {
-  isActive: boolean
-  onToggle: () => void
-  className?: string
+  isActive: boolean;
+  onToggle: () => void;
+  className?: string;
 }
 
-const PeaceMode: React.FC<PeaceModeProps> = ({ isActive, onToggle, className = '' }) => {
-  const [isAnimating, setIsAnimating] = useState(false)
+const PeaceMode: React.FC<PeaceModeProps> = ({
+  isActive,
+  onToggle,
+  className = "",
+}) => {
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     if (isActive) {
-      document.body.classList.add('peace-mode')
-      setIsAnimating(true)
-      setTimeout(() => setIsAnimating(false), 500)
+      document.body.classList.add("peace-mode");
+      setIsAnimating(true);
+      setTimeout(() => setIsAnimating(false), 500);
     } else {
-      document.body.classList.remove('peace-mode')
+      document.body.classList.remove("peace-mode");
     }
-  }, [isActive])
+  }, [isActive]);
 
   return (
     <button
       onClick={onToggle}
       className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-        isActive 
-          ? 'bg-green-100 text-green-700 border-green-300' 
-          : 'bg-gray-100 text-gray-700 border-gray-300'
+        isActive
+          ? "bg-green-100 text-green-700 border-green-300"
+          : "bg-gray-100 text-gray-700 border-gray-300"
       } border ${className}`}
-      title={isActive ? 'Disable Peace Mode' : 'Enable Peace Mode'}
+      title={isActive ? "Disable Peace Mode" : "Enable Peace Mode"}
     >
       {isAnimating ? (
         <div className="flex items-center space-x-1">
@@ -51,7 +55,7 @@ const PeaceMode: React.FC<PeaceModeProps> = ({ isActive, onToggle, className = '
         </div>
       )}
     </button>
-  )
-}
+  );
+};
 
-export default PeaceMode
+export default PeaceMode;

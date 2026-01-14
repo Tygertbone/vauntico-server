@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { 
-  generateScrollShareLink, 
-  shareOnTwitter, 
-  shareOnLinkedIn, 
+import { useState } from "react";
+import {
+  generateScrollShareLink,
+  shareOnTwitter,
+  shareOnLinkedIn,
   copyShareLink,
   generateIframeEmbed,
-  generatePreviewCard 
-} from '../utils/syndication'
+  generatePreviewCard,
+} from "../utils/syndication";
 
 /**
  * Share Scroll Modal - Social sharing and embed generation
@@ -14,59 +14,60 @@ import {
  */
 
 function ShareScrollModal({ scroll, onClose }) {
-  const [activeTab, setActiveTab] = useState('social')
-  const [copied, setCopied] = useState(false)
+  const [activeTab, setActiveTab] = useState("social");
+  const [copied, setCopied] = useState(false);
   const [embedOptions, setEmbedOptions] = useState({
-    width: '100%',
-    height: '600px',
-    theme: 'light',
-    showHeader: true
-  })
+    width: "100%",
+    height: "600px",
+    theme: "light",
+    showHeader: true,
+  });
 
-  if (!scroll) return null
+  if (!scroll) return null;
 
   const handleCopyLink = async () => {
-    const result = await copyShareLink(scroll.id, scroll.title)
+    const result = await copyShareLink(scroll.id, scroll.title);
     if (result.success) {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
-  }
+  };
 
   const handleShareTwitter = () => {
-    shareOnTwitter(scroll.id, scroll.title)
-  }
+    shareOnTwitter(scroll.id, scroll.title);
+  };
 
   const handleShareLinkedIn = () => {
-    shareOnLinkedIn(scroll.id, scroll.title)
-  }
+    shareOnLinkedIn(scroll.id, scroll.title);
+  };
 
   const getEmbedCode = () => {
-    if (activeTab === 'iframe') {
-      return generateIframeEmbed(scroll.id, scroll.title, embedOptions).embedCode
-    } else if (activeTab === 'preview') {
+    if (activeTab === "iframe") {
+      return generateIframeEmbed(scroll.id, scroll.title, embedOptions)
+        .embedCode;
+    } else if (activeTab === "preview") {
       return generatePreviewCard(
-        scroll.id, 
-        scroll.title, 
-        scroll.description || 'Explore this scroll on Vauntico',
-        scroll.tier || 'free'
-      ).embedCode
+        scroll.id,
+        scroll.title,
+        scroll.description || "Explore this scroll on Vauntico",
+        scroll.tier || "free",
+      ).embedCode;
     }
-    return ''
-  }
+    return "";
+  };
 
   const copyEmbedCode = async () => {
-    const code = getEmbedCode()
+    const code = getEmbedCode();
     try {
-      await navigator.clipboard.writeText(code)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch (error) {
-      console.error('Failed to copy:', error)
+      console.error("Failed to copy:", error);
     }
-  }
+  };
 
-  const shareLink = generateScrollShareLink(scroll.id, scroll.title).url
+  const shareLink = generateScrollShareLink(scroll.id, scroll.title).url;
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
@@ -75,7 +76,7 @@ function ShareScrollModal({ scroll, onClose }) {
         <div className="bg-gradient-to-r from-vault-purple to-purple-600 text-white p-6">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-2xl font-bold">Share Scroll</h2>
-            <button 
+            <button
               onClick={onClose}
               className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
             >
@@ -89,18 +90,19 @@ function ShareScrollModal({ scroll, onClose }) {
         <div className="border-b border-gray-200 bg-gray-50">
           <div className="flex">
             {[
-              { id: 'social', label: '🌐 Social Share', icon: '📱' },
-              { id: 'iframe', label: '💻 Embed Code', icon: '🔗' },
-              { id: 'preview', label: '🎨 Preview Card', icon: '📇' }
-            ].map(tab => (
+              { id: "social", label: "🌐 Social Share", icon: "📱" },
+              { id: "iframe", label: "💻 Embed Code", icon: "🔗" },
+              { id: "preview", label: "🎨 Preview Card", icon: "📇" },
+            ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`
                   flex-1 px-4 py-3 text-sm font-medium transition-colors
-                  ${activeTab === tab.id 
-                    ? 'border-b-2 border-vault-purple text-vault-purple bg-white' 
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  ${
+                    activeTab === tab.id
+                      ? "border-b-2 border-vault-purple text-vault-purple bg-white"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                   }
                 `}
               >
@@ -114,7 +116,7 @@ function ShareScrollModal({ scroll, onClose }) {
         {/* Content */}
         <div className="p-6 overflow-y-auto max-h-[60vh]">
           {/* Social Share Tab */}
-          {activeTab === 'social' && (
+          {activeTab === "social" && (
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -131,13 +133,14 @@ function ShareScrollModal({ scroll, onClose }) {
                     onClick={handleCopyLink}
                     className={`
                       px-6 py-2 rounded-lg font-medium transition-all
-                      ${copied 
-                        ? 'bg-green-500 text-white' 
-                        : 'bg-vault-purple text-white hover:bg-purple-700'
+                      ${
+                        copied
+                          ? "bg-green-500 text-white"
+                          : "bg-vault-purple text-white hover:bg-purple-700"
                       }
                     `}
                   >
-                    {copied ? '✓ Copied!' : 'Copy'}
+                    {copied ? "✓ Copied!" : "Copy"}
                   </button>
                 </div>
                 <p className="text-xs text-gray-500 mt-2">
@@ -172,15 +175,16 @@ function ShareScrollModal({ scroll, onClose }) {
                   <span>💰</span> Earn Commissions
                 </h4>
                 <p className="text-sm text-purple-700">
-                  When someone signs up through your referral link, you'll earn commission on their subscription.
-                  Legacy tier members earn 15% recurring revenue!
+                  When someone signs up through your referral link, you'll earn
+                  commission on their subscription. Legacy tier members earn 15%
+                  recurring revenue!
                 </p>
               </div>
             </div>
           )}
 
           {/* Iframe Embed Tab */}
-          {activeTab === 'iframe' && (
+          {activeTab === "iframe" && (
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -188,30 +192,51 @@ function ShareScrollModal({ scroll, onClose }) {
                 </label>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs text-gray-600 mb-1">Width</label>
+                    <label className="block text-xs text-gray-600 mb-1">
+                      Width
+                    </label>
                     <input
                       type="text"
                       value={embedOptions.width}
-                      onChange={(e) => setEmbedOptions({ ...embedOptions, width: e.target.value })}
+                      onChange={(e) =>
+                        setEmbedOptions({
+                          ...embedOptions,
+                          width: e.target.value,
+                        })
+                      }
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
                       placeholder="100%"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-600 mb-1">Height</label>
+                    <label className="block text-xs text-gray-600 mb-1">
+                      Height
+                    </label>
                     <input
                       type="text"
                       value={embedOptions.height}
-                      onChange={(e) => setEmbedOptions({ ...embedOptions, height: e.target.value })}
+                      onChange={(e) =>
+                        setEmbedOptions({
+                          ...embedOptions,
+                          height: e.target.value,
+                        })
+                      }
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
                       placeholder="600px"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-600 mb-1">Theme</label>
+                    <label className="block text-xs text-gray-600 mb-1">
+                      Theme
+                    </label>
                     <select
                       value={embedOptions.theme}
-                      onChange={(e) => setEmbedOptions({ ...embedOptions, theme: e.target.value })}
+                      onChange={(e) =>
+                        setEmbedOptions({
+                          ...embedOptions,
+                          theme: e.target.value,
+                        })
+                      }
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
                     >
                       <option value="light">Light</option>
@@ -223,7 +248,12 @@ function ShareScrollModal({ scroll, onClose }) {
                       <input
                         type="checkbox"
                         checked={embedOptions.showHeader}
-                        onChange={(e) => setEmbedOptions({ ...embedOptions, showHeader: e.target.checked })}
+                        onChange={(e) =>
+                          setEmbedOptions({
+                            ...embedOptions,
+                            showHeader: e.target.checked,
+                          })
+                        }
                         className="w-4 h-4 text-vault-purple rounded"
                       />
                       Show Header
@@ -241,13 +271,14 @@ function ShareScrollModal({ scroll, onClose }) {
                     onClick={copyEmbedCode}
                     className={`
                       px-4 py-1 rounded-md text-sm font-medium transition-all
-                      ${copied 
-                        ? 'bg-green-500 text-white' 
-                        : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                      ${
+                        copied
+                          ? "bg-green-500 text-white"
+                          : "bg-gray-200 hover:bg-gray-300 text-gray-700"
                       }
                     `}
                   >
-                    {copied ? '✓ Copied!' : 'Copy Code'}
+                    {copied ? "✓ Copied!" : "Copy Code"}
                   </button>
                 </div>
                 <textarea
@@ -263,15 +294,15 @@ function ShareScrollModal({ scroll, onClose }) {
                   <span>ℹ️</span> For Agency Partners
                 </h4>
                 <p className="text-sm text-blue-700">
-                  Pro & Legacy tier members can embed scrolls on client sites with white-label options.
-                  Contact support for custom branding.
+                  Pro & Legacy tier members can embed scrolls on client sites
+                  with white-label options. Contact support for custom branding.
                 </p>
               </div>
             </div>
           )}
 
           {/* Preview Card Tab */}
-          {activeTab === 'preview' && (
+          {activeTab === "preview" && (
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -285,13 +316,14 @@ function ShareScrollModal({ scroll, onClose }) {
                     onClick={copyEmbedCode}
                     className={`
                       px-4 py-1 rounded-md text-sm font-medium transition-all
-                      ${copied 
-                        ? 'bg-green-500 text-white' 
-                        : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                      ${
+                        copied
+                          ? "bg-green-500 text-white"
+                          : "bg-gray-200 hover:bg-gray-300 text-gray-700"
                       }
                     `}
                   >
-                    {copied ? '✓ Copied!' : 'Copy Code'}
+                    {copied ? "✓ Copied!" : "Copy Code"}
                   </button>
                 </div>
                 <textarea
@@ -306,7 +338,7 @@ function ShareScrollModal({ scroll, onClose }) {
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                   Live Preview
                 </label>
-                <div 
+                <div
                   className="border border-gray-200 rounded-lg p-6 bg-gray-50"
                   dangerouslySetInnerHTML={{ __html: getEmbedCode() }}
                 />
@@ -329,7 +361,7 @@ function ShareScrollModal({ scroll, onClose }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ShareScrollModal
+export default ShareScrollModal;

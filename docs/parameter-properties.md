@@ -1,5 +1,5 @@
 ---
-description: 'Require or disallow parameter properties in class constructors.'
+description: "Require or disallow parameter properties in class constructors."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -474,7 +474,7 @@ class Foo {
 class Foo {
   protected logicInConstructor: string;
   constructor(logicInConstructor: string) {
-    console.log('Hello, world!');
+    console.log("Hello, world!");
     this.logicInConstructor = logicInConstructor;
   }
 }

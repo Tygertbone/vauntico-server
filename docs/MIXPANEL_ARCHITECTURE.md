@@ -75,14 +75,14 @@ Event Queue (Batching Layer)
 
 ### Event Categories & Destinations
 
-| Event Category | GA4 | Mixpanel | Notes |
-|---------------|-----|----------|-------|
-| **CLI Events** | ✅ | ✅ | Command execution, onboarding |
-| **Scroll Events** | ✅ | ✅ | Views, locks, reading time |
-| **Conversions** | ✅ | ✅ | Upgrades, subscriptions |
-| **Referrals** | ✅ | ✅ | Attribution, viral loops |
-| **Navigation** | ✅ | ✅ | Page views, routes |
-| **User Properties** | ❌ | ✅ | Mixpanel-specific profiles |
+| Event Category      | GA4 | Mixpanel | Notes                         |
+| ------------------- | --- | -------- | ----------------------------- |
+| **CLI Events**      | ✅  | ✅       | Command execution, onboarding |
+| **Scroll Events**   | ✅  | ✅       | Views, locks, reading time    |
+| **Conversions**     | ✅  | ✅       | Upgrades, subscriptions       |
+| **Referrals**       | ✅  | ✅       | Attribution, viral loops      |
+| **Navigation**      | ✅  | ✅       | Page views, routes            |
+| **User Properties** | ❌  | ✅       | Mixpanel-specific profiles    |
 
 ---
 
@@ -116,12 +116,12 @@ Event Queue (Batching Layer)
   email: "alex@example.com",
   tier: "founder",
   signup_date: "2025-01-15",
-  
+
   // Counters
   scrolls_read: 15,
   commands_executed: 42,
   referrals_made: 3,
-  
+
   // Metadata
   referral_source: "twitter",
   first_scroll: "The Quantum Leap",
@@ -137,14 +137,14 @@ Event Queue (Batching Layer)
 
 ```javascript
 // Environment Configuration
-const MIXPANEL_TOKEN = import.meta.env.VITE_MIXPANEL_TOKEN
+const MIXPANEL_TOKEN = import.meta.env.VITE_MIXPANEL_TOKEN;
 
 // SDK Initialization
 mixpanel.init(MIXPANEL_TOKEN, {
-  debug: true,                    // Dev mode logging
-  track_pageview: true,           // Auto page tracking
-  persistence: 'localStorage'     // Cross-session tracking
-})
+  debug: true, // Dev mode logging
+  track_pageview: true, // Auto page tracking
+  persistence: "localStorage", // Cross-session tracking
+});
 ```
 
 ### 2. Event Queue System
@@ -162,24 +162,24 @@ batching: {
 
 ```javascript
 // Session Identifier
-sessionStorage: vauntico_session_id
+sessionStorage: vauntico_session_id;
 
 // User Identifier
-localStorage: vauntico_user_id (authenticated)
-localStorage: vauntico_anonymous_id (anonymous)
+localStorage: vauntico_user_id(authenticated);
+localStorage: vauntico_anonymous_id(anonymous);
 ```
 
 ### 4. Attribution System
 
 ```javascript
 // Referral Attribution
-localStorage: vauntico_referral_code
-localStorage: vauntico_referral_source
+localStorage: vauntico_referral_code;
+localStorage: vauntico_referral_source;
 
 // UTM Attribution
-localStorage: vauntico_utm_source
-localStorage: vauntico_utm_medium
-localStorage: vauntico_utm_campaign
+localStorage: vauntico_utm_source;
+localStorage: vauntico_utm_medium;
+localStorage: vauntico_utm_campaign;
 ```
 
 ---
@@ -190,46 +190,46 @@ localStorage: vauntico_utm_campaign
 
 ```javascript
 // Event Tracking
-window.VaunticoAnalytics.trackEvent(name, props)
+window.VaunticoAnalytics.trackEvent(name, props);
 
 // User Management
-window.VaunticoAnalytics.identifyUser(userId, properties)
-window.VaunticoAnalytics.setUserProperties(properties)
-window.VaunticoAnalytics.incrementUserProperty(property, amount)
+window.VaunticoAnalytics.identifyUser(userId, properties);
+window.VaunticoAnalytics.setUserProperties(properties);
+window.VaunticoAnalytics.incrementUserProperty(property, amount);
 
 // Utilities
-window.VaunticoAnalytics.logState()
-window.VaunticoAnalytics.flush()
-window.VaunticoAnalytics.getQueue()
-window.VaunticoAnalytics.clearSession()
+window.VaunticoAnalytics.logState();
+window.VaunticoAnalytics.flush();
+window.VaunticoAnalytics.getQueue();
+window.VaunticoAnalytics.clearSession();
 ```
 
 ### Exported Functions (for Components)
 
 ```javascript
 // Scroll Tracking
-trackScrollView(scrollId, scrollTitle, scrollTier)
-trackScrollLockClick(scrollId, scrollTitle, requiredTier, userTier)
-trackScrollUnlock(scrollId, scrollTitle, tier)
-trackScrollReadingTime(scrollId, scrollTitle, durationSeconds)
-trackScrollComplete(scrollId, scrollTitle)
+trackScrollView(scrollId, scrollTitle, scrollTier);
+trackScrollLockClick(scrollId, scrollTitle, requiredTier, userTier);
+trackScrollUnlock(scrollId, scrollTitle, tier);
+trackScrollReadingTime(scrollId, scrollTitle, durationSeconds);
+trackScrollComplete(scrollId, scrollTitle);
 
 // Conversion Tracking
-trackUpgradeModalOpen(trigger, currentTier, scrollId)
-trackTierSelected(selectedTier, billingCycle, currentTier)
-trackUpgradeClick(tier, billingCycle, price, currency)
-trackSubscriptionSuccess(tier, billingCycle, price, currency)
+trackUpgradeModalOpen(trigger, currentTier, scrollId);
+trackTierSelected(selectedTier, billingCycle, currentTier);
+trackUpgradeClick(tier, billingCycle, price, currency);
+trackSubscriptionSuccess(tier, billingCycle, price, currency);
 
 // CLI Tracking
-trackCLIOnboardingStart(roleId, roleName)
-trackCLICommand(command, roleId)
-trackCLIStepComplete(stepIndex, stepTitle, roleId)
-trackCLIOnboardingComplete(roleId, roleName, completionTimeSeconds)
+trackCLIOnboardingStart(roleId, roleName);
+trackCLICommand(command, roleId);
+trackCLIStepComplete(stepIndex, stepTitle, roleId);
+trackCLIOnboardingComplete(roleId, roleName, completionTimeSeconds);
 
 // Referral Tracking
-trackReferralGenerated(referralCode, sourceType)
-trackReferralClick(referralCode, source)
-trackScrollShare(scrollId, scrollTitle, platform)
+trackReferralGenerated(referralCode, sourceType);
+trackReferralClick(referralCode, source);
+trackScrollShare(scrollId, scrollTitle, platform);
 ```
 
 ---
@@ -294,12 +294,12 @@ const token = import.meta.env.VITE_MIXPANEL_TOKEN
 
 ```javascript
 // User can clear their data
-localStorage.clear()
-sessionStorage.clear()
+localStorage.clear();
+sessionStorage.clear();
 
 // Or specifically:
-localStorage.removeItem('vauntico_anonymous_id')
-localStorage.removeItem('vauntico_user_id')
+localStorage.removeItem("vauntico_anonymous_id");
+localStorage.removeItem("vauntico_user_id");
 ```
 
 ---
@@ -308,11 +308,11 @@ localStorage.removeItem('vauntico_user_id')
 
 ### Event Volume Capacity
 
-| Scenario | Events/Day | API Calls/Day | Notes |
-|----------|-----------|---------------|-------|
-| **Low Traffic** | 1,000 | 100 | Small user base |
-| **Medium Traffic** | 50,000 | 5,000 | Growing platform |
-| **High Traffic** | 1,000,000 | 100,000 | Mature product |
+| Scenario           | Events/Day | API Calls/Day | Notes            |
+| ------------------ | ---------- | ------------- | ---------------- |
+| **Low Traffic**    | 1,000      | 100           | Small user base  |
+| **Medium Traffic** | 50,000     | 5,000         | Growing platform |
+| **High Traffic**   | 1,000,000  | 100,000       | Mature product   |
 
 ### Mixpanel Limits
 
@@ -327,14 +327,14 @@ localStorage.removeItem('vauntico_user_id')
 ### Component Integration Example
 
 ```javascript
-import { trackScrollView } from '@/utils/analytics'
+import { trackScrollView } from "@/utils/analytics";
 
 function ScrollReader({ scrollId, scrollTitle, scrollTier }) {
   useEffect(() => {
     // Track when scroll is viewed
-    trackScrollView(scrollId, scrollTitle, scrollTier)
-  }, [scrollId])
-  
+    trackScrollView(scrollId, scrollTitle, scrollTier);
+  }, [scrollId]);
+
   // Component logic...
 }
 ```
@@ -342,17 +342,17 @@ function ScrollReader({ scrollId, scrollTitle, scrollTier }) {
 ### Hook Integration Example
 
 ```javascript
-import { trackUpgradeClick } from '@/utils/analytics'
+import { trackUpgradeClick } from "@/utils/analytics";
 
 function useUpgrade() {
   const handleUpgrade = (tier, billingCycle, price, currency) => {
     // Track the upgrade attempt
-    trackUpgradeClick(tier, billingCycle, price, currency)
-    
+    trackUpgradeClick(tier, billingCycle, price, currency);
+
     // Proceed with upgrade flow...
-  }
-  
-  return { handleUpgrade }
+  };
+
+  return { handleUpgrade };
 }
 ```
 
@@ -364,7 +364,7 @@ function useUpgrade() {
 
 ```javascript
 // Enabled automatically in dev
-debug: import.meta.env.DEV
+debug: import.meta.env.DEV;
 
 // Console output:
 // 🎯 Mixpanel initialized
@@ -384,7 +384,7 @@ debug: import.meta.env.DEV
 
 ```javascript
 // Check system status
-window.VaunticoAnalytics.logState()
+window.VaunticoAnalytics.logState();
 
 // Output:
 // Session ID: session_xxx
@@ -398,18 +398,21 @@ window.VaunticoAnalytics.logState()
 ## 🎊 Architecture Benefits
 
 ### ✨ For Developers
+
 - **Unified API**: One function for all providers
 - **Type Safety**: Consistent event structure
 - **Easy Testing**: Console utilities
 - **Debug Mode**: Detailed logging
 
 ### 📊 For Product Teams
+
 - **Comprehensive Tracking**: Every interaction captured
 - **User Insights**: Full user profiles
 - **Conversion Funnels**: Clear attribution
 - **Real-time Data**: Instant visibility
 
 ### 💰 For Business
+
 - **ROI Tracking**: Revenue attribution
 - **Growth Metrics**: Viral coefficients
 - **Cost Efficiency**: Batched API calls

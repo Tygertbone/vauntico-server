@@ -1,5 +1,5 @@
 ---
-description: 'Disallow specified modules when loaded by `import`.'
+description: "Disallow specified modules when loaded by `import`."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -51,21 +51,21 @@ Examples of code with the above config:
 #### ❌ Incorrect
 
 ```ts option='{"paths":[{"name":"import-foo","message":"Please use import-bar instead.","allowTypeImports":true},{"name":"import-baz","message":"Please use import-quux instead.","allowTypeImports":true}]}'
-import foo from 'import-foo';
-export { Foo } from 'import-foo';
+import foo from "import-foo";
+export { Foo } from "import-foo";
 
-import baz from 'import-baz';
-export { Baz } from 'import-baz';
+import baz from "import-baz";
+export { Baz } from "import-baz";
 ```
 
 #### ✅ Correct
 
 ```ts option='{"paths":[{"name":"import-foo","message":"Please use import-bar instead.","allowTypeImports":true},{"name":"import-baz","message":"Please use import-quux instead.","allowTypeImports":true}]}'
-import { foo } from 'other-module';
+import { foo } from "other-module";
 
-import type foo from 'import-foo';
-export type { Foo } from 'import-foo';
+import type foo from "import-foo";
+export type { Foo } from "import-foo";
 
-import type baz from 'import-baz';
-export type { Baz } from 'import-baz';
+import type baz from "import-baz";
+export type { Baz } from "import-baz";
 ```

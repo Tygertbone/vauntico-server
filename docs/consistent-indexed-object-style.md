@@ -1,5 +1,5 @@
 ---
-description: 'Require or disallow the `Record` type.'
+description: "Require or disallow the `Record` type."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

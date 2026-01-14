@@ -17,16 +17,19 @@ objective: "Learn the algorithm secrets and post your first video strategically"
 ## ⏰ Best Times to Post (African Markets)
 
 **For Nigerian Creators:**
+
 - 6-7am (people checking phone before work)
 - 12-1pm (lunch break scrolling)
 - 7-9pm (evening relaxation)
 
 **For South African Creators:**
+
 - 7-8am
 - 1-2pm
 - 8-10pm
 
 **For Kenyan/Ghanaian:**
+
 - Same as Nigeria
 
 **Worst times:** 2-5am (everyone sleeping), 9am-11am (people working)
@@ -46,6 +49,7 @@ objective: "Learn the algorithm secrets and post your first video strategically"
 ```
 
 **Example:**
+
 ```
 Want to save R500 this week? 💰
 

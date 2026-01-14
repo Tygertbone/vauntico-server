@@ -23,6 +23,7 @@ The deployment consists of:
 ## Prerequisites
 
 ### VPS Requirements
+
 - Ubuntu 22.04 LTS
 - Minimum 2GB RAM, 2 CPU cores
 - 20GB+ storage
@@ -30,7 +31,9 @@ The deployment consists of:
 - Domain names configured to point to VPS IP
 
 ### Domain Setup
+
 Before starting, ensure you have these domains configured:
+
 - `trust-score.mydomain.com`
 - `vauntico-server.mydomain.com`
 - `fulfillment.mydomain.com`
@@ -41,12 +44,14 @@ Replace `mydomain.com` with your actual domain.
 ## Quick Start
 
 ### 1. Clone Repository
+
 ```bash
 git clone https://github.com/your-username/vauntico-mvp.git
 cd vauntico-mvp
 ```
 
 ### 2. Configure Environment
+
 ```bash
 # Copy environment template
 cp .env.template .env
@@ -56,6 +61,7 @@ nano .env
 ```
 
 ### 3. Run Deployment
+
 ```bash
 chmod +x scripts/vps/deploy.sh
 ./scripts/vps/deploy.sh
@@ -66,6 +72,7 @@ chmod +x scripts/vps/deploy.sh
 ### Step 1: VPS Provisioning
 
 #### Option A: AWS Free Tier
+
 1. Sign up for AWS Free Tier
 2. Launch Ubuntu 22.04 LTS t2.micro instance
 3. Configure security groups:
@@ -74,6 +81,7 @@ chmod +x scripts/vps/deploy.sh
    - HTTPS (Port 443)
 
 #### Option B: Oracle Cloud Always Free
+
 1. Sign up for Oracle Cloud Free Tier
 2. Create Ubuntu 22.04 VM instance
 3. Add ingress rules for ports 22, 80, 443
@@ -81,11 +89,13 @@ chmod +x scripts/vps/deploy.sh
 ### Step 2: Initial VPS Setup
 
 SSH into your VPS:
+
 ```bash
 ssh ubuntu@your-vps-ip
 ```
 
 Update system:
+
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
@@ -93,6 +103,7 @@ sudo apt update && sudo apt upgrade -y
 ### Step 3: Environment Configuration
 
 Create `.env` file with your actual values:
+
 ```bash
 # Database
 DATABASE_URL=postgresql://user:password@host:5432/dbname
@@ -123,6 +134,7 @@ SSL_EMAIL=admin@yourdomain.com
 ### Step 4: Run Deployment Script
 
 The deployment script handles:
+
 - System updates
 - Docker installation
 - Service deployment
@@ -137,6 +149,7 @@ chmod +x scripts/vps/deploy.sh
 ### Step 5: Verification
 
 After deployment, run health checks:
+
 ```bash
 ./scripts/vps/health-check.sh
 ```
@@ -146,28 +159,31 @@ After deployment, run health checks:
 Once deployed, your services will be available at:
 
 ### Application Services
-| Service | URL | Health Endpoint |
-|---------|-----|----------------|
-| Trust Score Backend | https://trust-score.yourdomain.com | /health |
-| Vauntico Server | https://vauntico-server.yourdomain.com | /health |
-| Fulfillment Engine | https://fulfillment.yourdomain.com | /api/status |
-| Legacy Server | https://legacy.yourdomain.com | /api/status |
+
+| Service             | URL                                    | Health Endpoint |
+| ------------------- | -------------------------------------- | --------------- |
+| Trust Score Backend | https://trust-score.yourdomain.com     | /health         |
+| Vauntico Server     | https://vauntico-server.yourdomain.com | /health         |
+| Fulfillment Engine  | https://fulfillment.yourdomain.com     | /api/status     |
+| Legacy Server       | https://legacy.yourdomain.com          | /api/status     |
 
 ### Monitoring Services
-| Service | URL | Default Credentials |
-|---------|-----|-------------------|
-| Uptime Kuma | http://your-vps-ip:3003 | admin/admin123 |
-| Prometheus | http://your-vps-ip:9090 | No authentication |
-| Grafana | http://your-vps-ip:3004 | admin/admin123 |
-| AlertManager | http://your-vps-ip:9093 | No authentication |
-| cAdvisor | http://your-vps-ip:8080 | No authentication |
-| Node Exporter | http://your-vps-ip:9100 | No authentication |
+
+| Service       | URL                     | Default Credentials |
+| ------------- | ----------------------- | ------------------- |
+| Uptime Kuma   | http://your-vps-ip:3003 | admin/admin123      |
+| Prometheus    | http://your-vps-ip:9090 | No authentication   |
+| Grafana       | http://your-vps-ip:3004 | admin/admin123      |
+| AlertManager  | http://your-vps-ip:9093 | No authentication   |
+| cAdvisor      | http://your-vps-ip:8080 | No authentication   |
+| Node Exporter | http://your-vps-ip:9100 | No authentication   |
 
 **⚠️ Important:** Change default passwords before production use!
 
 ## Management Commands
 
 ### View Logs
+
 ```bash
 # View all service logs
 sudo docker-compose logs -f
@@ -181,6 +197,7 @@ sudo docker-compose logs -f nginx
 ```
 
 ### Service Management
+
 ```bash
 # Restart all services
 sudo docker-compose restart
@@ -201,6 +218,7 @@ sudo docker-compose up -d
 ```
 
 ### SSL Certificate Management
+
 ```bash
 # Check certificate status
 sudo certbot certificates
@@ -213,6 +231,7 @@ sudo certbot renew --dry-run
 ```
 
 ### NGINX Management
+
 ```bash
 # Test NGINX configuration
 sudo nginx -t
@@ -231,7 +250,9 @@ sudo tail -f /var/log/nginx/error.log
 ## Monitoring
 
 ### Health Monitoring
+
 Run regular health checks:
+
 ```bash
 # One-time check
 ./scripts/vps/health-check.sh
@@ -244,6 +265,7 @@ done
 ```
 
 ### System Monitoring
+
 ```bash
 # Check disk usage
 df -h
@@ -263,6 +285,7 @@ docker stats
 ### Common Issues
 
 #### Services Not Starting
+
 ```bash
 # Check container status
 sudo docker-compose ps
@@ -275,6 +298,7 @@ sudo docker-compose restart [service-name]
 ```
 
 #### SSL Certificate Issues
+
 ```bash
 # Check certificate status
 sudo certbot certificates
@@ -287,6 +311,7 @@ sudo nginx -t
 ```
 
 #### NGINX Proxy Issues
+
 ```bash
 # Test NGINX configuration
 sudo nginx -t
@@ -299,6 +324,7 @@ sudo systemctl reload nginx
 ```
 
 #### Database Connection Issues
+
 ```bash
 # Test database connection from container
 sudo docker-compose exec trust-score-backend node -e "
@@ -319,6 +345,7 @@ pool.query('SELECT NOW()').then(() => console.log('DB OK')).catch(console.error)
 ## Security Considerations
 
 ### Firewall Configuration
+
 ```bash
 # Configure UFW firewall
 sudo ufw enable
@@ -329,6 +356,7 @@ sudo ufw status
 ```
 
 ### Security Updates
+
 ```bash
 # Regular system updates
 sudo apt update && sudo apt upgrade -y
@@ -338,6 +366,7 @@ sudo apt list --upgradable
 ```
 
 ### Backup Strategy
+
 ```bash
 # Backup Docker volumes
 sudo docker run --rm -v vauntico-mvp_data:/data -v $(pwd):/backup alpine tar czf /backup/vauntico-data-backup.tar.gz -C /data .
@@ -349,6 +378,7 @@ tar czf vauntico-config-backup.tar.gz .env nginx/ scripts/vps/
 ## Performance Optimization
 
 ### Docker Optimization
+
 ```bash
 # Clean up unused Docker resources
 sudo docker system prune -a
@@ -358,13 +388,16 @@ docker stats --no-stream
 ```
 
 ### NGINX Optimization
+
 The NGINX configuration includes:
+
 - Gzip compression
 - Rate limiting
 - Security headers
 - Connection pooling
 
 ### Database Optimization
+
 - Use connection pooling
 - Implement proper indexing
 - Regular maintenance and backups
@@ -372,11 +405,13 @@ The NGINX configuration includes:
 ## Scaling Considerations
 
 ### Horizontal Scaling
+
 - Load balancer configuration
 - Multiple service instances
 - Database clustering
 
 ### Vertical Scaling
+
 - Increase VPS resources
 - Optimize Docker resource limits
 - Monitor performance metrics
@@ -384,6 +419,7 @@ The NGINX configuration includes:
 ## Maintenance
 
 ### Regular Tasks
+
 1. **Weekly:**
    - Run health checks
    - Check system updates
@@ -400,6 +436,7 @@ The NGINX configuration includes:
    - Performance audit
 
 ### Automation
+
 ```bash
 # Add to crontab for automated health checks
 crontab -e
@@ -411,6 +448,7 @@ crontab -e
 ## Support
 
 For issues and support:
+
 1. Check the troubleshooting section above
 2. Review service logs for error messages
 3. Run the health check script to identify issues
@@ -419,6 +457,7 @@ For issues and support:
 ## Recovery Procedures
 
 ### Full System Recovery
+
 ```bash
 # Stop all services
 sudo docker-compose down
@@ -438,6 +477,7 @@ sudo docker-compose up -d
 ```
 
 ### Service-Specific Recovery
+
 ```bash
 # Rebuild specific service
 sudo docker-compose build --no-cache [service-name]
@@ -445,3 +485,4 @@ sudo docker-compose up -d [service-name]
 
 # Re-generate SSL certificates
 sudo certbot --nginx -d domain1.com -d domain2.com --force-renewal
+```

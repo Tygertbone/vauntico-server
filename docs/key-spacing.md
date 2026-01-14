@@ -1,5 +1,5 @@
 ---
-description: 'Enforce consistent spacing between property names and type annotations in types and interfaces.'
+description: "Enforce consistent spacing between property names and type annotations in types and interfaces."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

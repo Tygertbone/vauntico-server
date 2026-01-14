@@ -20,6 +20,7 @@ Caller Application → resolve(id, options) → Resolution Algorithm → File Sy
 ```
 
 **Trust Boundaries:**
+
 - **Input module IDs:** May come from untrusted sources (user input, configuration)
 - **Filesystem access:** The library interacts with the filesystem to resolve paths
 - **Options:** Provided by the caller
@@ -35,14 +36,15 @@ Caller Application → resolve(id, options) → Resolution Algorithm → File Sy
 
 ### 5. Identify Threats
 
-| Component / API / Interaction                       | S  | T  | R  | I  | D  | E  |
-|-----------------------------------------------------|----|----|----|----|----|----|
-| Public API Call (`resolve/async`, `resolve/sync`)   | ✓  | ✓  | –  | ✓  | –  | –  |
-| Filesystem Access                                   | –  | ✓  | –  | ✓  | ✓  | –  |
-| Options Handling                                    | ✓  | ✓  | –  | ✓  | –  | –  |
-| Cache System                                        | –  | ✓  | –  | ✓  | –  | –  |
+| Component / API / Interaction                     | S   | T   | R   | I   | D   | E   |
+| ------------------------------------------------- | --- | --- | --- | --- | --- | --- |
+| Public API Call (`resolve/async`, `resolve/sync`) | ✓   | ✓   | –   | ✓   | –   | –   |
+| Filesystem Access                                 | –   | ✓   | –   | ✓   | ✓   | –   |
+| Options Handling                                  | ✓   | ✓   | –   | ✓   | –   | –   |
+| Cache System                                      | –   | ✓   | –   | ✓   | –   | –   |
 
 **Key Threats:**
+
 - **Spoofing:** Malicious module IDs mimicking legitimate packages, or spoofing configuration options[1].
 - **Tampering:** Caller-provided paths altering resolution order, or cache tampering leading to incorrect results[1][4].
 - **Information Disclosure:** Error messages revealing filesystem structure or sensitive paths[1].
@@ -51,12 +53,12 @@ Caller Application → resolve(id, options) → Resolution Algorithm → File Sy
 
 ### 6. Mitigation/Countermeasures
 
-| Threat Identified                          | Proposed Mitigation |
-|--------------------------------------------|---------------------|
-| Spoofing (malicious module IDs/config)     | Sanitize input IDs; validate against known patterns; restrict `basedir` to app-controlled paths[1][4]. |
-| Tampering (path traversal, cache)          | Validate input IDs for directory escapes; secure cache reads/writes; restrict cache to trusted sources[1][4]. |
-| Information Disclosure (error messages)    | Generic "not found" errors without internal paths; avoid exposing sensitive configuration in errors[1]. |
-| Denial of Service (resource exhaustion)    | Limit recursive resolution depth; implement timeout; monitor for excessive filesystem operations[1]. |
+| Threat Identified                       | Proposed Mitigation                                                                                           |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Spoofing (malicious module IDs/config)  | Sanitize input IDs; validate against known patterns; restrict `basedir` to app-controlled paths[1][4].        |
+| Tampering (path traversal, cache)       | Validate input IDs for directory escapes; secure cache reads/writes; restrict cache to trusted sources[1][4]. |
+| Information Disclosure (error messages) | Generic "not found" errors without internal paths; avoid exposing sensitive configuration in errors[1].       |
+| Denial of Service (resource exhaustion) | Limit recursive resolution depth; implement timeout; monitor for excessive filesystem operations[1].          |
 
 ### 7. Risk Ranking
 

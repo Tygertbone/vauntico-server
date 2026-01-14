@@ -47,9 +47,7 @@
         "options": {
           "reduceOptions": {
             "values": false,
-            "calcs": [
-              "lastNotNull"
-            ]
+            "calcs": ["lastNotNull"]
           }
         }
       },

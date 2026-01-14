@@ -1,11 +1,13 @@
 # Vauntico Production Deployment Guide
 
 ## Overview
+
 This guide covers the production deployment requirements and configuration for Vauntico's secure multi-service architecture.
 
 ## Prerequisites
 
 ### Infrastructure Requirements
+
 - Vercel Pro account (serverless functions)
 - Neon PostgreSQL database (512MB free tier)
 - Upstash Redis (10MB free tier)
@@ -14,6 +16,7 @@ This guide covers the production deployment requirements and configuration for V
 ### External Service Configuration
 
 #### Claude AI Service
+
 - **Service**: Anthropic Claude API
 - **Cost**: $1.10 per 1M input tokens, $4.40 per 1M output tokens
 - **Setup Steps**:
@@ -23,6 +26,7 @@ This guide covers the production deployment requirements and configuration for V
   4. **Environment Variable**: `CLAUDE_API_KEY`
 
 #### Airtable Integration
+
 - **Service**: Airtable API for product inventory
 - **Cost**: Free tier (1,200 requests per hour, 5GB attachments)
 - **Setup Steps**:
@@ -35,6 +39,7 @@ This guide covers the production deployment requirements and configuration for V
      - `AIRTABLE_TABLE_NAME=Products`
 
 #### Resend Email Service
+
 - **Service**: Resend transactional email
 - **Cost**: 3,000 emails/month free, then $0.00058/email
 - **Setup Steps**:
@@ -46,6 +51,7 @@ This guide covers the production deployment requirements and configuration for V
      - `RESEND_WEBHOOK_SECRET` (from webhook configuration)
 
 #### Payment Providers
+
 - **Primary**: PayStack (Africa-focused)
 - **Secondary**: Stripe (global fallback)
 - **Setup Steps**:
@@ -58,6 +64,7 @@ This guide covers the production deployment requirements and configuration for V
 ## Configuration Deployment
 
 ### Step 1: Fulfillment Engine Secrets
+
 ```bash
 # In Vauntico fulfillment engine deployment
 SERVICE_API_KEY=your_secure_32_char_api_key_here
@@ -71,6 +78,7 @@ SENDER_EMAIL=support@vauntico.com
 ```
 
 ### Step 2: Backend API Secrets
+
 ```bash
 # In Vauntico main backend deployment
 DATABASE_URL=postgresql://neon_db_url
@@ -91,6 +99,7 @@ SLACK_WEBHOOK_URL=https://hooks.slack.com/your_webhook
 ```
 
 ### Step 3: Frontend Environment
+
 ```bash
 # In Vercel frontend deployment (already configured)
 VITE_API_BASE_URL=https://api.vauntico.com
@@ -99,7 +108,9 @@ VITE_CURRENCY_ABSTRACTION_ENABLED=true
 ```
 
 ### Step 4: GitHub Actions Secrets
+
 Add to repository settings under "Secrets and variables > Actions":
+
 ```
 CLAUDE_API_KEY=sk-ant-your_key
 PAYSTACK_SECRET_KEY=sk_live_your_key
@@ -117,11 +128,13 @@ STRIPE_WEBHOOK_SECRET=whsec_stripe_webhook
 ## Deployment Validation
 
 ### Health Checks
+
 - Frontend: `https://vauntico.com/health` (returns build info)
 - Backend: `https://api.vauntico.com/health` (returns service health)
 - Fulfillment: Fulfillment service health endpoint
 
 ### Service Validation
+
 1. **Authentication**: Verify Claude API endpoints require SERVICE_API_KEY
 2. **Payments**: Test PayStack public key loads correctly in frontend
 3. **Webhooks**: Confirm Resend webhook signature verification works
@@ -131,16 +144,19 @@ STRIPE_WEBHOOK_SECRET=whsec_stripe_webhook
 ## Security Considerations
 
 ### Key Rotation
+
 - Rotate API keys quarterly through service dashboards
 - Update environment variables before removing old keys
 - Monitor for authentication failures during rotation
 
 ### Access Control
+
 - GitHub Actions deploy only from main branch
 - Environment secrets encrypted at rest
 - Vercel production only accessible to authorized team members
 
 ### Monitoring
+
 - Sentry error tracking active in production
 - Slack alerts configured for service failures
 - Database monitoring enabled in Neon dashboard
@@ -148,12 +164,14 @@ STRIPE_WEBHOOK_SECRET=whsec_stripe_webhook
 ## Disaster Recovery
 
 ### Rollback Procedures
+
 1. Vercel deployments allow instant rollback to previous version
 2. Database: Point-in-time recovery available in Neon
 3. Redis: Automatic failover in Upstash
 4. External services: API keys can be regenerated if compromised
 
 ### Backup Strategy
+
 - Database: Daily automated backups in Neon (7-day retention)
 - Code: Git history provides complete version control
 - Config: Environment secrets documented in encrypted repository
@@ -161,17 +179,19 @@ STRIPE_WEBHOOK_SECRET=whsec_stripe_webhook
 ## Cost Optimization
 
 ### Free Tier Limits
+
 - Neon: 512MB database (sufficient for 10K+ users)
 - Upstash: 10MB Redis (adequate for session/caching)
 - Vercel: 100GB bandwidth, 3000 hours serverless compute
 - Resend: 3000 emails/month
 
 ### Scaling Triggers
+
 - Database growth beyond 400MB: Upgrade Neon plan
 - Email volume over 2000/month: Monitor Resend costs
 - API traffic spikes: Optimize queries and implement caching
 
 ---
 
-*Last Updated: December 2025*
-*Version: 2.0.0*
+_Last Updated: December 2025_
+_Version: 2.0.0_

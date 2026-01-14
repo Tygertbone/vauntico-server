@@ -7,15 +7,15 @@
 apiVersion: 1
 
 datasources:
-  - name: 'Prometheus'
-    type: 'prometheus'
-    access: 'proxy'
-    url: 'http://prometheus:9090'
+  - name: "Prometheus"
+    type: "prometheus"
+    access: "proxy"
+    url: "http://prometheus:9090"
     isDefault: true
     jsonData:
-      timeInterval: '5s'
-      queryTimeout: '60s'
-      httpMethod: 'POST'
+      timeInterval: "5s"
+      queryTimeout: "60s"
+      httpMethod: "POST"
     secureJsonData: {}
     editable: true
     basicAuth: false

@@ -3,6 +3,7 @@
 ## Setup
 
 1. Clone the repo and install dependencies:
+
    ```bash
    git clone https://github.com/Tygertbone/vauntico-fulfillment-engine.git
    cd vauntico-fulfillment-engine
@@ -28,6 +29,7 @@ npm start
 ## Fulfillment Endpoint
 
 POST `/api/fulfillment/run`
+
 - Body: `{ "recordId": "<airtable_record_id>" }`
 - Returns: `{ success: true, messageId }` on success
 
@@ -36,9 +38,11 @@ POST `/api/fulfillment/run`
 GET `/api/status` returns `{ status: 'ok' }`.
 
 ## Notes
+
 - `.env` is excluded from version control.
 - All errors are logged with stack traces and returned as JSON.
 - For production, set `NODE_ENV=production` and use a process manager (e.g., PM2).
 
 ## License
+
 MIT

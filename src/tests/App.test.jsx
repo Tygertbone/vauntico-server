@@ -1,20 +1,20 @@
-import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
-import App from '../App';
+import { render } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
+import App from "../App";
 
-describe('App', () => {
-  it('renders without crashing', () => {
+describe("App", () => {
+  it("renders without crashing", () => {
     render(
       <HelmetProvider>
         <MemoryRouter>
           <App />
         </MemoryRouter>
-      </HelmetProvider>
+      </HelmetProvider>,
     );
 
     // App renders successfully
-    const appElement = document.querySelector('.min-h-screen');
+    const appElement = document.querySelector(".min-h-screen");
     expect(appElement).toBeInTheDocument();
   });
 });

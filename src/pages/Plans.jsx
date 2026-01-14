@@ -1,6 +1,6 @@
-import React from 'react';
-import PricingCard from '../components/PricingCard';
-import { usePlans } from '../hooks/usePlans';
+import React from "react";
+import PricingCard from "../components/PricingCard";
+import { usePlans } from "../hooks/usePlans";
 
 const PlansPage = () => {
   const plans = usePlans();
@@ -11,8 +11,12 @@ const PlansPage = () => {
       <div className="min-h-screen bg-gray-50 py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Choose Your Plan</h1>
-            <p className="text-xl text-gray-600">Loading pricing information...</p>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              Choose Your Plan
+            </h1>
+            <p className="text-xl text-gray-600">
+              Loading pricing information...
+            </p>
           </div>
           <div className="flex justify-center">
             <div className="animate-pulse flex space-x-4">
@@ -29,26 +33,35 @@ const PlansPage = () => {
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Choose Your Plan</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Choose Your Plan
+          </h1>
           <p className="text-xl text-gray-600 mb-4">
             Unlock the full potential of Vauntico with flexible pricing
           </p>
           <p className="text-sm text-gray-500">
-            All prices shown in your local currency. Pricing is calculated in real-time.
+            All prices shown in your local currency. Pricing is calculated in
+            real-time.
           </p>
         </div>
 
         <div className="flex flex-col md:flex-row justify-center items-start gap-8 mb-12">
           <PricingCard
-            name={plans.creator?.name || 'Creator Pass'}
-            description={plans.creator?.description || 'Perfect for creators and small teams'}
+            name={plans.creator?.name || "Creator Pass"}
+            description={
+              plans.creator?.description ||
+              "Perfect for creators and small teams"
+            }
             pricing={plans.creator?.pricing}
             features={plans.creator?.features}
           />
 
           <PricingCard
-            name={plans.enterprise?.name || 'Enterprise'}
-            description={plans.enterprise?.description || 'Full featured solution for growing businesses'}
+            name={plans.enterprise?.name || "Enterprise"}
+            description={
+              plans.enterprise?.description ||
+              "Full featured solution for growing businesses"
+            }
             pricing={plans.enterprise?.pricing}
             features={plans.enterprise?.features}
           />
@@ -60,12 +73,18 @@ const PlansPage = () => {
               Currency Conversion Notice
             </h3>
             <p className="text-gray-600 text-sm mb-4">
-              Prices are displayed in USD, ZAR, NGN, and EUR based on current exchange rates.
-              Billing will be processed in your selected currency with Paystack integration.
+              Prices are displayed in USD, ZAR, NGN, and EUR based on current
+              exchange rates. Billing will be processed in your selected
+              currency with Paystack integration.
             </p>
             <div className="text-xs text-gray-500">
-              <p>All prices include 14-day free trial. No setup fees. Cancel anytime.</p>
-              <p>Exchange rates are updated regularly to ensure fair pricing.</p>
+              <p>
+                All prices include 14-day free trial. No setup fees. Cancel
+                anytime.
+              </p>
+              <p>
+                Exchange rates are updated regularly to ensure fair pricing.
+              </p>
             </div>
           </div>
         </div>

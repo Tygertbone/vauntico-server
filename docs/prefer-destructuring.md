@@ -1,5 +1,5 @@
 ---
-description: 'Require destructuring from arrays and/or objects.'
+description: "Require destructuring from arrays and/or objects."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -35,14 +35,14 @@ And it infers binding patterns more accurately thanks to the type checker.
 ### ❌ Incorrect
 
 ```ts
-const x = ['a'];
+const x = ["a"];
 const y = x[0];
 ```
 
 ### ✅ Correct
 
 ```ts
-const x = { 0: 'a' };
+const x = { 0: "a" };
 const y = x[0];
 ```
 

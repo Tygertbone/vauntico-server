@@ -1,5 +1,5 @@
 ---
-description: 'Disallow aliasing `this`.'
+description: "Disallow aliasing `this`."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

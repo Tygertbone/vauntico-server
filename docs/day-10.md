@@ -17,6 +17,7 @@ objective: "Master the art of hooks and build your personal hook library"
 No matter how good your content is.
 
 **The Hook = The difference between:**
+
 - 47 views vs 47,000 views
 - 2 followers vs 200 followers
 - R0 vs R2,000/month
@@ -74,6 +75,7 @@ Copy these into your notes. Customize them for YOUR niche.
 10. "I discovered this by accident and now..."
 
 **Examples customized by niche:**
+
 - **Fitness:** "The #1 mistake keeping you skinny/fat..."
 - **Finance:** "The real reason you're still broke..."
 - **Fashion:** "What Nigerian designers don't tell you..."
@@ -95,6 +97,7 @@ Copy these into your notes. Customize them for YOUR niche.
 20. "Plot twist: [unexpected revelation]..."
 
 **Examples:**
+
 - **Fitness:** "I ate junk food and lost 5kg. Here's how..."
 - **Finance:** "I made R2,000 using only my phone..."
 - **Fashion:** "I bought this dress for R50 at [place]..."
@@ -116,6 +119,7 @@ Copy these into your notes. Customize them for YOUR niche.
 30. "I'm so tired of [common frustration]..."
 
 **Examples:**
+
 - **Fitness:** "If you're tired of gym memberships you can't afford..."
 - **Finance:** "POV: You're broke but your friends want to party..."
 - **Fashion:** "When you have 50 clothes but 'nothing to wear'..."
@@ -132,6 +136,7 @@ Copy these into your notes. Customize them for YOUR niche.
 35. "Last chance to [opportunity]..."
 
 **Examples:**
+
 - **Fitness:** "Do this before summer or stay the same..."
 - **Finance:** "You have 10 days left to apply for [grant]..."
 - **Fashion:** "Buy these before they sell out..."
@@ -148,6 +153,7 @@ Copy these into your notes. Customize them for YOUR niche.
 40. "Stop [popular thing]. It's a waste of time/money..."
 
 **Examples:**
+
 - **Fitness:** "Unpopular opinion: You don't need a gym to get fit..."
 - **Finance:** "Stop saving money. Invest it instead..."
 - **Fashion:** "Fast fashion isn't the enemy. Poverty is..."
@@ -169,6 +175,7 @@ Copy these into your notes. Customize them for YOUR niche.
 50. "If you want [goal], do this..."
 
 **Examples:**
+
 - **Fitness:** "3 exercises to lose belly fat (no gym)..."
 - **Finance:** "How to make R2,000/month with your phone..."
 - **Fashion:** "5 ways to style one dress for a week..."
@@ -197,6 +204,7 @@ Film the SAME video with 3 DIFFERENT hooks. Post them. See which performs best.
 **Hook C (Relatability):** "If you're tired of expensive gyms, watch this..."
 
 **Post all 3. Check after 24 hours:**
+
 - Hook A: 230 views
 - Hook B: 1,400 views ✅ **WINNER**
 - Hook C: 180 views
@@ -210,10 +218,12 @@ Film the SAME video with 3 DIFFERENT hooks. Post them. See which performs best.
 **Kofi** (Accra, Ghana - Finance niche)
 
 **Before Day 10 (weak hooks):**
+
 - "Hey guys, today I want to talk about money..."
 - Average views: 80-150
 
 **After Day 10 (strong hooks):**
+
 - "I made R2,000 using only my phone. Here's how..."
 - Average views: 2,000-8,000
 
@@ -265,6 +275,7 @@ Get ready to turn viewers into an engaged community! 💬
 ## 💬 Share Your Best Hook
 
 Post in the community:
+
 ```
 🎣 MY BEST HOOK SO FAR:
 

@@ -1,5 +1,5 @@
 ---
-description: 'Disallow or enforce spaces inside of blocks after opening block and before closing block.'
+description: "Disallow or enforce spaces inside of blocks after opening block and before closing block."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

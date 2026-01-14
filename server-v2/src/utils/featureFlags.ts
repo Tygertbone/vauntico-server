@@ -1,13 +1,13 @@
-import crypto from 'crypto';
-import { redis, RedisCache } from '../queue/upstash';
-import { logger } from './logger';
+import crypto from "crypto";
+import { redis, RedisCache } from "../queue/upstash";
+import { logger } from "./logger";
 
 // Feature flag types and interfaces
 export enum FeatureFlagType {
-  BOOLEAN = 'boolean',           // Simple on/off flag
-  PERCENTAGE = 'percentage',      // Percentage rollout (0-100%)
-  USER_TARGETING = 'user',        // Specific user targeting
-  ENVIRONMENT = 'environment'     // Environment-based
+  BOOLEAN = "boolean", // Simple on/off flag
+  PERCENTAGE = "percentage", // Percentage rollout (0-100%)
+  USER_TARGETING = "user", // Specific user targeting
+  ENVIRONMENT = "environment", // Environment-based
 }
 
 export interface FeatureFlag {
@@ -15,9 +15,9 @@ export interface FeatureFlag {
   type: FeatureFlagType;
   enabled: boolean;
   description?: string;
-  percentage?: number;            // For percentage rollouts (0-100)
-  userIds?: string[];             // For user targeting
-  environments?: string[];        // For environment targeting
+  percentage?: number; // For percentage rollouts (0-100)
+  userIds?: string[]; // For user targeting
+  environments?: string[]; // For environment targeting
   createdAt: Date;
   updatedAt: Date;
   createdBy?: string;
@@ -34,7 +34,7 @@ export interface FeatureFlagCheck {
 // Feature Flag Manager singleton
 export class FeatureFlagManager {
   private static instance: FeatureFlagManager;
-  private cache = new RedisCache('feature-flags');
+  private cache = new RedisCache("feature-flags");
   private cacheTTL = 300; // 5 minutes cache
 
   private constructor() {}
@@ -48,9 +48,10 @@ export class FeatureFlagManager {
 
   // Generate consistent hash for user-based percentage rollouts
   private generateUserHash(userId: string, featureKey: string): number {
-    const hash = crypto.createHash('sha256')
+    const hash = crypto
+      .createHash("sha256")
       .update(`${userId}:${featureKey}`)
-      .digest('hex');
+      .digest("hex");
 
     // Convert first 8 chars of hash to number between 0-100
     const hashInt = parseInt(hash.substring(0, 8), 16);
@@ -58,7 +59,10 @@ export class FeatureFlagManager {
   }
 
   // Check if a feature flag is enabled for a given context
-  async isEnabled(key: string, context: FeatureFlagCheck = { key }): Promise<boolean> {
+  async isEnabled(
+    key: string,
+    context: FeatureFlagCheck = { key },
+  ): Promise<boolean> {
     try {
       // Try cache first
       const cacheKey = `flag:${key}`;
@@ -104,7 +108,7 @@ export class FeatureFlagManager {
           break;
 
         case FeatureFlagType.ENVIRONMENT:
-          const currentEnv = process.env.NODE_ENV || 'development';
+          const currentEnv = process.env.NODE_ENV || "development";
           enabled = flag.environments?.includes(currentEnv) || false;
           break;
 
@@ -117,9 +121,9 @@ export class FeatureFlagManager {
 
       return enabled;
     } catch (error) {
-      logger.error('Feature flag check failed', {
+      logger.error("Feature flag check failed", {
         flagKey: key,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
 
       // Default to false on error (fail-safe)
@@ -139,16 +143,18 @@ export class FeatureFlagManager {
 
       return JSON.parse(flagData as string) as FeatureFlag;
     } catch (error) {
-      logger.error('Failed to get feature flag', {
+      logger.error("Failed to get feature flag", {
         flagKey: key,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return null;
     }
   }
 
   // Set/update feature flag
-  async setFeatureFlag(flag: Omit<FeatureFlag, 'createdAt' | 'updatedAt'>): Promise<boolean> {
+  async setFeatureFlag(
+    flag: Omit<FeatureFlag, "createdAt" | "updatedAt">,
+  ): Promise<boolean> {
     try {
       const now = new Date().toISOString();
       const fullFlag: FeatureFlag = {
@@ -163,7 +169,7 @@ export class FeatureFlagManager {
       // Clear cached results for this flag
       await this.cache.del(`flag:${flag.key}`);
 
-      logger.info('Feature flag updated', {
+      logger.info("Feature flag updated", {
         flagKey: flag.key,
         type: flag.type,
         enabled: flag.enabled,
@@ -172,9 +178,9 @@ export class FeatureFlagManager {
 
       return true;
     } catch (error) {
-      logger.error('Failed to set feature flag', {
+      logger.error("Failed to set feature flag", {
         flagKey: flag.key,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return false;
     }
@@ -189,12 +195,12 @@ export class FeatureFlagManager {
       await redis.del(flagKey);
       await this.cache.del(cacheKey);
 
-      logger.info('Feature flag deleted', { flagKey: key });
+      logger.info("Feature flag deleted", { flagKey: key });
       return true;
     } catch (error) {
-      logger.error('Failed to delete feature flag', {
+      logger.error("Failed to delete feature flag", {
         flagKey: key,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return false;
     }
@@ -203,7 +209,7 @@ export class FeatureFlagManager {
   // List all feature flags
   async listFeatureFlags(): Promise<FeatureFlag[]> {
     try {
-      const keys = await redis.keys('feature-flag:*');
+      const keys = await redis.keys("feature-flag:*");
       const flags: FeatureFlag[] = [];
 
       for (const key of keys) {
@@ -214,10 +220,13 @@ export class FeatureFlagManager {
       }
 
       // Sort by creation date (newest first)
-      return flags.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      return flags.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
     } catch (error) {
-      logger.error('Failed to list feature flags', {
-        error: error instanceof Error ? error.message : 'Unknown error',
+      logger.error("Failed to list feature flags", {
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return [];
     }
@@ -226,9 +235,9 @@ export class FeatureFlagManager {
   // Emergency kill switch - disable all feature flags
   async emergencyDisableAll(): Promise<void> {
     try {
-      logger.warn('Emergency: Disabling all feature flags');
+      logger.warn("Emergency: Disabling all feature flags");
 
-      const keys = await redis.keys('feature-flag:*');
+      const keys = await redis.keys("feature-flag:*");
 
       for (const key of keys) {
         const flagData = await redis.get(key);
@@ -244,10 +253,10 @@ export class FeatureFlagManager {
         }
       }
 
-      logger.warn('Emergency disable completed');
+      logger.warn("Emergency disable completed");
     } catch (error) {
-      logger.error('Emergency disable failed', {
-        error: error instanceof Error ? error.message : 'Unknown error',
+      logger.error("Emergency disable failed", {
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   }
@@ -262,11 +271,14 @@ export class FeatureFlagManager {
     try {
       const flags = await this.listFeatureFlags();
 
-      const enabledFlags = flags.filter(f => f.enabled).length;
-      const flagsByType = flags.reduce((acc, flag) => {
-        acc[flag.type] = (acc[flag.type] || 0) + 1;
-        return acc;
-      }, {} as Record<FeatureFlagType, number>);
+      const enabledFlags = flags.filter((f) => f.enabled).length;
+      const flagsByType = flags.reduce(
+        (acc, flag) => {
+          acc[flag.type] = (acc[flag.type] || 0) + 1;
+          return acc;
+        },
+        {} as Record<FeatureFlagType, number>,
+      );
 
       return {
         totalFlags: flags.length,
@@ -275,8 +287,8 @@ export class FeatureFlagManager {
         recentActivity: flags.slice(0, 10), // Last 10 updated
       };
     } catch (error) {
-      logger.error('Failed to get feature flag analytics', {
-        error: error instanceof Error ? error.message : 'Unknown error',
+      logger.error("Failed to get feature flag analytics", {
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return {
         totalFlags: 0,
@@ -302,7 +314,7 @@ export const featureFlagMiddleware = (flagKey: string) => {
         userEmail,
         context: {
           ip: req.ip,
-          userAgent: req.get('User-Agent'),
+          userAgent: req.get("User-Agent"),
           method: req.method,
           path: req.path,
         },
@@ -312,14 +324,14 @@ export const featureFlagMiddleware = (flagKey: string) => {
 
       // Add feature flag info to response headers for debugging
       if (req.featureEnabled) {
-        res.set('X-Feature-Enabled', flagKey);
+        res.set("X-Feature-Enabled", flagKey);
       }
 
       next();
     } catch (error) {
-      logger.error('Feature flag middleware error', {
+      logger.error("Feature flag middleware error", {
         flagKey,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
 
       // Fail safe - continue without feature flags
@@ -332,24 +344,24 @@ export const featureFlagMiddleware = (flagKey: string) => {
 // Emergency feature flags for critical system controls
 export const EMERGENCY_FLAGS = {
   // Kill switches for major features
-  TRUST_SCORE_CALCULATION: 'trust_score_calculation',
-  SOCIAL_SHARING: 'social_sharing',
-  AI_FEATURES: 'ai_features',
-  EMAIL_NOTIFICATIONS: 'email_notifications',
+  TRUST_SCORE_CALCULATION: "trust_score_calculation",
+  SOCIAL_SHARING: "social_sharing",
+  AI_FEATURES: "ai_features",
+  EMAIL_NOTIFICATIONS: "email_notifications",
 
   // Rollout controls
-  NEW_UI_COMPONENTS: 'new_ui_components',
-  ADVANCED_ANALYTICS: 'advanced_analytics',
+  NEW_UI_COMPONENTS: "new_ui_components",
+  ADVANCED_ANALYTICS: "advanced_analytics",
 
   // Experimental features
-  BETA_API_ENDPOINTS: 'beta_api_endpoints',
-  DEBUG_MODE: 'debug_mode',
+  BETA_API_ENDPOINTS: "beta_api_endpoints",
+  DEBUG_MODE: "debug_mode",
 } as const;
 
 // Helper function for checking emergency flags
 export const isFeatureEnabled = async (
   flagKey: string,
-  context?: FeatureFlagCheck
+  context?: FeatureFlagCheck,
 ): Promise<boolean> => {
   const manager = FeatureFlagManager.getInstance();
   return manager.isEnabled(flagKey, context);

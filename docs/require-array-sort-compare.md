@@ -1,5 +1,5 @@
 ---
-description: 'Require `Array#sort` and `Array#toSorted` calls to always provide a `compareFunction`.'
+description: "Require `Array#sort` and `Array#toSorted` calls to always provide a `compareFunction`."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -67,9 +67,9 @@ const three = 3;
 #### ✅ Correct
 
 ```ts option='{ "ignoreStringArrays": true }'
-const one = '1';
-const two = '2';
-const three = '3';
+const one = "1";
+const two = "2";
+const three = "3";
 [one, two, three].sort();
 ```
 

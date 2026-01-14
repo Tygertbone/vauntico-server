@@ -176,7 +176,7 @@ describe("Widget Integration Tests - Phase 2", () => {
       expect(response.body.monetization).toHaveProperty("currentMRR");
       expect(response.body).toHaveProperty(
         "phase",
-        "Phase 2: B2B API Licensing"
+        "Phase 2: B2B API Licensing",
       );
     });
 
@@ -217,7 +217,7 @@ describe("Widget Integration Tests - Phase 2", () => {
         .expect(200);
 
       expect(response.body.monetization.target500K).toBe(
-        "500K MRR from businesses"
+        "500K MRR from businesses",
       );
       expect(response.body.monetization).toHaveProperty("currentMRR");
       expect(response.body.monetization).toHaveProperty("licenseRevenue");
@@ -239,7 +239,7 @@ describe("Widget Integration Tests - Phase 2", () => {
       expect(response.body).toHaveProperty("endpoints");
       expect(response.body).toHaveProperty(
         "phase",
-        "Phase 2: B2B API Licensing"
+        "Phase 2: B2B API Licensing",
       );
       expect(response.body).toHaveProperty("kpiMetrics");
     });
@@ -251,15 +251,15 @@ describe("Widget Integration Tests - Phase 2", () => {
 
       expect(response.body.endpoints).toHaveProperty(
         "trustScore",
-        "operational"
+        "operational",
       );
       expect(response.body.endpoints).toHaveProperty(
         "usageTracking",
-        "operational"
+        "operational",
       );
       expect(response.body.endpoints).toHaveProperty(
         "analytics",
-        "operational"
+        "operational",
       );
     });
 
@@ -280,15 +280,15 @@ describe("Widget Integration Tests - Phase 2", () => {
 
       expect(response.body.dependencies).toHaveProperty(
         "apiGateway",
-        "operational"
+        "operational",
       );
       expect(response.body.dependencies).toHaveProperty(
         "database",
-        "operational"
+        "operational",
       );
       expect(response.body.dependencies).toHaveProperty(
         "monitoring",
-        "operational"
+        "operational",
       );
     });
   });
@@ -311,7 +311,7 @@ describe("Widget Integration Tests - Phase 2", () => {
 
       // Verify KPI tracking - use to same API key pattern as service
       const metrics = await ApiUsageService.getWidgetMetrics(
-        "pk_test_widget_api_key_123456"
+        "pk_test_widget_api_key_123456",
       );
       expect(metrics.actionCounts.load).toBeGreaterThan(0);
     });
@@ -360,7 +360,7 @@ describe("Widget Integration Tests - Phase 2", () => {
         {
           timeframe: "24h",
           tier: "all",
-        }
+        },
       );
 
       expect(analytics.tierDistribution).toHaveProperty("basic");
@@ -461,7 +461,7 @@ describe("Widget Integration Tests - Phase 2", () => {
         {
           timeframe: "24h",
           tier: "all",
-        }
+        },
       );
 
       // Verify revenue tracking

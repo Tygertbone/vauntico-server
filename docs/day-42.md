@@ -22,10 +22,12 @@ objective: "Master content repurposing to 10X your reach with the same effort"
 ## 🎯 Why Repurposing Matters
 
 **Without repurposing:**
+
 - 1 video = 1,000 views (TikTok only)
 - Reach: 1,000 people
 
 **With repurposing:**
+
 - Same video → 10 platforms
 - 10,000+ total views
 - Reach: 10,000 people
@@ -65,21 +67,25 @@ objective: "Master content repurposing to 10X your reach with the same effort"
 **Same video, but optimize caption/hashtags for each:**
 
 **TikTok:**
+
 - Caption: Short, punchy
 - Hashtags: #FYP #ForYou #[NicheTag] #[TrendingTag]
 - Sound: Trending audio preferred
 
 **Instagram:**
+
 - Caption: Longer, storytelling
 - Hashtags: 7-10 niche-specific
 - First comment: CTA with link
 
 **YouTube Shorts:**
+
 - Title: SEO-optimized (keyword-rich)
 - Description: Links to full content/products
 - Hashtags: #Shorts #[Keyword]
 
 **Facebook:**
+
 - Caption: Ask a question (engagement)
 - Tag relevant groups/pages
 - Post when your audience is active
@@ -91,16 +97,19 @@ objective: "Master content repurposing to 10X your reach with the same effort"
 **Break your 60-sec video into 3 Story slides:**
 
 **Slide 1 (Hook):**
+
 - First 3 seconds of video
 - Text: "You need to know this..."
 - Sticker: Poll or question
 
 **Slide 2 (Value):**
+
 - Middle content
 - Text: Main tip/insight
 - Sticker: "Send to someone who needs this"
 
 **Slide 3 (CTA):**
+
 - End of video or still frame
 - Text: "Want more? Link in bio!"
 - Sticker: Link sticker to product/service
@@ -131,6 +140,7 @@ Each point from your video
 **Professional angle of same content:**
 
 **Format:**
+
 ```
 [Professional hook]
 
@@ -160,6 +170,7 @@ If you're struggling with [pain point], let's connect. I'm offering [service/pro
 **Subject:** "Quick tip: [Main insight from video]"
 
 **Body:**
+
 ```
 Hey [Name],
 
@@ -186,12 +197,14 @@ P.S. [Bonus tip or social proof]
 **500-word SEO article:**
 
 **Structure:**
+
 1. Hook (problem)
 2. Context (why it matters)
 3. Solution (your video content, expanded)
 4. CTA (link to product/service)
 
 **SEO tips:**
+
 - Title: Keyword-rich ("How to [Result] Without [Pain Point]")
 - Headings: H2, H3 structure
 - Internal links: Link to products/other posts
@@ -206,11 +219,13 @@ P.S. [Bonus tip or social proof]
 **Visual pin linking to content:**
 
 **Create:**
+
 - Vertical image (1000×1500px) in Canva
 - Text overlay: Video hook + CTA
 - Brand colors
 
 **Description:**
+
 - 100-word summary of video content
 - Keywords for searchability
 - Link to full blog post or product
@@ -222,9 +237,11 @@ P.S. [Bonus tip or social proof]
 ## ⏰ The Repurposing Workflow
 
 ### **Sunday: Create**
+
 - Batch film 7 videos (2 hours)
 
 ### **Monday: Repurpose Video #1**
+
 - Post to TikTok, Reels, Shorts, FB (15 min)
 - Create Stories (5 min)
 - Write Twitter thread (10 min)
@@ -232,6 +249,7 @@ P.S. [Bonus tip or social proof]
 - Total: 40 min
 
 ### **Tuesday-Sunday:**
+
 - Repeat for remaining 6 videos
 - By Sunday: 7 videos × 10 platforms = 70 pieces of content!
 
@@ -242,15 +260,19 @@ P.S. [Bonus tip or social proof]
 ## 🛠️ Repurposing Tools (Phone-Friendly)
 
 **Video Editing:**
+
 - CapCut (remove watermarks, resize for platforms)
 
 **Design:**
+
 - Canva (create Pinterest pins, blog graphics)
 
 **Scheduling:**
+
 - Later, Buffer, or Metricool (schedule cross-platform)
 
 **Transcription:**
+
 - CapCut auto-captions → Copy text for Twitter/email
 
 ---
@@ -260,10 +282,12 @@ P.S. [Bonus tip or social proof]
 **Amara** (Finance, Nigeria)
 
 **Month 3 (No repurposing):**
+
 - 7 videos/week on TikTok only
 - 50K views/week total
 
 **Month 4 (Repurposing system):**
+
 - Same 7 videos → 10 platforms each
 - 70 posts/week
 - 180K views/week (3.6X more!)
@@ -291,6 +315,7 @@ P.S. [Bonus tip or social proof]
 You're repurposing content. Tomorrow: Get HELP doing it.
 
 **Hire a VA for R1,500/month:**
+
 - They handle repurposing
 - You focus on creating + selling
 - Free up 10 hours/week

@@ -1,5 +1,5 @@
 ---
-description: 'Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings.'
+description: "Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -22,20 +22,20 @@ This rule reports when a string method can be replaced safely with `String#start
 declare const foo: string;
 
 // starts with
-foo[0] === 'b';
-foo.charAt(0) === 'b';
-foo.indexOf('bar') === 0;
-foo.slice(0, 3) === 'bar';
-foo.substring(0, 3) === 'bar';
+foo[0] === "b";
+foo.charAt(0) === "b";
+foo.indexOf("bar") === 0;
+foo.slice(0, 3) === "bar";
+foo.substring(0, 3) === "bar";
 foo.match(/^bar/) != null;
 /^bar/.test(foo);
 
 // ends with
-foo[foo.length - 1] === 'b';
-foo.charAt(foo.length - 1) === 'b';
-foo.lastIndexOf('bar') === foo.length - 3;
-foo.slice(-3) === 'bar';
-foo.substring(foo.length - 3) === 'bar';
+foo[foo.length - 1] === "b";
+foo.charAt(foo.length - 1) === "b";
+foo.lastIndexOf("bar") === foo.length - 3;
+foo.slice(-3) === "bar";
+foo.substring(foo.length - 3) === "bar";
 foo.match(/bar$/) != null;
 /bar$/.test(foo);
 ```
@@ -46,10 +46,10 @@ foo.match(/bar$/) != null;
 declare const foo: string;
 
 // starts with
-foo.startsWith('bar');
+foo.startsWith("bar");
 
 // ends with
-foo.endsWith('bar');
+foo.endsWith("bar");
 ```
 
 ## When Not To Use It

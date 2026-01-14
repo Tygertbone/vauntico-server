@@ -50,12 +50,14 @@ Before downloading apps, create space:
 Download these in order. Each is 100% FREE:
 
 #### **1. CapCut** (Video Editing - #1 Choice)
+
 - **Why:** Used by 78% of successful TikTokers
 - **Features:** Transitions, effects, text, music (all free)
 - **Size:** ~200MB
 - **Download:** [Android](https://play.google.com) | [iOS](https://apps.apple.com)
 
 **What you can do:**
+
 - Add trending sounds
 - Auto-captions (12+ languages)
 - Green screen effects
@@ -63,30 +65,35 @@ Download these in order. Each is 100% FREE:
 - Split clips, trim, merge
 
 #### **2. Canva** (Thumbnails & Graphics)
+
 - **Why:** Create eye-catching thumbnails in 2 minutes
 - **Features:** 1000s of free templates
 - **Size:** ~150MB
 - **Download:** [Android](https://play.google.com) | [iOS](https://apps.apple.com)
 
 **What you can do:**
+
 - YouTube thumbnails
 - Instagram stories
 - TikTok covers
 - Brand logos
 
 #### **3. InShot** (Alternative Editor - Backup)
+
 - **Why:** Sometimes better than CapCut for certain effects
 - **Features:** Smooth transitions, filters, music
 - **Size:** ~100MB
 - **Download:** [Android](https://play.google.com) | [iOS](https://apps.apple.com)
 
 #### **4. Google Photos** (Storage & Backup)
+
 - **Why:** Never lose your footage
 - **Features:** 15GB free cloud storage
 - **Size:** ~50MB
 - **Download:** Built-in on most phones
 
 **Setup:**
+
 - Enable "Back up & sync"
 - Set quality to "Storage saver" (unlimited storage)
 - Auto-backup when on WiFi only (save data)
@@ -98,6 +105,7 @@ Download these in order. Each is 100% FREE:
 **Optimize your phone camera for content:**
 
 #### **For Android:**
+
 1. Open Camera app
 2. Go to Settings (gear icon)
 3. Set **Video quality: 1080p** (not 4K - wastes storage)
@@ -106,12 +114,14 @@ Download these in order. Each is 100% FREE:
 6. Set **Focus mode: Tap to focus**
 
 #### **For iPhone:**
+
 1. Settings → Camera
 2. **Record Video: 1080p at 30fps**
 3. **Grid: ON**
 4. **Formats: Most Compatible** (not High Efficiency)
 
 **Why 1080p not 4K?**
+
 - 4K = 10x more storage
 - TikTok/Instagram compress to 1080p anyway
 - Faster uploads (save data)
@@ -123,18 +133,21 @@ Download these in order. Each is 100% FREE:
 You don't need a tripod. Use these instead:
 
 #### **DIY Tripod Alternatives:**
+
 1. **Stack of books** (adjust height with more/fewer books)
 2. **Cup or mug** (lean phone against it)
 3. **Cardboard box** (cut notch for phone to sit in)
 4. **Wall + rubber band** (strap phone to wall)
 
 #### **Lighting Hacks (Zero Cost):**
+
 1. **Film near a window** (natural light = best light)
 2. **Face the window** (light should hit your face, not behind you)
 3. **Best times:** 10am-2pm (soft light)
 4. **Cloudy days = better** (no harsh shadows)
 
 #### **Audio Hacks:**
+
 1. **Film in small rooms** (better acoustics)
 2. **Add blankets/pillows** (reduces echo)
 3. **Get close to camera** (2-3 feet max)
@@ -149,6 +162,7 @@ You don't need a tripod. Use these instead:
 **Assignment:** Film a 15-second test video right now.
 
 **Script:**
+
 ```
 "Hey! I'm [Your Name].
 I'm starting my creator journey.
@@ -157,6 +171,7 @@ Follow me as I hit R2,000/month in 60 days! 🚀"
 ```
 
 **Requirements:**
+
 - Film near window (good lighting)
 - Use DIY tripod (books/cup)
 - Speak clearly (2-3 feet from camera)
@@ -188,11 +203,13 @@ Follow me as I hit R2,000/month in 60 days! 🚀"
 ### Show Your Setup!
 
 Take a photo of:
+
 1. Your DIY tripod
 2. Your filming spot
 3. Screenshot of your free apps
 
 Post in Ubuntu WhatsApp Community:
+
 ```
 ✅ Day 2 Complete!
 
@@ -211,6 +228,7 @@ Ready to create! 🔥
 **Day 3: Your First Viral Script**
 
 Learn the proven formula that gets 100K+ views:
+
 - Hook (first 3 seconds)
 - Value (middle 20 seconds)
 - Call-to-action (last 3 seconds)

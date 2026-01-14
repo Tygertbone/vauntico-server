@@ -1,532 +1,557 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vauntico Trust Widget Demo</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: #f5f5f5;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            margin: 0;
-            font-size: 2.5em;
-            font-weight: 700;
-        }
-        
-        .header p {
-            margin: 10px 0 0 0;
-            opacity: 0.9;
-            font-size: 1.2em;
-        }
-        
-        .content {
-            padding: 30px;
-        }
-        
-        .demo-section {
-            margin-bottom: 40px;
-            border-bottom: 1px solid #e0e0e0;
-            padding-bottom: 30px;
-        }
-        
-        .demo-section:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        
-        .demo-section h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-        
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f5f5f5;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 2.5em;
+        font-weight: 700;
+      }
+
+      .header p {
+        margin: 10px 0 0 0;
+        opacity: 0.9;
+        font-size: 1.2em;
+      }
+
+      .content {
+        padding: 30px;
+      }
+
+      .demo-section {
+        margin-bottom: 40px;
+        border-bottom: 1px solid #e0e0e0;
+        padding-bottom: 30px;
+      }
+
+      .demo-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .demo-section h2 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 1.8em;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .demo-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        background: #fafafa;
+      }
+
+      .demo-card h3 {
+        margin-top: 0;
+        color: #555;
+      }
+
+      .demo-card code {
+        background: #f0f0f0;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: "Monaco", "Menlo", monospace;
+        font-size: 0.9em;
+      }
+
+      .widget-container {
+        margin: 15px 0;
+        min-height: 200px;
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+      }
+
+      .controls {
+        margin-top: 15px;
+      }
+
+      .controls label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      .controls input,
+      .controls select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .controls button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+
+      .controls button:hover {
+        background: #0056b3;
+      }
+
+      .controls button.secondary {
+        background: #6c757d;
+      }
+
+      .controls button.secondary:hover {
+        background: #545b62;
+      }
+
+      .code-block {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-family: "Monaco", "Menlo", monospace;
+        font-size: 14px;
+        margin: 15px 0;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .feature {
+        padding: 20px;
+        background: #e8f4fd;
+        border-radius: 8px;
+        border-left: 4px solid #007bff;
+      }
+
+      .feature h4 {
+        margin: 0 0 10px 0;
+        color: #007bff;
+      }
+
+      .feature p {
+        margin: 0;
+        color: #555;
+      }
+
+      @media (max-width: 768px) {
         .demo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+          grid-template-columns: 1fr;
         }
-        
-        .demo-card {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 20px;
-            background: #fafafa;
-        }
-        
-        .demo-card h3 {
-            margin-top: 0;
-            color: #555;
-        }
-        
-        .demo-card code {
-            background: #f0f0f0;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 0.9em;
-        }
-        
-        .widget-container {
-            margin: 15px 0;
-            min-height: 200px;
-            border: 2px dashed #ddd;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-        }
-        
-        .controls {
-            margin-top: 15px;
-        }
-        
-        .controls label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            color: #555;
-        }
-        
-        .controls input, .controls select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-        
-        .controls button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-        }
-        
-        .controls button:hover {
-            background: #0056b3;
-        }
-        
-        .controls button.secondary {
-            background: #6c757d;
-        }
-        
-        .controls button.secondary:hover {
-            background: #545b62;
-        }
-        
-        .code-block {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 14px;
-            margin: 15px 0;
-        }
-        
+
         .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+          grid-template-columns: 1fr;
         }
-        
-        .feature {
-            padding: 20px;
-            background: #e8f4fd;
-            border-radius: 8px;
-            border-left: 4px solid #007bff;
-        }
-        
-        .feature h4 {
-            margin: 0 0 10px 0;
-            color: #007bff;
-        }
-        
-        .feature p {
-            margin: 0;
-            color: #555;
-        }
-        
-        @media (max-width: 768px) {
-            .demo-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .features {
-                grid-template-columns: 1fr;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <h1>Vauntico Trust Widget</h1>
-            <p>Phase 2 White Label Solution Demo</p>
+      <div class="header">
+        <h1>Vauntico Trust Widget</h1>
+        <p>Phase 2 White Label Solution Demo</p>
+      </div>
+
+      <div class="content">
+        <div class="demo-section">
+          <h2>Overview</h2>
+          <p>
+            The Vauntico Trust Widget is a white-label, embeddable component
+            that displays trust scores with customizable branding and styling.
+            It's designed for Phase 2 B2B API licensing and includes
+            comprehensive KPI tracking.
+          </p>
+
+          <div class="features">
+            <div class="feature">
+              <h4>🎨 White Label</h4>
+              <p>Fully customizable branding, colors, and styling</p>
+            </div>
+            <div class="feature">
+              <h4>📊 KPI Tracking</h4>
+              <p>Automatic usage tracking for monetization analytics</p>
+            </div>
+            <div class="feature">
+              <h4>🔒 Secure</h4>
+              <p>API key authentication and tier-based access</p>
+            </div>
+            <div class="feature">
+              <h4>📱 Responsive</h4>
+              <p>Mobile-optimized design with adaptive layouts</p>
+            </div>
+          </div>
         </div>
-        
-        <div class="content">
-            <div class="demo-section">
-                <h2>Overview</h2>
-                <p>The Vauntico Trust Widget is a white-label, embeddable component that displays trust scores with customizable branding and styling. It's designed for Phase 2 B2B API licensing and includes comprehensive KPI tracking.</p>
-                
-                <div class="features">
-                    <div class="feature">
-                        <h4>🎨 White Label</h4>
-                        <p>Fully customizable branding, colors, and styling</p>
-                    </div>
-                    <div class="feature">
-                        <h4>📊 KPI Tracking</h4>
-                        <p>Automatic usage tracking for monetization analytics</p>
-                    </div>
-                    <div class="feature">
-                        <h4>🔒 Secure</h4>
-                        <p>API key authentication and tier-based access</p>
-                    </div>
-                    <div class="feature">
-                        <h4>📱 Responsive</h4>
-                        <p>Mobile-optimized design with adaptive layouts</p>
-                    </div>
-                </div>
+
+        <div class="demo-section">
+          <h2>Basic Implementation</h2>
+          <div class="demo-grid">
+            <div class="demo-card">
+              <h3>Light Theme</h3>
+              <div id="widget-light" class="widget-container"></div>
+              <div class="controls">
+                <button onclick="initLightWidget()">Initialize Widget</button>
+                <button onclick="destroyLightWidget()" class="secondary">
+                  Destroy
+                </button>
+              </div>
             </div>
-            
-            <div class="demo-section">
-                <h2>Basic Implementation</h2>
-                <div class="demo-grid">
-                    <div class="demo-card">
-                        <h3>Light Theme</h3>
-                        <div id="widget-light" class="widget-container"></div>
-                        <div class="controls">
-                            <button onclick="initLightWidget()">Initialize Widget</button>
-                            <button onclick="destroyLightWidget()" class="secondary">Destroy</button>
-                        </div>
-                    </div>
-                    
-                    <div class="demo-card">
-                        <h3>Dark Theme</h3>
-                        <div id="widget-dark" class="widget-container"></div>
-                        <div class="controls">
-                            <button onclick="initDarkWidget()">Initialize Widget</button>
-                            <button onclick="destroyDarkWidget()" class="secondary">Destroy</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="code-block">
-<!-- Include the widget script -->
-<script src="https://cdn.vauntico.com/widget/v2.0.0/vauntico-trust-widget.min.js"></script>
 
-<!-- Create a container element -->
-<div id="trust-widget"></div>
-
-<!-- Initialize the widget -->
-<script>
-  const widget = new VaunticoTrustWidget(document.getElementById('trust-widget'), {
-    apiKey: 'your-api-key',
-    userId: 'user-123',
-    theme: 'light',
-    primaryColor: '#007bff'
-  });
-</script>
-                </div>
+            <div class="demo-card">
+              <h3>Dark Theme</h3>
+              <div id="widget-dark" class="widget-container"></div>
+              <div class="controls">
+                <button onclick="initDarkWidget()">Initialize Widget</button>
+                <button onclick="destroyDarkWidget()" class="secondary">
+                  Destroy
+                </button>
+              </div>
             </div>
-            
-            <div class="demo-section">
-                <h2>Advanced Configuration</h2>
-                <div class="demo-card">
-                    <h3>Custom Styling</h3>
-                    <div id="widget-custom" class="widget-container"></div>
-                    <div class="controls">
-                        <label>Primary Color:</label>
-                        <input type="color" id="primary-color" value="#6f42c1" onchange="updateCustomWidget()">
-                        
-                        <label>Border Radius:</label>
-                        <input type="text" id="border-radius" value="16px" onchange="updateCustomWidget()">
-                        
-                        <label>Show Logo:</label>
-                        <select id="show-logo" onchange="updateCustomWidget()">
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
-                        </select>
-                        
-                        <label>Show Details:</label>
-                        <select id="show-details" onchange="updateCustomWidget()">
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
-                        </select>
-                        
-                        <button onclick="initCustomWidget()">Initialize Custom Widget</button>
-                        <button onclick="refreshCustomWidget()" class="secondary">Refresh</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="demo-section">
-                <h2>Configuration Options</h2>
-                <div class="code-block">
-{
-  apiKey: 'your-api-key',           // Required: API key for authentication
-  userId: 'user-123',              // Required: User ID to fetch score for
-  theme: 'light' | 'dark' | 'auto', // Theme mode (default: 'light')
-  primaryColor: '#007bff',          // Primary brand color (default: '#007bff')
-  fontFamily: 'Arial, sans-serif', // Custom font family
-  showLogo: true,                  // Show Vauntico logo (default: true)
-  showDetails: true,               // Show trust factors (default: true)
-  width: '300px',                 // Widget width (default: '300px')
-  height: 'auto',                  // Widget height (default: 'auto')
-  borderRadius: '8px',            // Border radius (default: '8px')
-  animation: true,                 // Enable animations (default: true)
-  refreshInterval: 300000,         // Auto-refresh interval in ms (default: 5min)
-  onScoreUpdate: (score) => {      // Callback when score updates
-    console.log('Score updated:', score);
-  },
-  onError: (error) => {            // Callback for errors
-    console.error('Widget error:', error);
-  }
-}
-                </div>
-            </div>
-            
-            <div class="demo-section">
-                <h2>API Methods</h2>
-                <div class="code-block">
-// Initialize widget
-const widget = new VaunticoTrustWidget(container, config);
+          </div>
 
-// Get current score data
-const score = widget.getScore();
+          <div class="code-block">
+            <!-- Include the widget script -->
+            <script src="https://cdn.vauntico.com/widget/v2.0.0/vauntico-trust-widget.min.js"></script>
 
-// Refresh score manually
-widget.refresh();
+            <!-- Create a container element -->
+            <div id="trust-widget"></div>
 
-// Update configuration
-widget.updateConfig({ theme: 'dark', primaryColor: '#ff5722' });
-
-// Destroy widget and cleanup
-widget.destroy();
-                </div>
-            </div>
+            <!-- Initialize the widget -->
+            <script>
+              const widget = new VaunticoTrustWidget(
+                document.getElementById("trust-widget"),
+                {
+                  apiKey: "your-api-key",
+                  userId: "user-123",
+                  theme: "light",
+                  primaryColor: "#007bff",
+                },
+              );
+            </script>
+          </div>
         </div>
+
+        <div class="demo-section">
+          <h2>Advanced Configuration</h2>
+          <div class="demo-card">
+            <h3>Custom Styling</h3>
+            <div id="widget-custom" class="widget-container"></div>
+            <div class="controls">
+              <label>Primary Color:</label>
+              <input
+                type="color"
+                id="primary-color"
+                value="#6f42c1"
+                onchange="updateCustomWidget()"
+              />
+
+              <label>Border Radius:</label>
+              <input
+                type="text"
+                id="border-radius"
+                value="16px"
+                onchange="updateCustomWidget()"
+              />
+
+              <label>Show Logo:</label>
+              <select id="show-logo" onchange="updateCustomWidget()">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+
+              <label>Show Details:</label>
+              <select id="show-details" onchange="updateCustomWidget()">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+
+              <button onclick="initCustomWidget()">
+                Initialize Custom Widget
+              </button>
+              <button onclick="refreshCustomWidget()" class="secondary">
+                Refresh
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-section">
+          <h2>Configuration Options</h2>
+          <div class="code-block">
+            { apiKey: 'your-api-key', // Required: API key for authentication
+            userId: 'user-123', // Required: User ID to fetch score for theme:
+            'light' | 'dark' | 'auto', // Theme mode (default: 'light')
+            primaryColor: '#007bff', // Primary brand color (default: '#007bff')
+            fontFamily: 'Arial, sans-serif', // Custom font family showLogo:
+            true, // Show Vauntico logo (default: true) showDetails: true, //
+            Show trust factors (default: true) width: '300px', // Widget width
+            (default: '300px') height: 'auto', // Widget height (default:
+            'auto') borderRadius: '8px', // Border radius (default: '8px')
+            animation: true, // Enable animations (default: true)
+            refreshInterval: 300000, // Auto-refresh interval in ms (default:
+            5min) onScoreUpdate: (score) => { // Callback when score updates
+            console.log('Score updated:', score); }, onError: (error) => { //
+            Callback for errors console.error('Widget error:', error); } }
+          </div>
+        </div>
+
+        <div class="demo-section">
+          <h2>API Methods</h2>
+          <div class="code-block">
+            // Initialize widget const widget = new
+            VaunticoTrustWidget(container, config); // Get current score data
+            const score = widget.getScore(); // Refresh score manually
+            widget.refresh(); // Update configuration widget.updateConfig({
+            theme: 'dark', primaryColor: '#ff5722' }); // Destroy widget and
+            cleanup widget.destroy();
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Load the widget script (in development, use local build) -->
     <script src="../dist/vauntico-trust-widget.js"></script>
-    
+
     <script>
-        let lightWidget = null;
-        let darkWidget = null;
-        let customWidget = null;
-        
-        // Mock API responses for demo
-        const mockResponses = {
-            'user-123': {
-                score: 85,
-                tier: 'pro',
-                factors: {
-                    transaction_history: 92,
-                    verification_status: 100,
-                    community_engagement: 78,
-                    dispute_resolution: 85
-                },
-                calculatedAt: new Date().toISOString(),
-                expiresAt: new Date(Date.now() + 86400000).toISOString(),
-                monetization: {
-                    tier: 'pro',
-                    creditsRemaining: 450,
-                    nextCalculationCost: 10
-                },
-                metadata: {
-                    version: '2.0.0',
-                    endpoint: '/api/v1/trust-score',
-                    rateLimitRemaining: 950
-                }
+      let lightWidget = null;
+      let darkWidget = null;
+      let customWidget = null;
+
+      // Mock API responses for demo
+      const mockResponses = {
+        "user-123": {
+          score: 85,
+          tier: "pro",
+          factors: {
+            transaction_history: 92,
+            verification_status: 100,
+            community_engagement: 78,
+            dispute_resolution: 85,
+          },
+          calculatedAt: new Date().toISOString(),
+          expiresAt: new Date(Date.now() + 86400000).toISOString(),
+          monetization: {
+            tier: "pro",
+            creditsRemaining: 450,
+            nextCalculationCost: 10,
+          },
+          metadata: {
+            version: "2.0.0",
+            endpoint: "/api/v1/trust-score",
+            rateLimitRemaining: 950,
+          },
+        },
+        "user-456": {
+          score: 92,
+          tier: "enterprise",
+          factors: {
+            transaction_history: 95,
+            verification_status: 100,
+            community_engagement: 88,
+            dispute_resolution: 92,
+          },
+          calculatedAt: new Date().toISOString(),
+          expiresAt: new Date(Date.now() + 86400000).toISOString(),
+          monetization: {
+            tier: "enterprise",
+            creditsRemaining: 950,
+            nextCalculationCost: 5,
+          },
+          metadata: {
+            version: "2.0.0",
+            endpoint: "/api/v1/trust-score",
+            rateLimitRemaining: 990,
+          },
+        },
+      };
+
+      // Override fetch for demo purposes
+      const originalFetch = window.fetch;
+      window.fetch = function (url, options) {
+        if (url.includes("/api/v1/trust-score")) {
+          const userId = new URL(url).searchParams.get("userId");
+          const response = mockResponses[userId] || mockResponses["user-123"];
+
+          return Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve(response),
+            status: 200,
+            statusText: "OK",
+          });
+        }
+
+        if (url.includes("/api/v1/metrics/widget-usage")) {
+          return Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ success: true }),
+            status: 200,
+            statusText: "OK",
+          });
+        }
+
+        return originalFetch.apply(this, arguments);
+      };
+
+      function initLightWidget() {
+        if (lightWidget) {
+          lightWidget.destroy();
+        }
+
+        lightWidget = new VaunticoTrustWidget(
+          document.getElementById("widget-light"),
+          {
+            apiKey: "demo-api-key-light",
+            userId: "user-123",
+            theme: "light",
+            primaryColor: "#007bff",
+            showLogo: true,
+            showDetails: true,
+            onScoreUpdate: (score) => {
+              console.log("Light widget score updated:", score);
             },
-            'user-456': {
-                score: 92,
-                tier: 'enterprise',
-                factors: {
-                    transaction_history: 95,
-                    verification_status: 100,
-                    community_engagement: 88,
-                    dispute_resolution: 92
-                },
-                calculatedAt: new Date().toISOString(),
-                expiresAt: new Date(Date.now() + 86400000).toISOString(),
-                monetization: {
-                    tier: 'enterprise',
-                    creditsRemaining: 950,
-                    nextCalculationCost: 5
-                },
-                metadata: {
-                    version: '2.0.0',
-                    endpoint: '/api/v1/trust-score',
-                    rateLimitRemaining: 990
-                }
-            }
-        };
-        
-        // Override fetch for demo purposes
-        const originalFetch = window.fetch;
-        window.fetch = function(url, options) {
-            if (url.includes('/api/v1/trust-score')) {
-                const userId = new URL(url).searchParams.get('userId');
-                const response = mockResponses[userId] || mockResponses['user-123'];
-                
-                return Promise.resolve({
-                    ok: true,
-                    json: () => Promise.resolve(response),
-                    status: 200,
-                    statusText: 'OK'
-                });
-            }
-            
-            if (url.includes('/api/v1/metrics/widget-usage')) {
-                return Promise.resolve({
-                    ok: true,
-                    json: () => Promise.resolve({ success: true }),
-                    status: 200,
-                    statusText: 'OK'
-                });
-            }
-            
-            return originalFetch.apply(this, arguments);
-        };
-        
-        function initLightWidget() {
-            if (lightWidget) {
-                lightWidget.destroy();
-            }
-            
-            lightWidget = new VaunticoTrustWidget(document.getElementById('widget-light'), {
-                apiKey: 'demo-api-key-light',
-                userId: 'user-123',
-                theme: 'light',
-                primaryColor: '#007bff',
-                showLogo: true,
-                showDetails: true,
-                onScoreUpdate: (score) => {
-                    console.log('Light widget score updated:', score);
-                },
-                onError: (error) => {
-                    console.error('Light widget error:', error);
-                }
-            });
+            onError: (error) => {
+              console.error("Light widget error:", error);
+            },
+          },
+        );
+      }
+
+      function destroyLightWidget() {
+        if (lightWidget) {
+          lightWidget.destroy();
+          lightWidget = null;
         }
-        
-        function destroyLightWidget() {
-            if (lightWidget) {
-                lightWidget.destroy();
-                lightWidget = null;
-            }
+      }
+
+      function initDarkWidget() {
+        if (darkWidget) {
+          darkWidget.destroy();
         }
-        
-        function initDarkWidget() {
-            if (darkWidget) {
-                darkWidget.destroy();
-            }
-            
-            darkWidget = new VaunticoTrustWidget(document.getElementById('widget-dark'), {
-                apiKey: 'demo-api-key-dark',
-                userId: 'user-456',
-                theme: 'dark',
-                primaryColor: '#6f42c1',
-                showLogo: true,
-                showDetails: true,
-                onScoreUpdate: (score) => {
-                    console.log('Dark widget score updated:', score);
-                },
-                onError: (error) => {
-                    console.error('Dark widget error:', error);
-                }
-            });
+
+        darkWidget = new VaunticoTrustWidget(
+          document.getElementById("widget-dark"),
+          {
+            apiKey: "demo-api-key-dark",
+            userId: "user-456",
+            theme: "dark",
+            primaryColor: "#6f42c1",
+            showLogo: true,
+            showDetails: true,
+            onScoreUpdate: (score) => {
+              console.log("Dark widget score updated:", score);
+            },
+            onError: (error) => {
+              console.error("Dark widget error:", error);
+            },
+          },
+        );
+      }
+
+      function destroyDarkWidget() {
+        if (darkWidget) {
+          darkWidget.destroy();
+          darkWidget = null;
         }
-        
-        function destroyDarkWidget() {
-            if (darkWidget) {
-                darkWidget.destroy();
-                darkWidget = null;
-            }
+      }
+
+      function initCustomWidget() {
+        if (customWidget) {
+          customWidget.destroy();
         }
-        
-        function initCustomWidget() {
-            if (customWidget) {
-                customWidget.destroy();
-            }
-            
-            customWidget = new VaunticoTrustWidget(document.getElementById('widget-custom'), {
-                apiKey: 'demo-api-key-custom',
-                userId: 'user-123',
-                theme: 'light',
-                primaryColor: document.getElementById('primary-color').value,
-                borderRadius: document.getElementById('border-radius').value,
-                showLogo: document.getElementById('show-logo').value === 'true',
-                showDetails: document.getElementById('show-details').value === 'true',
-                width: '100%',
-                onScoreUpdate: (score) => {
-                    console.log('Custom widget score updated:', score);
-                },
-                onError: (error) => {
-                    console.error('Custom widget error:', error);
-                }
-            });
+
+        customWidget = new VaunticoTrustWidget(
+          document.getElementById("widget-custom"),
+          {
+            apiKey: "demo-api-key-custom",
+            userId: "user-123",
+            theme: "light",
+            primaryColor: document.getElementById("primary-color").value,
+            borderRadius: document.getElementById("border-radius").value,
+            showLogo: document.getElementById("show-logo").value === "true",
+            showDetails:
+              document.getElementById("show-details").value === "true",
+            width: "100%",
+            onScoreUpdate: (score) => {
+              console.log("Custom widget score updated:", score);
+            },
+            onError: (error) => {
+              console.error("Custom widget error:", error);
+            },
+          },
+        );
+      }
+
+      function updateCustomWidget() {
+        if (customWidget) {
+          customWidget.updateConfig({
+            primaryColor: document.getElementById("primary-color").value,
+            borderRadius: document.getElementById("border-radius").value,
+            showLogo: document.getElementById("show-logo").value === "true",
+            showDetails:
+              document.getElementById("show-details").value === "true",
+          });
         }
-        
-        function updateCustomWidget() {
-            if (customWidget) {
-                customWidget.updateConfig({
-                    primaryColor: document.getElementById('primary-color').value,
-                    borderRadius: document.getElementById('border-radius').value,
-                    showLogo: document.getElementById('show-logo').value === 'true',
-                    showDetails: document.getElementById('show-details').value === 'true'
-                });
-            }
+      }
+
+      function refreshCustomWidget() {
+        if (customWidget) {
+          customWidget.refresh();
         }
-        
-        function refreshCustomWidget() {
-            if (customWidget) {
-                customWidget.refresh();
-            }
-        }
-        
-        // Initialize widgets on page load
-        window.addEventListener('load', () => {
-            initLightWidget();
-            initDarkWidget();
-            initCustomWidget();
-        });
+      }
+
+      // Initialize widgets on page load
+      window.addEventListener("load", () => {
+        initLightWidget();
+        initDarkWidget();
+        initCustomWidget();
+      });
     </script>
-</body>
+  </body>
 </html>

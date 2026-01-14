@@ -1,5 +1,5 @@
 const CTAButton = ({ label, onClick }) => {
-  console.log('CTAButton label:', label);
+  console.log("CTAButton label:", label);
 
   return (
     <button

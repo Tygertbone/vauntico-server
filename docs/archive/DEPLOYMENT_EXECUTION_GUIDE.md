@@ -54,6 +54,7 @@ REPO_URL=https://github.com/your-org/trust-score-backend.git ./backend-deploy-v2
 ```
 
 **Expected Output During Deployment:**
+
 ```
 🚀 Starting Vauntico Trust-Score Backend Deployment v2.0...
 📦 Updating system packages...
@@ -82,6 +83,7 @@ HOST=trust-score.vauntico.com PORT=3000 ./validate-backend-deployment.sh
 ```
 
 **Expected Validation Output:**
+
 ```
 🧪 Starting Vauntico Trust-Score Backend Validation...
 === Basic Connectivity Tests ===
@@ -431,7 +433,7 @@ upstream trust_score_backend {
 server {
     listen 80;
     server_name trust-score.vauntico.com;
-    
+
     location / {
         proxy_pass http://trust_score_backend;
         proxy_set_header Host $host;

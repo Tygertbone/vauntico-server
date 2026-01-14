@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       validation_type:
-        description: 'Type of validation to run'
+        description: "Type of validation to run"
         required: true
         type: choice
         options:
@@ -19,7 +19,7 @@ on:
         default: all-phase2
 
 env:
-  MONETIZATION_PHASE: 'Phase 2: B2B API Licensing'
+  MONETIZATION_PHASE: "Phase 2: B2B API Licensing"
   MRR_TARGET: 500K
 
 jobs:
@@ -40,10 +40,10 @@ jobs:
           else
             COMMITS=$(git log --format='%s' -n 10)
           fi
-          
+
           echo "Checking commit messages..."
           echo "$COMMITS"
-          
+
           # Validate semantic commit format
           while IFS= read -r commit; do
             if [[ -n "$commit" ]]; then
@@ -55,20 +55,20 @@ jobs:
               fi
             fi
           done <<< "$COMMITS"
-          
+
           echo "✅ All commit messages follow semantic format"
 
       - name: Validate branch naming
         run: |
           BRANCH_NAME="${{ github.ref_name }}"
           echo "Validating branch name: $BRANCH_NAME"
-          
+
           # Skip validation for main/develop
           if [[ "$BRANCH_NAME" == "main" || "$BRANCH_NAME" == "develop" ]]; then
             echo "✅ Main/develop branch - skipping naming validation"
             exit 0
           fi
-          
+
           # Validate feature branch naming
           if echo "$BRANCH_NAME" | grep -E '^feature/[a-z0-9-]+$'; then
             echo "✅ Branch name follows convention"
@@ -81,7 +81,7 @@ jobs:
       - name: Check required documentation
         run: |
           echo "Checking required documentation..."
-          
+
           # Check if CONTRIBUTOR_GUIDE.md exists
           if [ -f "CONTRIBUTOR_GUIDE.md" ]; then
             echo "✅ CONTRIBUTOR_GUIDE.md found"
@@ -89,7 +89,7 @@ jobs:
             echo "❌ CONTRIBUTOR_GUIDE.md not found"
             exit 1
           fi
-          
+
           # Check if README.md exists
           if [ -f "README.md" ]; then
             echo "✅ README.md found"
@@ -101,7 +101,7 @@ jobs:
       - name: Validate ESLint configuration
         run: |
           echo "Checking ESLint configuration..."
-          
+
           if [ -f ".eslintrc.json" ]; then
             echo "✅ .eslintrc.json found"
             
@@ -128,8 +128,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
 
       - name: Install widget dependencies
         working-directory: ./widget
@@ -149,25 +149,25 @@ jobs:
             echo "❌ Widget build failed - main bundle not found"
             exit 1
           fi
-          
+
           if [ ! -f "dist/vauntico-trust-widget.min.js" ]; then
             echo "❌ Widget build failed - minified bundle not found"
             exit 1
           fi
-          
+
           # Check bundle sizes
           MAIN_SIZE=$(stat -f%c "dist/vauntico-trust-widget.js" | cut -d' ' -f1)
           MIN_SIZE=$(stat -f%c "dist/vauntico-trust-widget.min.js" | cut -d' ' -f1)
-          
+
           echo "📦 Bundle sizes:"
           echo "Main: ${MAIN_SIZE} bytes"
           echo "Minified: ${MIN_SIZE} bytes"
-          
+
           # Validate size limits
           if [ $MAIN_SIZE -gt 50000 ]; then
             echo "⚠️ Warning: Main bundle exceeds 50KB limit"
           fi
-          
+
           if [ $MIN_SIZE -gt 20000 ]; then
             echo "⚠️ Warning: Minified bundle exceeds 20KB limit"
           fi
@@ -210,8 +210,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
 
       - name: Install server dependencies
         working-directory: ./server-v2
@@ -229,25 +229,25 @@ jobs:
           # Test API endpoints with different tiers
           echo "🧪 Testing Basic tier endpoints..."
           BASIC_KEY=pk_test_basic_${{ github.sha }}
-          
+
           # Test trust score endpoint
           curl -f -w "%{http_code}" -H "X-API-Key: $BASIC_KEY" \
             "http://localhost:3000/api/v1/trust-score?userId=test_basic_user" \
             -o basic_trust_score.json || true
-          
+
           echo "🧪 Testing Pro tier endpoints..."
           PRO_KEY=pk_test_pro_${{ github.sha }}
-          
+
           # Test widget usage tracking
           curl -f -w "%{http_code}" -H "X-API-Key: $PRO_KEY" \
             -H "Content-Type: application/json" \
             -d '{"action":"load","userId":"test_pro_user","tier":"pro","timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' \
             "http://localhost:3000/api/v1/metrics/widget-usage" \
             -o pro_widget_usage.json || true
-          
+
           echo "🚀 Testing Enterprise tier endpoints..."
           ENTERPRISE_KEY=pk_test_enterprise_${{ github.sha }}
-          
+
           # Test analytics endpoint
           curl -f -w "%{http_code}" -H "X-API-Key: $ENTERPRISE_KEY" \
             "http://localhost:3000/api/v1/metrics/widget-analytics?timeframe=24h" \
@@ -261,11 +261,11 @@ jobs:
             echo "❌ OpenAPI specification not found"
             exit 1
           fi
-          
+
           # Validate YAML syntax
           npm install -g yaml-cli || true
           yaml-cli validate src/openapi/v2-phase2.yaml || true
-          
+
           # Check for required Phase 2 endpoints
           echo "📋 Validating Phase 2 OpenAPI endpoints..."
           yaml-cli e 'paths | keys' src/openapi/v2-phase2.yaml | grep -E "(trust-score|widget-usage|widget-analytics|widget-health)" || true
@@ -297,8 +297,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
 
       - name: Validate Grafana dashboard
         run: |
@@ -307,10 +307,10 @@ jobs:
             echo "❌ Phase 2 KPI dashboard not found"
             exit 1
           fi
-          
+
           # Validate dashboard configuration
           echo "📊 Validating Phase 2 KPI dashboard configuration..."
-          
+
           # Check for required Phase 2 metrics
           node -e "
             const fs = require('fs');
@@ -342,7 +342,7 @@ jobs:
             echo "❌ Prometheus configuration not found"
             exit 1
           fi
-          
+
           # Check for Phase 2 specific metrics
           if grep -q "vauntico_phase2\\|vauntico_widget_\\|vauntico_license_revenue_\\|vauntico_calculation_quota_\\|vauntico_mrr_progress" monitoring/prometheus.yml; then
             echo "✅ Phase 2 Prometheus metrics found"
@@ -376,28 +376,28 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
 
       - name: Run comprehensive Phase 2 validation
         run: |
           echo "🚀 Starting comprehensive Phase 2 validation..."
           echo "📋 Validating all components:"
-          
+
           # Build and test widget
           echo "🔧 Building and testing widget..."
           cd widget && npm ci && npm run build
           npm run test:integration || true
-          
+
           # Run API integration tests
           echo "🔌 Running API integration tests..."
           cd ../server-v2 && npm ci && npm run test:integration -- --testPathPattern="widget-integration.test.ts" || true
-          
+
           # Validate documentation
           echo "📚 Validating documentation..."
           npm install -g yaml-cli || true
           yaml-cli validate server-v2/src/openapi/v2-phase2.yaml || true
-          
+
           # Validate KPI dashboard
           echo "📊 Validating KPI dashboard..."
           node -e "
@@ -452,7 +452,14 @@ jobs:
           retention-days: 30
 
   notify-success:
-    needs: [governance-validation, validate-widget, validate-api-integration, validate-kpi-dashboard, comprehensive-validation]
+    needs:
+      [
+        governance-validation,
+        validate-widget,
+        validate-api-integration,
+        validate-kpi-dashboard,
+        comprehensive-validation,
+      ]
     if: ${{ success() }}
     runs-on: ubuntu-latest
     steps:
@@ -468,7 +475,7 @@ jobs:
           # Update validation status in repository
           git config --global user.name "Vauntico CI Bot"
           git config --global user.email "ci@vauntico.com"
-          
+
           # Create validation status file
           echo "phase2-validation: $(date -u +%Y-%m-%dT%H:%M:%SZ)" > .validation-status
           git add .validation-status

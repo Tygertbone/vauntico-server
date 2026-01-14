@@ -1,5 +1,5 @@
 ---
-description: 'Require Promise-like statements to be handled appropriately.'
+description: "Require Promise-like statements to be handled appropriately."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -36,40 +36,40 @@ See [`no-misused-promises`](./no-misused-promises.md) for detecting code that pr
 ### ❌ Incorrect
 
 ```ts
-const promise = new Promise((resolve, reject) => resolve('value'));
+const promise = new Promise((resolve, reject) => resolve("value"));
 promise;
 
 async function returnsPromise() {
-  return 'value';
+  return "value";
 }
 returnsPromise().then(() => {});
 
-Promise.reject('value').catch();
+Promise.reject("value").catch();
 
-Promise.reject('value').finally();
+Promise.reject("value").finally();
 
-[1, 2, 3].map(async x => x + 1);
+[1, 2, 3].map(async (x) => x + 1);
 ```
 
 ### ✅ Correct
 
 ```ts
-const promise = new Promise((resolve, reject) => resolve('value'));
+const promise = new Promise((resolve, reject) => resolve("value"));
 await promise;
 
 async function returnsPromise() {
-  return 'value';
+  return "value";
 }
 returnsPromise().then(
   () => {},
   () => {},
 );
 
-Promise.reject('value').catch(() => {});
+Promise.reject("value").catch(() => {});
 
-await Promise.reject('value').finally(() => {});
+await Promise.reject("value").finally(() => {});
 
-await Promise.all([1, 2, 3].map(async x => x + 1));
+await Promise.all([1, 2, 3].map(async (x) => x + 1));
 ```
 
 ## Options
@@ -83,11 +83,11 @@ Examples of **correct** code for this rule with `{ ignoreVoid: true }`:
 
 ```ts option='{ "ignoreVoid": true }' showPlaygroundButton
 async function returnsPromise() {
-  return 'value';
+  return "value";
 }
 void returnsPromise();
 
-void Promise.reject('value');
+void Promise.reject("value");
 ```
 
 With this option set to `true`, and if you are using `no-void`, you should turn on the [`allowAsStatement`](https://eslint.org/docs/rules/no-void#allowasstatement) option.

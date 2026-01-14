@@ -1,8 +1,13 @@
-import { Router, type Router as ExpressRouter, Request, Response } from 'express';
-import { authenticate } from '../middleware/authenticate';
-import { apiRateLimit } from '../middleware/rateLimit';
-import { logger } from '../utils/logger';
-import { pool } from '../db/pool';
+import {
+  Router,
+  type Router as ExpressRouter,
+  Request,
+  Response,
+} from "express";
+import { authenticate } from "../middleware/authenticate";
+import { apiRateLimit } from "../middleware/rateLimit";
+import { logger } from "../utils/logger";
+import { pool } from "../db/pool";
 
 const router: ExpressRouter = Router();
 
@@ -12,15 +17,15 @@ const validateProductData = (req: Request, res: Response, next: Function) => {
 
   if (!title || title.length < 5 || title.length > 200) {
     return res.status(400).json({
-      error: 'Validation Error',
-      message: 'Title must be between 5 and 200 characters',
+      error: "Validation Error",
+      message: "Title must be between 5 and 200 characters",
     });
   }
 
   if (price !== undefined && (isNaN(price) || price < 0)) {
     return res.status(400).json({
-      error: 'Validation Error',
-      message: 'Price must be a positive number',
+      error: "Validation Error",
+      message: "Price must be a positive number",
     });
   }
 
@@ -28,12 +33,16 @@ const validateProductData = (req: Request, res: Response, next: Function) => {
 };
 
 // Trusted creators can access marketplace features
-const requireTrustedCreator = async (req: Request, res: Response, next: Function) => {
+const requireTrustedCreator = async (
+  req: Request,
+  res: Response,
+  next: Function,
+) => {
   try {
     if (!req.user) {
       return res.status(401).json({
-        error: 'Unauthorized',
-        message: 'Authentication required',
+        error: "Unauthorized",
+        message: "Authentication required",
       });
     }
 
@@ -45,21 +54,30 @@ const requireTrustedCreator = async (req: Request, res: Response, next: Function
       ORDER BY calculated_at DESC
       LIMIT 1
     `;
-    const trustScoreResult = await pool.query(trustScoreQuery, [req.user.userId]);
+    const trustScoreResult = await pool.query(trustScoreQuery, [
+      req.user.userId,
+    ]);
 
-    if (trustScoreResult.rows.length === 0 || trustScoreResult.rows[0].overall_score < 60) {
+    if (
+      trustScoreResult.rows.length === 0 ||
+      trustScoreResult.rows[0].overall_score < 60
+    ) {
       return res.status(403).json({
-        error: 'Insufficient Trust Score',
-        message: 'You need at least 60 trust score to participate in the marketplace',
+        error: "Insufficient Trust Score",
+        message:
+          "You need at least 60 trust score to participate in the marketplace",
       });
     }
 
     next();
   } catch (error) {
-    logger.error('Trust score check failed', { error, userId: req.user?.userId });
+    logger.error("Trust score check failed", {
+      error,
+      userId: req.user?.userId,
+    });
     res.status(500).json({
-      error: 'Internal Server Error',
-      message: 'Failed to validate trust score',
+      error: "Internal Server Error",
+      message: "Failed to validate trust score",
     });
   }
 };
@@ -68,7 +86,7 @@ const requireTrustedCreator = async (req: Request, res: Response, next: Function
 router.use(authenticate);
 
 // GET /api/products - List products with filtering and pagination
-router.get('/', apiRateLimit, async (req: Request, res: Response) => {
+router.get("/", apiRateLimit, async (req: Request, res: Response) => {
   try {
     const {
       page = 1,
@@ -78,20 +96,25 @@ router.get('/', apiRateLimit, async (req: Request, res: Response) => {
       min_price,
       max_price,
       min_trust_score = 60,
-      sort_by = 'created_at',
-      sort_order = 'desc',
+      sort_by = "created_at",
+      sort_order = "desc",
       creator_id,
       tags,
     } = req.query;
 
     const offset = (Number(page) - 1) * Number(limit);
-    const whereConditions = ['p.is_active = true', 'p.moderation_status = \'approved\''];
+    const whereConditions = [
+      "p.is_active = true",
+      "p.moderation_status = 'approved'",
+    ];
     const params: any[] = [];
     let paramIndex = 1;
 
     // Build WHERE conditions
     if (search) {
-      whereConditions.push(`(p.title ILIKE $${paramIndex} OR p.description ILIKE $${paramIndex})`);
+      whereConditions.push(
+        `(p.title ILIKE $${paramIndex} OR p.description ILIKE $${paramIndex})`,
+      );
       params.push(`%${search}%`);
       paramIndex++;
     }
@@ -135,12 +158,16 @@ router.get('/', apiRateLimit, async (req: Request, res: Response) => {
     }
 
     // Validate sort parameters
-    const allowedSortFields = ['created_at', 'price', 'title'];
-    const allowedSortOrders = ['asc', 'desc'];
-    const sortField = allowedSortFields.includes(sort_by as string) ? sort_by : 'created_at';
-    const sortDir = allowedSortOrders.includes(sort_order as string) ? sort_order : 'desc';
+    const allowedSortFields = ["created_at", "price", "title"];
+    const allowedSortOrders = ["asc", "desc"];
+    const sortField = allowedSortFields.includes(sort_by as string)
+      ? sort_by
+      : "created_at";
+    const sortDir = allowedSortOrders.includes(sort_order as string)
+      ? sort_order
+      : "desc";
 
-    const whereClause = whereConditions.join(' AND ');
+    const whereClause = whereConditions.join(" AND ");
 
     // Get total count
     const countQuery = `
@@ -184,7 +211,7 @@ router.get('/', apiRateLimit, async (req: Request, res: Response) => {
     const result = await pool.query(query, params);
 
     // Format response
-    const products = result.rows.map(product => ({
+    const products = result.rows.map((product) => ({
       id: product.id,
       title: product.title,
       description: product.description,
@@ -226,46 +253,47 @@ router.get('/', apiRateLimit, async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    logger.error('Get products failed', {
-      error: error instanceof Error ? error.message : 'Unknown error',
+    logger.error("Get products failed", {
+      error: error instanceof Error ? error.message : "Unknown error",
       userId: req.user?.userId,
     });
 
     res.status(500).json({
-      error: 'Internal Server Error',
-      message: 'Failed to get products',
+      error: "Internal Server Error",
+      message: "Failed to get products",
     });
   }
 });
 
 // POST /api/products - Create new product (trusted creators only)
-router.post('/',
+router.post(
+  "/",
   requireTrustedCreator,
   apiRateLimit,
   validateProductData,
   async (req: Request, res: Response) => {
-  try {
-    const {
-      title,
-      description,
-      price,
-      trust_score_required = 60,
-      category,
-      tags = [],
-      images = [],
-      media_urls = [],
-    } = req.body;
+    try {
+      const {
+        title,
+        description,
+        price,
+        trust_score_required = 60,
+        category,
+        tags = [],
+        images = [],
+        media_urls = [],
+      } = req.body;
 
-    const creator_id = req.user?.userId;
-    if (!creator_id) {
-      return res.status(401).json({
-        error: 'Unauthorized',
-        message: 'Authentication required',
-      });
-    }
+      const creator_id = req.user?.userId;
+      if (!creator_id) {
+        return res.status(401).json({
+          error: "Unauthorized",
+          message: "Authentication required",
+        });
+      }
 
-    // Insert product
-    const insertQuery = `
+      // Insert product
+      const insertQuery = `
       INSERT INTO products (
         creator_id, title, description, price, trust_score_required,
         category, tags, images, media_urls, moderation_status
@@ -274,53 +302,58 @@ router.post('/',
       RETURNING *
     `;
 
-    const values = [
-      creator_id,
-      title,
-      description,
-      price,
-      trust_score_required,
-      category,
-      tags,
-      images,
-      media_urls,
-    ];
+      const values = [
+        creator_id,
+        title,
+        description,
+        price,
+        trust_score_required,
+        category,
+        tags,
+        images,
+        media_urls,
+      ];
 
-    const result = await pool.query(insertQuery, values);
-    const product = result.rows[0];
+      const result = await pool.query(insertQuery, values);
+      const product = result.rows[0];
 
-    logger.info('Product created', { productId: product.id, creatorId: creator_id });
+      logger.info("Product created", {
+        productId: product.id,
+        creatorId: creator_id,
+      });
 
-    res.status(201).json({
-      product: {
-        ...product,
-        price: parseFloat(product.price),
-        trust_score_required: parseFloat(product.trust_score_required),
-      },
-      message: 'Product created successfully. It will be reviewed before going live.',
-    });
-  } catch (error) {
-    logger.error('Create product failed', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-      userId: req.user?.userId,
-    });
+      res.status(201).json({
+        product: {
+          ...product,
+          price: parseFloat(product.price),
+          trust_score_required: parseFloat(product.trust_score_required),
+        },
+        message:
+          "Product created successfully. It will be reviewed before going live.",
+      });
+    } catch (error) {
+      logger.error("Create product failed", {
+        error: error instanceof Error ? error.message : "Unknown error",
+        userId: req.user?.userId,
+      });
 
-    if (error instanceof Error && error.message.includes('duplicate key')) {
-      return res.status(409).json({
-        error: 'Conflict',
-        message: 'A product with this title already exists',
+      if (error instanceof Error && error.message.includes("duplicate key")) {
+        return res.status(409).json({
+          error: "Conflict",
+          message: "A product with this title already exists",
+        });
+      }
+
+      res.status(500).json({
+        error: "Internal Server Error",
+        message: "Failed to create product",
       });
     }
-
-    res.status(500).json({
-      error: 'Internal Server Error',
-      message: 'Failed to create product',
-    });
-  }
-});
+  },
+);
 
 // GET /api/products/:id - Get product details
-router.get('/:id', apiRateLimit, async (req: Request, res: Response) => {
+router.get("/:id", apiRateLimit, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -352,8 +385,8 @@ router.get('/:id', apiRateLimit, async (req: Request, res: Response) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        error: 'Not Found',
-        message: 'Product not found',
+        error: "Not Found",
+        message: "Product not found",
       });
     }
 
@@ -373,7 +406,7 @@ router.get('/:id', apiRateLimit, async (req: Request, res: Response) => {
     `;
     const reviewsResult = await pool.query(reviewsQuery, [id]);
 
-    const reviews = reviewsResult.rows.map(review => ({
+    const reviews = reviewsResult.rows.map((review) => ({
       id: review.id,
       rating: review.rating,
       comment: review.comment,
@@ -420,52 +453,54 @@ router.get('/:id', apiRateLimit, async (req: Request, res: Response) => {
       reviews,
     });
   } catch (error) {
-    logger.error('Get product details failed', {
-      error: error instanceof Error ? error.message : 'Unknown error',
+    logger.error("Get product details failed", {
+      error: error instanceof Error ? error.message : "Unknown error",
       userId: req.user?.userId,
       productId: req.params.id,
     });
 
     res.status(500).json({
-      error: 'Internal Server Error',
-      message: 'Failed to get product details',
+      error: "Internal Server Error",
+      message: "Failed to get product details",
     });
   }
 });
 
 // PUT /api/products/:id - Update product (creator only)
-router.put('/:id',
+router.put(
+  "/:id",
   validateProductData,
   apiRateLimit,
   async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const creator_id = req.user!.userId;
+    try {
+      const { id } = req.params;
+      const creator_id = req.user!.userId;
 
-    const {
-      title,
-      description,
-      price,
-      trust_score_required,
-      category,
-      tags,
-      images,
-      media_urls,
-    } = req.body;
+      const {
+        title,
+        description,
+        price,
+        trust_score_required,
+        category,
+        tags,
+        images,
+        media_urls,
+      } = req.body;
 
-    // Check if product exists and belongs to user
-    const checkQuery = 'SELECT * FROM products WHERE id = $1 AND creator_id = $2';
-    const checkResult = await pool.query(checkQuery, [id, creator_id]);
+      // Check if product exists and belongs to user
+      const checkQuery =
+        "SELECT * FROM products WHERE id = $1 AND creator_id = $2";
+      const checkResult = await pool.query(checkQuery, [id, creator_id]);
 
-    if (checkResult.rows.length === 0) {
-      return res.status(404).json({
-        error: 'Not Found',
-        message: 'Product not found or you do not have permission to edit it',
-      });
-    }
+      if (checkResult.rows.length === 0) {
+        return res.status(404).json({
+          error: "Not Found",
+          message: "Product not found or you do not have permission to edit it",
+        });
+      }
 
-    // Update product
-    const updateQuery = `
+      // Update product
+      const updateQuery = `
       UPDATE products
       SET title = COALESCE($1, title),
           description = COALESCE($2, description),
@@ -480,82 +515,88 @@ router.put('/:id',
       RETURNING *
     `;
 
-    const values = [
-      title,
-      description,
-      price,
-      trust_score_required,
-      category,
-      tags,
-      images,
-      media_urls,
-      id,
-      creator_id,
-    ];
+      const values = [
+        title,
+        description,
+        price,
+        trust_score_required,
+        category,
+        tags,
+        images,
+        media_urls,
+        id,
+        creator_id,
+      ];
 
-    const result = await pool.query(updateQuery, values);
-    const product = result.rows[0];
+      const result = await pool.query(updateQuery, values);
+      const product = result.rows[0];
 
-    logger.info('Product updated', { productId: id, creatorId: creator_id });
+      logger.info("Product updated", { productId: id, creatorId: creator_id });
 
-    res.json({
-      product: {
-        ...product,
-        price: parseFloat(product.price),
-        trust_score_required: parseFloat(product.trust_score_required),
-      },
-      message: 'Product updated successfully',
-    });
-  } catch (error) {
-    logger.error('Update product failed', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-      userId: req.user?.userId,
-      productId: req.params.id,
-    });
+      res.json({
+        product: {
+          ...product,
+          price: parseFloat(product.price),
+          trust_score_required: parseFloat(product.trust_score_required),
+        },
+        message: "Product updated successfully",
+      });
+    } catch (error) {
+      logger.error("Update product failed", {
+        error: error instanceof Error ? error.message : "Unknown error",
+        userId: req.user?.userId,
+        productId: req.params.id,
+      });
 
-    res.status(500).json({
-      error: 'Internal Server Error',
-      message: 'Failed to update product',
-    });
-  }
-});
+      res.status(500).json({
+        error: "Internal Server Error",
+        message: "Failed to update product",
+      });
+    }
+  },
+);
 
 // DELETE /api/products/:id - Delete product (creator only)
-router.delete('/:id', apiRateLimit, async (req: Request, res: Response) => {
+router.delete("/:id", apiRateLimit, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const creator_id = req.user!.userId;
 
     // Check if product exists and belongs to user
-    const checkQuery = 'SELECT * FROM products WHERE id = $1 AND creator_id = $2';
+    const checkQuery =
+      "SELECT * FROM products WHERE id = $1 AND creator_id = $2";
     const checkResult = await pool.query(checkQuery, [id, creator_id]);
 
     if (checkResult.rows.length === 0) {
       return res.status(404).json({
-        error: 'Not Found',
-        message: 'Product not found or you do not have permission to delete it',
+        error: "Not Found",
+        message: "Product not found or you do not have permission to delete it",
       });
     }
 
     // Soft delete (mark as inactive)
-    const deleteQuery = 'UPDATE products SET is_active = false, updated_at = NOW() WHERE id = $1';
+    const deleteQuery =
+      "UPDATE products SET is_active = false, updated_at = NOW() WHERE id = $1";
     await pool.query(deleteQuery, [id]);
 
-    logger.info('Product deleted (soft delete)', { productId: id, creatorId: creator_id });
+    logger.info("Product deleted (soft delete)", {
+      productId: id,
+      creatorId: creator_id,
+    });
 
     res.json({
-      message: 'Product deleted successfully',
+      message: "Product deleted successfully",
     });
   } catch (error) {
-    logger.error('Delete product failed', {
-      error: error instanceof Error ? error.message : 'Unknown error',
+    logger.error("Delete product failed", {
+      error: error instanceof Error ? error.message : "Unknown error",
       userId: req.user?.userId,
       productId: req.params.id,
     });
 
     res.status(500).json({
-      error: 'Internal Server Error',
-      message: 'Failed to delete product',
+      error: "Internal Server Error",
+      message: "Failed to delete product",
     });
   }
 });

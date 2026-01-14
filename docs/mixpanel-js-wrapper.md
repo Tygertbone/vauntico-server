@@ -1,4 +1,5 @@
 # Mixpanel JavaScript SDK wrapper for Google Tag Manager
+
 The purpose of this wrapper is to provide a JavaScript interface for interacting with the `window.mixpanel` interface.
 
 The wrapper has been designed with [Google Tag Manager](https://tagmanager.google.com) in mind. GTM's [custom templates](https://developers.google.com/tag-manager/templates) offer a way to deploy custom JavaScript without having to resort to Custom HTML tags and with the ability to craft a user interface for the scripts within Google Tag Manager.
@@ -10,9 +11,11 @@ Mixpanel's [JavaScript SDK](https://developer.mixpanel.com/docs/javascript-full-
 Thus, in order to interact with Mixpanel's JavaScript SDK via Google Tag Manager's custom templates (or any other context where the aforementioned JavaScript features cannot be used), this wrapper is required. [The template loads this wrapper](https://github.com/mixpanel/mixpanel-gtm-template/blob/2f577d826acc7d96d138367db339035b8f9df359/src/template.tpl#L1383) in the sandboxed template code.
 
 # Deployment
+
 The wrapper is served by the Mixpanel CDN at https://cdn.mxpnl.com/libs/mixpanel-js-wrapper.js
 
 # How it works
+
 When the wrapper JavaScript is loaded in the browser, the global method `window._mixpanel()` is created for interacting with the wrapper.
 
 This namespace includes all the methods supported by the [JavaScript SDK](https://developer.mixpanel.com/docs/javascript-full-api-reference) with some exceptions (see below). Each method can be invoked by passing the command name as the first argument of the call to `window._mixpanel()`.
@@ -30,6 +33,7 @@ window._mixpanel(
 ```
 
 ## `group`
+
 [Link to specification](https://developer.mixpanel.com/docs/javascript-full-api-reference#mixpanelgroup)
 
 Use this command to interact with group properties.
@@ -39,6 +43,7 @@ Syntax:
 `window._mixpanel('<library_name.>group.<group_command>', ['<group_key>', '<group_id>'], <parameters>)`
 
 Example:
+
 ```
 // Union a property for a group
 window._mixpanel(
@@ -49,13 +54,14 @@ window._mixpanel(
 );
 ```
 
-| Parameter name | Description |
-|----------------|-------------|
-| `library_name` | (Optional) target a specific library/instance name with this command |
-| `group_command` | (Required) one of `set`, `set_once`, `remove`, `union`, `unset` |
-| `parameters` | All the parameters you want to submit to the `group` command. |
+| Parameter name  | Description                                                          |
+| --------------- | -------------------------------------------------------------------- |
+| `library_name`  | (Optional) target a specific library/instance name with this command |
+| `group_command` | (Required) one of `set`, `set_once`, `remove`, `union`, `unset`      |
+| `parameters`    | All the parameters you want to submit to the `group` command.        |
 
 ## `people`
+
 [Link to specification](https://developer.mixpanel.com/docs/javascript-full-api-reference#mixpanelpeople)
 
 Interact with the people analytics property.
@@ -65,6 +71,7 @@ Syntax:
 `window._mixpanel('<library_name.>people.<people_command>', <parameters>)`
 
 Example:
+
 ```
 // Set the "gender" property "n/a"
 window._mixpanel(
@@ -74,11 +81,11 @@ window._mixpanel(
 );
 ```
 
-| Parameter name | Description |
-|----------------|-------------|
-| `library_name` | (Optional) target a specific library/instance name with this command |
+| Parameter name   | Description                                                                                                                           |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `library_name`   | (Optional) target a specific library/instance name with this command                                                                  |
 | `people_command` | (Required) one of `append`, `clear_charge`, `delete_user`, `increment`, `remove`, `set`, `set_once`, `track_charge`, `union`, `unset` |
-| `parameters` | All the parameters you want to submit to the `people` command. |
+| `parameters`     | All the parameters you want to submit to the `people` command.                                                                        |
 
 ## Other commands
 

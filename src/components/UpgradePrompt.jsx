@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Crown, Sparkles, X, Check, Star } from 'lucide-react';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Crown, Sparkles, X, Check, Star } from "lucide-react";
 
 const UpgradePrompt = ({
   title = "Unlock Premium Features",
   message = "Upgrade to Creator Pass to access unlimited vaults, advanced analytics, and priority support.",
   className = "",
-  compact = false
+  compact = false,
 }) => {
   const navigate = useNavigate();
   const [dismissed, setDismissed] = useState(false);
 
   const handleUpgrade = () => {
-    navigate('/pricing');
+    navigate("/pricing");
   };
 
   const handleDismiss = () => {
@@ -29,12 +29,14 @@ const UpgradePrompt = ({
     "Unlimited vaults",
     compact ? null : "Team collaboration tools",
     compact ? null : "API access",
-    compact ? null : "White-label options"
+    compact ? null : "White-label options",
   ].filter(Boolean);
 
   if (compact) {
     return (
-      <div className={`bg-gradient-to-r from-vault-purple/10 to-vault-blue/10 border border-vault-purple/20 rounded-lg p-4 mb-4 ${className}`}>
+      <div
+        className={`bg-gradient-to-r from-vault-purple/10 to-vault-blue/10 border border-vault-purple/20 rounded-lg p-4 mb-4 ${className}`}
+      >
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
             <Crown className="w-5 h-5 text-vault-purple" />
@@ -60,7 +62,9 @@ const UpgradePrompt = ({
   }
 
   return (
-    <div className={`vault-gradient rounded-2xl p-8 text-white relative overflow-hidden ${className}`}>
+    <div
+      className={`vault-gradient rounded-2xl p-8 text-white relative overflow-hidden ${className}`}
+    >
       {/* Background pattern */}
       <div className="absolute top-0 right-0 opacity-10">
         <Crown className="w-32 h-32 transform rotate-12" />
@@ -82,9 +86,7 @@ const UpgradePrompt = ({
           </button>
         </div>
 
-        <p className="text-xl opacity-90 mb-6 max-w-2xl">
-          {message}
-        </p>
+        <p className="text-xl opacity-90 mb-6 max-w-2xl">{message}</p>
 
         {/* Feature comparison */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -108,12 +110,19 @@ const UpgradePrompt = ({
           <div className="text-center">
             <div className="bg-white/10 rounded-lg p-6 mb-4">
               <div className="text-3xl font-bold mb-2">$29/month</div>
-              <div className="text-sm opacity-75 mb-4">or $299/year (20% off)</div>
+              <div className="text-sm opacity-75 mb-4">
+                or $299/year (20% off)
+              </div>
               <div className="flex items-center justify-center space-x-1 mb-4">
-                {[1, 2, 3, 4, 5].map(star => (
-                  <Star key={star} className="w-4 h-4 fill-current text-yellow-300" />
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star
+                    key={star}
+                    className="w-4 h-4 fill-current text-yellow-300"
+                  />
                 ))}
-                <span className="text-sm ml-2 opacity-90">4.9/5 from creators</span>
+                <span className="text-sm ml-2 opacity-90">
+                  4.9/5 from creators
+                </span>
               </div>
               <div className="text-sm opacity-70">
                 14-day free trial • Cancel anytime • No setup fees
@@ -132,7 +141,7 @@ const UpgradePrompt = ({
             Start Free Trial (14 Days)
           </button>
           <button
-            onClick={() => navigate('/pricing')}
+            onClick={() => navigate("/pricing")}
             className="border-2 border-white/30 text-white hover:bg-white/10 font-semibold py-3 px-8 rounded-lg transition-all duration-200 flex-1"
           >
             View All Plans

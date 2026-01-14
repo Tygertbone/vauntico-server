@@ -1,5 +1,5 @@
-'use client';
-import React, { useEffect, useState } from 'react';
+"use client";
+import React, { useEffect, useState } from "react";
 
 export function AnimatedScore({ target = 92 }) {
   const [value, setValue] = useState(0);

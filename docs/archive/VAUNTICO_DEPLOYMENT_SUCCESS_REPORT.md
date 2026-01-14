@@ -3,6 +3,7 @@
 ## ✅ **DEPLOYMENT COMPLETED SUCCESSFULLY**
 
 ### **Instance Details**
+
 - **Instance ID**: `ocid1.instance.oc1.af-johannesburg-1.anvg4ljr4eq3kmqc7xrszmhs2geuocplk74cxm3sozcjr7otloapshomte3q`
 - **Display Name**: `trust-score`
 - **Status**: `PROVISIONING` → `RUNNING`
@@ -14,6 +15,7 @@
 - **Hostname**: `trust-score`
 
 ### **Network Configuration**
+
 - **VNIC ID**: `ocid1.vnic.oc1.af-johannesburg-1.abvg4ljrpiyvx3zbtqc7bgivmoouncgf3ywvvrgyuqbcqnx2b2vztrqm3lka`
 - **Subnet ID**: `ocid1.subnet.oc1.af-johannesburg-1.aaaaaaaaosgyyaqwy7zq5ug4seimcwxhc47itvxny2vivusdnriynp3by7zq`
 - **Security Groups**: None (default security list)
@@ -41,6 +43,7 @@ curl -X POST "https://api.cloudflare.com/client/v4/zones/<ZONE_ID>/dns_records" 
 ```
 
 ### **Required Values to Replace:**
+
 - `<ZONE_ID>` → Your Cloudflare Zone ID for `vauntico.com`
 - `<API_TOKEN>` → Your Cloudflare API token with DNS write access
 
@@ -124,6 +127,7 @@ curl -I https://trust-score.vauntico.com
 ```
 
 ### **Expected Responses**
+
 - **Health Check**: `{"status": "healthy", "timestamp": "..."}`
 - **Status Check**: `{"status": "ok", "version": "1.0.0"}`
 - **SSL**: Valid certificate from Cloudflare
@@ -147,6 +151,7 @@ oci monitoring metric-data summarize --namespace oci_compute --query-text "CpuUt
 ## 🚀 **PERFORMANCE OPTIMIZATIONS**
 
 ### **Recommended Settings**
+
 - **Instance Type**: `VM.Standard.E5.Flex` (1 OCPU, 8GB RAM)
 - **Auto-scaling**: Consider adding based on traffic
 - **Load Balancing**: Add OCI Load Balancer for high availability
@@ -158,6 +163,7 @@ oci monitoring metric-data summarize --namespace oci_compute --query-text "CpuUt
 ## 🔄 **BACKUP AND DISASTER RECOVERY**
 
 ### **Automated Backups**
+
 ```bash
 # Create boot volume backup
 oci bv boot-volume-backup create --boot-volume-id <boot-volume-id>
@@ -171,10 +177,12 @@ oci compute instance-action create --instance-id <instance-id> --action SOFTSTOP
 ## 📞 **SUPPORT CONTACTS**
 
 ### **Oracle Cloud Support**
+
 - **Instance ID**: `ocid1.instance.oc1.af-johannesburg-1.anvg4ljr4eq3kmqc7xrszmhs2geuocplk74cxm3sozcjr7otloapshomte3q`
 - **Work Request ID**: `ocid1.coreservicesworkrequest.oc1.af-johannesburg-1.abvg4ljrl3egip4cbhkrxxlx6lat2j4626xeq2qzcaefh5b6rgaj366ht4la`
 
 ### **Cloudflare Support**
+
 - **Domain**: `vauntico.com`
 - **DNS Record**: `trust-score.vauntico.com`
 
@@ -183,12 +191,14 @@ oci compute instance-action create --instance-id <instance-id> --action SOFTSTOP
 ## 📈 **SUCCESS METRICS**
 
 ### **Deployment Timeline**
+
 - ✅ **15:06** - Identified capacity issue
 - ✅ **15:07** - Resolved with alternative shape
 - ✅ **15:09** - Instance launched successfully
 - ✅ **15:10** - Public IP assigned: `84.8.135.161`
 
 ### **Resource Summary**
+
 - **Region**: Johannesburg (af-johannesburg-1)
 - **Compute**: 1 OCPU, 8GB RAM
 - **Storage**: 50GB boot volume

@@ -18,7 +18,6 @@ For images that are being used as icons for a button or control, the `alt` prop 
 <button>
   <img src="icon.png" alt="" />
   Save
-
 </button>
 ```
 
@@ -42,15 +41,18 @@ This rule takes one optional object argument of type object:
 
 ```json
 {
-    "rules": {
-        "jsx-a11y/alt-text": [ 2, {
-            "elements": [ "img", "object", "area", "input[type=\"image\"]" ],
-            "img": ["Image"],
-            "object": ["Object"],
-            "area": ["Area"],
-            "input[type=\"image\"]": ["InputImage"]
-          }],
-    }
+  "rules": {
+    "jsx-a11y/alt-text": [
+      2,
+      {
+        "elements": ["img", "object", "area", "input[type=\"image\"]"],
+        "img": ["Image"],
+        "object": ["Object"],
+        "area": ["Area"],
+        "input[type=\"image\"]": ["InputImage"]
+      }
+    ]
+  }
 }
 ```
 
@@ -87,27 +89,27 @@ Note that passing props as spread attribute without explicitly the necessary acc
 
 ```jsx
 function Foo(props) {
-  return <img {...props} />
+  return <img {...props} />;
 }
 ```
 
 #### Good
 
 ```jsx
-function Foo({ alt, ...props}) {
-    return <img alt={alt} {...props} />
+function Foo({ alt, ...props }) {
+  return <img alt={alt} {...props} />;
 }
 
 // OR
 
 function Foo(props) {
-    const {
-        alt,
+  const {
+    alt,
 
-        ...otherProps
-    } = props;
+    ...otherProps
+  } = props;
 
-   return <img alt={alt} {...otherProps} />
+  return <img alt={alt} {...otherProps} />;
 }
 ```
 

@@ -1,5 +1,5 @@
 ---
-description: 'Disallow using the `delete` operator on computed key expressions.'
+description: "Disallow using the `delete` operator on computed key expressions."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -20,11 +20,11 @@ Using `Object`s with added and removed keys can cause occasional edge case bugs,
 
 ```ts
 // Can be replaced with the constant equivalents, such as container.aaa
-delete container['aaa'];
-delete container['Infinity'];
+delete container["aaa"];
+delete container["Infinity"];
 
 // Dynamic, difficult-to-reason-about lookups
-const name = 'name';
+const name = "name";
 delete container[name];
 delete container[name.toUpperCase()];
 ```
@@ -41,7 +41,7 @@ delete container.aaa;
 
 // Constants that must be accessed by []
 delete container[7];
-delete container['-Infinity'];
+delete container["-Infinity"];
 ```
 
 ## When Not To Use It

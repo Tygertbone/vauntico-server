@@ -48,11 +48,7 @@
         "legend": {
           "displayMode": "list",
           "placement": "bottom",
-          "values": [
-            "Basic",
-            "Pro", 
-            "Enterprise"
-          ]
+          "values": ["Basic", "Pro", "Enterprise"]
         },
         "reduceOptions": [
           {

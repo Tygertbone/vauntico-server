@@ -11,20 +11,24 @@ Certain reserved DOM elements do not support ARIA roles, states and properties. 
 This rule takes no arguments.
 
 ### Succeed
+
 ```jsx
 <!-- Good: the meta element should not be given any ARIA attributes -->
 <meta charset="UTF-8" />
 ```
 
 ### Fail
+
 ```jsx
 <!-- Bad: the meta element should not be given any ARIA attributes -->
 <meta charset="UTF-8" aria-hidden="false" />
 ```
 
 ## Accessibility guidelines
+
 - [WCAG 4.1.2](https://www.w3.org/WAI/WCAG21/Understanding/name-role-value)
 
 ### Resources
+
 - [Chrome Audit Rules, AX_ARIA_12](https://github.com/GoogleChrome/accessibility-developer-tools/wiki/Audit-Rules#ax_aria_12)
 - [DPUB-ARIA roles](https://www.w3.org/TR/dpub-aria-1.0/)

@@ -1,5 +1,5 @@
 ---
-description: 'Disallow unnecessary constraints on generic types.'
+description: "Disallow unnecessary constraints on generic types."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

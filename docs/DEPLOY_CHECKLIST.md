@@ -3,6 +3,7 @@
 ## Pre-Deployment
 
 ### Code Quality
+
 - [ ] `npm run lint` passes with no errors
 - [ ] `npm run build` completes successfully
 - [ ] `npm run preview` - test production build locally
@@ -10,6 +11,7 @@
 - [ ] All TODO comments reviewed and prioritized
 
 ### Testing
+
 - [ ] Test all routes (/, /creator-pass, /lore, /pricing, /ascend)
 - [ ] Test Creator Pass subscription flow
 - [ ] Test scroll access gating (locked vs unlocked)
@@ -19,6 +21,7 @@
 - [ ] Cross-browser testing (Chrome, Firefox, Safari)
 
 ### Analytics
+
 - [ ] Verify GA4 tracking ID is set
 - [ ] Verify Mixpanel token is set
 - [ ] Test page view tracking
@@ -27,6 +30,7 @@
 - [ ] Verify no PII is being tracked
 
 ### SEO
+
 - [ ] Meta tags present on all pages
 - [ ] OpenGraph images uploaded
 - [ ] Sitemap.xml generated
@@ -34,6 +38,7 @@
 - [ ] Canonical URLs set
 
 ### Performance
+
 - [ ] Images optimized (WebP format)
 - [ ] Core Web Vitals check (PageSpeed Insights)
 - [ ] Lighthouse score > 90 (Performance)
@@ -41,6 +46,7 @@
 - [ ] No render-blocking resources
 
 ### Security
+
 - [ ] Environment variables secured
 - [ ] No API keys in client code
 - [ ] HTTPS enabled
@@ -52,6 +58,7 @@
 ## Deployment
 
 ### Vercel Deployment
+
 ```bash
 # Install Vercel CLI if needed
 npm install -g vercel
@@ -69,6 +76,7 @@ git push origin main
 ```
 
 ### Configuration Check
+
 - [ ] `vercel.json` configured for SPA routing
 - [ ] Environment variables set in Vercel dashboard
   - [ ] `VITE_GA4_ID`
@@ -81,6 +89,7 @@ git push origin main
 ## Post-Deployment
 
 ### Smoke Tests (First 5 Minutes)
+
 - [ ] Visit homepage - loads correctly
 - [ ] Visit /creator-pass - pricing displays
 - [ ] Visit /lore - scrolls load
@@ -90,13 +99,14 @@ git push origin main
 - [ ] Verify analytics firing (GA4 Real-Time)
 
 ### Analytics Verification (First Hour)
+
 ```js
 // Open browser console on live site
-window.VaunticoAnalytics.logState()
-window.VaunticoAnalytics.flush()
+window.VaunticoAnalytics.logState();
+window.VaunticoAnalytics.flush();
 
 // Check Mixpanel
-window.mixpanel.get_distinct_id()
+window.mixpanel.get_distinct_id();
 ```
 
 - [ ] Page views appearing in GA4
@@ -105,6 +115,7 @@ window.mixpanel.get_distinct_id()
 - [ ] Session tracking working
 
 ### Monitoring (First 24 Hours)
+
 - [ ] Check Vercel logs for errors
 - [ ] Monitor GA4 Real-Time for traffic
 - [ ] Check Mixpanel for event flow
@@ -112,6 +123,7 @@ window.mixpanel.get_distinct_id()
 - [ ] Monitor server response times
 
 ### Critical Paths to Test
+
 1. **New User Journey**
    - [ ] Land on homepage
    - [ ] Browse scrolls
@@ -136,6 +148,7 @@ window.mixpanel.get_distinct_id()
 ## Rollback Plan
 
 ### If Critical Issues Found
+
 ```bash
 # Option 1: Rollback to previous deployment
 vercel rollback
@@ -153,6 +166,7 @@ git push origin main
 ```
 
 ### Critical Issue Indicators
+
 - [ ] Homepage not loading
 - [ ] Checkout flow broken
 - [ ] Analytics not tracking
@@ -165,12 +179,14 @@ git push origin main
 ## Communication Plan
 
 ### Internal Team
+
 - [ ] Notify team of deployment time
 - [ ] Share deployment URL
 - [ ] Assign monitoring responsibilities
 - [ ] Schedule post-deploy review call
 
 ### Users (if applicable)
+
 - [ ] Announce new features (email, social)
 - [ ] Update changelog
 - [ ] Post on Product Hunt (if major update)
@@ -181,18 +197,21 @@ git push origin main
 ## Optimization Checklist (Week 1 Post-Deploy)
 
 ### Day 1
+
 - [ ] Monitor error rates
 - [ ] Check conversion funnel
 - [ ] Review bounce rates
 - [ ] Identify hot spots (heatmaps)
 
 ### Day 3
+
 - [ ] Analyze A/B test results
 - [ ] Review user feedback
 - [ ] Check loading times across regions
 - [ ] Update based on findings
 
 ### Day 7
+
 - [ ] Full analytics review
 - [ ] Compare pre/post audit metrics
 - [ ] Document learnings
@@ -203,21 +222,25 @@ git push origin main
 ## Success Metrics (First Week)
 
 ### Traffic
+
 - **Baseline**: Establish current daily visits
 - **Goal**: No drop in traffic post-deploy
 - **Stretch**: +10% organic traffic from SEO improvements
 
 ### Conversion
+
 - **Homepage → Sign-up**: Track baseline, aim for 5%+
 - **Sign-up → Paid**: Track baseline, aim for 10%+
 - **Scroll Lock → Upgrade**: Track baseline, optimize
 
 ### Performance
+
 - **Page Load Time**: < 3 seconds (target)
 - **Core Web Vitals**: All "Good" (green)
 - **Lighthouse Score**: > 90
 
 ### Engagement
+
 - **Avg Session Duration**: > 3 minutes
 - **Pages per Session**: > 3
 - **Bounce Rate**: < 50%
@@ -227,15 +250,18 @@ git push origin main
 ## Emergency Contacts
 
 ### Technical
+
 - **Vercel Support**: https://vercel.com/support
 - **DNS Provider**: [Your DNS provider]
 - **CDN**: Vercel Edge Network (auto)
 
 ### Analytics
+
 - **GA4**: https://analytics.google.com
 - **Mixpanel**: https://mixpanel.com
 
 ### Monitoring
+
 - **Vercel Dashboard**: https://vercel.com/dashboard
 - **Search Console**: https://search.google.com/search-console
 
@@ -243,25 +269,29 @@ git push origin main
 
 ## Post-Deploy Review Template
 
-**Date**: _________  
-**Deployed By**: _________  
-**Version**: _________
+**Date**: ****\_****  
+**Deployed By**: ****\_****  
+**Version**: ****\_****
 
 ### What Went Well
-- 
+
+-
 
 ### What Didn't Go Well
+
 -
 
 ### Metrics Summary
-- **Traffic**: Before ___ → After ___
-- **Conversion**: Before ___% → After ___%
-- **Performance**: Before ___ → After ___
+
+- **Traffic**: Before **_ → After _**
+- **Conversion**: Before **_% → After _**%
+- **Performance**: Before **_ → After _**
 
 ### Action Items
-1. 
-2. 
-3. 
+
+1.
+2.
+3.
 
 ---
 
@@ -289,6 +319,7 @@ vercel inspect [deployment-url]
 ✅ **Ready to Deploy!**
 
 When you're ready:
+
 ```bash
 npm run build && vercel --prod
 ```
@@ -297,4 +328,4 @@ Then run through this checklist systematically.
 
 ---
 
-*Last Updated: January 2025*
+_Last Updated: January 2025_

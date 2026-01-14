@@ -1,5 +1,5 @@
-import { Redis } from '@upstash/redis';
-import { logger } from '../utils/logger';
+import { Redis } from "@upstash/redis";
+import { logger } from "../utils/logger";
 
 // Upstash Redis configuration (REST API, not TCP)
 export const redis = new Redis({
@@ -18,20 +18,22 @@ export async function checkRedisHealth(): Promise<{
     const result = await redis.ping();
     const pingLatency = Date.now() - start;
 
-    logger.info('Redis health check passed', { pingLatency: `${pingLatency}ms` });
+    logger.info("Redis health check passed", {
+      pingLatency: `${pingLatency}ms`,
+    });
 
     return {
-      isHealthy: result === 'PONG',
+      isHealthy: result === "PONG",
       pingLatency,
     };
   } catch (error) {
-    logger.error('Redis health check failed', {
-      error: error instanceof Error ? error.message : 'Unknown error',
+    logger.error("Redis health check failed", {
+      error: error instanceof Error ? error.message : "Unknown error",
     });
 
     return {
       isHealthy: false,
-      error: error instanceof Error ? error.message : 'Unknown Redis error',
+      error: error instanceof Error ? error.message : "Unknown Redis error",
     };
   }
 }
@@ -45,7 +47,7 @@ interface CacheOptions {
 export class RedisCache {
   private prefix: string;
 
-  constructor(prefix = 'vauntico') {
+  constructor(prefix = "vauntico") {
     this.prefix = prefix;
   }
 
@@ -59,16 +61,16 @@ export class RedisCache {
       const value = await redis.get(fullKey);
 
       if (value) {
-        logger.debug('Cache hit', { key: fullKey });
+        logger.debug("Cache hit", { key: fullKey });
         return JSON.parse(value as string) as T;
       }
 
-      logger.debug('Cache miss', { key: fullKey });
+      logger.debug("Cache miss", { key: fullKey });
       return null;
     } catch (error) {
-      logger.error('Cache get failed', {
+      logger.error("Cache get failed", {
         key: this.getKey(key),
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return null;
     }
@@ -77,7 +79,7 @@ export class RedisCache {
   async set<T = any>(
     key: string,
     value: T,
-    options: CacheOptions = {}
+    options: CacheOptions = {},
   ): Promise<boolean> {
     try {
       const fullKey = this.getKey(key);
@@ -86,7 +88,7 @@ export class RedisCache {
 
       await redis.setex(fullKey, ttl, serializedValue);
 
-      logger.debug('Cache set', {
+      logger.debug("Cache set", {
         key: fullKey,
         ttl: `${ttl}s`,
         valueSize: serializedValue.length,
@@ -94,9 +96,9 @@ export class RedisCache {
 
       return true;
     } catch (error) {
-      logger.error('Cache set failed', {
+      logger.error("Cache set failed", {
         key: this.getKey(key),
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return false;
     }
@@ -107,18 +109,18 @@ export class RedisCache {
       const fullKey = this.getKey(key);
       const result = await redis.del(fullKey);
 
-      logger.debug('Cache delete', { key: fullKey, deleted: result > 0 });
+      logger.debug("Cache delete", { key: fullKey, deleted: result > 0 });
       return result > 0;
     } catch (error) {
-      logger.error('Cache delete failed', {
+      logger.error("Cache delete failed", {
         key: this.getKey(key),
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return false;
     }
   }
 
-  async clear(pattern: string = '*'): Promise<void> {
+  async clear(pattern: string = "*"): Promise<void> {
     try {
       // Note: SCAN and DEL pattern in Upstash Redis (REST API)
       // For simplicity in free tier, we'll use KEYS (not recommended for production)
@@ -127,15 +129,15 @@ export class RedisCache {
 
       if (keys.length > 0) {
         await redis.del(...(keys as string[]));
-        logger.debug('Cache clear pattern', {
+        logger.debug("Cache clear pattern", {
           pattern: fullPattern,
           deletedKeys: keys.length,
         });
       }
     } catch (error) {
-      logger.error('Cache clear pattern failed', {
+      logger.error("Cache clear pattern failed", {
         pattern: this.getKey(pattern),
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   }
@@ -156,22 +158,22 @@ export class JobQueue {
         name: jobName,
         data: JSON.stringify(data),
         timestamp: Date.now(),
-        status: 'waiting',
+        status: "waiting",
       });
 
       // Add to queue list
       await redis.lpush(`queue:${this.queueName}:jobs`, jobId);
 
-      logger.debug('Job queued', {
+      logger.debug("Job queued", {
         queue: this.queueName,
         jobId,
         jobName,
       });
     } catch (error) {
-      logger.error('Failed to queue job', {
+      logger.error("Failed to queue job", {
         queue: this.queueName,
         jobName,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       throw error;
     }
@@ -193,7 +195,7 @@ export class JobQueue {
       }
 
       // Mark as processing
-      await redis.hset(jobKey, { status: 'processing' });
+      await redis.hset(jobKey, { status: "processing" });
 
       return {
         id: jobData.id as string,
@@ -202,9 +204,9 @@ export class JobQueue {
         timestamp: parseInt(jobData.timestamp as string),
       };
     } catch (error) {
-      logger.error('Failed to get next job', {
+      logger.error("Failed to get next job", {
         queue: this.queueName,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return null;
     }
@@ -213,20 +215,20 @@ export class JobQueue {
   async completeJob(jobId: string): Promise<void> {
     try {
       const jobKey = `queue:${this.queueName}:${jobId}`;
-      await redis.hset(jobKey, { status: 'completed' });
+      await redis.hset(jobKey, { status: "completed" });
 
       // Keep job for 24 hours then clean up (free tier constraint)
       await redis.expire(jobKey, 86400);
 
-      logger.debug('Job completed', {
+      logger.debug("Job completed", {
         queue: this.queueName,
         jobId,
       });
     } catch (error) {
-      logger.error('Failed to complete job', {
+      logger.error("Failed to complete job", {
         queue: this.queueName,
         jobId,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   }
@@ -234,17 +236,17 @@ export class JobQueue {
 
 // Rate limiting helper (simple in-memory fallback if Redis fails)
 export class RateLimiter {
-  private cache = new RedisCache('ratelimit');
+  private cache = new RedisCache("ratelimit");
 
   constructor(
     private windowSeconds: number = 60, // 1 minute window
-    private maxRequests: number = 100   // Max requests per window
+    private maxRequests: number = 100, // Max requests per window
   ) {}
 
   async canMakeRequest(identifier: string): Promise<boolean> {
     try {
       const key = `${identifier}:${Math.floor(Date.now() / (this.windowSeconds * 1000))}`;
-      const current = await this.cache.get<number>(key) || 0;
+      const current = (await this.cache.get<number>(key)) || 0;
 
       if (current >= this.maxRequests) {
         return false;
@@ -255,9 +257,9 @@ export class RateLimiter {
       return true;
     } catch (error) {
       // Fallback to allow request if Redis fails (fail-open)
-      logger.warn('Rate limiter failed, allowing request', {
+      logger.warn("Rate limiter failed, allowing request", {
         identifier,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return true;
     }
@@ -265,7 +267,7 @@ export class RateLimiter {
 }
 
 // Export main cache instance
-export const cache = new RedisCache('vauntico');
+export const cache = new RedisCache("vauntico");
 
 // Export default cache instance
 export default cache;

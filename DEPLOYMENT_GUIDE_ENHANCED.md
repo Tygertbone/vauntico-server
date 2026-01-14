@@ -74,23 +74,27 @@ chmod 600 ~/.ssh/oci_key ~/.ssh/bastion_key
 The enhanced script deploys the following components:
 
 ### 1. Frontend (Vercel)
+
 - React/Vite application
 - Automatic build and deployment
 - Domain verification
 - Health checks
 
 ### 2. Backend (OCI)
+
 - TypeScript/Express.js API
 - PM2 process management
 - Automatic backups
 - Service restart
 
 ### 3. Widget (Optional)
+
 - TypeScript widget library
 - Build and test
 - Optional npm publishing
 
 ### 4. Fulfillment Engine (Optional)
+
 - Node.js microservice
 - Dependency installation
 - Test execution
@@ -126,11 +130,13 @@ bash -x deploy-vauntico-live.sh 2>&1 | grep -E "(Validating|Missing|found)"
 ## Deployment Process
 
 ### 1. Environment Validation
+
 - Checks required environment variables
 - Validates tool availability
 - Verifies SSH key presence
 
 ### 2. Frontend Deployment
+
 - Installs dependencies (`npm ci`)
 - Runs code quality checks (`lint`, `build`)
 - Deploys to Vercel with retry mechanism
@@ -138,6 +144,7 @@ bash -x deploy-vauntico-live.sh 2>&1 | grep -E "(Validating|Missing|found)"
 - Performs health check
 
 ### 3. Backend Deployment
+
 - Connects via OCI bastion host
 - Creates backup of current deployment
 - Pulls latest changes
@@ -147,24 +154,29 @@ bash -x deploy-vauntico-live.sh 2>&1 | grep -E "(Validating|Missing|found)"
 - Verifies service status
 
 ### 4. Widget Deployment (Optional)
+
 - Builds widget library
 - Runs tests
 - Publishes to npm (if configured)
 
 ### 5. Fulfillment Engine Deployment (Optional)
+
 - Installs production dependencies
 - Runs test suite
 
 ### 6. Health Checks
+
 - Comprehensive endpoint validation
 - Timeout-based retry mechanism
 - Detailed failure reporting
 
 ### 7. CI/CD Validation
+
 - Triggers GitHub Actions workflows
 - Validates deployment pipeline
 
 ### 8. Monitoring Verification
+
 - Checks monitoring endpoints
 - Validates Grafana accessibility
 - Verifies Sentry configuration
@@ -227,16 +239,19 @@ ssh -i ~/.ssh/oci_key \
 ### Monitoring Integration
 
 #### Grafana
+
 - URL: Configured via `GRAFANA_URL`
 - Dashboards: Automatically checked for accessibility
 - Metrics: Available at `/metrics` endpoint
 
 #### Sentry
+
 - DSN: Configured via `SENTRY_DSN`
 - Error tracking: Automatic error capture
 - Performance monitoring: Request tracing
 
 #### Slack Notifications
+
 - Webhook: Configured via `SLACK_WEBHOOK_URL`
 - Success notifications: Deployment completion
 - Failure alerts: Immediate error reporting
@@ -246,27 +261,35 @@ ssh -i ~/.ssh/oci_key \
 ### Common Issues
 
 #### 1. Environment Variables Missing
+
 ```bash
 Error: Missing required environment variables: VERCEL_TOKEN
 ```
+
 **Solution**: Ensure all required variables are set in `.env`
 
 #### 2. SSH Key Not Found
+
 ```bash
 Error: OCI SSH key not found at ~/.ssh/oci_key
 ```
+
 **Solution**: Place SSH keys in correct location with proper permissions
 
 #### 3. Vercel Deployment Failed
+
 ```bash
 Error: Frontend build failed
 ```
+
 **Solution**: Check build logs, ensure dependencies are compatible
 
 #### 4. Health Check Timeout
+
 ```bash
 Error: API Health health check failed after 300s timeout
 ```
+
 **Solution**: Check service logs, verify PM2 status, check network connectivity
 
 ### Debug Mode
@@ -333,16 +356,19 @@ export BACKUP_DIR="/custom/backup/location"
 ## Security Considerations
 
 ### SSH Security
+
 - Use key-based authentication only
 - Implement bastion host access controls
 - Regularly rotate SSH keys
 
 ### Environment Variables
+
 - Store sensitive values in secure vaults
 - Use environment-specific files
 - Never commit secrets to version control
 
 ### Network Security
+
 - Implement firewall rules
 - Use VPN for bastion access
 - Monitor access logs
@@ -350,11 +376,13 @@ export BACKUP_DIR="/custom/backup/location"
 ## Performance Optimization
 
 ### Build Optimization
+
 - Use `npm ci` for faster dependency installation
 - Enable build caching
 - Optimize asset compression
 
 ### Deployment Optimization
+
 - Parallel component deployment where possible
 - Incremental deployments for large changes
 - Health check tuning for faster feedback
@@ -392,5 +420,5 @@ For deployment issues:
 
 ---
 
-*Last updated: January 2026*
-*Version: 3.0*
+_Last updated: January 2026_
+_Version: 3.0_

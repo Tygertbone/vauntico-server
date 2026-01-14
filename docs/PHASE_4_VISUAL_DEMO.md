@@ -5,6 +5,7 @@
 ### Demo Flow
 
 #### 1. **Landing State**
+
 ```
 User arrives at /lore
 ├─> RoleSelector appears
@@ -12,6 +13,7 @@ User arrives at /lore
 ```
 
 #### 2. **Library View**
+
 ```
 ScrollGallery displays:
 ├─> Personalized Recommendations (top)
@@ -24,6 +26,7 @@ ScrollGallery displays:
 ```
 
 #### 3. **Locked Scroll Click**
+
 ```
 Animation Sequence:
 1. 🔒 Shake animation (600ms)
@@ -38,6 +41,7 @@ Animation Sequence:
 ## Component Showcase
 
 ### UnlockAnimation
+
 ```
 Visual Flow:
 🔓 Stage 1: Lock breaks (800ms)
@@ -46,6 +50,7 @@ Visual Flow:
 ```
 
 ### UpgradeModal
+
 ```
 Layout:
 ┌────────────────────────────┐
@@ -58,6 +63,7 @@ Layout:
 ```
 
 ### CreditTracker
+
 ```
 Display:
 ⚡ Credit Balance
@@ -71,6 +77,7 @@ Reset: Feb 1, 2024
 ## Interactive States
 
 ### Scroll Card States
+
 ```
 1. Unlocked + Recommended
    ⭐ For You badge
@@ -94,6 +101,7 @@ Reset: Feb 1, 2024
 ## Testing Scenarios
 
 ### Scenario 1: Free User
+
 ```javascript
 // Set state
 window.VaunticoDev.clearAll()
@@ -106,6 +114,7 @@ window.VaunticoDev.clearAll()
 ```
 
 ### Scenario 2: Pro User
+
 ```javascript
 // Set state
 window.VaunticoDev.setCreatorPassTier('pro')
@@ -118,6 +127,7 @@ window.VaunticoDev.setCreatorPassTier('pro')
 ```
 
 ### Scenario 3: Legacy User
+
 ```javascript
 // Set state
 window.VaunticoDev.setCreatorPassTier('legacy')
@@ -134,6 +144,7 @@ window.VaunticoDev.setCreatorPassTier('legacy')
 ## Mobile Experience
 
 ### Responsive Breakpoints
+
 ```
 Mobile (< 768px):
 - Single column scroll grid
@@ -159,6 +170,7 @@ Desktop (> 1024px):
 ### Target: 60 FPS
 
 **Optimizations:**
+
 - Hardware acceleration (transform, opacity)
 - Will-change hints
 - Minimal repaints

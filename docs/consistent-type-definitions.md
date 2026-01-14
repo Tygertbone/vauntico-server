@@ -1,5 +1,5 @@
 ---
-description: 'Enforce type definitions to consistently use either `interface` or `type`.'
+description: "Enforce type definitions to consistently use either `interface` or `type`."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

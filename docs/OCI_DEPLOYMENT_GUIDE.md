@@ -33,6 +33,7 @@ All services expose standardized health endpoints for monitoring:
 - **Vault Landing Health**: `https://api.vauntico.com/vault/health`
 
 Each health endpoint returns a standardized JSON response:
+
 ```json
 {
   "status": "ok",
@@ -128,6 +129,7 @@ SENTRY_DSN=https://your-sentry-dsn@sentry.io/project-id
 #### Service-Specific Variables
 
 **server-v2**:
+
 ```bash
 JWT_SECRET=your-jwt-secret
 PAYSTACK_SECRET_KEY=your-paystack-secret
@@ -135,12 +137,14 @@ EMAIL_SERVICE_API_KEY=your-email-api-key
 ```
 
 **fulfillment-engine**:
+
 ```bash
 FULFILLMENT_API_KEY=your-fulfillment-key
 PAYMENT_WEBHOOK_SECRET=your-webhook-secret
 ```
 
 **vault-landing**:
+
 ```bash
 VAULT_API_TOKEN=your-vault-token
 STATIC_ASSET_URL=https://cdn.vauntico.com
@@ -155,6 +159,7 @@ Services are containerized using service-specific Dockerfiles:
 - `Dockerfile.vauntico-server`: For vault-landing
 
 Each Dockerfile includes:
+
 - Multi-stage builds for optimized images
 - Health checks for monitoring
 - Proper signal handling
@@ -227,6 +232,7 @@ AlertManager configuration for:
 - Infrastructure issues
 
 Alert channels:
+
 - Email notifications
 - Slack integration
 - PagerDuty integration (optional)
@@ -246,7 +252,8 @@ OCI Autonomous Database provides:
 
 ```javascript
 // Connection string format
-const connectionString = 'postgresql://user:pass@adb-host:1521/db?sslmode=require';
+const connectionString =
+  "postgresql://user:pass@adb-host:1521/db?sslmode=require";
 
 // Pool configuration
 const pool = new Pool({
@@ -306,11 +313,13 @@ const secret = await oci.secret.getSecret({ secretId: secretOcid });
 ### Manual Deployment
 
 1. **Build Images**:
+
    ```bash
    docker build -f Dockerfile.trust-score -t vauntico-server-v2:latest .
    ```
 
 2. **Push to Registry**:
+
    ```bash
    docker tag vauntico-server-v2:latest your-tenancy.ocir.io/vauntico/server-v2:latest
    docker push your-tenancy.ocir.io/vauntico/server-v2:latest
@@ -393,12 +402,14 @@ oci lb listener get --listener-name $LISTENER_NAME \
 #### High Response Times
 
 1. Check resource utilization:
+
    ```bash
    docker stats
    top
    ```
 
 2. Check database performance:
+
    ```sql
    SELECT * FROM v$session WHERE status = 'ACTIVE';
    ```
@@ -412,11 +423,13 @@ oci lb listener get --listener-name $LISTENER_NAME \
 #### Memory Issues
 
 1. Check container memory usage:
+
    ```bash
    docker stats --no-stream
    ```
 
 2. Check system memory:
+
    ```bash
    free -h
    vmstat 1 5
@@ -507,6 +520,7 @@ oci lb listener get --listener-name $LISTENER_NAME \
 ---
 
 For additional support, refer to:
+
 - [OCI Infrastructure Setup Guide](OCI_INFRASTRUCTURE_SETUP_GUIDE.md)
 - [OCI Quick Reference](OCI_QUICK_REFERENCE.md)
 - [Monitoring Guide](MONITORING_GUIDE.md)

@@ -5,6 +5,7 @@
 Both new pages use icons from the lucide-react package. Make sure all imports are available.
 
 ### Workshop Page Icons
+
 `jsx
 import { CheckCircle2, Sparkles, BookOpen, GitCommit, Shield } from 'lucide-react';
 `
@@ -16,6 +17,7 @@ import { CheckCircle2, Sparkles, BookOpen, GitCommit, Shield } from 'lucide-reac
 - **CheckCircle2** - CTA buttons, list items
 
 ### Audit Service Page Icons
+
 `jsx
 import { CheckCircle2, Shield, Clock, FileSearch, Zap, AlertTriangle, Lock, Activity } from 'lucide-react';
 `
@@ -30,6 +32,7 @@ import { CheckCircle2, Shield, Clock, FileSearch, Zap, AlertTriangle, Lock, Acti
 - **CheckCircle2** - CTA buttons, feature lists
 
 ### Sidebar Icons
+
 `jsx
 import { Wrench, Shield } from 'lucide-react';
 `
@@ -46,15 +49,18 @@ All icons follow this structure:
 
 For feature cards, icons are wrapped in a container:
 `jsx
+
 <div className=\"bg-vauntico-gold/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4 text-vauntico-gold\">
   <IconName className=\"w-6 h-6\" />
 </div>
 `
 
 ## Color Variants
-- Default: 	ext-vauntico-gold
-- In containers: Icon inherits color from parent with 	ext-vauntico-gold
+
+- Default: ext-vauntico-gold
+- In containers: Icon inherits color from parent with ext-vauntico-gold
 - CTA buttons: Icons appear next to text with same color
 
 ## Accessibility
+
 All icons used decoratively or with accompanying text. No standalone icons without labels for screen readers.

@@ -30,17 +30,17 @@ What this lint rule endeavors to do is apply the AX API understanding of the sem
 
 Common interactive roles include:
 
-  1. `button`
-  1. `link`
-  1. `checkbox`
-  1. `menuitem`
-  1. `menuitemcheckbox`
-  1. `menuitemradio`
-  1. `option`
-  1. `radio`
-  1. `searchbox`
-  1. `switch`
-  1. `textbox`
+1. `button`
+1. `link`
+1. `checkbox`
+1. `menuitem`
+1. `menuitemcheckbox`
+1. `menuitemradio`
+1. `option`
+1. `radio`
+1. `searchbox`
+1. `switch`
+1. `textbox`
 
 Endeavor to limit tabbable elements to those that a user can act upon.
 

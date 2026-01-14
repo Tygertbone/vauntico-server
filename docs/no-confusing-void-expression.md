@@ -1,5 +1,5 @@
 ---
-description: 'Require expressions of type void to appear in statement position.'
+description: "Require expressions of type void to appear in statement position."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -20,19 +20,19 @@ This rule prevents `void` type expressions from being used in misleading locatio
 
 ```ts
 // somebody forgot that `alert` doesn't return anything
-const response = alert('Are you sure?');
-console.log(alert('Are you sure?'));
+const response = alert("Are you sure?");
+console.log(alert("Are you sure?"));
 
 // it's not obvious whether the chained promise will contain the response (fixable)
-promise.then(value => window.postMessage(value));
+promise.then((value) => window.postMessage(value));
 
 // it looks like we are returning the result of `console.error` (fixable)
 function doSomething() {
   if (!somethingToDo) {
-    return console.error('Nothing to do!');
+    return console.error("Nothing to do!");
   }
 
-  console.log('Doing a thing...');
+  console.log("Doing a thing...");
 }
 ```
 
@@ -40,31 +40,31 @@ function doSomething() {
 
 ```ts
 // just a regular void function in a statement position
-alert('Hello, world!');
+alert("Hello, world!");
 
 // this function returns a boolean value so it's ok
-const response = confirm('Are you sure?');
-console.log(confirm('Are you sure?'));
+const response = confirm("Are you sure?");
+console.log(confirm("Are you sure?"));
 
 // now it's obvious that `postMessage` doesn't return any response
-promise.then(value => {
+promise.then((value) => {
   window.postMessage(value);
 });
 
 // now it's explicit that we want to log the error and return early
 function doSomething() {
   if (!somethingToDo) {
-    console.error('Nothing to do!');
+    console.error("Nothing to do!");
     return;
   }
 
-  console.log('Doing a thing...');
+  console.log("Doing a thing...");
 }
 
 // using logical expressions for their side effects is fine
-cond && console.log('true');
-cond || console.error('false');
-cond ? console.log('true') : console.error('false');
+cond && console.log("true");
+cond || console.error("false");
+cond ? console.log("true") : console.error("false");
 ```
 
 ## Options
@@ -77,7 +77,7 @@ Especially when using Prettier formatter, which spreads such code across 3 lines
 Examples of additional **correct** code with this option enabled:
 
 ```ts option='{ "ignoreArrowShorthand": true }' showPlaygroundButton
-promise.then(value => window.postMessage(value));
+promise.then((value) => window.postMessage(value));
 ```
 
 ### `ignoreVoidOperator`
@@ -94,19 +94,19 @@ Examples of additional **correct** code with this option enabled:
 
 ```ts option='{ "ignoreVoidOperator": true }' showPlaygroundButton
 // now it's obvious that we don't expect any response
-promise.then(value => void window.postMessage(value));
+promise.then((value) => void window.postMessage(value));
 
 // now it's explicit that we don't want to return anything
 function doSomething() {
   if (!somethingToDo) {
-    return void console.error('Nothing to do!');
+    return void console.error("Nothing to do!");
   }
 
-  console.log('Doing a thing...');
+  console.log("Doing a thing...");
 }
 
 // we are sure that we want to always log `undefined`
-console.log(void alert('Hello, world!'));
+console.log(void alert("Hello, world!"));
 ```
 
 ## When Not To Use It

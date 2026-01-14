@@ -21,6 +21,7 @@ objective: "Increase conversion rates by 20-50% through strategic optimization"
 **Conversion = Turning viewers into customers**
 
 **Examples:**
+
 - 1,000 views → 10 affiliate clicks = 1% conversion
 - 1,000 views → 50 affiliate clicks = 5% conversion (5X better!)
 
@@ -31,11 +32,13 @@ objective: "Increase conversion rates by 20-50% through strategic optimization"
 ## 💰 The Conversion Math
 
 **Scenario 1: Low Conversion (1%)**
+
 - 10,000 views/month
 - 1% click rate = 100 clicks
 - 10% buy = 10 sales × R150 = R1,500
 
 **Scenario 2: Optimized Conversion (3%)**
+
 - 10,000 views/month (same!)
 - 3% click rate = 300 clicks
 - 15% buy = 45 sales × R150 = R6,750
@@ -49,6 +52,7 @@ objective: "Increase conversion rates by 20-50% through strategic optimization"
 ## 🔧 Optimization #1: Stronger CTAs
 
 ### **Weak CTA:**
+
 "Link in bio if you want it"
 
 **Result:** 1-2% click
@@ -56,6 +60,7 @@ objective: "Increase conversion rates by 20-50% through strategic optimization"
 ---
 
 ### **Strong CTA:**
+
 "DM me 'GUIDE' right now to get instant access!"
 
 **Result:** 5-8% click
@@ -75,6 +80,7 @@ objective: "Increase conversion rates by 20-50% through strategic optimization"
 
 **Formula #1: DM Trigger**
 "DM me [WORD] for [benefit]"
+
 - "DM me MONEY for my free budget template"
 
 **Formula #2: Limited Spots**
@@ -91,6 +97,7 @@ objective: "Increase conversion rates by 20-50% through strategic optimization"
 ## 🔧 Optimization #2: Better Product Pages
 
 ### **Weak Product Description:**
+
 "My ebook about money. R150."
 
 **Result:** Low trust, low conversions
@@ -98,6 +105,7 @@ objective: "Increase conversion rates by 20-50% through strategic optimization"
 ---
 
 ### **Strong Product Description:**
+
 ```
 💰 THE MONEY BLUEPRINT 💰
 
@@ -192,16 +200,19 @@ Positive comments = testimonials
 ### **Urgency Tactics:**
 
 **Tactic #1: Time-based**
+
 - "Sale ends Sunday!"
 - "Price increases in 3 days"
 - "24-hour launch special"
 
 **Tactic #2: Quantity-based**
+
 - "Only 10 copies at this price"
 - "5 coaching spots available"
 - "Limited to 20 people"
 
 **Tactic #3: Bonus expiration**
+
 - "Buy today, get R300 bonus guide FREE"
 - "First 15 buyers get 1-on-1 call"
 
@@ -214,6 +225,7 @@ Positive comments = testimonials
 **High friction = Lost sales**
 
 ### **Example: Too many steps**
+
 1. See video
 2. Click bio
 3. Click Linktree
@@ -227,6 +239,7 @@ Positive comments = testimonials
 ---
 
 ### **Low friction:**
+
 1. See video with "DM me GUIDE"
 2. DM you
 3. You send payment link
@@ -284,16 +297,19 @@ You: "Last chance! I'm closing enrollment Friday. Still interested?"
 **By income stream:**
 
 **Affiliate:**
+
 - Poor: <1% click-through
 - Good: 2-5% click-through
 - Great: 5-10% click-through
 
 **Digital Products:**
+
 - Poor: <2% sales conversion
 - Good: 5-8% sales conversion
 - Great: 10-15% sales conversion
 
 **Services:**
+
 - Poor: <10% consultation bookings
 - Good: 20-30% bookings
 - Great: 40-50% bookings
@@ -307,12 +323,14 @@ You: "Last chance! I'm closing enrollment Friday. Still interested?"
 **Thabo** (Fitness, SA)
 
 **Before Optimization:**
+
 - Digital product: R200
 - 1,000 views/week
 - Weak CTA: "Link in bio"
 - 10 clicks, 1 sale = R200/week
 
 **After Day 36 (Optimization):**
+
 - Same product, same price
 - Changed CTA: "DM me FIT for instant access!"
 - Added social proof (screenshots)

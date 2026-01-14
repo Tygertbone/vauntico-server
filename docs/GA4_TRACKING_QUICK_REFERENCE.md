@@ -3,98 +3,104 @@
 ## 🎯 Common Tracking Scenarios
 
 ### Scroll Views
-```javascript
-import { trackScrollView } from '@/utils/analytics'
 
-trackScrollView('scroll-001', 'Building Your First Vault', 'free')
+```javascript
+import { trackScrollView } from "@/utils/analytics";
+
+trackScrollView("scroll-001", "Building Your First Vault", "free");
 ```
 
 ### Upgrade Flow
+
 ```javascript
-import { 
+import {
   trackUpgradeModalOpen,
   trackTierSelected,
   trackUpgradeClick,
-  trackSubscriptionSuccess
-} from '@/utils/analytics'
+  trackSubscriptionSuccess,
+} from "@/utils/analytics";
 
 // User clicks locked scroll
-trackUpgradeModalOpen('scroll_lock', 'free', 'scroll-001')
+trackUpgradeModalOpen("scroll_lock", "free", "scroll-001");
 
 // User selects tier
-trackTierSelected('vault-keeper', 'monthly', 'free')
+trackTierSelected("vault-keeper", "monthly", "free");
 
 // User clicks upgrade button
-trackUpgradeClick('vault-keeper', 'monthly', 12, 'USD')
+trackUpgradeClick("vault-keeper", "monthly", 12, "USD");
 
 // Payment succeeds
-trackSubscriptionSuccess('vault-keeper', 'monthly', 12, 'USD')
+trackSubscriptionSuccess("vault-keeper", "monthly", 12, "USD");
 ```
 
 ### CLI Onboarding
+
 ```javascript
-import { 
+import {
   trackCLIOnboardingStart,
   trackCLICommand,
   trackCLIStepComplete,
-  trackCLIOnboardingComplete
-} from '@/utils/analytics'
+  trackCLIOnboardingComplete,
+} from "@/utils/analytics";
 
 // Start onboarding
-trackCLIOnboardingStart('workshop-wielder', 'Workshop Wielder')
+trackCLIOnboardingStart("workshop-wielder", "Workshop Wielder");
 
 // Execute command
-trackCLICommand('create-scroll', 'workshop-wielder')
+trackCLICommand("create-scroll", "workshop-wielder");
 
 // Complete step
-trackCLIStepComplete(0, 'Create Your First Scroll', 'workshop-wielder')
+trackCLIStepComplete(0, "Create Your First Scroll", "workshop-wielder");
 
 // Finish onboarding
-trackCLIOnboardingComplete('workshop-wielder', 'Workshop Wielder', 120)
+trackCLIOnboardingComplete("workshop-wielder", "Workshop Wielder", 120);
 ```
 
 ### Referrals
+
 ```javascript
-import { 
+import {
   trackReferralGenerated,
   trackReferralClick,
-  trackScrollShare
-} from '@/utils/analytics'
+  trackScrollShare,
+} from "@/utils/analytics";
 
 // Generate referral link
-trackReferralGenerated('REF-ABC123', 'scroll_share')
+trackReferralGenerated("REF-ABC123", "scroll_share");
 
 // User clicks referral link (auto-tracked from URL)
-trackReferralClick('REF-ABC123', 'twitter')
+trackReferralClick("REF-ABC123", "twitter");
 
 // Share scroll
-trackScrollShare('scroll-001', 'Building Your First Vault', 'twitter')
+trackScrollShare("scroll-001", "Building Your First Vault", "twitter");
 ```
 
 ---
 
 ## 🔥 Most Important Events to Track
 
-| Event | When to Use | Priority |
-|-------|-------------|----------|
-| `subscription_completed` | After successful payment | 🔴 Critical |
-| `upgrade_clicked` | User clicks upgrade button | 🔴 Critical |
-| `scroll_lock_clicked` | User tries locked content | 🟠 High |
-| `cli_onboarding_completed` | User finishes CLI setup | 🟠 High |
-| `referral_clicked` | Referral link used | 🟡 Medium |
-| `scroll_viewed` | Any scroll view | 🟡 Medium |
+| Event                      | When to Use                | Priority    |
+| -------------------------- | -------------------------- | ----------- |
+| `subscription_completed`   | After successful payment   | 🔴 Critical |
+| `upgrade_clicked`          | User clicks upgrade button | 🔴 Critical |
+| `scroll_lock_clicked`      | User tries locked content  | 🟠 High     |
+| `cli_onboarding_completed` | User finishes CLI setup    | 🟠 High     |
+| `referral_clicked`         | Referral link used         | 🟡 Medium   |
+| `scroll_viewed`            | Any scroll view            | 🟡 Medium   |
 
 ---
 
 ## 🎯 Testing Checklist
 
 ### Before Deployment
+
 - [ ] Console shows "📊 Vauntico Analytics initialized"
 - [ ] Events appear in console (dev mode)
 - [ ] `window.gtag` is defined
 - [ ] Network tab shows `collect` requests
 
 ### After Deployment
+
 - [ ] GA4 Real-time shows active users
 - [ ] Events appear in Real-time reports
 - [ ] User properties are populated
@@ -125,20 +131,20 @@ vercel env add VITE_GA4_ID production
 
 ```javascript
 // Check if GA4 is loaded
-console.log(typeof gtag) // should be "function"
+console.log(typeof gtag); // should be "function"
 
 // View analytics state
-window.VaunticoAnalytics.logState()
+window.VaunticoAnalytics.logState();
 
 // View queued events
-window.VaunticoAnalytics.getQueue()
+window.VaunticoAnalytics.getQueue();
 
 // Force send events
-window.VaunticoAnalytics.flush()
+window.VaunticoAnalytics.flush();
 
 // Test event
-import { trackPageView } from '@/utils/analytics'
-trackPageView('/test', 'Test Page')
+import { trackPageView } from "@/utils/analytics";
+trackPageView("/test", "Test Page");
 ```
 
 ---

@@ -3,6 +3,7 @@
 ## ✅ **INFRASTRUCTURE DEPLOYED SUCCESSFULLY**
 
 ### **Current Status**
+
 - **OCI Instance**: ✅ RUNNING at `84.8.135.161`
 - **Instance ID**: `ocid1.instance.oc1.af-johannesburg-1.anvg4ljr4eq3kmqc7xrszmhs2geuocplk74cxm3sozcjr7otloapshomte3q`
 - **Shape**: VM.Standard.E5.Flex (1 OCPU, 8GB RAM)
@@ -16,6 +17,7 @@
 ### **Step 1: Cloudflare DNS Setup**
 
 1. **Edit the DNS script**:
+
    ```bash
    # Edit cloudflare-dns-setup.sh
    nano cloudflare-dns-setup.sh
@@ -24,6 +26,7 @@
    ```
 
 2. **Execute DNS setup**:
+
    ```bash
    chmod +x cloudflare-dns-setup.sh
    ./cloudflare-dns-setup.sh
@@ -38,15 +41,17 @@
 ### **Step 2: Backend Deployment**
 
 1. **SSH into the instance**:
+
    ```bash
    oci compute instance ssh --instance-id ocid1.instance.oc1.af-johannesburg-1.anvg4ljr4eq3kmqc7xrszmhs2geuocplk74cxm3sozcjr7otloapshomte3q
    ```
 
 2. **Upload and run deployment script**:
+
    ```bash
    # Upload the deployment script
    scp backend-deploy.sh ubuntu@84.8.135.161:/home/ubuntu/
-   
+
    # SSH and execute
    ssh ubuntu@84.8.135.161
    chmod +x backend-deploy.sh
@@ -69,6 +74,7 @@
 ### **Step 3: Verification**
 
 1. **Test local endpoints**:
+
    ```bash
    curl http://localhost:3000/health
    curl http://localhost:3000/api/v1/status
@@ -85,25 +91,27 @@
 
 ## 📋 **FILES CREATED**
 
-| File | Purpose | Usage |
-|------|---------|-------|
-| `cloudflare-dns-setup.sh` | DNS configuration | Edit with your credentials and execute |
-| `backend-deploy.sh` | Backend deployment | Upload to instance and execute |
-| `source.json` | OCI image configuration | Reference for future deployments |
-| `shape_config.json` | Instance shape config | Reference for future deployments |
-| `VAUNTICO_DEPLOYMENT_SUCCESS_REPORT.md` | Complete documentation | Full deployment details and next steps |
+| File                                    | Purpose                 | Usage                                  |
+| --------------------------------------- | ----------------------- | -------------------------------------- |
+| `cloudflare-dns-setup.sh`               | DNS configuration       | Edit with your credentials and execute |
+| `backend-deploy.sh`                     | Backend deployment      | Upload to instance and execute         |
+| `source.json`                           | OCI image configuration | Reference for future deployments       |
+| `shape_config.json`                     | Instance shape config   | Reference for future deployments       |
+| `VAUNTICO_DEPLOYMENT_SUCCESS_REPORT.md` | Complete documentation  | Full deployment details and next steps |
 
 ---
 
 ## 🔧 **CUSTOMIZATION POINTS**
 
 ### **For Your Application**
+
 1. **Replace placeholder Express server** with your actual application
 2. **Update package.json** with your dependencies
 3. **Add environment variables** in the systemd service
 4. **Configure database connections** if needed
 
 ### **Security Enhancements**
+
 1. **Configure SSL certificates** (handled by Cloudflare)
 2. **Set up API authentication**
 3. **Configure firewall rules** for production
@@ -114,11 +122,13 @@
 ## 🌐 **FINAL URLS**
 
 **After DNS Setup:**
+
 - **Main API**: `https://trust-score.vauntico.com`
 - **Health Check**: `https://trust-score.vauntico.com/health`
 - **Status Endpoint**: `https://trust-score.vauntico.com/api/v1/status`
 
 **Direct IP Access (temporary):**
+
 - **HTTP**: `http://84.8.135.161:3000`
 - **SSH**: `ubuntu@84.8.135.161`
 
@@ -127,6 +137,7 @@
 ## 📊 **MONITORING & MAINTENANCE**
 
 ### **Instance Management**
+
 ```bash
 # Check instance status
 oci compute instance get --instance-id ocid1.instance.oc1.af-johannesburg-1.anvg4ljr4eq3kmqc7xrszmhs2geuocplk74cxm3sozcjr7otloapshomte3q
@@ -140,6 +151,7 @@ sudo journalctl -u trust-score -f
 ```
 
 ### **Backup Strategy**
+
 ```bash
 # Create boot volume backup
 oci bv boot-volume-backup create --boot-volume-id <boot-volume-id>
@@ -153,6 +165,7 @@ oci compute instance-action create --instance-id <instance-id> --action SOFTSTOP
 ## 🎯 **SUCCESS CRITERIA**
 
 ### **✅ Completed**
+
 - [x] OCI infrastructure provisioned
 - [x] Instance running with public IP
 - [x] Network connectivity confirmed
@@ -160,6 +173,7 @@ oci compute instance-action create --instance-id <instance-id> --action SOFTSTOP
 - [x] Documentation complete
 
 ### **🔄 Pending Your Action**
+
 - [ ] Execute Cloudflare DNS setup (needs your credentials)
 - [ ] Deploy your actual backend application
 - [ ] Configure production environment variables
@@ -171,12 +185,14 @@ oci compute instance-action create --instance-id <instance-id> --action SOFTSTOP
 ## 🚨 **TROUBLESHOOTING**
 
 ### **Common Issues**
+
 1. **DNS not resolving**: Wait 5-10 minutes for propagation
 2. **SSH connection refused**: Check security list rules in OCI console
 3. **Service not starting**: Check logs with `sudo journalctl -u trust-score`
 4. **Port blocked**: Ensure port 3000 is allowed in firewall
 
 ### **Support Contacts**
+
 - **OCI Instance ID**: `ocid1.instance.oc1.af-johannesburg-1.anvg4ljr4eq3kmqc7xrszmhs2geuocplk74cxm3sozcjr7otloapshomte3q`
 - **Work Request ID**: `ocid1.coreservicesworkrequest.oc1.af-johannesburg-1.abvg4ljrl3egip4cbhkrxxlx6lat2j4626xeq2qzcaefh5b6rgaj366ht4la`
 
@@ -184,7 +200,7 @@ oci compute instance-action create --instance-id <instance-id> --action SOFTSTOP
 
 ## 🎉 **CONGRATULATIONS!**
 
-Your Vauntico Trust-Score backend infrastructure is **production-ready** on Oracle Cloud Infrastructure! 
+Your Vauntico Trust-Score backend infrastructure is **production-ready** on Oracle Cloud Infrastructure!
 
 **Final Step**: Execute the Cloudflare DNS setup and deploy your application to make it live at `https://trust-score.vauntico.com`.
 

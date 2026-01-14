@@ -1,5 +1,5 @@
 ---
-description: 'Enforce valid definition of `new` and `constructor`.'
+description: "Enforce valid definition of `new` and `constructor`."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

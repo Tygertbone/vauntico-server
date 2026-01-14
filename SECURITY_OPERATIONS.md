@@ -9,6 +9,7 @@ This document outlines security policies, procedures, and operational guidelines
 ## 🛡️ Security Architecture
 
 ### Multi-Layer Security
+
 ```
 ┌─────────────────────────────────────────┐
 │              Application Layer              │
@@ -22,6 +23,7 @@ This document outlines security policies, procedures, and operational guidelines
 ```
 
 ### Security Components
+
 - **Authentication**: JWT-based with refresh tokens
 - **Authorization**: Role-based access control (RBAC)
 - **Encryption**: TLS 1.3 + data-at-rest encryption
@@ -33,6 +35,7 @@ This document outlines security policies, procedures, and operational guidelines
 ## 🔑 Authentication & Authorization
 
 ### JWT Implementation
+
 ```javascript
 // JWT Configuration
 const jwtConfig = {
@@ -53,11 +56,12 @@ const jwtConfig = {
 ```
 
 ### Role-Based Access Control
+
 ```javascript
 const roles = {
-  user: ['read:own_content', 'write:own_content'],
-  moderator: ['read:all_content', 'moderate:content'],
-  admin: ['read:all_data', 'write:all_data', 'delete:content']
+  user: ["read:own_content", "write:own_content"],
+  moderator: ["read:all_content", "moderate:content"],
+  admin: ["read:all_data", "write:all_data", "delete:content"],
 };
 
 // Authorization Check
@@ -67,6 +71,7 @@ const hasPermission = (userRole, permission) => {
 ```
 
 ### Session Management
+
 - JWT tokens expire after 15 minutes
 - Refresh tokens valid for 7 days
 - Secure, HttpOnly cookies for refresh tokens
@@ -77,39 +82,41 @@ const hasPermission = (userRole, permission) => {
 ## 🔐 Data Protection
 
 ### Encryption Standards
+
 ```javascript
 // Data at Rest (Database)
 const encryptionConfig = {
-  algorithm: 'aes-256-gcm',
-  keyRotation: '90-days',
-  fields: ['ssn', 'email', 'phone', 'payment_info']
+  algorithm: "aes-256-gcm",
+  keyRotation: "90-days",
+  fields: ["ssn", "email", "phone", "payment_info"],
 };
 
 // Data in Transit (API)
 const tlsConfig = {
-  version: 'TLSv1.3',
-  ciphers: 'ECDHE-RSA-AES256-GCM-SHA384',
-  certificates: 'automated-letsencrypt'
+  version: "TLSv1.3",
+  ciphers: "ECDHE-RSA-AES256-GCM-SHA384",
+  certificates: "automated-letsencrypt",
 };
 ```
 
 ### PII Data Handling
+
 ```javascript
 // Personal Information Masking
 const maskPII = (data) => {
   return {
     email: maskEmail(data.email),
     phone: maskPhone(data.phone),
-    name: maskName(data.name)
+    name: maskName(data.name),
   };
 };
 
 // Data Retention Policy
 const retentionPolicy = {
-  userAccounts: '7-years',
-  contentData: '3-years',
-  accessLogs: '90-days',
-  auditLogs: '1-year'
+  userAccounts: "7-years",
+  contentData: "3-years",
+  accessLogs: "90-days",
+  auditLogs: "1-year",
 };
 ```
 
@@ -118,14 +125,15 @@ const retentionPolicy = {
 ## 🛡️ Application Security
 
 ### Input Validation
+
 ```javascript
 // XSS Protection
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
 const sanitizeHTML = (html) => {
   return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: ['p', 'br', 'strong', 'em'],
-    ALLOWED_ATTR: ['class']
+    ALLOWED_TAGS: ["p", "br", "strong", "em"],
+    ALLOWED_ATTR: ["class"],
   });
 };
 
@@ -138,27 +146,29 @@ const validateQuery = (query) => {
 ```
 
 ### Rate Limiting
+
 ```javascript
-const rateLimit = require('express-rate-limit');
+const rateLimit = require("express-rate-limit");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
   message: {
-    error: 'Too many requests',
-    retryAfter: '15 minutes'
-  }
+    error: "Too many requests",
+    retryAfter: "15 minutes",
+  },
 });
 ```
 
 ### CORS Configuration
+
 ```javascript
 const corsOptions = {
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || ['https://vauntico.com'],
+  origin: process.env.ALLOWED_ORIGINS?.split(",") || ["https://vauntico.com"],
   credentials: true,
   optionsSuccessStatus: 200,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 ```
 
@@ -167,47 +177,49 @@ const corsOptions = {
 ## 🔍 Security Monitoring
 
 ### Real-time Monitoring
+
 ```javascript
 // Security Events
 const securityEvents = {
-  'auth_failure': 'Multiple failed login attempts',
-  'privilege_escalation': 'Unauthorized admin access attempt',
-  'data_exfiltration': 'Unusual data export patterns',
-  'malicious_request': 'SQL injection or XSS attempt'
+  auth_failure: "Multiple failed login attempts",
+  privilege_escalation: "Unauthorized admin access attempt",
+  data_exfiltration: "Unusual data export patterns",
+  malicious_request: "SQL injection or XSS attempt",
 };
 
 // Alerting System
 const sendAlert = (event, details) => {
   const alert = {
     timestamp: new Date().toISOString(),
-    severity: 'high',
+    severity: "high",
     event: event,
     details: details,
     ip: details.ip,
-    userAgent: details.userAgent
+    userAgent: details.userAgent,
   };
-  
+
   // Send to security team
   securityAlerts.send(alert);
-  
+
   // Log for audit
   auditLogger.log(alert);
 };
 ```
 
 ### Log Management
+
 ```javascript
 // Security Logging Format
 const securityLog = {
-  timestamp: '2025-01-05T11:30:00.000Z',
-  level: 'SECURITY',
-  event: 'auth_failure',
-  userId: 'user_123',
-  ip: '192.168.1.100',
-  userAgent: 'Mozilla/5.0...',
-  action: 'login_attempt',
-  result: 'failed',
-  reason: 'invalid_credentials'
+  timestamp: "2025-01-05T11:30:00.000Z",
+  level: "SECURITY",
+  event: "auth_failure",
+  userId: "user_123",
+  ip: "192.168.1.100",
+  userAgent: "Mozilla/5.0...",
+  action: "login_attempt",
+  result: "failed",
+  reason: "invalid_credentials",
 };
 ```
 
@@ -216,23 +228,25 @@ const securityLog = {
 ## 🚨 Incident Response
 
 ### Incident Classification
+
 ```javascript
 const incidentLevels = {
-  CRITICAL: 'Service compromised, data breach',
-  HIGH: 'Security vulnerability exploited',
-  MEDIUM: 'Suspicious activity detected',
-  LOW: 'Security policy violation'
+  CRITICAL: "Service compromised, data breach",
+  HIGH: "Security vulnerability exploited",
+  MEDIUM: "Suspicious activity detected",
+  LOW: "Security policy violation",
 };
 
 const responseTimes = {
-  CRITICAL: '15 minutes',
-  HIGH: '1 hour',
-  MEDIUM: '4 hours',
-  LOW: '24 hours'
+  CRITICAL: "15 minutes",
+  HIGH: "1 hour",
+  MEDIUM: "4 hours",
+  LOW: "24 hours",
 };
 ```
 
 ### Response Procedures
+
 ```bash
 # 1. Incident Detection
 # Automated alerts trigger when:
@@ -278,6 +292,7 @@ const responseTimes = {
 ## 🔧 Security Operations
 
 ### Daily Security Tasks
+
 ```bash
 #!/bin/bash
 # Daily Security Checklist
@@ -309,6 +324,7 @@ echo "✅ Daily security check completed"
 ```
 
 ### Weekly Security Tasks
+
 ```bash
 #!/bin/bash
 # Weekly Security Checklist
@@ -338,6 +354,7 @@ echo "🧠 Updating threat intelligence..."
 ```
 
 ### Monthly Security Tasks
+
 ```bash
 #!/bin/bash
 # Monthly Security Checklist
@@ -367,6 +384,7 @@ echo "📄 Reviewing security policies..."
 ## 🔒 Security Tools & Scripts
 
 ### Security Script Suite
+
 ```bash
 # Main security operations script
 ./scripts/security/security-operations.sh
@@ -379,6 +397,7 @@ echo "📄 Reviewing security policies..."
 ```
 
 ### Automated Security Testing
+
 ```javascript
 // Security test suite
 const securityTests = {
@@ -386,18 +405,18 @@ const securityTests = {
   sqlInjectionProtection: () => testSQLInjection(),
   authenticationFlaws: () => testAuthentication(),
   authorizationBypass: () => testAuthorization(),
-  dataExposure: () => testDataExposure()
+  dataExposure: () => testDataExposure(),
 };
 
 // Run security tests
 const runSecurityTests = async () => {
   const results = {};
-  
+
   for (const [testName, testFunction] of Object.entries(securityTests)) {
     console.log(`Running ${testName}...`);
     results[testName] = await testFunction();
   }
-  
+
   return results;
 };
 ```
@@ -407,18 +426,20 @@ const runSecurityTests = async () => {
 ## 📊 Compliance & Auditing
 
 ### GDPR Compliance
+
 ```javascript
 // GDPR Data Subject Rights
 const gdprRights = {
   rightToAccess: () => exportUserData(userId),
   rightToRectification: () => updateUserData(userId, data),
   rightToErasure: () => deleteUserData(userId),
-  rightToPortability: () => exportUserDataFormat(userId, 'json'),
-  rightToObjection: () => disableProcessing(userId, purpose)
+  rightToPortability: () => exportUserDataFormat(userId, "json"),
+  rightToObjection: () => disableProcessing(userId, purpose),
 };
 ```
 
 ### Security Auditing
+
 ```bash
 # Automated security audit
 #!/bin/bash
@@ -453,6 +474,7 @@ echo "=== Audit Complete ==="
 ## 🚨 Security Policies
 
 ### Password Policy
+
 ```javascript
 const passwordPolicy = {
   minLength: 12,
@@ -463,29 +485,31 @@ const passwordPolicy = {
   requireSpecialChars: true,
   preventCommonPasswords: true,
   expirationDays: 90,
-  historyPrevention: 5
+  historyPrevention: 5,
 };
 ```
 
 ### Access Control Policy
+
 ```javascript
 const accessPolicy = {
   mfaRequired: true,
   sessionTimeout: 15, // minutes
   maxConcurrentSessions: 3,
-  ipWhitelist: ['admin_console'],
-  geoRestrictions: ['high_risk_countries'],
-  businessHoursOnly: ['sensitive_operations']
+  ipWhitelist: ["admin_console"],
+  geoRestrictions: ["high_risk_countries"],
+  businessHoursOnly: ["sensitive_operations"],
 };
 ```
 
 ### Data Classification
+
 ```javascript
 const dataClassification = {
-  PUBLIC: 'No access restrictions',
-  INTERNAL: 'Employee access only',
-  CONFIDENTIAL: 'Need-to-know basis',
-  RESTRICTED: 'Executive approval required'
+  PUBLIC: "No access restrictions",
+  INTERNAL: "Employee access only",
+  CONFIDENTIAL: "Need-to-know basis",
+  RESTRICTED: "Executive approval required",
 };
 ```
 
@@ -494,6 +518,7 @@ const dataClassification = {
 ## 📞 Security Contacts & Procedures
 
 ### Security Team
+
 ```bash
 # Emergency Contacts
 SECURITY_TEAM="security@vauntico.com"
@@ -507,6 +532,7 @@ SECURITY_ABUSE="abuse@vauntico.com"
 ```
 
 ### Incident Reporting
+
 ```bash
 # Report security incident
 #!/bin/bash
@@ -532,6 +558,7 @@ curl -X POST "https://security.vauntico.com/api/incidents" \
 ## 🔄 Security Maintenance
 
 ### Security Update Schedule
+
 ```bash
 # Automated security updates
 # File: scripts/security/auto-security-update.sh
@@ -550,6 +577,7 @@ curl -X POST "https://security.vauntico.com/api/incidents" \
 ```
 
 ### Backup Security
+
 ```bash
 # Secure backup procedures
 #!/bin/bash
@@ -575,6 +603,7 @@ gpg --decrypt --batch --yes "$BACKUP_DIR/backup.tar.gz.gpg" | \
 ## 📋 Security Checklist
 
 ### Pre-Deployment Security
+
 - [ ] All dependencies scanned for vulnerabilities
 - [ ] Security tests pass (100% coverage)
 - [ ] Code review completed by security team
@@ -586,6 +615,7 @@ gpg --decrypt --batch --yes "$BACKUP_DIR/backup.tar.gz.gpg" | \
 - [ ] Data encryption verified
 
 ### Production Security
+
 - [ ] Monitoring alerts configured
 - [ ] Log rotation enabled
 - [ ] Backup procedures tested
@@ -596,6 +626,7 @@ gpg --decrypt --batch --yes "$BACKUP_DIR/backup.tar.gz.gpg" | \
 - [ ] Compliance checks passed
 
 ### Ongoing Security
+
 - [ ] Daily security checks automated
 - [ ] Weekly security reviews scheduled
 - [ ] Monthly security audits completed
@@ -611,6 +642,7 @@ gpg --decrypt --batch --yes "$BACKUP_DIR/backup.tar.gz.gpg" | \
 ## 🎓 Security Training
 
 ### Training Topics
+
 - Secure coding practices
 - Common vulnerabilities (OWASP Top 10)
 - Incident response procedures
@@ -619,6 +651,7 @@ gpg --decrypt --batch --yes "$BACKUP_DIR/backup.tar.gz.gpg" | \
 - Security tool usage
 
 ### Training Schedule
+
 ```bash
 # New employee: Security onboarding (Day 1)
 # All employees: Quarterly refresher

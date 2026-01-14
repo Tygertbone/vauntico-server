@@ -1,6 +1,6 @@
-import { pool } from '../utils/database';
-import logger from '../utils/logger';
-import { TrustScoreService } from './trustScoreService';
+import { pool } from "../utils/database";
+import logger from "../utils/logger";
+import { TrustScoreService } from "./trustScoreService";
 
 export interface CouncilMember {
   id: string;
@@ -17,8 +17,8 @@ export interface Proposal {
   id: string;
   title: string;
   description: string;
-  type: 'governance' | 'feature' | 'policy' | 'community';
-  status: 'draft' | 'active' | 'voting' | 'completed' | 'rejected';
+  type: "governance" | "feature" | "policy" | "community";
+  status: "draft" | "active" | "voting" | "completed" | "rejected";
   createdBy: string;
   createdAt: Date;
   votingStartsAt?: Date;
@@ -30,14 +30,14 @@ export interface Proposal {
   totalWeight: number;
   trustScoreThreshold: number;
   tags: string[];
-  impact: 'low' | 'medium' | 'high' | 'critical';
+  impact: "low" | "medium" | "high" | "critical";
 }
 
 export interface Vote {
   id: string;
   proposalId: string;
   userId: string;
-  vote: 'yes' | 'no' | 'abstain';
+  vote: "yes" | "no" | "abstain";
   votingWeight: number;
   reasoning?: string;
   createdAt: Date;
@@ -47,7 +47,7 @@ export interface Vote {
 export interface AuditTrail {
   id: string;
   action: string;
-  entityType: 'proposal' | 'vote' | 'member' | 'council';
+  entityType: "proposal" | "vote" | "member" | "council";
   entityId: string;
   userId: string;
   oldValue?: any;
@@ -76,11 +76,11 @@ class UbuntuCouncilService {
         WHERE cm.is_active = true
         ORDER BY cm.voting_weight DESC
       `;
-      
+
       const result = await pool.query(query);
       return result.rows.map(this.mapCouncilMember);
     } catch (error) {
-      logger.error('Error fetching council members:', error);
+      logger.error("Error fetching council members:", error);
       throw error;
     }
   }
@@ -88,10 +88,15 @@ class UbuntuCouncilService {
   async addCouncilMember(userId: string): Promise<CouncilMember> {
     try {
       // Check if user meets trust score threshold
-      const trustScoreResult = await TrustScoreService.calculateTrustScore(userId, 'pro');
+      const trustScoreResult = await TrustScoreService.calculateTrustScore(
+        userId,
+        "pro",
+      );
       const trustScore = trustScoreResult.cost; // Use cost as a proxy for trust score in this mock
       if (trustScore < this.COUNCIL_TRUST_THRESHOLD) {
-        throw new Error(`Trust score ${trustScore} below required threshold ${this.COUNCIL_TRUST_THRESHOLD}`);
+        throw new Error(
+          `Trust score ${trustScore} below required threshold ${this.COUNCIL_TRUST_THRESHOLD}`,
+        );
       }
 
       // Calculate voting weight based on trust score
@@ -104,23 +109,33 @@ class UbuntuCouncilService {
       `;
 
       const result = await pool.query(query, [userId, votingWeight]);
-      
+
       // Log to audit trail
-      await this.logAuditTrail('member', result.rows[0].id, 'system', {
-        action: 'add_council_member',
+      await this.logAuditTrail("member", result.rows[0].id, "system", {
+        action: "add_council_member",
         userId,
         votingWeight,
-        trustScore
+        trustScore,
       });
 
       return this.mapCouncilMember(result.rows[0]);
     } catch (error) {
-      logger.error('Error adding council member:', error);
+      logger.error("Error adding council member:", error);
       throw error;
     }
   }
 
-  async createProposal(proposalData: Omit<Proposal, 'id' | 'createdAt' | 'yesVotes' | 'noVotes' | 'abstainVotes' | 'totalWeight'>): Promise<Proposal> {
+  async createProposal(
+    proposalData: Omit<
+      Proposal,
+      | "id"
+      | "createdAt"
+      | "yesVotes"
+      | "noVotes"
+      | "abstainVotes"
+      | "totalWeight"
+    >,
+  ): Promise<Proposal> {
     try {
       const id = this.generateId();
       const quorumRequired = proposalData.quorumRequired || this.QUORUM_DEFAULT;
@@ -146,25 +161,29 @@ class UbuntuCouncilService {
         proposalData.tags,
         proposalData.impact,
         proposalData.votingStartsAt,
-        proposalData.votingEndsAt
+        proposalData.votingEndsAt,
       ];
 
       const result = await pool.query(query, values);
-      
+
       // Log to audit trail
-      await this.logAuditTrail('proposal', id, proposalData.createdBy, {
-        action: 'create_proposal',
-        proposalData
+      await this.logAuditTrail("proposal", id, proposalData.createdBy, {
+        action: "create_proposal",
+        proposalData,
       });
 
       return this.mapProposal(result.rows[0]);
     } catch (error) {
-      logger.error('Error creating proposal:', error);
+      logger.error("Error creating proposal:", error);
       throw error;
     }
   }
 
-  async getProposals(status?: Proposal['status'], limit = 50, offset = 0): Promise<Proposal[]> {
+  async getProposals(
+    status?: Proposal["status"],
+    limit = 50,
+    offset = 0,
+  ): Promise<Proposal[]> {
     try {
       let query = `
         SELECT p.*, u.username as creator_name
@@ -174,51 +193,63 @@ class UbuntuCouncilService {
       const params: any[] = [];
 
       if (status) {
-        query += ' WHERE p.status = $1';
+        query += " WHERE p.status = $1";
         params.push(status);
       }
 
-      query += ' ORDER BY p.created_at DESC LIMIT $' + (params.length + 1) + ' OFFSET $' + (params.length + 2);
+      query +=
+        " ORDER BY p.created_at DESC LIMIT $" +
+        (params.length + 1) +
+        " OFFSET $" +
+        (params.length + 2);
       params.push(limit, offset);
 
       const result = await pool.query(query, params);
       return result.rows.map(this.mapProposal);
     } catch (error) {
-      logger.error('Error fetching proposals:', error);
+      logger.error("Error fetching proposals:", error);
       throw error;
     }
   }
 
-  async castVote(voteData: Omit<Vote, 'id' | 'createdAt' | 'votingWeight' | 'trustScoreAtTime'>): Promise<Vote> {
+  async castVote(
+    voteData: Omit<
+      Vote,
+      "id" | "createdAt" | "votingWeight" | "trustScoreAtTime"
+    >,
+  ): Promise<Vote> {
     try {
       const client = await pool.connect();
-      
+
       try {
-        await client.query('BEGIN');
+        await client.query("BEGIN");
 
         // Check if user is eligible to vote
         const memberCheck = await client.query(
-          'SELECT * FROM council_members WHERE user_id = $1 AND is_active = true',
-          [voteData.userId]
+          "SELECT * FROM council_members WHERE user_id = $1 AND is_active = true",
+          [voteData.userId],
         );
 
         if (memberCheck.rows.length === 0) {
-          throw new Error('User is not an active council member');
+          throw new Error("User is not an active council member");
         }
 
         // Get current trust score
-        const trustScoreResult = await TrustScoreService.calculateTrustScore(voteData.userId, 'pro');
+        const trustScoreResult = await TrustScoreService.calculateTrustScore(
+          voteData.userId,
+          "pro",
+        );
         const trustScore = trustScoreResult.cost; // Use cost as a proxy for trust score in this mock
         const votingWeight = trustScore * this.VOTING_WEIGHT_MULTIPLIER;
 
         // Check if user has already voted
         const existingVote = await client.query(
-          'SELECT * FROM votes WHERE proposal_id = $1 AND user_id = $2',
-          [voteData.proposalId, voteData.userId]
+          "SELECT * FROM votes WHERE proposal_id = $1 AND user_id = $2",
+          [voteData.proposalId, voteData.userId],
         );
 
         if (existingVote.rows.length > 0) {
-          throw new Error('User has already voted on this proposal');
+          throw new Error("User has already voted on this proposal");
         }
 
         // Cast the vote
@@ -237,37 +268,40 @@ class UbuntuCouncilService {
           voteData.vote,
           votingWeight,
           voteData.reasoning,
-          trustScore
+          trustScore,
         ]);
 
         // Update proposal vote counts
         await this.updateProposalVoteCounts(client, voteData.proposalId);
 
-        await client.query('COMMIT');
+        await client.query("COMMIT");
 
         // Log to audit trail
-        await this.logAuditTrail('vote', voteId, voteData.userId, {
-          action: 'cast_vote',
+        await this.logAuditTrail("vote", voteId, voteData.userId, {
+          action: "cast_vote",
           proposalId: voteData.proposalId,
           vote: voteData.vote,
           votingWeight,
-          trustScore
+          trustScore,
         });
 
         return this.mapVote(voteResult.rows[0]);
       } catch (error) {
-        await client.query('ROLLBACK');
+        await client.query("ROLLBACK");
         throw error;
       } finally {
         client.release();
       }
     } catch (error) {
-      logger.error('Error casting vote:', error);
+      logger.error("Error casting vote:", error);
       throw error;
     }
   }
 
-  private async updateProposalVoteCounts(client: any, proposalId: string): Promise<void> {
+  private async updateProposalVoteCounts(
+    client: any,
+    proposalId: string,
+  ): Promise<void> {
     const updateQuery = `
       UPDATE proposals 
       SET 
@@ -280,39 +314,43 @@ class UbuntuCouncilService {
     await client.query(updateQuery, [proposalId]);
   }
 
-  async getAuditTrail(entityId?: string, entityType?: AuditTrail['entityType'], limit = 100): Promise<AuditTrail[]> {
+  async getAuditTrail(
+    entityId?: string,
+    entityType?: AuditTrail["entityType"],
+    limit = 100,
+  ): Promise<AuditTrail[]> {
     try {
-      let query = 'SELECT * FROM audit_trail WHERE 1=1';
+      let query = "SELECT * FROM audit_trail WHERE 1=1";
       const params: any[] = [];
 
       if (entityId) {
-        query += ' AND entity_id = $' + (params.length + 1);
+        query += " AND entity_id = $" + (params.length + 1);
         params.push(entityId);
       }
 
       if (entityType) {
-        query += ' AND entity_type = $' + (params.length + 1);
+        query += " AND entity_type = $" + (params.length + 1);
         params.push(entityType);
       }
 
-      query += ' ORDER BY timestamp DESC LIMIT $' + (params.length + 1);
+      query += " ORDER BY timestamp DESC LIMIT $" + (params.length + 1);
       params.push(limit);
 
       const result = await pool.query(query, params);
       return result.rows.map(this.mapAuditTrail);
     } catch (error) {
-      logger.error('Error fetching audit trail:', error);
+      logger.error("Error fetching audit trail:", error);
       throw error;
     }
   }
 
   private async logAuditTrail(
-    entityType: AuditTrail['entityType'],
+    entityType: AuditTrail["entityType"],
     entityId: string,
     userId: string,
     data: any,
-    ipAddress = '0.0.0.0',
-    userAgent = 'system'
+    ipAddress = "0.0.0.0",
+    userAgent = "system",
   ): Promise<void> {
     try {
       const query = `
@@ -332,10 +370,10 @@ class UbuntuCouncilService {
         data.newValue,
         ipAddress,
         userAgent,
-        data.reason
+        data.reason,
       ]);
     } catch (error) {
-      logger.error('Error logging audit trail:', error);
+      logger.error("Error logging audit trail:", error);
     }
   }
 
@@ -348,7 +386,7 @@ class UbuntuCouncilService {
       votingWeight: parseFloat(row.voting_weight),
       joinedAt: row.joined_at,
       isActive: row.is_active,
-      reputation: row.reputation || 0
+      reputation: row.reputation || 0,
     };
   }
 
@@ -370,7 +408,7 @@ class UbuntuCouncilService {
       totalWeight: parseFloat(row.total_weight || 0),
       trustScoreThreshold: row.trust_score_threshold,
       tags: row.tags || [],
-      impact: row.impact
+      impact: row.impact,
     };
   }
 
@@ -383,7 +421,7 @@ class UbuntuCouncilService {
       votingWeight: parseFloat(row.voting_weight),
       reasoning: row.reasoning,
       createdAt: row.created_at,
-      trustScoreAtTime: row.trust_score_at_time
+      trustScoreAtTime: row.trust_score_at_time,
     };
   }
 
@@ -399,7 +437,7 @@ class UbuntuCouncilService {
       timestamp: row.timestamp,
       ipAddress: row.ip_address,
       userAgent: row.user_agent,
-      reason: row.reason
+      reason: row.reason,
     };
   }
 

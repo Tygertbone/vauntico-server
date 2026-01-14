@@ -29,6 +29,7 @@ objective: "Automate repetitive tasks to maintain R2K income in 10 hours/week"
 ## 🤖 Automation #1: Content Scheduling
 
 ### **Manual way (time-consuming):**
+
 - Film video Monday
 - Post Monday at 7pm
 - Film video Tuesday
@@ -40,6 +41,7 @@ objective: "Automate repetitive tasks to maintain R2K income in 10 hours/week"
 ---
 
 ### **Automated way:**
+
 - Batch film 7 videos Sunday (2 hours)
 - Schedule all 7 for the week
 - They post automatically
@@ -51,14 +53,17 @@ objective: "Automate repetitive tasks to maintain R2K income in 10 hours/week"
 ### **Tools (Phone-Friendly):**
 
 **TikTok:**
+
 - Built-in scheduler (in-app)
 - Schedule up to 10 videos
 
 **Instagram:**
+
 - Creator Studio (free, Meta app)
 - Schedule Reels/posts
 
 **Cross-platform:**
+
 - **Later** (free plan: 10 posts/month)
 - **Buffer** (free plan: 10 posts/month)
 - **Metricool** (free plan: limited scheduling)
@@ -68,11 +73,13 @@ objective: "Automate repetitive tasks to maintain R2K income in 10 hours/week"
 ### **Weekly Batch Schedule:**
 
 **Sunday (2-3 hours):**
+
 - Film 7-10 videos
 - Edit all
 - Schedule for Monday-Saturday
 
 **Monday-Saturday (30 min/day):**
+
 - Check comments/DMs
 - Engage with community
 - No filming needed!
@@ -84,6 +91,7 @@ objective: "Automate repetitive tasks to maintain R2K income in 10 hours/week"
 ## 🤖 Automation #2: DM Responses
 
 ### **The problem:**
+
 You get 20-50 DMs/day asking same questions.
 
 ---
@@ -91,12 +99,14 @@ You get 20-50 DMs/day asking same questions.
 ### **The solution: Saved Replies**
 
 **Instagram Saved Replies:**
+
 1. Settings → Business → Saved replies
 2. Create templates for common questions
 
 **Templates to save:**
 
 **Template #1: Product inquiry**
+
 ```
 Shortcut: /product
 
@@ -116,6 +126,7 @@ Questions? Let me know! 😊"
 ```
 
 **Template #2: Service inquiry**
+
 ```
 Shortcut: /service
 
@@ -131,6 +142,7 @@ Interested? Let's chat! What's your biggest [niche] challenge right now?"
 ```
 
 **Template #3: Affiliate link**
+
 ```
 Shortcut: /link
 
@@ -151,6 +163,7 @@ Let me know if you have questions! 🙌"
 ## 🤖 Automation #3: Product Delivery
 
 ### **Manual way:**
+
 1. Someone pays
 2. You see payment notification
 3. You send product via WhatsApp/email
@@ -165,11 +178,13 @@ Let me know if you have questions! 🙌"
 **Use: Gumroad** (gumroad.com)
 
 **Setup:**
+
 1. Upload product (PDF)
 2. Set price
 3. Share Gumroad link
 
 **What happens:**
+
 1. Customer pays
 2. Gumroad instantly sends product
 3. You get notified + money
@@ -184,6 +199,7 @@ Let me know if you have questions! 🙌"
 ### **Alternative: Paystack + Google Drive**
 
 **Setup:**
+
 1. Upload product to Google Drive
 2. Set sharing: "Anyone with link can view"
 3. Create Paystack payment link
@@ -216,11 +232,13 @@ Let me know if you have questions! 🙌"
 ### **Tools:**
 
 **WhatsApp Broadcast:**
+
 - Manual but efficient
 - Save customer numbers
 - Broadcast messages to all at once
 
 **Email (if you collect emails):**
+
 - **Mailchimp** (free up to 500 subscribers)
 - **ConvertKit** (free up to 300 subscribers)
 
@@ -233,10 +251,12 @@ Let me know if you have questions! 🙌"
 **If someone owes R350 next week:**
 
 **Automate reminder:**
+
 - Set phone calendar reminder
 - Send WhatsApp: "Hey! Friendly reminder - your next payment of R350 is due [Date]. Here's the link: [Payment link]"
 
 **Or use:**
+
 - Paystack recurring payments (automatic monthly charges)
 
 ---
@@ -246,15 +266,18 @@ Let me know if you have questions! 🙌"
 **Your week WITH automation:**
 
 **Sunday (3 hours):**
+
 - Batch create 7 videos
 - Schedule all
 
 **Monday-Friday (1 hour/day):**
+
 - Check DMs (use saved replies)
 - Engage with community
 - Follow up on leads
 
 **Saturday (2 hours):**
+
 - Review analytics
 - Pitch 5-10 brands
 - Plan next week
@@ -270,12 +293,14 @@ Let me know if you have questions! 🙌"
 **Amara** (Finance, Nigeria)
 
 **Before Automation (Month 2):**
+
 - Manual posting daily: 2 hours/day
 - Responding to DMs: 2 hours/day
 - Manual product delivery: 1 hour/day
 - **Total: 35 hours/week, R2,100/month**
 
 **After Automation (Month 3):**
+
 - Batch filming + scheduling: 3 hours/week
 - DMs with saved replies: 5 hours/week
 - Automated delivery (Gumroad): 0 hours
@@ -290,21 +315,25 @@ Let me know if you have questions! 🙌"
 ## 🛠️ Automation Setup Checklist
 
 ### **Week 1: Content Automation**
+
 - [ ] Set up TikTok/IG scheduling
 - [ ] Film + schedule 7 videos
 - [ ] Test automated posting
 
 ### **Week 2: DM Automation**
+
 - [ ] Create 5-10 saved reply templates
 - [ ] Test shortcuts
 - [ ] Track time saved
 
 ### **Week 3: Delivery Automation**
+
 - [ ] Set up Gumroad OR Drive links
 - [ ] Test purchase → delivery flow
 - [ ] Update all product links
 
 ### **Week 4: Systems Optimization**
+
 - [ ] Review what's working
 - [ ] Optimize slow areas
 - [ ] Scale up content (now you have time!)

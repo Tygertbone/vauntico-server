@@ -3,6 +3,7 @@
 ## Technical SEO
 
 ### Meta Tags (All Pages)
+
 - [ ] Title tags (50-60 chars)
 - [ ] Meta descriptions (150-160 chars)
 - [ ] OpenGraph tags (Facebook/LinkedIn)
@@ -11,6 +12,7 @@
 - [ ] Language tags (en-ZA, en-US)
 
 ### Site Structure
+
 - [ ] XML sitemap.xml generated
 - [ ] robots.txt optimized
 - [ ] Clean URL structure (no query params)
@@ -19,6 +21,7 @@
 - [ ] 404 page with helpful links
 
 ### Performance
+
 - [ ] Core Web Vitals optimized
   - [ ] LCP < 2.5s
   - [ ] FID < 100ms
@@ -30,9 +33,10 @@
 ## On-Page SEO
 
 ### Homepage
+
 - **Title**: Vauntico - AI-Powered Creator Platform | Content Generation & Automation
 - **H1**: Empower Your Creator Journey with AI Tools and Spiritual Depth
-- **Target Keywords**: 
+- **Target Keywords**:
   - AI creator platform
   - Content automation tools
   - Creator economy platform
@@ -40,6 +44,7 @@
   - Creator tools South Africa
 
 ### Creator Pass Page
+
 - **Title**: Creator Pass - Subscription Plans | Vauntico
 - **H1**: Unlock the Vault. Ascend the Tiers. Scale Your Legacy.
 - **Target Keywords**:
@@ -49,6 +54,7 @@
   - Creator platform plans
 
 ### Lore Vault Page
+
 - **Title**: Lore Vault - Sacred Knowledge Library | Vauntico
 - **H1**: The Lore Vault: Sacred Scrolls for Modern Creators
 - **Target Keywords**:
@@ -58,6 +64,7 @@
   - Creator education
 
 ### Individual Scroll Pages (Create these!)
+
 - [ ] `/scrolls/agency-growth-framework`
 - [ ] `/scrolls/solo-creator-startup-kit`
 - [ ] `/scrolls/content-automation-guide`
@@ -66,6 +73,7 @@
 ## Content Strategy
 
 ### Blog Topics (High Intent)
+
 1. "How to Automate Your Content Creation Workflow in 2025"
 2. "AI Tools Every Solo Creator Needs"
 3. "From Side Hustle to Full-Time Creator: A Roadmap"
@@ -73,12 +81,14 @@
 5. "Building a Creator Business in South Africa"
 
 ### Long-Form Guides
+
 - [ ] Ultimate Creator Automation Guide (3000+ words)
 - [ ] Scroll Library: Complete Index & Use Cases
 - [ ] Creator Pass ROI Calculator & Case Studies
 - [ ] Agency Growth Playbook (with Vauntico)
 
 ### Video Content
+
 - [ ] Platform walkthrough
 - [ ] Feature tutorials
 - [ ] Customer success stories
@@ -87,6 +97,7 @@
 ## Local SEO (South Africa Focus)
 
 ### Google My Business
+
 - [ ] Claim listing
 - [ ] Add location (if applicable)
 - [ ] Add business hours
@@ -94,6 +105,7 @@
 - [ ] Collect reviews
 
 ### Regional Content
+
 - [ ] "Creator Tools in South Africa" page
 - [ ] ZAR pricing emphasis
 - [ ] South African creator case studies
@@ -103,6 +115,7 @@
 ## Link Building
 
 ### Outreach Targets
+
 - [ ] Product Hunt launch
 - [ ] Indie Hackers showcase
 - [ ] BetaList submission
@@ -111,12 +124,14 @@
 - [ ] AI/automation directories
 
 ### Guest Posting
+
 - [ ] Creator-focused publications
 - [ ] AI/automation blogs
 - [ ] Startup/indie hacker blogs
 - [ ] Digital marketing sites
 
 ### Partnerships
+
 - [ ] Creator communities (Discord, Slack)
 - [ ] Course platforms (Udemy, Skillshare)
 - [ ] Design tool partnerships (Figma, Canva)
@@ -125,6 +140,7 @@
 ## Schema Markup
 
 ### Organization Schema
+
 ```json
 {
   "@context": "https://schema.org",
@@ -140,11 +156,13 @@
 ```
 
 ### Review Schema
+
 - [ ] Add AggregateRating
 - [ ] Individual Review markup
 - [ ] FAQ schema for pricing page
 
 ### Article Schema
+
 - [ ] All blog posts
 - [ ] Scroll pages
 - [ ] Case studies
@@ -152,6 +170,7 @@
 ## Monitoring & Reporting
 
 ### Tools Setup
+
 - [ ] Google Search Console
 - [ ] Google Analytics 4
 - [ ] Ahrefs / SEMrush
@@ -159,6 +178,7 @@
 - [ ] Hotjar / session recordings
 
 ### KPIs to Track
+
 - [ ] Organic traffic growth
 - [ ] Keyword rankings (top 20)
 - [ ] Backlink profile growth
@@ -168,6 +188,7 @@
 ## Quick Win Actions
 
 ### Week 1
+
 - [ ] Add meta tags to all pages
 - [ ] Create sitemap.xml
 - [ ] Submit to Search Console
@@ -175,6 +196,7 @@
 - [ ] Add schema markup
 
 ### Week 2
+
 - [ ] Launch blog
 - [ ] Publish first 3 articles
 - [ ] Submit to Product Hunt
@@ -182,6 +204,7 @@
 - [ ] Create video walkthrough
 
 ### Week 3-4
+
 - [ ] Build internal linking
 - [ ] Optimize images
 - [ ] Add FAQ sections

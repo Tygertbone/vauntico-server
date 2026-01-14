@@ -1,5 +1,5 @@
 ---
-description: 'Disallow enums from having both number and string members.'
+description: "Disallow enums from having both number and string members."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -20,7 +20,7 @@ Mixing enum member types is generally considered confusing and a bad practice.
 enum Status {
   Unknown,
   Closed = 1,
-  Open = 'open',
+  Open = "open",
 }
 ```
 
@@ -48,9 +48,9 @@ enum Status {
 
 ```ts
 enum Status {
-  Unknown = 'unknown',
-  Closed = 'closed',
-  Open = 'open',
+  Unknown = "unknown",
+  Closed = "closed",
+  Open = "open",
 }
 ```
 
@@ -62,8 +62,8 @@ If all enum members are strings, the number of items will match the number of en
 
 ```ts
 enum Status {
-  Closed = 'closed',
-  Open = 'open',
+  Closed = "closed",
+  Open = "open",
 }
 
 // ['closed', 'open']
@@ -76,7 +76,7 @@ But if the enum contains members that are initialized with numbers -including im
 enum Status {
   Unknown,
   Closed = 1,
-  Open = 'open',
+  Open = "open",
 }
 
 // ["Unknown", "Closed", 0, 1, "open"]

@@ -1,5 +1,5 @@
 ---
-description: 'Disallow certain triple slash directives in favor of ES6-style import declarations.'
+description: "Disallow certain triple slash directives in favor of ES6-style import declarations."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -32,7 +32,7 @@ globalThis.value;
 #### ✅ Correct
 
 ```ts option='{ "lib": "never" }'
-import { value } from 'code';
+import { value } from "code";
 ```
 
 ### `path`
@@ -52,7 +52,7 @@ globalThis.value;
 #### ✅ Correct
 
 ```ts option='{ "path": "never" }'
-import { value } from 'code';
+import { value } from "code";
 ```
 
 ### `types`
@@ -72,7 +72,7 @@ globalThis.value;
 #### ✅ Correct
 
 ```ts option='{ "types": "never" }'
-import { value } from 'code';
+import { value } from "code";
 ```
 
 <!-- /tabs -->
@@ -87,7 +87,7 @@ Doing so indicates the rule should only report if there is already an `import` f
 ```ts option='{ "types": "prefer-import" }'
 /// <reference types="code" />
 
-import { valueA } from 'code';
+import { valueA } from "code";
 
 globalThis.valueB;
 ```
@@ -95,7 +95,7 @@ globalThis.valueB;
 #### ✅ Correct
 
 ```ts option='{ "types": "prefer-import" }'
-import { valueA, valueB } from 'code';
+import { valueA, valueB } from "code";
 ```
 
 ## When Not To Use It

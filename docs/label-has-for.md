@@ -23,15 +23,18 @@ This rule takes one optional object argument of type object:
 
 ```json
 {
-    "rules": {
-        "jsx-a11y/label-has-for": [ 2, {
-            "components": [ "Label" ],
-            "required": {
-                "every": [ "nesting", "id" ]
-            },
-            "allowChildren": false
-        }]
-    }
+  "rules": {
+    "jsx-a11y/label-has-for": [
+      2,
+      {
+        "components": ["Label"],
+        "required": {
+          "every": ["nesting", "id"]
+        },
+        "allowChildren": false
+      }
+    ]
+  }
 }
 ```
 
@@ -66,7 +69,6 @@ The `required` option (defaults to `"required": { "every": ["nesting", "id"] }`)
 
 - string: must be one of the acceptable strings (`"nesting"` or `"id"`)
 - object, must have one of the following properties:
-
   - some: an array of acceptable strings, will pass if ANY of the requested checks passed
   - every: an array of acceptable strings, will pass if ALL of the requested checks passed
 
@@ -84,26 +86,23 @@ Note that passing props as spread attribute without `htmlFor` explicitly defined
 
 ```jsx
 function Foo(props) {
-  return <label {...props} />
+  return <label {...props} />;
 }
 ```
 
 #### Good
 
 ```jsx
-function Foo({ htmlFor, ...props}) {
-    return <label htmlFor={htmlFor} {...props} />
+function Foo({ htmlFor, ...props }) {
+  return <label htmlFor={htmlFor} {...props} />;
 }
 
 // OR
 
 function Foo(props) {
-    const {
-        htmlFor,
-        ...otherProps
-    } = props;
+  const { htmlFor, ...otherProps } = props;
 
-   return <label htmlFor={htmlFor} {...otherProps} />
+  return <label htmlFor={htmlFor} {...otherProps} />;
 }
 ```
 

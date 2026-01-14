@@ -1,5 +1,5 @@
 ---
-description: 'Disallow two overloads that could be unified into one with a union or an optional/rest parameter.'
+description: "Disallow two overloads that could be unified into one with a union or an optional/rest parameter."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

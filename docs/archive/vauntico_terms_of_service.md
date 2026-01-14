@@ -9,6 +9,7 @@ By accessing or using Vauntico ("the Service"), you agree to be bound by these T
 ## 2. Description of Service
 
 Vauntico provides an AI-powered platform for creators, offering:
+
 - Trust score calculation and analysis
 - Creator workflow automation tools
 - Payment and monetization infrastructure
@@ -17,6 +18,7 @@ Vauntico provides an AI-powered platform for creators, offering:
 ## 3. Beta Program
 
 The Service is currently in private beta. By joining the waitlist or beta program:
+
 - You acknowledge the Service may contain bugs or incomplete features
 - Features may change without notice during the beta period
 - Your feedback helps us improve the platform
@@ -25,12 +27,14 @@ The Service is currently in private beta. By joining the waitlist or beta progra
 ## 4. User Accounts
 
 ### 4.1 Registration
+
 - You must provide accurate, current, and complete information
 - You are responsible for maintaining the confidentiality of your account
 - You must be at least 18 years old to use the Service
 - You are responsible for all activities under your account
 
 ### 4.2 Account Security
+
 - You must notify us immediately of any unauthorized use
 - We are not liable for losses due to stolen or compromised credentials
 - You may not share your account with others
@@ -38,6 +42,7 @@ The Service is currently in private beta. By joining the waitlist or beta progra
 ## 5. Acceptable Use
 
 You agree NOT to:
+
 - Violate any laws or regulations
 - Infringe on intellectual property rights
 - Upload malicious code, viruses, or harmful content
@@ -50,11 +55,13 @@ You agree NOT to:
 ## 6. Intellectual Property
 
 ### 6.1 Our Rights
+
 - Vauntico and all related trademarks, logos, and content are owned by Vauntico
 - The Service's source code, algorithms, and design are protected by copyright
 - You may not copy, modify, or create derivative works without permission
 
 ### 6.2 Your Content
+
 - You retain ownership of content you create using the Service
 - You grant us a license to host, store, and display your content
 - You represent that you have rights to all content you upload
@@ -63,17 +70,20 @@ You agree NOT to:
 ## 7. Payment Terms
 
 ### 7.1 Pricing
+
 - Pricing is displayed on our website and may change with notice
 - All prices are in the currency specified at checkout
 - Taxes may apply based on your location
 
 ### 7.2 Subscriptions
+
 - Subscriptions renew automatically unless canceled
 - You may cancel at any time; cancellation takes effect at the end of the billing period
 - No refunds for partial months
 - We reserve the right to change pricing with 30 days notice
 
 ### 7.3 Free Tier
+
 - Free tier features may be modified or removed at any time
 - Usage limits apply to free accounts
 - We may convert free accounts to paid if limits are exceeded
@@ -81,12 +91,14 @@ You agree NOT to:
 ## 8. Trust Score System
 
 ### 8.1 Calculation
+
 - Trust scores are calculated using proprietary AI algorithms
 - Scores are based on publicly available metrics you provide
 - We do not guarantee accuracy of scores
 - Scores are for informational purposes only
 
 ### 8.2 No Guarantees
+
 - Trust scores do not guarantee business success
 - Scores may change as algorithms improve
 - We are not liable for decisions made based on trust scores
@@ -108,11 +120,13 @@ You agree NOT to:
 ## 11. Termination
 
 ### 11.1 By You
+
 - You may terminate your account at any time
 - Contact support to request account deletion
 - Some data may be retained as required by law
 
 ### 11.2 By Us
+
 - We may suspend or terminate accounts for Terms violations
 - We may terminate the Service with 30 days notice
 - We may immediately suspend accounts for security reasons
@@ -120,6 +134,7 @@ You agree NOT to:
 ## 12. Disclaimers
 
 THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND. WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING:
+
 - Warranties of merchantability
 - Fitness for a particular purpose
 - Non-infringement
@@ -129,6 +144,7 @@ THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND. WE DISCLAIM ALL 
 ## 13. Limitation of Liability
 
 TO THE MAXIMUM EXTENT PERMITTED BY LAW:
+
 - We are not liable for indirect, incidental, or consequential damages
 - Our total liability is limited to the amount you paid in the past 12 months
 - We are not liable for losses due to service interruptions, data loss, or security breaches
@@ -137,6 +153,7 @@ TO THE MAXIMUM EXTENT PERMITTED BY LAW:
 ## 14. Indemnification
 
 You agree to indemnify and hold harmless Vauntico, its officers, directors, and employees from any claims, damages, or expenses arising from:
+
 - Your violation of these Terms
 - Your violation of any rights of another party
 - Your use of the Service
@@ -144,15 +161,19 @@ You agree to indemnify and hold harmless Vauntico, its officers, directors, and 
 ## 15. Dispute Resolution
 
 ### 15.1 Governing Law
+
 These Terms are governed by the laws of South Africa, without regard to conflict of law provisions.
 
 ### 15.2 Arbitration
+
 Any disputes will be resolved through binding arbitration in Pretoria, South Africa, except for:
+
 - Claims for injunctive relief
 - Claims related to intellectual property
 - Small claims court matters
 
 ### 15.3 Class Action Waiver
+
 You agree to resolve disputes individually, not as part of a class action.
 
 ## 16. Changes to Terms
@@ -165,23 +186,29 @@ You agree to resolve disputes individually, not as part of a class action.
 ## 17. General Provisions
 
 ### 17.1 Entire Agreement
+
 These Terms constitute the entire agreement between you and Vauntico.
 
 ### 17.2 Severability
+
 If any provision is unenforceable, the remaining provisions remain in effect.
 
 ### 17.3 No Waiver
+
 Failure to enforce any provision does not constitute a waiver.
 
 ### 17.4 Assignment
+
 We may assign these Terms; you may not assign without our consent.
 
 ### 17.5 Force Majeure
+
 We are not liable for failures due to circumstances beyond our control.
 
 ## 18. Contact
 
 For questions about these Terms:
+
 - Email: legal@vauntico.com
 - Address: Pretoria, Gauteng, South Africa
 

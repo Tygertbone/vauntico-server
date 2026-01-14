@@ -1,5 +1,5 @@
 ---
-description: 'Enforce using a particular method signature syntax.'
+description: "Enforce using a particular method signature syntax."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

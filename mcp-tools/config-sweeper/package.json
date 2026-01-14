@@ -1,0 +1,24 @@
+{
+  "name": "config-sweeper-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for detecting and removing deprecated configs and phantom secrets",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "simple-git": "^3.20.0"
+  },
+  "keywords": [
+    "mcp",
+    "configuration",
+    "security",
+    "cleanup",
+    "deprecated-configs"
+  ],
+  "author": "Vauntico",
+  "license": "MIT"
+}

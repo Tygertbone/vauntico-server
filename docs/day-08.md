@@ -118,7 +118,7 @@ Directly promote your product, service, or affiliate offer.
 
 Open your phone notes and answer:
 
-### **Your Niche:** ******\_\_\_******
+### **Your Niche:** **\*\***\_\_\_**\*\***
 
 ### **Pillar 1: Education**
 
@@ -163,15 +163,15 @@ What will you sell? (Choose 1-2 to start):
 
 **Now map your pillars to a posting schedule:**
 
-| Day           | Pillar        | Video Idea            |
-| ------------- | ------------- | --------------------- |
-| **Monday**    | Education     | ******\_\_\_******    |
-| **Tuesday**   | Entertainment | ******\_\_\_******    |
-| **Wednesday** | Inspiration   | ******\_\_\_******    |
-| **Thursday**  | Promotion     | ******\_\_\_******    |
-| **Friday**    | Education     | ******\_\_\_******    |
-| **Saturday**  | Entertainment | ******\_\_\_******    |
-| **Sunday**    | REST          | Batch film for Week 3 |
+| Day           | Pillar        | Video Idea             |
+| ------------- | ------------- | ---------------------- |
+| **Monday**    | Education     | **\*\***\_\_\_**\*\*** |
+| **Tuesday**   | Entertainment | **\*\***\_\_\_**\*\*** |
+| **Wednesday** | Inspiration   | **\*\***\_\_\_**\*\*** |
+| **Thursday**  | Promotion     | **\*\***\_\_\_**\*\*** |
+| **Friday**    | Education     | **\*\***\_\_\_**\*\*** |
+| **Saturday**  | Entertainment | **\*\***\_\_\_**\*\*** |
+| **Sunday**    | REST          | Batch film for Week 3  |
 
 **Save this in your notes. This is your roadmap.**
 

@@ -41,7 +41,7 @@ class DBPerformanceTester {
 
       // Test query performance
       const queryPromises = connections.map((conn) =>
-        conn.query("SELECT COUNT(*) FROM users")
+        conn.query("SELECT COUNT(*) FROM users"),
       );
 
       const queryResults = await Promise.all(queryPromises);
@@ -71,7 +71,7 @@ class DBPerformanceTester {
 
   async runDBPerformanceTest() {
     console.log(
-      `🔍 Starting DB performance test with pool size: ${this.poolSize}`
+      `🔍 Starting DB performance test with pool size: ${this.poolSize}`,
     );
 
     const result = await this.testDBConnections();

@@ -29,7 +29,7 @@ class ConfigSweeperServer {
         capabilities: {
           tools: {},
         },
-      }
+      },
     );
 
     this.setupToolHandlers();
@@ -144,13 +144,13 @@ class ConfigSweeperServer {
           default:
             throw new McpError(
               ErrorCode.MethodNotFound,
-              `Unknown tool: ${name}`
+              `Unknown tool: ${name}`,
             );
         }
       } catch (error) {
         throw new McpError(
           ErrorCode.InternalError,
-          `Tool execution failed: ${error.message}`
+          `Tool execution failed: ${error.message}`,
         );
       }
     });
@@ -186,7 +186,7 @@ class ConfigSweeperServer {
           file,
           deprecatedPatterns,
           suspiciousPatterns,
-          checkSecrets
+          checkSecrets,
         );
 
         if (analysis.isDeprecated) {
@@ -219,7 +219,7 @@ class ConfigSweeperServer {
                 timestamp: new Date().toISOString(),
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -235,7 +235,7 @@ class ConfigSweeperServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -269,7 +269,7 @@ class ConfigSweeperServer {
                   filesRemoved: 0,
                 },
                 null,
-                2
+                2,
               ),
             },
           ],
@@ -313,11 +313,11 @@ class ConfigSweeperServer {
                 errors,
                 recommendations: this.generateRemovalRecommendations(
                   removed,
-                  errors
+                  errors,
                 ),
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -333,7 +333,7 @@ class ConfigSweeperServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -366,7 +366,7 @@ class ConfigSweeperServer {
         if (this.isConfigFile(file.path)) {
           const configAnalysis = await this.analyzeConfigFile(
             file.path,
-            includeEnvFiles
+            includeEnvFiles,
           );
           analysis.configs.push(configAnalysis);
         }
@@ -380,10 +380,10 @@ class ConfigSweeperServer {
       // Calculate security and best practice scores
       analysis.security = this.calculateSecurityScore(
         analysis.configs,
-        analysis.envFiles
+        analysis.envFiles,
       );
       analysis.bestPractices = this.calculateBestPracticesScore(
-        analysis.configs
+        analysis.configs,
       );
 
       return {
@@ -397,7 +397,7 @@ class ConfigSweeperServer {
                 timestamp: new Date().toISOString(),
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -413,7 +413,7 @@ class ConfigSweeperServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -464,7 +464,7 @@ class ConfigSweeperServer {
       // Generate cleanup recommendations
       cleanup.cleaned = this.generateCleanupPlan(
         cleanup.phantomSecrets,
-        cleanup.historyIssues
+        cleanup.historyIssues,
       );
       cleanup.summary.totalCleaned = cleanup.cleaned.length;
 
@@ -479,7 +479,7 @@ class ConfigSweeperServer {
                 recommendations: this.generateCleanupRecommendations(cleanup),
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -495,7 +495,7 @@ class ConfigSweeperServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -578,7 +578,7 @@ class ConfigSweeperServer {
       basicPatterns.push(
         /['"`]([A-Za-z0-9+/]{20,})['"`]/gi, // Long base64-like strings
         /sk-[a-zA-Z0-9]{20,}/gi, // Strong keys
-        /ghp_[a-zA-Z0-9]{36}/gi // GitHub personal access tokens
+        /ghp_[a-zA-Z0-9]{36}/gi, // GitHub personal access tokens
       );
     }
 
@@ -660,10 +660,10 @@ class ConfigSweeperServer {
       analysis.isDeprecated = true;
       analysis.deprecatedService = this.getDeprecatedService(
         file.path,
-        deprecatedPatterns
+        deprecatedPatterns,
       );
       analysis.reasons.push(
-        `Deprecated config for ${analysis.deprecatedService}`
+        `Deprecated config for ${analysis.deprecatedService}`,
       );
     }
 
@@ -710,7 +710,7 @@ class ConfigSweeperServer {
 
     // Check extension
     const hasConfigExtension = configExtensions.some((ext) =>
-      path.endsWith(ext)
+      path.endsWith(ext),
     );
 
     // Check specific names
@@ -731,7 +731,7 @@ class ConfigSweeperServer {
   isDeprecatedFile(filePath, patterns) {
     return (
       patterns.files.some((pattern) =>
-        filePath.toLowerCase().includes(pattern.toLowerCase())
+        filePath.toLowerCase().includes(pattern.toLowerCase()),
       ) || patterns.patterns.some((pattern) => pattern.test(filePath))
     );
   }
@@ -739,7 +739,7 @@ class ConfigSweeperServer {
   isSuspiciousFile(filePath, patterns) {
     return (
       patterns.files.some((pattern) =>
-        filePath.toLowerCase().includes(pattern.toLowerCase())
+        filePath.toLowerCase().includes(pattern.toLowerCase()),
       ) || patterns.patterns.some((pattern) => pattern.test(filePath))
     );
   }
@@ -1053,7 +1053,7 @@ class ConfigSweeperServer {
 
     try {
       await import("fs/promises").then((fs) =>
-        fs.mkdir(backupDir, { recursive: true })
+        fs.mkdir(backupDir, { recursive: true }),
       );
 
       for (const filePath of filePaths) {
@@ -1088,7 +1088,7 @@ class ConfigSweeperServer {
           if (content) {
             const secrets = this.detectSecrets(
               content,
-              this.getSecretPatterns()
+              this.getSecretPatterns(),
             );
             if (secrets.length > 0) {
               issues.push({

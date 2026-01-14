@@ -480,11 +480,11 @@ await mcp.call("config-sweeper", "cleanup_phantom_secrets", {
 // 1. Scan for security and configuration issues
 const gitignoreResult = await mcp.call(
   "gitignore-enforcer",
-  "scan_untracked_files"
+  "scan_untracked_files",
 );
 const configResult = await mcp.call(
   "config-sweeper",
-  "scan_deprecated_configs"
+  "scan_deprecated_configs",
 );
 
 // 2. Fix code quality issues

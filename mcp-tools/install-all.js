@@ -147,7 +147,7 @@ async function main() {
   console.log("1. Restart your MCP client to load the new servers");
   console.log("2. Use tools via MCP calls in your AI assistant");
   console.log(
-    "3. Run individual tools directly with: cd [tool-dir] && npm start"
+    "3. Run individual tools directly with: cd [tool-dir] && npm start",
   );
 
   console.log("\n🎉 Installation complete!");

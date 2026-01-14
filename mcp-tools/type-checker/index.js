@@ -30,7 +30,7 @@ class TypeCheckerServer {
         capabilities: {
           tools: {},
         },
-      }
+      },
     );
 
     this.setupToolHandlers();
@@ -160,13 +160,13 @@ class TypeCheckerServer {
           default:
             throw new McpError(
               ErrorCode.MethodNotFound,
-              `Unknown tool: ${name}`
+              `Unknown tool: ${name}`,
             );
         }
       } catch (error) {
         throw new McpError(
           ErrorCode.InternalError,
-          `Tool execution failed: ${error.message}`
+          `Tool execution failed: ${error.message}`,
         );
       }
     });
@@ -200,7 +200,7 @@ class TypeCheckerServer {
                   configPath,
                 },
                 null,
-                2
+                2,
               ),
             },
           ],
@@ -247,11 +247,11 @@ class TypeCheckerServer {
                   summary: this.generateDiagnosticSummary(diagnostics),
                   hasErrors: diagnostics.some((d) => d.category === "error"),
                   hasWarnings: diagnostics.some(
-                    (d) => d.category === "warning"
+                    (d) => d.category === "warning",
                   ),
                 },
                 null,
-                2
+                2,
               ),
             },
           ],
@@ -259,7 +259,7 @@ class TypeCheckerServer {
       } catch (execError) {
         // TypeScript returns non-zero exit code when there are errors
         const diagnostics = this.parseTypeScriptOutput(
-          execError.stderr || execError.stdout
+          execError.stderr || execError.stdout,
         );
 
         return {
@@ -277,7 +277,7 @@ class TypeCheckerServer {
                   summary: this.generateDiagnosticSummary(diagnostics),
                 },
                 null,
-                2
+                2,
               ),
             },
           ],
@@ -294,7 +294,7 @@ class TypeCheckerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -325,7 +325,7 @@ class TypeCheckerServer {
                 commonPatterns: this.identifyCommonPatterns(errors),
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -341,7 +341,7 @@ class TypeCheckerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -371,10 +371,10 @@ class TypeCheckerServer {
       // Get file list and basic analysis
       try {
         const { stdout: fileList } = await execAsync(
-          `npx tsc --listFiles --project "${configPath}"`
+          `npx tsc --listFiles --project "${configPath}"`,
         );
         analysis.files = this.analyzeFiles(
-          fileList.split("\n").filter(Boolean)
+          fileList.split("\n").filter(Boolean),
         );
       } catch (error) {
         // Continue even if list files fails
@@ -399,7 +399,7 @@ class TypeCheckerServer {
                 timestamp: new Date().toISOString(),
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -415,7 +415,7 @@ class TypeCheckerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -440,7 +440,7 @@ class TypeCheckerServer {
                   error: `TypeScript config file not found: ${project}`,
                 },
                 null,
-                2
+                2,
               ),
             },
           ],
@@ -464,7 +464,7 @@ class TypeCheckerServer {
                   error: `Invalid JSON in tsconfig.json: ${parseError.message}`,
                 },
                 null,
-                2
+                2,
               ),
             },
           ],
@@ -513,7 +513,7 @@ class TypeCheckerServer {
                   this.generateStrictModeRecommendations(appliedUpgrades),
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -529,7 +529,7 @@ class TypeCheckerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -544,7 +544,7 @@ class TypeCheckerServer {
     for (const line of lines) {
       // Parse TypeScript error format: file(line,column): error TScode: message
       const match = line.match(
-        /^(.+)\((\d+),(\d+)\):\s+(error|warning)\s+TS(\d+):\s+(.+)$/
+        /^(.+)\((\d+),(\d+)\):\s+(error|warning)\s+TS(\d+):\s+(.+)$/,
       );
 
       if (match) {

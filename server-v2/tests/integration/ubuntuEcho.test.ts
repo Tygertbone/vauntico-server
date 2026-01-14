@@ -137,7 +137,7 @@ describe("Ubuntu Echo API Workflows", () => {
       expect(response.body).toHaveProperty("trends");
 
       expect(["positive", "neutral", "negative"]).toContain(
-        response.body.overallSentiment
+        response.body.overallSentiment,
       );
       expect(typeof response.body.overallSentiment).toBe("string");
 
@@ -156,7 +156,7 @@ describe("Ubuntu Echo API Workflows", () => {
             category: "support",
             sentiment: expect.any(String),
           }),
-        ])
+        ]),
       );
     });
 
@@ -417,17 +417,17 @@ describe("Ubuntu Echo API Workflows", () => {
         request(app)
           .post("/api/ubuntu-echo/messages")
           .set("Authorization", "Bearer test-valid-key")
-          .send(message)
+          .send(message),
       );
 
       const results = await Promise.allSettled(promises);
 
       // Some should succeed, some should be rate limited
       const successful = results.filter(
-        (r) => r.status === "fulfilled" && r.value.status === 201
+        (r) => r.status === "fulfilled" && r.value.status === 201,
       );
       const rateLimited = results.filter(
-        (r) => r.status === "fulfilled" && r.value.status === 429
+        (r) => r.status === "fulfilled" && r.value.status === 429,
       );
 
       expect(successful.length + rateLimited.length).toBe(10);
@@ -462,7 +462,7 @@ describe("Ubuntu Echo API Workflows", () => {
         request(app)
           .post("/api/ubuntu-echo/messages")
           .set("Authorization", "Bearer test-valid-key")
-          .send(message)
+          .send(message),
       );
 
       const results = await Promise.all(validationPromises);

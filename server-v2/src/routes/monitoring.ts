@@ -184,12 +184,10 @@ router.post(
           break;
 
         default:
-          return res
-            .status(400)
-            .json({
-              error:
-                "Invalid alert type. Use: security, performance, system, business, deployment",
-            });
+          return res.status(400).json({
+            error:
+              "Invalid alert type. Use: security, performance, system, business, deployment",
+          });
       }
 
       res.json({

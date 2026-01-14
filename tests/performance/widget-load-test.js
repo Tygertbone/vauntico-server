@@ -9,7 +9,7 @@ class WidgetLoadTester {
   constructor(
     baseUrl = "http://localhost:3001",
     concurrentUsers = 50,
-    duration = 60000
+    duration = 60000,
   ) {
     this.baseUrl = baseUrl;
     this.concurrentUsers = concurrentUsers;
@@ -31,7 +31,7 @@ class WidgetLoadTester {
           {
             params: { userId, timestamp: Date.now() },
             timeout: 5000,
-          }
+          },
         );
         requests.push({
           type: "widget_load",
@@ -62,7 +62,7 @@ class WidgetLoadTester {
             },
             {
               timeout: 3000,
-            }
+            },
           );
           requests.push({
             type: "widget_refresh",
@@ -95,7 +95,7 @@ class WidgetLoadTester {
             },
             {
               timeout: 1000,
-            }
+            },
           );
           requests.push({
             type: "widget_interaction",
@@ -136,7 +136,7 @@ class WidgetLoadTester {
   async runLoadTest() {
     console.log("🚀 Starting widget load test...");
     console.log(
-      `📊 Concurrent users: ${this.concurrentUsers}, Duration: ${this.duration}ms`
+      `📊 Concurrent users: ${this.concurrentUsers}, Duration: ${this.duration}ms`,
     );
 
     const userPromises = [];
@@ -151,11 +151,11 @@ class WidgetLoadTester {
       // Calculate overall statistics
       const totalRequests = userResults.reduce(
         (sum, user) => sum + user.totalRequests,
-        0
+        0,
       );
       const totalSuccessful = userResults.reduce(
         (sum, user) => sum + user.successfulRequests,
-        0
+        0,
       );
       const totalAverageTime =
         userResults.reduce((sum, user) => sum + user.averageResponseTime, 0) /

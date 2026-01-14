@@ -294,6 +294,6 @@ Once all checkboxes are ticked, Phase 5 is fully activated!
 
 **Status**: ⏳ Pending Activation
 **Deploy Command**: `npm run build && vercel --prod`
-**Launch Date**: ******\_\_\_******
+**Launch Date**: **\*\***\_\_\_**\*\***
 
 🔥 **Let's activate syndication and go live!**

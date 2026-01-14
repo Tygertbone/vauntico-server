@@ -269,9 +269,9 @@ git push origin main
 
 ## Post-Deploy Review Template
 
-**Date**: ****\_****  
-**Deployed By**: ****\_****  
-**Version**: ****\_****
+**Date**: \***\*\_\*\***  
+**Deployed By**: \***\*\_\*\***  
+**Version**: \***\*\_\*\***
 
 ### What Went Well
 

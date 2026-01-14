@@ -151,7 +151,7 @@ git commit -m "fix(ci): enforce guardrails for empty test suites across workspac
 const verifyPaystackSignature = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const signature = req.headers["x-paystack-signature"] as string;
   const rawBody = JSON.stringify(req.body);

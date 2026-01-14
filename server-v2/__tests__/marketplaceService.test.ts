@@ -126,7 +126,7 @@ describe("MarketplaceService", () => {
       mockPool.query.mockRejectedValue(new Error("Database connection failed"));
 
       await expect(marketplaceService.getMarketplaceItems()).rejects.toThrow(
-        "Database connection failed"
+        "Database connection failed",
       );
     });
   });
@@ -150,7 +150,7 @@ describe("MarketplaceService", () => {
     it("should create marketplace item successfully", async () => {
       const mockTrustScoreResult = { cost: 700 }; // High enough trust score
       (TrustScoreService.calculateTrustScore as jest.Mock).mockResolvedValue(
-        mockTrustScoreResult as any
+        mockTrustScoreResult as any,
       );
 
       const mockCreatedItem = {
@@ -177,7 +177,7 @@ describe("MarketplaceService", () => {
 
       expect(TrustScoreService.calculateTrustScore).toHaveBeenCalledWith(
         "creator_1",
-        "pro"
+        "pro",
       );
 
       expect(mockClient.query).toHaveBeenCalledWith("BEGIN");
@@ -187,13 +187,13 @@ describe("MarketplaceService", () => {
     it("should reject creation for low trust score", async () => {
       const mockTrustScoreResult = { cost: 500 }; // Below 600 threshold
       (TrustScoreService.calculateTrustScore as jest.Mock).mockResolvedValue(
-        mockTrustScoreResult as any
+        mockTrustScoreResult as any,
       );
 
       await expect(
-        marketplaceService.createMarketplaceItem(mockItemData)
+        marketplaceService.createMarketplaceItem(mockItemData),
       ).rejects.toThrow(
-        "Creator trust score must be at least 600 to list items"
+        "Creator trust score must be at least 600 to list items",
       );
 
       expect(mockClient.query).toHaveBeenCalledWith("BEGIN");
@@ -208,7 +208,7 @@ describe("MarketplaceService", () => {
       mockClient.query.mockRejectedValueOnce(new Error("Insert failed"));
 
       await expect(
-        marketplaceService.createMarketplaceItem(mockItemData)
+        marketplaceService.createMarketplaceItem(mockItemData),
       ).rejects.toThrow("Insert failed");
 
       expect(mockClient.query).toHaveBeenCalledWith("ROLLBACK");
@@ -258,7 +258,7 @@ describe("MarketplaceService", () => {
       await expect(
         marketplaceService.updateMarketplaceItem("non_existent", {
           title: "Updated",
-        })
+        }),
       ).rejects.toThrow("Marketplace item not found");
     });
   });
@@ -309,7 +309,7 @@ describe("MarketplaceService", () => {
       mockClient.query.mockResolvedValueOnce({ rows: [] }); // Item not found/inactive
 
       await expect(
-        marketplaceService.purchaseItem("inactive_item", "buyer_1")
+        marketplaceService.purchaseItem("inactive_item", "buyer_1"),
       ).rejects.toThrow("Item not available for purchase");
 
       expect(mockClient.query).toHaveBeenCalledWith("ROLLBACK");
@@ -366,7 +366,7 @@ describe("MarketplaceService", () => {
 
       const result = await marketplaceService.getComplianceChecks(
         "item_1",
-        "passed"
+        "passed",
       );
 
       expect(result).toHaveLength(1);
@@ -386,7 +386,7 @@ describe("MarketplaceService", () => {
 
       expect(mockPool.query).toHaveBeenCalledWith(
         expect.stringContaining("FROM compliance_checks"),
-        []
+        [],
       );
     });
   });
@@ -428,7 +428,7 @@ describe("MarketplaceService", () => {
       await expect(
         marketplaceService.updateComplianceCheck("non_existent", {
           status: "passed",
-        })
+        }),
       ).rejects.toThrow("Compliance check not found");
     });
   });
@@ -480,7 +480,7 @@ describe("MarketplaceService", () => {
       // 1. Create item
       const mockTrustScoreResult = { cost: 700 };
       (TrustScoreService.calculateTrustScore as jest.Mock).mockResolvedValue(
-        mockTrustScoreResult as any
+        mockTrustScoreResult as any,
       );
 
       const mockItem = {
@@ -519,7 +519,7 @@ describe("MarketplaceService", () => {
 
     it("should handle concurrent requests safely", async () => {
       const requests = Array.from({ length: 3 }, () =>
-        marketplaceService.getMarketplaceItems({ limit: 10 })
+        marketplaceService.getMarketplaceItems({ limit: 10 }),
       );
 
       mockPool.query

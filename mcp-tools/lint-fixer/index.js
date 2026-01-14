@@ -30,7 +30,7 @@ class LintFixerServer {
         capabilities: {
           tools: {},
         },
-      }
+      },
     );
 
     this.setupToolHandlers();
@@ -156,13 +156,13 @@ class LintFixerServer {
           default:
             throw new McpError(
               ErrorCode.MethodNotFound,
-              `Unknown tool: ${name}`
+              `Unknown tool: ${name}`,
             );
         }
       } catch (error) {
         throw new McpError(
           ErrorCode.InternalError,
-          `Tool execution failed: ${error.message}`
+          `Tool execution failed: ${error.message}`,
         );
       }
     });
@@ -200,7 +200,7 @@ class LintFixerServer {
                     "Run 'npx eslint --init' to create a configuration.",
                 },
                 null,
-                2
+                2,
               ),
             },
           ],
@@ -232,7 +232,7 @@ class LintFixerServer {
                   extensions,
                 },
                 null,
-                2
+                2,
               ),
             },
           ],
@@ -257,7 +257,7 @@ class LintFixerServer {
                       stderr: execError.stderr,
                     },
                     null,
-                    2
+                    2,
                   ),
                 },
               ],
@@ -280,7 +280,7 @@ class LintFixerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -316,7 +316,7 @@ class LintFixerServer {
                     "Create a .prettierrc file with your formatting preferences.",
                 },
                 null,
-                2
+                2,
               ),
             },
           ],
@@ -356,7 +356,7 @@ class LintFixerServer {
                     .filter((line) => line.trim()).length,
                 },
                 null,
-                2
+                2,
               ),
             },
           ],
@@ -377,7 +377,7 @@ class LintFixerServer {
                     stderr: execError.stderr.trim(),
                   },
                   null,
-                  2
+                  2,
                 ),
               },
             ],
@@ -397,7 +397,7 @@ class LintFixerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -467,7 +467,7 @@ class LintFixerServer {
                 results,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -483,7 +483,7 @@ class LintFixerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -543,7 +543,7 @@ class LintFixerServer {
                 summary,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -559,7 +559,7 @@ class LintFixerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],

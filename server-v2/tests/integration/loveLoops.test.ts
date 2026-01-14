@@ -335,7 +335,7 @@ describe("Love Loops API Workflows", () => {
         request(app)
           .post("/api/love-loops/modify")
           .set("Authorization", "Bearer test-valid-key")
-          .send(mod)
+          .send(mod),
       );
 
       const results = await Promise.allSettled(promises);
@@ -374,19 +374,19 @@ describe("Love Loops API Workflows", () => {
       // Check for specific validation errors
       const errors = response.body.error.details;
       expect(errors).toContainEqual(
-        expect.objectContaining({ field: "type", issue: "invalid loop type" })
+        expect.objectContaining({ field: "type", issue: "invalid loop type" }),
       );
       expect(errors).toContainEqual(
         expect.objectContaining({
           field: "maxParticipants",
           issue: "must be positive",
-        })
+        }),
       );
       expect(errors).toContainEqual(
         expect.objectContaining({
           field: "privacy",
           issue: "invalid privacy setting",
-        })
+        }),
       );
     });
 

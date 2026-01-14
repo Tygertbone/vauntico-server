@@ -27,7 +27,7 @@ describe("Health Endpoint Validation", () => {
 
     it("should handle concurrent requests", async () => {
       const requests = Array.from({ length: 10 }, () =>
-        request(app).get("/health")
+        request(app).get("/health"),
       );
 
       const responses = await Promise.all(requests);

@@ -23,7 +23,7 @@ class GitCleanerServer {
         capabilities: {
           tools: {},
         },
-      }
+      },
     );
 
     this.setupToolHandlers();
@@ -103,13 +103,13 @@ class GitCleanerServer {
           default:
             throw new McpError(
               ErrorCode.MethodNotFound,
-              `Unknown tool: ${name}`
+              `Unknown tool: ${name}`,
             );
         }
       } catch (error) {
         throw new McpError(
           ErrorCode.InternalError,
-          `Tool execution failed: ${error.message}`
+          `Tool execution failed: ${error.message}`,
         );
       }
     });
@@ -140,7 +140,7 @@ class GitCleanerServer {
       for (const file of status.modified) {
         const category = this.categorizeFile(
           file,
-          status.files.find((f) => f.path === file)
+          status.files.find((f) => f.path === file),
         );
         categorized[category].push({ path: file, status: "modified" });
       }
@@ -149,7 +149,7 @@ class GitCleanerServer {
       for (const file of status.staged) {
         const category = this.categorizeFile(
           file,
-          status.files.find((f) => f.path === file)
+          status.files.find((f) => f.path === file),
         );
         categorized[category].push({ path: file, status: "staged" });
       }
@@ -158,7 +158,7 @@ class GitCleanerServer {
       for (const file of status.not_added) {
         const category = this.categorizeFile(
           file,
-          status.files.find((f) => f.path === file)
+          status.files.find((f) => f.path === file),
         );
         categorized[category].push({ path: file, status: "new" });
       }
@@ -167,7 +167,7 @@ class GitCleanerServer {
       for (const file of status.deleted) {
         const category = this.categorizeFile(
           file,
-          status.files.find((f) => f.path === file)
+          status.files.find((f) => f.path === file),
         );
         categorized[category].push({ path: file, status: "deleted" });
       }
@@ -199,12 +199,12 @@ class GitCleanerServer {
                 summary: summary || "No changes found",
                 totalFiles: Object.values(categorized).reduce(
                   (sum, files) => sum + files.length,
-                  0
+                  0,
                 ),
                 autoStaged: autoStage,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -220,7 +220,7 @@ class GitCleanerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -398,7 +398,7 @@ class GitCleanerServer {
                 totalFiles: commits.reduce((sum, c) => sum + c.files, 0),
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -414,7 +414,7 @@ class GitCleanerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -451,7 +451,7 @@ class GitCleanerServer {
                   message: "No changes found to analyze",
                 },
                 null,
-                2
+                2,
               ),
             },
           ],
@@ -463,25 +463,25 @@ class GitCleanerServer {
       // Analyze patterns in changed files
       const hasTests = changes.some(
         (f) =>
-          f.toLowerCase().includes("test") || f.toLowerCase().includes("spec")
+          f.toLowerCase().includes("test") || f.toLowerCase().includes("spec"),
       );
       const hasDocs = changes.some(
         (f) =>
           f.toLowerCase().includes("readme") ||
           f.toLowerCase().includes("doc") ||
-          f.endsWith(".md")
+          f.endsWith(".md"),
       );
       const hasConfig = changes.some(
         (f) =>
           f.toLowerCase().includes("config") ||
-          f.toLowerCase().includes("package")
+          f.toLowerCase().includes("package"),
       );
       const hasSource = changes.some(
         (f) =>
           f.endsWith(".js") ||
           f.endsWith(".ts") ||
           f.endsWith(".jsx") ||
-          f.endsWith(".tsx")
+          f.endsWith(".tsx"),
       );
 
       if (hasTests && !hasSource) {
@@ -537,7 +537,7 @@ class GitCleanerServer {
                 },
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -553,7 +553,7 @@ class GitCleanerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],

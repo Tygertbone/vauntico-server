@@ -42,7 +42,7 @@ objective: "Celebrate R2,000/month achievement and prepare for Phase 3: Scale & 
 - Monthly total: R**\_**
 - % of income: **\_**%
 
-**TOTAL MONTHLY INCOME: R**\_****
+**TOTAL MONTHLY INCOME: R**\_\*\*\*\*
 
 ---
 

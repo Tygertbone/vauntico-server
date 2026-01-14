@@ -70,12 +70,12 @@ describe("DTO Type Guard Validation", () => {
 
       expect(validItem).toHaveProperty("type");
       expect(["widget", "badge", "integration", "template"]).toContain(
-        validItem.type
+        validItem.type,
       );
 
       expect(validItem).toHaveProperty("licenseType");
       expect(["standard", "premium", "exclusive"]).toContain(
-        validItem.licenseType
+        validItem.licenseType,
       );
     });
 
@@ -94,7 +94,7 @@ describe("DTO Type Guard Validation", () => {
       expect(validFilters).toHaveProperty("type");
       if (validFilters.type) {
         expect(["widget", "badge", "integration", "template"]).toContain(
-          validFilters.type
+          validFilters.type,
         );
       }
 
@@ -318,7 +318,7 @@ describe("DTO Type Guard Validation", () => {
         if (validWidgetConfig.customColors.primary !== undefined) {
           expect(typeof validWidgetConfig.customColors.primary).toBe("string");
           expect(validWidgetConfig.customColors.primary).toMatch(
-            /^#[0-9A-Fa-f]{6}$/
+            /^#[0-9A-Fa-f]{6}$/,
           );
         }
       }
@@ -398,7 +398,7 @@ describe("DTO Type Guard Validation", () => {
       expect(typeof validPaginatedResponse.pagination.limit).toBe("number");
       expect(typeof validPaginatedResponse.pagination.total).toBe("number");
       expect(typeof validPaginatedResponse.pagination.totalPages).toBe(
-        "number"
+        "number",
       );
       expect(typeof validPaginatedResponse.pagination.hasNext).toBe("boolean");
       expect(typeof validPaginatedResponse.pagination.hasPrev).toBe("boolean");
@@ -408,15 +408,15 @@ describe("DTO Type Guard Validation", () => {
       expect(validPaginatedResponse.pagination.limit).toBeGreaterThan(0);
       expect(validPaginatedResponse.pagination.total).toBeGreaterThanOrEqual(0);
       expect(
-        validPaginatedResponse.pagination.totalPages
+        validPaginatedResponse.pagination.totalPages,
       ).toBeGreaterThanOrEqual(0);
 
       const calculatedTotalPages = Math.ceil(
         validPaginatedResponse.pagination.total /
-          validPaginatedResponse.pagination.limit
+          validPaginatedResponse.pagination.limit,
       );
       expect(validPaginatedResponse.pagination.totalPages).toBe(
-        calculatedTotalPages
+        calculatedTotalPages,
       );
 
       const hasNext =
@@ -433,7 +433,7 @@ describe("DTO Type Guard Validation", () => {
       const validRoles = ["user", "admin", "moderator", "creator"];
 
       const isValidRole = (
-        role: any
+        role: any,
       ): role is "user" | "admin" | "moderator" | "creator" => {
         return typeof role === "string" && validRoles.includes(role);
       };
@@ -458,7 +458,7 @@ describe("DTO Type Guard Validation", () => {
       ];
 
       const isValidStatus = (
-        status: any
+        status: any,
       ): status is
         | "pending"
         | "approved"
@@ -481,7 +481,7 @@ describe("DTO Type Guard Validation", () => {
       const validCurrencies = ["USD", "EUR", "GBP", "JPY", "CAD", "AUD"];
 
       const isValidCurrency = (
-        currency: any
+        currency: any,
       ): currency is "USD" | "EUR" | "GBP" | "JPY" | "CAD" | "AUD" => {
         return (
           typeof currency === "string" && validCurrencies.includes(currency)

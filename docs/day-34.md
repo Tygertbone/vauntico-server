@@ -42,9 +42,9 @@ objective: "Celebrate Week 5 wins and prepare for the final income push to R2,00
 - New clients: **\_**
 - Revenue: R**\_**
 
-### **TOTAL WEEK 5 INCOME: R**\_****
+### **TOTAL WEEK 5 INCOME: R**\_\*\*\*\*
 
-### **TOTAL MONTH INCOME (Weeks 4+5): R**\_****
+### **TOTAL MONTH INCOME (Weeks 4+5): R**\_\*\*\*\*
 
 ---
 

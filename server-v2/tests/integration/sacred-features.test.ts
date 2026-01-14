@@ -92,7 +92,7 @@ describe("Sacred Features Integration Tests", () => {
       expect(response.body).toHaveProperty("id");
       expect(response.body.title).toBe("Test Ubuntu Story");
       expect(response.body.content).toBe(
-        "This is a test story about community wisdom"
+        "This is a test story about community wisdom",
       );
     });
 

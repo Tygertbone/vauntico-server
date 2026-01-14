@@ -305,7 +305,7 @@ export function handleSummary(data) {
       avg_response_time:
         data.reduce((sum, r) => sum + r.timings.duration, 0) / data.length,
       p95_response_time: data.sort(
-        (a, b) => a.timings.duration - b.timings.duration
+        (a, b) => a.timings.duration - b.timings.duration,
       )[Math.floor(data.length * 0.95)].timings.duration,
       requests_per_second:
         data.length /

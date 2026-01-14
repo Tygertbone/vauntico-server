@@ -126,7 +126,7 @@ describe("API Key Error Handling Tests", () => {
       const requests = Array.from({ length: 10 }, (_, index) =>
         request(app)
           .get("/api/trust-score/user_123")
-          .set("Authorization", `Bearer ${testKey}`)
+          .set("Authorization", `Bearer ${testKey}`),
       );
 
       const responses = await Promise.all(requests);

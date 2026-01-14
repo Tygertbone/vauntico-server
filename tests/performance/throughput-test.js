@@ -10,7 +10,7 @@ class ThroughputTester {
   constructor(
     baseUrl = "http://localhost:3001",
     concurrency = 10,
-    duration = 30000
+    duration = 30000,
   ) {
     this.baseUrl = baseUrl;
     this.concurrency = concurrency;
@@ -89,7 +89,7 @@ class ThroughputTester {
   async runThroughputTest() {
     console.log("🚀 Starting API throughput test...");
     console.log(
-      `📊 Concurrency: ${this.concurrency}, Duration: ${this.duration}ms`
+      `📊 Concurrency: ${this.concurrency}, Duration: ${this.duration}ms`,
     );
 
     const endpoints = [
@@ -100,7 +100,7 @@ class ThroughputTester {
     ];
 
     const testPromises = endpoints.map((endpoint) =>
-      this.testEndpoint(endpoint)
+      this.testEndpoint(endpoint),
     );
 
     try {
@@ -120,14 +120,14 @@ class ThroughputTester {
 
       console.log("\n📈 Throughput Test Results:");
       console.log(
-        `✅ Successful tests: ${successfulTests.length}/${results.length}`
+        `✅ Successful tests: ${successfulTests.length}/${results.length}`,
       );
       console.log(`❌ Failed tests: ${failedTests.length}/${results.length}`);
       console.log(
-        `📊 Overall average response time: ${totalAverageTime.toFixed(2)}ms`
+        `📊 Overall average response time: ${totalAverageTime.toFixed(2)}ms`,
       );
       console.log(
-        `🚀 Overall requests per second: ${overallRequestsPerSecond.toFixed(2)}`
+        `🚀 Overall requests per second: ${overallRequestsPerSecond.toFixed(2)}`,
       );
 
       if (failedTests.length > 0) {

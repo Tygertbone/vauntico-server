@@ -29,7 +29,7 @@ class GitignoreEnforcerServer {
         capabilities: {
           tools: {},
         },
-      }
+      },
     );
 
     this.setupToolHandlers();
@@ -134,13 +134,13 @@ class GitignoreEnforcerServer {
           default:
             throw new McpError(
               ErrorCode.MethodNotFound,
-              `Unknown tool: ${name}`
+              `Unknown tool: ${name}`,
             );
         }
       } catch (error) {
         throw new McpError(
           ErrorCode.InternalError,
-          `Tool execution failed: ${error.message}`
+          `Tool execution failed: ${error.message}`,
         );
       }
     });
@@ -208,7 +208,7 @@ class GitignoreEnforcerServer {
                 timestamp: new Date().toISOString(),
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -224,7 +224,7 @@ class GitignoreEnforcerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -256,7 +256,7 @@ class GitignoreEnforcerServer {
       const newRules = this.generateHardenedRules(securityLevel);
       const updatedContent = this.mergeGitignoreContent(
         existingContent,
-        newRules
+        newRules,
       );
 
       // Write updated .gitignore
@@ -277,7 +277,7 @@ class GitignoreEnforcerServer {
                   this.generateUpdateRecommendations(securityLevel),
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -293,7 +293,7 @@ class GitignoreEnforcerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -320,7 +320,7 @@ class GitignoreEnforcerServer {
                     "Create a .gitignore file to protect sensitive data",
                 },
                 null,
-                2
+                2,
               ),
             },
           ],
@@ -342,7 +342,7 @@ class GitignoreEnforcerServer {
                   this.generateValidationRecommendations(validation),
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -358,7 +358,7 @@ class GitignoreEnforcerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -425,7 +425,7 @@ class GitignoreEnforcerServer {
                 recommendations: this.generateLeakRecommendations(analysis),
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -441,7 +441,7 @@ class GitignoreEnforcerServer {
                 error: error.message,
               },
               null,
-              2
+              2,
             ),
           },
         ],
@@ -697,7 +697,7 @@ class GitignoreEnforcerServer {
 
     if (securityLevel === "strict") {
       recommendations.push(
-        "Strict mode may ignore some development files - adjust as needed"
+        "Strict mode may ignore some development files - adjust as needed",
       );
     }
 
@@ -722,26 +722,26 @@ class GitignoreEnforcerServer {
       (line) =>
         line.includes(".env") &&
         !line.includes("example") &&
-        !line.includes("template")
+        !line.includes("template"),
     );
     validation.hasKeyFiles = lines.some(
       (line) =>
-        line.includes(".key") || line.includes(".pem") || line.includes(".p12")
+        line.includes(".key") || line.includes(".pem") || line.includes(".p12"),
     );
     validation.hasBuildDirs = lines.some(
       (line) =>
         line.includes("node_modules") ||
         line.includes("dist") ||
-        line.includes("build")
+        line.includes("build"),
     );
     validation.hasLogFiles = lines.some(
-      (line) => line.includes(".log") || line.includes("logs/")
+      (line) => line.includes(".log") || line.includes("logs/"),
     );
     validation.hasIDEFiles = lines.some(
       (line) =>
         line.includes(".vscode") ||
         line.includes(".idea") ||
-        line.includes("DS_Store")
+        line.includes("DS_Store"),
     );
 
     // Calculate score

@@ -38,7 +38,7 @@ objective: "Celebrate first income and optimize for Week 5 growth"
 - Clients signed: **\_**
 - Revenue: R**\_**
 
-### **TOTAL WEEK 4 INCOME: R**\_****
+### **TOTAL WEEK 4 INCOME: R**\_\*\*\*\*
 
 ---
 

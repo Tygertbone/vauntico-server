@@ -54,7 +54,7 @@ describe("TrustScoreService", () => {
       const tiers = ["basic", "pro", "enterprise"];
 
       const results = await Promise.all(
-        tiers.map((tier) => TrustScoreService.getTrustScore(userId, tier))
+        tiers.map((tier) => TrustScoreService.getTrustScore(userId, tier)),
       );
 
       // All should have rate limit remaining
@@ -68,12 +68,12 @@ describe("TrustScoreService", () => {
       const userId = "user_003";
       const basicResult = await TrustScoreService.getTrustScore(
         userId,
-        "basic"
+        "basic",
       );
       const proResult = await TrustScoreService.getTrustScore(userId, "pro");
       const enterpriseResult = await TrustScoreService.getTrustScore(
         userId,
-        "enterprise"
+        "enterprise",
       );
 
       expect(basicResult?.nextCalculationCost).toBe(1);
@@ -116,11 +116,11 @@ describe("TrustScoreService", () => {
 
       const basicResult = await TrustScoreService.calculateTrustScore(
         userId,
-        "basic"
+        "basic",
       );
       const proResult = await TrustScoreService.calculateTrustScore(
         userId + "_pro",
-        "pro"
+        "pro",
       );
 
       expect(basicResult.cost).toBe(1);
@@ -135,7 +135,7 @@ describe("TrustScoreService", () => {
 
       const result = await TrustScoreService.checkCalculationQuota(
         userId,
-        tier
+        tier,
       );
 
       expect(result.allowed).toBe(true);
@@ -149,7 +149,7 @@ describe("TrustScoreService", () => {
 
       const result = await TrustScoreService.checkCalculationQuota(
         userId,
-        tier
+        tier,
       );
 
       expect(result.allowed).toBe(false);
@@ -161,15 +161,15 @@ describe("TrustScoreService", () => {
 
       const basicQuota = await TrustScoreService.checkCalculationQuota(
         userId,
-        "basic"
+        "basic",
       );
       const proQuota = await TrustScoreService.checkCalculationQuota(
         userId + "_pro",
-        "pro"
+        "pro",
       );
       const enterpriseQuota = await TrustScoreService.checkCalculationQuota(
         userId + "_ent",
-        "enterprise"
+        "enterprise",
       );
 
       expect(basicQuota.rateLimitRemaining).toBeGreaterThanOrEqual(0);
@@ -189,7 +189,7 @@ describe("TrustScoreService", () => {
         userId,
         tier,
         limit,
-        offset
+        offset,
       );
 
       expect(result).toHaveProperty("scores");
@@ -211,13 +211,13 @@ describe("TrustScoreService", () => {
         userId,
         tier,
         2,
-        0
+        0,
       );
       const secondPage = await TrustScoreService.getTrustScoreHistory(
         userId,
         tier,
         2,
-        2
+        2,
       );
 
       // Both pages should be valid
@@ -234,19 +234,19 @@ describe("TrustScoreService", () => {
         userId,
         "basic",
         limit,
-        offset
+        offset,
       );
       const proHistory = await TrustScoreService.getTrustScoreHistory(
         userId + "_pro",
         "pro",
         limit,
-        offset
+        offset,
       );
       const enterpriseHistory = await TrustScoreService.getTrustScoreHistory(
         userId + "_ent",
         "enterprise",
         limit,
-        offset
+        offset,
       );
 
       expect(basicHistory.creditsUsed).toBe(limit * 1);
@@ -262,7 +262,7 @@ describe("TrustScoreService", () => {
         userId,
         tier,
         5,
-        0
+        0,
       );
 
       expect(result.scores).toHaveLength(0);
@@ -280,7 +280,7 @@ describe("TrustScoreService", () => {
       // Check quota
       const quotaCheck = await TrustScoreService.checkCalculationQuota(
         userId,
-        tier
+        tier,
       );
       expect(quotaCheck.allowed).toBe(true);
 
@@ -290,7 +290,7 @@ describe("TrustScoreService", () => {
       // Calculate new score
       const calculation = await TrustScoreService.calculateTrustScore(
         userId,
-        tier
+        tier,
       );
       expect(calculation.status).toBe("processing");
 
@@ -302,7 +302,7 @@ describe("TrustScoreService", () => {
         userId,
         tier,
         5,
-        0
+        0,
       );
       expect(Array.isArray(history.scores)).toBe(true);
     });
@@ -313,7 +313,7 @@ describe("TrustScoreService", () => {
 
       // Make multiple concurrent requests
       const requests = Array.from({ length: 5 }, () =>
-        TrustScoreService.getTrustScore(userId, tier)
+        TrustScoreService.getTrustScore(userId, tier),
       );
 
       const results = await Promise.all(requests);

@@ -2,6 +2,8 @@
 
 ## Instructions for Cline/Claude Workflow
 
+**MANDATORY PRE-TASK SETUP: Load MCP configuration from `config/mcp.json` before executing any task.**
+
 When working with Vauntico MVP project, use this MCP configuration to access project resources:
 
 ```json
@@ -45,7 +47,7 @@ When working with Vauntico MVP project, use this MCP configuration to access pro
 
 ## Execution Flow
 
-**Before running any refactor or code generation task:**
+**CRITICAL: Before running any refactor or code generation task:**
 
 1. **Load MCP Configuration**: Load config from `config/mcp.json`
 2. **Consult Documentation**: Use `docs` server for contributor guidelines and type conventions
@@ -67,7 +69,7 @@ When working with Vauntico MVP project, use this MCP configuration to access pro
 - API access is read-only for validation
 - Documentation access respects file system permissions
 - No sensitive data is exposed through MCP configuration
-- **Critical**: Never include `.env`, secrets, or raw credentials in context
+- **CRITICAL**: Never include `.env`, secrets, or raw credentials in context
 
 ## MCP Server Capabilities
 
@@ -94,12 +96,18 @@ When working with Vauntico MVP project, use this MCP configuration to access pro
 
 ## Pre-Task Checklist
 
-Before any refactor or code generation:
+**MANDATORY: Before any refactor or code generation:**
 
 - [ ] Load MCP configuration from `config/mcp.json`
 - [ ] Query `docs` server for contributor guidelines and type conventions
 - [ ] Validate schema with `postgres` server before generating TypeScript types
 - [ ] Reference `api` server for endpoint scaffolding when needed
 - [ ] Verify no `.env`, secrets, or credentials included in context
+
+**SECURITY REQUIREMENTS:**
+- [ ] Confirm exclusions are respected: never include `.env`, secrets, or raw credentials in context
+- [ ] Use environment variables for all database connections
+- [ ] Maintain read-only access for API validation
+- [ ] Respect file system permissions for documentation access
 
 Always validate your approach against these resources before implementing changes to ensure consistency with Vauntico's architecture and standards.

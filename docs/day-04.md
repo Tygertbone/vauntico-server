@@ -19,6 +19,7 @@ objective: "Film your first professional-looking video using Script 1 from Day 3
 **Before you hit record:**
 
 ### **The 5-Minute Setup:**
+
 1. **Clean your lens** (shirt corner works)
 2. **Set up tripod** (DIY from Day 2)
 3. **Check lighting** (face the window)
@@ -30,11 +31,13 @@ objective: "Film your first professional-looking video using Script 1 from Day 3
 ## 🎯 The Perfect Frame
 
 **Rule of Thirds:**
+
 - Imagine 2 lines dividing screen into 3 parts
 - Put your eyes on the top line
 - Leave space above head (not too much)
 
 **Distance:**
+
 - **2-3 feet from camera** (arm's length)
 - Close enough for good audio
 - Far enough to show hand gestures
@@ -48,6 +51,7 @@ objective: "Film your first professional-looking video using Script 1 from Day 3
 Just say the script. Don't worry about perfection.
 
 **Common mistakes (TOTALLY NORMAL):**
+
 - Forget lines → Pause, restart that sentence
 - Stutter → Keep going, fix in edit
 - Noise in background → Wait, reshoot that part
@@ -59,6 +63,7 @@ Just say the script. Don't worry about perfection.
 ### **Take 2: The Polish** (20 min)
 
 Now that you know the script, film it smoother:
+
 - Smile at start (looks more confident)
 - Speak slightly slower (clearer audio)
 - Use hand gestures (more engaging)
@@ -71,6 +76,7 @@ Now that you know the script, film it smoother:
 Film one more time (trust me on this).
 
 **Why?**
+
 - Sometimes Take 2 has issues you didn't notice
 - Having options makes editing easier
 - Confidence grows each take (Take 3 is usually best)

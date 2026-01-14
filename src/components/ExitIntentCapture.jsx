@@ -1,66 +1,66 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 
 function ExitIntentCapture() {
-  const [isVisible, setIsVisible] = useState(false)
-  const [email, setEmail] = useState('')
-  const [isDismissed, setIsDismissed] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
     // Check if user has already dismissed or signed up
-    const dismissed = localStorage.getItem('exitIntentDismissed')
-    const captured = localStorage.getItem('exitIntentCaptured')
-    
+    const dismissed = localStorage.getItem("exitIntentDismissed");
+    const captured = localStorage.getItem("exitIntentCaptured");
+
     if (dismissed || captured) {
-      return
+      return;
     }
 
     // Exit intent detection
     const handleMouseLeave = (e) => {
       // Only trigger when mouse leaves from top of viewport
       if (e.clientY <= 0 && !isDismissed) {
-        setIsVisible(true)
+        setIsVisible(true);
       }
-    }
+    };
 
     // Add delay before enabling exit intent (5 seconds on page)
     const timer = setTimeout(() => {
-      document.addEventListener('mouseleave', handleMouseLeave)
-    }, 5000)
+      document.addEventListener("mouseleave", handleMouseLeave);
+    }, 5000);
 
     return () => {
-      clearTimeout(timer)
-      document.removeEventListener('mouseleave', handleMouseLeave)
-    }
-  }, [isDismissed])
+      clearTimeout(timer);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [isDismissed]);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
     // Track email capture
     if (window.gtag) {
-      window.gtag('event', 'email_capture', {
-        event_category: 'engagement',
-        event_label: 'exit_intent_popup'
-      })
+      window.gtag("event", "email_capture", {
+        event_category: "engagement",
+        event_label: "exit_intent_popup",
+      });
     }
-    
+
     // Store email (in production, send to backend)
-    console.log('Email captured:', email)
-    localStorage.setItem('exitIntentCaptured', 'true')
-    localStorage.setItem('capturedEmail', email)
-    
+    console.log("Email captured:", email);
+    localStorage.setItem("exitIntentCaptured", "true");
+    localStorage.setItem("capturedEmail", email);
+
     // Show success message
-    alert('Thanks! Check your email for exclusive creator tips.')
-    setIsVisible(false)
-  }
+    alert("Thanks! Check your email for exclusive creator tips.");
+    setIsVisible(false);
+  };
 
   const handleDismiss = () => {
-    localStorage.setItem('exitIntentDismissed', 'true')
-    setIsDismissed(true)
-    setIsVisible(false)
-  }
+    localStorage.setItem("exitIntentDismissed", "true");
+    setIsDismissed(true);
+    setIsVisible(false);
+  };
 
-  if (!isVisible) return null
+  if (!isVisible) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center p-4 animate-fade-in">
@@ -77,11 +77,10 @@ function ExitIntentCapture() {
         {/* Content */}
         <div className="text-center mb-6">
           <div className="text-6xl mb-4">⏰</div>
-          <h2 className="text-3xl font-bold mb-3">
-            Wait! Before You Go...
-          </h2>
+          <h2 className="text-3xl font-bold mb-3">Wait! Before You Go...</h2>
           <p className="text-gray-600 text-lg">
-            Get our <strong>free Creator Toolkit</strong> + exclusive tips to 10x your content workflow
+            Get our <strong>free Creator Toolkit</strong> + exclusive tips to
+            10x your content workflow
           </p>
         </div>
 
@@ -122,7 +121,7 @@ function ExitIntentCapture() {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
-export default ExitIntentCapture
+export default ExitIntentCapture;

@@ -1,5 +1,5 @@
 ---
-description: 'Disallow `require` statements except in import statements.'
+description: "Disallow `require` statements except in import statements."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -15,17 +15,17 @@ In other words, the use of forms such as `var foo = require("foo")` are banned. 
 ### ❌ Incorrect
 
 ```ts
-var foo = require('foo');
-const foo = require('foo');
-let foo = require('foo');
+var foo = require("foo");
+const foo = require("foo");
+let foo = require("foo");
 ```
 
 ### ✅ Correct
 
 ```ts
-import foo = require('foo');
-require('foo');
-import foo from 'foo';
+import foo = require("foo");
+require("foo");
+import foo from "foo";
 ```
 
 ## Options
@@ -41,13 +41,13 @@ With `{allow: ['/package\\.json$']}`:
 ### ❌ Incorrect
 
 ```ts
-const foo = require('../data.json');
+const foo = require("../data.json");
 ```
 
 ### ✅ Correct
 
 ```ts
-const foo = require('../package.json');
+const foo = require("../package.json");
 ```
 
 ## When Not To Use It

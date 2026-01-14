@@ -1,54 +1,54 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 
 export default function ExitIntentOffer({ onClose, onAccept }) {
-  const [isVisible, setIsVisible] = useState(false)
-  const [hasShown, setHasShown] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasShown, setHasShown] = useState(false);
 
   useEffect(() => {
     // Don't show if already dismissed or accepted
-    if (hasShown || localStorage.getItem('exit_offer_dismissed')) return
+    if (hasShown || localStorage.getItem("exit_offer_dismissed")) return;
 
     const handleMouseLeave = (e) => {
       // Trigger when mouse leaves viewport from top (common exit behavior)
       if (e.clientY <= 0 && !hasShown) {
-        setIsVisible(true)
-        setHasShown(true)
-        
+        setIsVisible(true);
+        setHasShown(true);
+
         // Track event
         if (window.VaunticoAnalytics && window.VaunticoAnalytics.trackEvent) {
-          window.VaunticoAnalytics.trackEvent('exit_intent_triggered', {
-            page: 'workshop_kit'
-          })
+          window.VaunticoAnalytics.trackEvent("exit_intent_triggered", {
+            page: "workshop_kit",
+          });
         }
       }
-    }
+    };
 
-    document.addEventListener('mouseout', handleMouseLeave)
-    return () => document.removeEventListener('mouseout', handleMouseLeave)
-  }, [hasShown])
+    document.addEventListener("mouseout", handleMouseLeave);
+    return () => document.removeEventListener("mouseout", handleMouseLeave);
+  }, [hasShown]);
 
   const handleDismiss = () => {
-    setIsVisible(false)
-    localStorage.setItem('exit_offer_dismissed', 'true')
-    if (onClose) onClose()
-    
+    setIsVisible(false);
+    localStorage.setItem("exit_offer_dismissed", "true");
+    if (onClose) onClose();
+
     // Track dismissal
     if (window.VaunticoAnalytics && window.VaunticoAnalytics.trackEvent) {
-      window.VaunticoAnalytics.trackEvent('exit_offer_dismissed')
+      window.VaunticoAnalytics.trackEvent("exit_offer_dismissed");
     }
-  }
+  };
 
   const handleAccept = () => {
-    setIsVisible(false)
-    if (onAccept) onAccept()
-    
+    setIsVisible(false);
+    if (onAccept) onAccept();
+
     // Track acceptance
     if (window.VaunticoAnalytics && window.VaunticoAnalytics.trackEvent) {
-      window.VaunticoAnalytics.trackEvent('exit_offer_accepted')
+      window.VaunticoAnalytics.trackEvent("exit_offer_accepted");
     }
-  }
+  };
 
-  if (!isVisible) return null
+  if (!isVisible) return null;
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fade-in">
@@ -59,8 +59,18 @@ export default function ExitIntentOffer({ onClose, onAccept }) {
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
           aria-label="Close"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 
@@ -69,7 +79,9 @@ export default function ExitIntentOffer({ onClose, onAccept }) {
           <div className="inline-block bg-gradient-to-br from-purple-100 to-green-100 rounded-full p-6 mb-4">
             <span className="text-5xl">⏰</span>
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Wait! Before You Go...</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Wait! Before You Go...
+          </h2>
           <p className="text-lg text-gray-600">
             We noticed you're interested but not quite ready. How about this?
           </p>
@@ -82,10 +94,11 @@ export default function ExitIntentOffer({ onClose, onAccept }) {
               🔥 SPECIAL OFFER
             </span>
           </div>
-          
+
           <div className="text-center mb-4">
             <p className="text-gray-700 text-lg mb-2">
-              Get <strong className="text-purple-600 text-2xl">R50 OFF</strong> your payment plan!
+              Get <strong className="text-purple-600 text-2xl">R50 OFF</strong>{" "}
+              your payment plan!
             </p>
             <p className="text-sm text-gray-600">
               Pay only <strong>R333/month x 3</strong> instead of R349/month
@@ -150,5 +163,5 @@ export default function ExitIntentOffer({ onClose, onAccept }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

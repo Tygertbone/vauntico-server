@@ -1,5 +1,5 @@
 ---
-description: 'Disallow unused expressions.'
+description: "Disallow unused expressions."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

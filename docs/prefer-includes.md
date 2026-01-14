@@ -1,5 +1,5 @@
 ---
-description: 'Enforce `includes` method over `indexOf` method.'
+description: "Enforce `includes` method over `indexOf` method."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -36,7 +36,7 @@ str.indexOf(value) !== -1;
 array.indexOf(value) !== -1;
 readonlyArray.indexOf(value) === -1;
 typedArray.indexOf(value) > -1;
-maybe?.indexOf('') !== -1;
+maybe?.indexOf("") !== -1;
 userDefined.indexOf(value) >= 0;
 
 /example/.test(str);
@@ -59,10 +59,10 @@ str.includes(value);
 array.includes(value);
 !readonlyArray.includes(value);
 typedArray.includes(value);
-maybe?.includes('');
+maybe?.includes("");
 userDefined.includes(value);
 
-str.includes('example');
+str.includes("example");
 
 // The two methods have different parameters.
 declare const mismatchExample: {

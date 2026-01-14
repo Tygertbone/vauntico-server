@@ -2,8 +2,8 @@ name: Keep Render Alive
 
 on:
   schedule:
-    - cron: '*/14 * * * *'  # Every 14 minutes
-  workflow_dispatch:  # Manual trigger
+    - cron: "*/14 * * * *" # Every 14 minutes
+  workflow_dispatch: # Manual trigger
 
 jobs:
   keep-alive:

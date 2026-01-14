@@ -1,4 +1,5 @@
 # The Workshop Kit Scroll
+
 ## Turn Mastery into Movement. Expertise into Empire.
 
 ---
@@ -9,7 +10,7 @@ You've climbed the mountain. You've earned your scars. You know things others wo
 
 **But knowing isn't enough.**
 
-The world is drowning in information. What it craves is *transformation*.  
+The world is drowning in information. What it craves is _transformation_.  
 Workshops that don't just lecture—they **awaken**.  
 Systems that don't just inform—they **forge disciples**.
 
@@ -20,6 +21,7 @@ Systems that don't just inform—they **forge disciples**.
 ## What the Kit Forges
 
 ### 🎓 Structured Learning Paths
+
 No more scattered PDFs and half-formed ideas. The Kit gives you:
 
 - **Module Architecture:** Pre-designed learning flows based on cognitive science
@@ -28,6 +30,7 @@ No more scattered PDFs and half-formed ideas. The Kit gives you:
 - **Ritual Pacing:** Optimal timing between lessons, exercises, and integration
 
 ### ✍️ Interactive Exercise Templates
+
 Passive learning dies in the scroll. Active transformation lives forever.
 
 - **Reflection Prompts:** Questions that dig into the soul
@@ -36,6 +39,7 @@ Passive learning dies in the scroll. Active transformation lives forever.
 - **Progress Journals:** Artifacts participants create that become their own lore
 
 ### 🎖️ Certification Flows
+
 Your workshop isn't just a class. It's a **rite of passage.**
 
 - **Achievement Scaffolding:** Micro-credentials that build to mastery
@@ -44,6 +48,7 @@ Your workshop isn't just a class. It's a **rite of passage.**
 - **Alumni Networks:** Tools to keep graduates connected and ascending
 
 ### 🏷️ White-Label Ready
+
 Your brand. Your voice. Your kingdom.
 
 - **Custom Branding:** Logo, colors, typography—all yours
@@ -56,14 +61,17 @@ Your brand. Your voice. Your kingdom.
 ## The Three Workshop Archetypes
 
 ### 🔥 The Ignition Workshop (1-3 Hours)
-*Quick transformation. Immediate wins.*
+
+_Quick transformation. Immediate wins._
 
 **Ideal for:**
+
 - Lead magnets that convert browsers into believers
 - Free workshops that seed demand for premium offerings
 - Corporate training sessions with time constraints
 
 **What You Get:**
+
 - 3 core modules
 - 5 interactive exercises
 - PDF workbook template
@@ -74,14 +82,17 @@ Your brand. Your voice. Your kingdom.
 ---
 
 ### ⚡ The Ascension Workshop (4-12 Weeks)
-*Deep transformation. Lasting change.*
+
+_Deep transformation. Lasting change._
 
 **Ideal for:**
+
 - Signature courses that become your legacy offering
 - Cohort-based programs with high engagement
 - Certification tracks that establish authority
 
 **What You Get:**
+
 - 8-12 core modules
 - 20+ interactive exercises
 - Live session frameworks (weekly rituals)
@@ -94,14 +105,17 @@ Your brand. Your voice. Your kingdom.
 ---
 
 ### 🌟 The Empire Workshop (12+ Weeks, Multi-Tier)
-*Movement creation. Generational impact.*
+
+_Movement creation. Generational impact._
 
 **Ideal for:**
+
 - Multi-level training programs (beginner → mastery)
 - Franchise-ready education systems
 - University/corporate partnerships
 
 **What You Get:**
+
 - 20+ modular units (mix and match)
 - 50+ exercises across difficulty levels
 - Train-the-trainer materials
@@ -117,7 +131,9 @@ Your brand. Your voice. Your kingdom.
 ## The Kit Components: Your Sacred Arsenal
 
 ### 📜 Template Library
+
 50+ pre-built workshop structures across domains:
+
 - **Business & Strategy:** Marketing, sales, operations
 - **Creative & Content:** Writing, design, video production
 - **Technical & Dev:** Coding bootcamps, no-code mastery
@@ -125,6 +141,7 @@ Your brand. Your voice. Your kingdom.
 - **Health & Wellness:** Coaching, fitness, nutrition
 
 ### 🛠️ Workshop Builder CLI
+
 Generate your entire workshop structure with one command:
 
 ```bash
@@ -136,6 +153,7 @@ vauntico workshop create \
 ```
 
 The CLI outputs:
+
 - Full curriculum outline
 - Module-by-module lesson plans
 - Exercise templates mapped to learning objectives
@@ -143,6 +161,7 @@ The CLI outputs:
 - Pricing recommendation based on market research
 
 ### 📊 Analytics & Insights
+
 Track what's working. Double down on transformation.
 
 - **Completion Rates:** See where participants drop off
@@ -151,6 +170,7 @@ Track what's working. Double down on transformation.
 - **Revenue Attribution:** Which workshops convert to higher tiers
 
 ### 🤝 Community Integration
+
 Workshops aren't solo quests. They're tribe-building rituals.
 
 - **Discussion Forum Templates:** Prompt meaningful conversation
@@ -163,19 +183,23 @@ Workshops aren't solo quests. They're tribe-building rituals.
 ## Pricing: How to Acquire the Kit
 
 ### Included with Creator Pass
+
 - **Starter:** 2 Ignition Workshop templates
 - **Pro:** Full library (Ignition + Ascension)
 - **Legacy:** Everything + Empire tier + quarterly new templates
 
 ### Standalone Purchase
+
 - **Workshop Kit Lite:** R499 one-time (10 templates)
 - **Workshop Kit Pro:** R1,999 one-time (50+ templates + CLI)
 - **Workshop Kit Empire:** R4,999 + R499/month (everything + updates + white-label)
 
 ### Add-On: Workshop-as-a-Service
+
 **R2,999/month**
 
 We build the workshop for you:
+
 - 1 custom workshop per quarter
 - Co-creation sessions with your team
 - Full implementation + hosting
@@ -187,19 +211,19 @@ We build the workshop for you:
 
 **Run your first workshop. If participants don't report meaningful transformation, we'll refund the Kit and personally audit your approach.**
 
-We don't just sell templates. We ensure they *work*.
+We don't just sell templates. We ensure they _work_.
 
 ---
 
 ## Success Scrolls: Creators Who've Forged Workshops
 
-> *"I launched my first paid workshop in 9 days. 32 participants. R48,000 revenue. The Kit didn't just give me structure—it gave me confidence."*  
+> _"I launched my first paid workshop in 9 days. 32 participants. R48,000 revenue. The Kit didn't just give me structure—it gave me confidence."_  
 > **— Thandiwe K., Business Coach, Pretoria**
 
-> *"We've trained 500+ students across 6 cohorts. The certification system alone has become our competitive moat."*  
+> _"We've trained 500+ students across 6 cohorts. The certification system alone has become our competitive moat."_  
 > **— David L., Bootcamp Founder, Durban**
 
-> *"The white-label option let us franchise our methodology. We now have 12 certified trainers delivering our curriculum."*  
+> _"The white-label option let us franchise our methodology. We now have 12 certified trainers delivering our curriculum."_  
 > **— Nandi P., Leadership Consultant, Sandton**
 
 ---
@@ -219,6 +243,6 @@ We don't just sell templates. We ensure they *work*.
 
 ---
 
-*Teaching is the highest form of mastery.*  
-*The Workshop Kit is your amplifier.*  
-*Forge disciples. Build movements. Leave lore.*
+_Teaching is the highest form of mastery._  
+_The Workshop Kit is your amplifier._  
+_Forge disciples. Build movements. Leave lore._

@@ -32,12 +32,13 @@ Complete guide to point your domain to the Vercel deployment.
 
 Go to your domain registrar's DNS management panel and add these records:
 
-| Type  | Name/Host | Value                    | TTL  |
-|-------|-----------|--------------------------|------|
-| A     | @         | `76.76.21.21`           | 3600 |
-| CNAME | www       | `cname.vercel-dns.com`  | 3600 |
+| Type  | Name/Host | Value                  | TTL  |
+| ----- | --------- | ---------------------- | ---- |
+| A     | @         | `76.76.21.21`          | 3600 |
+| CNAME | www       | `cname.vercel-dns.com` | 3600 |
 
 **Important:**
+
 - Delete any existing A or CNAME records for `@` and `www` first
 - `@` means the root domain (vauntico.com)
 - TTL can be 3600 (1 hour) or Auto
@@ -51,6 +52,7 @@ Go to your domain registrar's DNS management panel and add these records:
 3. You'll see a ✅ **SSL Certificate Issued** in Vercel dashboard
 
 **Check propagation:**
+
 ```bash
 # Windows (PowerShell)
 nslookup vauntico.com
@@ -80,6 +82,7 @@ nslookup vauntico.com
 6. Click **Save All Changes**
 
 **Screenshot locations:**
+
 - Advanced DNS is at the top tabs
 - Click green "+ Add New Record" button
 
@@ -123,6 +126,7 @@ nslookup vauntico.com
 7. Click **Save**
 
 **After SSL is issued in Vercel:**
+
 - You can enable **Proxy** (orange cloud) for both records
 - This adds Cloudflare CDN and security features
 
@@ -151,6 +155,7 @@ nslookup vauntico.com
 ### **Other Registrars**
 
 **General steps work for most registrars:**
+
 1. Find "DNS Management" or "DNS Settings"
 2. Add A record: `@` → `76.76.21.21`
 3. Add CNAME record: `www` → `cname.vercel-dns.com`
@@ -184,6 +189,7 @@ If you have your own SSL certificate:
 After setup, verify everything works:
 
 ### **1. DNS Propagation**
+
 ```bash
 # Check A record
 nslookup vauntico.com
@@ -195,16 +201,20 @@ nslookup www.vauntico.com
 ```
 
 ### **2. HTTP → HTTPS Redirect**
+
 - Visit `http://vauntico.com` → Should redirect to `https://vauntico.com`
 - Visit `http://www.vauntico.com` → Should redirect to `https://vauntico.com`
 
 ### **3. SSL Certificate**
+
 - Click padlock icon in browser address bar
 - Should show **Valid** certificate
 - Issued by: **Let's Encrypt** or **Vercel**
 
 ### **4. All Pages Load**
+
 Test these URLs:
+
 - ✅ https://vauntico.com
 - ✅ https://vauntico.com/creator-pass
 - ✅ https://vauntico.com/lore
@@ -224,6 +234,7 @@ Test these URLs:
 
 **Cause:** Domain using wrong nameservers  
 **Fix:**
+
 - If using Cloudflare, nameservers should point to Cloudflare
 - If using registrar DNS, use registrar's nameservers
 - Vercel **does not require** changing nameservers
@@ -232,6 +243,7 @@ Test these URLs:
 
 **Cause:** CAA records blocking Let's Encrypt  
 **Fix:** Add CAA record:
+
 ```
 Type: CAA
 Name: @
@@ -242,6 +254,7 @@ Value: 0 issue "letsencrypt.org"
 
 **Cause:** CNAME record missing or incorrect  
 **Fix:** Ensure CNAME record is:
+
 - Name: **www**
 - Value: **cname.vercel-dns.com** (NOT vauntico.com)
 
@@ -249,14 +262,16 @@ Value: 0 issue "letsencrypt.org"
 
 **Cause:** Browser cache or DNS cache  
 **Fix:**
+
 1. Hard refresh: `Ctrl + Shift + R` (Windows) or `Cmd + Shift + R` (Mac)
 2. Clear browser cache
 3. Try incognito/private window
 4. Flush DNS cache:
+
    ```bash
    # Windows
    ipconfig /flushdns
-   
+
    # Mac
    sudo dscacheutil -flushcache
    ```
@@ -270,12 +285,12 @@ Value: 0 issue "letsencrypt.org"
 1. Vercel Dashboard → Project → **Settings** → **Environment Variables**
 2. Add these variables (if not already added):
 
-| Variable | Value | Environment |
-|----------|-------|-------------|
-| `VITE_APP_URL` | `https://vauntico.com` | Production |
-| `VITE_MIXPANEL_TOKEN` | `f8d19eae67c8d6bef4f547d72d4b4b57` | Production |
-| `VITE_GA4_ID` | `G-30N4CHF6JR` | Production |
-| `VITE_STRIPE_PUBLIC_KEY` | `pk_live_...` (when ready) | Production |
+| Variable                 | Value                              | Environment |
+| ------------------------ | ---------------------------------- | ----------- |
+| `VITE_APP_URL`           | `https://vauntico.com`             | Production  |
+| `VITE_MIXPANEL_TOKEN`    | `f8d19eae67c8d6bef4f547d72d4b4b57` | Production  |
+| `VITE_GA4_ID`            | `G-30N4CHF6JR`                     | Production  |
+| `VITE_STRIPE_PUBLIC_KEY` | `pk_live_...` (when ready)         | Production  |
 
 3. Click **Save**
 4. **Redeploy** your project to apply changes
@@ -283,6 +298,7 @@ Value: 0 issue "letsencrypt.org"
 ### **Redirect www → non-www (Optional)**
 
 Vercel handles this automatically! Both will work:
+
 - `www.vauntico.com` → Redirects to → `vauntico.com`
 - `vauntico.com` → Works directly
 
@@ -310,15 +326,18 @@ Before announcing your site:
 ## 📞 **Need Help?**
 
 ### **Vercel Support**
+
 - [Documentation](https://vercel.com/docs/concepts/projects/domains)
 - [Community](https://github.com/vercel/vercel/discussions)
 - [Status Page](https://www.vercel-status.com)
 
 ### **DNS Propagation Checker**
+
 - https://dnschecker.org
 - Enter `vauntico.com` to see global propagation status
 
 ### **SSL Checker**
+
 - https://www.ssllabs.com/ssltest/
 - Test your SSL configuration and security score
 
@@ -332,9 +351,10 @@ Once DNS propagates and SSL is issued:
 ✅ Secure connection with automatic SSL  
 ✅ Global CDN via Vercel  
 ✅ Automatic deployments on Git push  
-✅ Analytics tracking active  
+✅ Analytics tracking active
 
 **Share your launch:**
+
 - Twitter: "Just launched vauntico.com 🚀"
 - LinkedIn: Post about your new platform
 - Communities: Share in relevant groups
@@ -344,4 +364,4 @@ Once DNS propagates and SSL is issued:
 **Last Updated:** January 2025  
 **Deployment Status:** ✅ Ready for Production
 
-*Questions? Check the troubleshooting section above or contact Vercel support.*
+_Questions? Check the troubleshooting section above or contact Vercel support._

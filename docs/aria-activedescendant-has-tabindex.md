@@ -22,6 +22,7 @@ have an inherent `tabIndex` of zero or declare a `tabIndex` attribute.
 This rule takes no arguments.
 
 ### Succeed
+
 ```jsx
 <CustomComponent />
 <CustomComponent aria-activedescendant={someID} />
@@ -41,12 +42,15 @@ This rule takes no arguments.
 ```
 
 ### Fail
+
 ```jsx
 <div aria-activedescendant={someID} />
 ```
 
 ## Accessibility guidelines
+
 General best practice (reference resources)
 
 ### Resources
+
 - [MDN, Using the aria-activedescendant attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-activedescendant_attribute)

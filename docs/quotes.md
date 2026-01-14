@@ -1,5 +1,5 @@
 ---
-description: 'Enforce the consistent use of either backticks, double, or single quotes.'
+description: "Enforce the consistent use of either backticks, double, or single quotes."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

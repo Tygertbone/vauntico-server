@@ -3,34 +3,34 @@
  * Section 2A: Pricing Logic Binding - UI Components
  */
 
-import { Link } from 'react-router-dom'
-import { formatPrice } from '../utils/pricing'
+import { Link } from "react-router-dom";
+import { formatPrice } from "../utils/pricing";
 
 /**
  * Generic access gate that shows paywall or content
  */
-export const AccessGate = ({ 
-  hasAccess, 
-  reason, 
-  message, 
-  price, 
-  currency = 'ZAR',
-  actionText = 'Unlock Access',
+export const AccessGate = ({
+  hasAccess,
+  reason,
+  message,
+  price,
+  currency = "ZAR",
+  actionText = "Unlock Access",
   onAction,
   actionLink,
   children,
-  isLoading = false
+  isLoading = false,
 }) => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-vault-purple"></div>
       </div>
-    )
+    );
   }
 
   if (hasAccess) {
-    return <>{children}</>
+    return <>{children}</>;
   }
 
   return (
@@ -38,13 +38,13 @@ export const AccessGate = ({
       <div className="text-6xl mb-4">🔒</div>
       <h3 className="text-2xl font-bold mb-2">Access Required</h3>
       <p className="text-gray-600 mb-6 max-w-md mx-auto">{message}</p>
-      
+
       {price && (
         <div className="text-4xl font-bold text-vault-purple mb-6">
           {formatPrice(price, currency)}
         </div>
       )}
-      
+
       {actionLink ? (
         <Link to={actionLink} className="btn-primary inline-block">
           {actionText}
@@ -54,8 +54,8 @@ export const AccessGate = ({
           {actionText}
         </button>
       )}
-      
-      {reason !== 'creator_pass' && (
+
+      {reason !== "creator_pass" && (
         <div className="mt-6 pt-6 border-t">
           <p className="text-sm text-gray-600 mb-3">
             💎 Or get access with Creator Pass
@@ -66,8 +66,8 @@ export const AccessGate = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 /**
  * Inline access badge showing access status
@@ -76,41 +76,41 @@ export const AccessBadge = ({ hasAccess, reason, compact = false }) => {
   if (!hasAccess) {
     return (
       <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-        🔒 {compact ? 'Locked' : 'Access Required'}
+        🔒 {compact ? "Locked" : "Access Required"}
       </span>
-    )
+    );
   }
 
-  if (reason === 'creator_pass') {
+  if (reason === "creator_pass") {
     return (
       <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-purple-100 to-blue-100 text-vault-purple border border-vault-purple/30">
-        💎 {compact ? 'Unlocked' : 'Creator Pass'}
+        💎 {compact ? "Unlocked" : "Creator Pass"}
       </span>
-    )
+    );
   }
 
-  if (reason === 'purchased' || reason === 'subscription') {
+  if (reason === "purchased" || reason === "subscription") {
     return (
       <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-300">
-        ✓ {compact ? 'Active' : 'Purchased'}
+        ✓ {compact ? "Active" : "Purchased"}
       </span>
-    )
+    );
   }
 
   return (
     <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 border border-blue-300">
-      ✓ {compact ? 'Active' : 'Unlocked'}
+      ✓ {compact ? "Active" : "Unlocked"}
     </span>
-  )
-}
+  );
+};
 
 /**
  * Creator Pass promotional banner
  */
-export const CreatorPassPromoBanner = ({ 
+export const CreatorPassPromoBanner = ({
   features = [],
   showDiscount = false,
-  discountPercentage = 20
+  discountPercentage = 20,
 }) => {
   return (
     <div className="card bg-gradient-to-br from-vault-purple/10 to-vault-blue/10 border-2 border-vault-purple/20">
@@ -128,7 +128,7 @@ export const CreatorPassPromoBanner = ({
           <p className="text-gray-600 mb-4">
             Get instant access to this and all premium features
           </p>
-          
+
           {features.length > 0 && (
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
               {features.slice(0, 4).map((feature, idx) => (
@@ -139,23 +139,23 @@ export const CreatorPassPromoBanner = ({
               ))}
             </ul>
           )}
-          
+
           <Link to="/creator-pass" className="btn-primary inline-block">
             Upgrade to Creator Pass
           </Link>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /**
  * Feature lock overlay for premium features
  */
-export const FeatureLock = ({ 
-  feature, 
+export const FeatureLock = ({
+  feature,
   onUnlock,
-  unlockLink = '/creator-pass'
+  unlockLink = "/creator-pass",
 }) => {
   return (
     <div className="relative">
@@ -164,7 +164,7 @@ export const FeatureLock = ({
           <div className="text-4xl mb-3">🔒</div>
           <h4 className="font-bold text-lg mb-2">Premium Feature</h4>
           <p className="text-gray-600 text-sm mb-4">
-            {feature || 'This feature'} requires Creator Pass
+            {feature || "This feature"} requires Creator Pass
           </p>
           {unlockLink ? (
             <Link to={unlockLink} className="btn-primary text-sm">
@@ -178,20 +178,20 @@ export const FeatureLock = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /**
  * Pricing comparison card
  */
-export const PricingComparisonCard = ({ 
-  standardPrice, 
-  passPrice, 
-  currency = 'ZAR',
-  period = 'month' 
+export const PricingComparisonCard = ({
+  standardPrice,
+  passPrice,
+  currency = "ZAR",
+  period = "month",
 }) => {
-  const savings = standardPrice - passPrice
-  const savingsPercent = Math.round((savings / standardPrice) * 100)
+  const savings = standardPrice - passPrice;
+  const savingsPercent = Math.round((savings / standardPrice) * 100);
 
   return (
     <div className="card bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200">
@@ -200,21 +200,21 @@ export const PricingComparisonCard = ({
         <div className="text-2xl font-bold text-gray-400 line-through mb-4">
           {formatPrice(standardPrice, currency)}/{period}
         </div>
-        
+
         <div className="text-sm font-semibold text-green-600 mb-2">
           WITH CREATOR PASS
         </div>
         <div className="text-4xl font-bold text-gradient mb-2">
           {formatPrice(passPrice, currency)}/{period}
         </div>
-        
+
         <div className="inline-block bg-green-500 text-white text-sm font-bold px-4 py-2 rounded-full">
           Save {savingsPercent}% ({formatPrice(savings, currency)})
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /**
  * Subscription status indicator
@@ -222,47 +222,49 @@ export const PricingComparisonCard = ({
 export const SubscriptionStatus = ({ status, plan, expiryDate }) => {
   const getStatusColor = (status) => {
     switch (status) {
-      case 'active':
-        return 'bg-green-100 text-green-700 border-green-300'
-      case 'cancelled':
-        return 'bg-yellow-100 text-yellow-700 border-yellow-300'
-      case 'expired':
-        return 'bg-red-100 text-red-700 border-red-300'
+      case "active":
+        return "bg-green-100 text-green-700 border-green-300";
+      case "cancelled":
+        return "bg-yellow-100 text-yellow-700 border-yellow-300";
+      case "expired":
+        return "bg-red-100 text-red-700 border-red-300";
       default:
-        return 'bg-gray-100 text-gray-700 border-gray-300'
+        return "bg-gray-100 text-gray-700 border-gray-300";
     }
-  }
+  };
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'active':
-        return '✓'
-      case 'cancelled':
-        return '⚠️'
-      case 'expired':
-        return '❌'
+      case "active":
+        return "✓";
+      case "cancelled":
+        return "⚠️";
+      case "expired":
+        return "❌";
       default:
-        return '○'
+        return "○";
     }
-  }
+  };
 
-  if (!status) return null
+  if (!status) return null;
 
   return (
-    <div className={`inline-flex items-center px-4 py-2 rounded-lg border ${getStatusColor(status)}`}>
+    <div
+      className={`inline-flex items-center px-4 py-2 rounded-lg border ${getStatusColor(status)}`}
+    >
       <span className="mr-2">{getStatusIcon(status)}</span>
       <div className="text-left">
         <div className="font-semibold text-sm capitalize">{status}</div>
         {plan && (
           <div className="text-xs opacity-75 capitalize">{plan} Plan</div>
         )}
-        {expiryDate && status === 'cancelled' && (
+        {expiryDate && status === "cancelled" && (
           <div className="text-xs opacity-75">Expires: {expiryDate}</div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 /**
  * Loading skeleton for gated content
@@ -278,7 +280,7 @@ export const AccessLoadingSkeleton = () => {
         <div className="h-10 bg-gray-200 rounded w-40"></div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AccessGate
+export default AccessGate;

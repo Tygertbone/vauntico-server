@@ -1,5 +1,5 @@
 ---
-description: 'Enforce default parameters to be last.'
+description: "Enforce default parameters to be last."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

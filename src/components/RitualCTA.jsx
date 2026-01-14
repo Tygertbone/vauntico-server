@@ -1,42 +1,50 @@
-import React, { useState } from 'react';
-import { ArrowRight, Sparkles, Heart, Infinity, Eye, Crown, Gem } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  ArrowRight,
+  Sparkles,
+  Heart,
+  Infinity,
+  Eye,
+  Crown,
+  Gem,
+} from "lucide-react";
 
-const RitualCTA = ({ onAction, variant = 'primary' }) => {
+const RitualCTA = ({ onAction, variant = "primary" }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const sacredActions = {
     primary: {
-      text: 'Begin Your Legacy',
-      subtext: 'Join the sacred circle of creators',
+      text: "Begin Your Legacy",
+      subtext: "Join the sacred circle of creators",
       icon: Crown,
-      gradient: 'from-purple-600 via-pink-600 to-orange-600',
-      hoverGradient: 'from-purple-700 via-pink-700 to-orange-700',
-      glowColor: 'purple'
+      gradient: "from-purple-600 via-pink-600 to-orange-600",
+      hoverGradient: "from-purple-700 via-pink-700 to-orange-700",
+      glowColor: "purple",
     },
     secondary: {
-      text: 'Explore the Vault',
-      subtext: 'Discover sacred creator tools',
+      text: "Explore the Vault",
+      subtext: "Discover sacred creator tools",
       icon: Gem,
-      gradient: 'from-blue-600 via-indigo-600 to-purple-600',
-      hoverGradient: 'from-blue-700 via-indigo-700 to-purple-700',
-      glowColor: 'blue'
+      gradient: "from-blue-600 via-indigo-600 to-purple-600",
+      hoverGradient: "from-blue-700 via-indigo-700 to-purple-700",
+      glowColor: "blue",
     },
     community: {
-      text: 'Join the Circle',
-      subtext: 'Connect with fellow creators',
+      text: "Join the Circle",
+      subtext: "Connect with fellow creators",
       icon: Heart,
-      gradient: 'from-pink-600 via-red-600 to-orange-600',
-      hoverGradient: 'from-pink-700 via-red-700 to-orange-700',
-      glowColor: 'pink'
+      gradient: "from-pink-600 via-red-600 to-orange-600",
+      hoverGradient: "from-pink-700 via-red-700 to-orange-700",
+      glowColor: "pink",
     },
     wisdom: {
-      text: 'Receive Wisdom',
-      subtext: 'Learn sacred creator practices',
+      text: "Receive Wisdom",
+      subtext: "Learn sacred creator practices",
       icon: Eye,
-      gradient: 'from-yellow-600 via-orange-600 to-red-600',
-      hoverGradient: 'from-yellow-700 via-orange-700 to-red-700',
-      glowColor: 'yellow'
-    }
+      gradient: "from-yellow-600 via-orange-600 to-red-600",
+      hoverGradient: "from-yellow-700 via-orange-700 to-red-700",
+      glowColor: "yellow",
+    },
   };
 
   const currentAction = sacredActions[variant] || sacredActions.primary;
@@ -47,21 +55,23 @@ const RitualCTA = ({ onAction, variant = 'primary' }) => {
     "Together we create abundance",
     "My success lifts others",
     "Community is my foundation",
-    "We rise by lifting others"
+    "We rise by lifting others",
   ];
 
-  const [ubuntuPhrase] = useState(ubuntuPhrases[Math.floor(Math.random() * ubuntuPhrases.length)]);
+  const [ubuntuPhrase] = useState(
+    ubuntuPhrases[Math.floor(Math.random() * ubuntuPhrases.length)],
+  );
 
   const handleClick = () => {
     // Create ripple effect
-    const button = document.getElementById('ritual-cta-button');
+    const button = document.getElementById("ritual-cta-button");
     if (button) {
-      button.style.transform = 'scale(0.95)';
+      button.style.transform = "scale(0.95)";
       setTimeout(() => {
-        button.style.transform = 'scale(1)';
+        button.style.transform = "scale(1)";
       }, 200);
     }
-    
+
     if (onAction) {
       onAction(variant);
     }
@@ -70,8 +80,10 @@ const RitualCTA = ({ onAction, variant = 'primary' }) => {
   return (
     <div className="relative group">
       {/* Sacred Glow Background */}
-      <div className={`absolute inset-0 bg-gradient-to-r ${currentAction.gradient} opacity-0 group-hover:opacity-20 rounded-2xl blur-xl transition-all duration-500`}></div>
-      
+      <div
+        className={`absolute inset-0 bg-gradient-to-r ${currentAction.gradient} opacity-0 group-hover:opacity-20 rounded-2xl blur-xl transition-all duration-500`}
+      ></div>
+
       {/* Floating Sacred Symbols */}
       <div className="absolute -top-2 -right-2 w-6 h-6 text-yellow-400 opacity-0 group-hover:opacity-100 animate-bounce">
         ✨
@@ -103,7 +115,9 @@ const RitualCTA = ({ onAction, variant = 'primary' }) => {
 
         {/* Icon Container */}
         <div className="relative">
-          <div className={`w-8 h-8 rounded-full bg-white/20 flex items-center justify-center transition-transform duration-300 ${isHovered ? 'rotate-12' : ''}`}>
+          <div
+            className={`w-8 h-8 rounded-full bg-white/20 flex items-center justify-center transition-transform duration-300 ${isHovered ? "rotate-12" : ""}`}
+          >
             <Icon className="w-5 h-5" />
           </div>
         </div>
@@ -112,12 +126,16 @@ const RitualCTA = ({ onAction, variant = 'primary' }) => {
         <div className="text-left">
           <div className="font-bold text-lg">{currentAction.text}</div>
           {isHovered && (
-            <div className="text-sm opacity-90 animate-fade-in">{currentAction.subtext}</div>
+            <div className="text-sm opacity-90 animate-fade-in">
+              {currentAction.subtext}
+            </div>
           )}
         </div>
 
         {/* Arrow */}
-        <ArrowRight className={`w-5 h-5 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
+        <ArrowRight
+          className={`w-5 h-5 transition-transform duration-300 ${isHovered ? "translate-x-1" : ""}`}
+        />
       </button>
 
       {/* Ubuntu Wisdom Footer */}
@@ -132,12 +150,22 @@ const RitualCTA = ({ onAction, variant = 'primary' }) => {
       {/* Custom Animations */}
       <style jsx>{`
         @keyframes shimmer {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
         }
         @keyframes fade-in {
-          from { opacity: 0; transform: translateY(5px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(5px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         .animate-shimmer {
           animation: shimmer 2s ease-in-out infinite;
@@ -167,7 +195,7 @@ export const RitualCTACollection = ({ onAction }) => {
         <RitualCTA variant="community" onAction={onAction} />
         <RitualCTA variant="wisdom" onAction={onAction} />
       </div>
-      
+
       {/* Centered Unity Symbol */}
       <div className="md:col-span-2 flex justify-center mt-8">
         <div className="relative">
@@ -202,10 +230,14 @@ export const ReceiveWisdomCTA = ({ onAction }) => (
 
 <style jsx>{`
   @keyframes spin-slow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
   .animate-spin-slow {
     animation: spin-slow 8s linear infinite;
   }
-`}</style>
+`}</style>;

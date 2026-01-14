@@ -1,5 +1,5 @@
 ---
-description: 'Disallow type arguments that are equal to the default.'
+description: "Disallow type arguments that are equal to the default."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

@@ -1,5 +1,5 @@
 ---
-description: 'Enforce using concise optional chain expressions instead of chained logical ands, negated logical ors, or empty objects.'
+description: "Enforce using concise optional chain expressions instead of chained logical ands, negated logical ors, or empty objects."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -20,12 +20,12 @@ This rule reports on code where an `&&` operator can be safely replaced with `?.
 
 ```ts
 foo && foo.a && foo.a.b && foo.a.b.c;
-foo && foo['a'] && foo['a'].b && foo['a'].b.c;
+foo && foo["a"] && foo["a"].b && foo["a"].b.c;
 foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
 
 // With empty objects
 (((foo || {}).a || {}).b || {}).c;
-(((foo || {})['a'] || {}).b || {}).c;
+(((foo || {})["a"] || {}).b || {}).c;
 
 // With negated `or`s
 !foo || !foo.bar;
@@ -45,7 +45,7 @@ foo &&
 
 ```ts
 foo?.a?.b?.c;
-foo?.['a']?.b?.c;
+foo?.["a"]?.b?.c;
 foo?.a?.b?.method?.();
 
 foo?.a?.b?.c?.d?.e;

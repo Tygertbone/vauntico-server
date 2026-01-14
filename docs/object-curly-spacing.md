@@ -1,5 +1,5 @@
 ---
-description: 'Enforce consistent spacing inside braces.'
+description: "Enforce consistent spacing inside braces."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

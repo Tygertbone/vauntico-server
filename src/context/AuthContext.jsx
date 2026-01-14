@@ -1,5 +1,5 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import apiClient from '../lib/api';
+import React, { createContext, useState, useContext, useEffect } from "react";
+import apiClient from "../lib/api";
 
 const AuthContext = createContext();
 
@@ -9,10 +9,10 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     // Check if user is already logged in (token exists)
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     if (token) {
       // Try to validate token or get user info
-      setUser({ id: 'current_user', email: 'user@example.com' }); // Placeholder
+      setUser({ id: "current_user", email: "user@example.com" }); // Placeholder
     }
     setLoading(false);
   }, []);
@@ -55,17 +55,13 @@ export function AuthProvider({ children }) {
     signOut,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

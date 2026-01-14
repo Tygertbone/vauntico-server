@@ -55,10 +55,10 @@ Vercel will show you DNS records. You said you've set this up 4 times, so your D
 
 **At your domain registrar (Namecheap/GoDaddy/etc), you should have:**
 
-| Type | Name | Value |
-|------|------|-------|
-| A | @ | 76.76.21.21 |
-| CNAME | www | cname.vercel-dns.com |
+| Type  | Name | Value                |
+| ----- | ---- | -------------------- |
+| A     | @    | 76.76.21.21          |
+| CNAME | www  | cname.vercel-dns.com |
 
 **If these are already set → PERFECT!** Just wait 5-10 minutes after adding domain in Vercel.
 
@@ -75,6 +75,7 @@ Vercel will show you DNS records. You said you've set this up 4 times, so your D
 ## ⏱️ Timeline
 
 **After adding domain in Vercel:**
+
 - Vercel validates DNS: 2-5 minutes
 - SSL certificate issued: 5-10 minutes
 - **Total:** 7-15 minutes until vauntico.com works
@@ -84,20 +85,24 @@ Vercel will show you DNS records. You said you've set this up 4 times, so your D
 ## 🔍 How to Check Progress
 
 ### **1. Check Domain Status in Vercel**
+
 https://vercel.com/tyrones-projects-6eab466c/vauntico-mvp-cursur-build/settings/domains
 
 You'll see:
+
 - 🟡 **Pending** - Waiting for DNS
 - 🟡 **Validating** - DNS found, issuing SSL
 - 🟢 **Valid** - Everything working!
 
 ### **2. Test DNS**
+
 ```powershell
 nslookup vauntico.com
 # Should show: 76.76.21.21
 ```
 
 ### **3. Test in Browser**
+
 - Try: https://vauntico.com (might not work immediately)
 - Try: https://www.vauntico.com
 - Clear cache: Ctrl+Shift+R
@@ -107,10 +112,12 @@ nslookup vauntico.com
 ## 🎯 Current URLs
 
 **WORKING NOW:**
+
 - ✅ https://vauntico-mvp-cursur-build.vercel.app
 - ✅ https://vauntico-mvp-cursur-build-tyrones-projects-6eab466c.vercel.app
 
 **NOT WORKING (YET):**
+
 - ❌ https://vauntico.com
 - ❌ https://www.vauntico.com
 
@@ -123,12 +130,14 @@ nslookup vauntico.com
 1. **Check Vercel domain status** - Should say "Valid"
 2. **Verify DNS records** - Use nslookup command above
 3. **Clear all caches:**
+
    ```powershell
    # Flush DNS cache
    ipconfig /flushdns
-   
+
    # Then test in incognito window
    ```
+
 4. **Check DNS globally:** https://dnschecker.org (enter vauntico.com)
 
 ---
@@ -143,6 +152,7 @@ https://vercel.com/tyrones-projects-6eab466c/vauntico-mvp-cursur-build/settings/
 ## ✨ After It Works
 
 Update these bookmarks:
+
 - Dashboard: https://vauntico.com/dashboard
 - Pricing: https://vauntico.com/pricing
 - R2,000 Challenge: https://vauntico.com/r2000-challenge

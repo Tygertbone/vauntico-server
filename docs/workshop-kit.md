@@ -1,7 +1,7 @@
 # 🛠️ Workshop Kit - Syndication Scroll
 
 **Module Name:** Workshop Kit  
-**Mythic Identity:** *The Forge of Mastery*  
+**Mythic Identity:** _The Forge of Mastery_  
 **Phase:** 3 - Soul Surfacing  
 **Status:** 🔥 Ready to Forge
 
@@ -9,7 +9,7 @@
 
 ## 🎭 Mythic Lore
 
-> *"Within the Workshop Kit lies not mere tools, but the collective wisdom of master craftsmen. Each template, a lesson; each component, a building block toward mastery."*
+> _"Within the Workshop Kit lies not mere tools, but the collective wisdom of master craftsmen. Each template, a lesson; each component, a building block toward mastery."_
 
 The Workshop Kit transforms the learning journey into an adventure of creation. It's where beginners become builders and builders become architects.
 
@@ -18,18 +18,21 @@ The Workshop Kit transforms the learning journey into an adventure of creation. 
 ## ✨ Core Features
 
 ### 📦 Component Library
+
 - **50+ React Components**: Pre-built, production-ready UI elements
 - **Tailwind Templates**: Complete page layouts and sections
 - **Animation Presets**: Smooth transitions and micro-interactions
 - **Form Builders**: Advanced form components with validation
 
 ### 🎓 Learning Resources
+
 - **Video Tutorials**: 20+ hours of step-by-step guides
 - **Interactive Playground**: Live code editor with instant preview
 - **Challenge Labs**: Hands-on coding challenges
 - **Certificate Programs**: Earn badges and certificates
 
 ### 🚀 Starter Kits
+
 - **SaaS Starter**: Complete SaaS application template
 - **Portfolio Builder**: Professional portfolio site
 - **Blog Engine**: SEO-optimized blog platform
@@ -37,6 +40,7 @@ The Workshop Kit transforms the learning journey into an adventure of creation. 
 - **E-commerce Kit**: Full shopping cart implementation
 
 ### 🔧 Developer Tools
+
 - **Code Generator**: Scaffold components from CLI
 - **Theme Customizer**: Visual theme editor
 - **Asset Manager**: Organize and optimize media
@@ -46,30 +50,31 @@ The Workshop Kit transforms the learning journey into an adventure of creation. 
 
 ## 💰 Pricing
 
-| Tier | Price | Description |
-|------|-------|-------------|
-| **Free** | R0 | 10 components, basic tutorials |
-| **Pro** | R299/month | Full library, all tutorials, support |
-| **Team** | R899/month | 5 seats, collaboration tools, priority support |
-| **Creator Pass** | Included | Everything Pro + exclusive workshops |
+| Tier             | Price      | Description                                    |
+| ---------------- | ---------- | ---------------------------------------------- |
+| **Free**         | R0         | 10 components, basic tutorials                 |
+| **Pro**          | R299/month | Full library, all tutorials, support           |
+| **Team**         | R899/month | 5 seats, collaboration tools, priority support |
+| **Creator Pass** | Included   | Everything Pro + exclusive workshops           |
 
 ### 🎯 What's Included by Tier
 
-| Feature | Free | Pro | Team | Creator Pass |
-|---------|------|-----|------|--------------|
-| Component Library | 10 | 50+ | 50+ | 50+ |
-| Starter Kits | 1 | 5 | 5 | 5 |
-| Video Tutorials | 5 | 20+ | 20+ | 20+ |
-| Code Generation | ❌ | ✅ | ✅ | ✅ |
-| Live Support | ❌ | Email | Priority | VIP |
-| Team Collaboration | ❌ | ❌ | ✅ | ✅ |
-| Custom Workshops | ❌ | ❌ | ❌ | ✅ |
+| Feature            | Free | Pro   | Team     | Creator Pass |
+| ------------------ | ---- | ----- | -------- | ------------ |
+| Component Library  | 10   | 50+   | 50+      | 50+          |
+| Starter Kits       | 1    | 5     | 5        | 5            |
+| Video Tutorials    | 5    | 20+   | 20+      | 20+          |
+| Code Generation    | ❌   | ✅    | ✅       | ✅           |
+| Live Support       | ❌   | Email | Priority | VIP          |
+| Team Collaboration | ❌   | ❌    | ✅       | ✅           |
+| Custom Workshops   | ❌   | ❌    | ❌       | ✅           |
 
 ---
 
 ## 🎨 Component Showcase
 
 ### UI Components
+
 ```jsx
 // Button variations
 <Button variant="primary">Click Me</Button>
@@ -86,8 +91,8 @@ The Workshop Kit transforms the learning journey into an adventure of creation. 
 </Modal>
 
 // Data display
-<DataTable 
-  data={users} 
+<DataTable
+  data={users}
   columns={columns}
   sortable
   filterable
@@ -96,6 +101,7 @@ The Workshop Kit transforms the learning journey into an adventure of creation. 
 ```
 
 ### Form Components
+
 ```jsx
 // Advanced form builder
 <FormBuilder schema={schema} onSubmit={handleSubmit}>
@@ -112,21 +118,25 @@ The Workshop Kit transforms the learning journey into an adventure of creation. 
 ## 🔓 Unlock Conditions
 
 ### Free Tier
+
 - Sign up for Vauntico account
 - Email verification required
 - Instant access to 10 basic components
 
 ### Pro Tier
+
 - One-time R299/month subscription
 - Unlocks full library immediately
 - Cancel anytime, keep current downloads
 
 ### Team Tier
+
 - Minimum 5 seats at R899/month
 - Invite team members via email
 - Shared component library and projects
 
 ### Creator Pass
+
 - Subscribe to Creator Pass (R1,999/month)
 - Instant access to all Workshop Kit features
 - Exclusive monthly live workshops
@@ -137,6 +147,7 @@ The Workshop Kit transforms the learning journey into an adventure of creation. 
 ## 🛠️ Technical Specifications
 
 ### Framework Support
+
 - React 18+
 - Next.js 13+
 - Vite 4+
@@ -144,6 +155,7 @@ The Workshop Kit transforms the learning journey into an adventure of creation. 
 - Astro
 
 ### Styling Systems
+
 - Tailwind CSS 3+
 - CSS Modules
 - Styled Components
@@ -151,6 +163,7 @@ The Workshop Kit transforms the learning journey into an adventure of creation. 
 - Vanilla CSS
 
 ### TypeScript
+
 - Full TypeScript support
 - Type definitions included
 - Generic component types
@@ -161,6 +174,7 @@ The Workshop Kit transforms the learning journey into an adventure of creation. 
 ## 📦 Installation
 
 ### Via npm/pnpm
+
 ```bash
 # Install the Workshop Kit
 pnpm add @vauntico/workshop-kit
@@ -171,6 +185,7 @@ import '@vauntico/workshop-kit/styles.css'
 ```
 
 ### Via CLI
+
 ```bash
 # Install CLI globally
 npm install -g @vauntico/cli
@@ -187,6 +202,7 @@ vauntico scaffold --template saas-starter
 ## 🎁 Bundled Resources
 
 ### Included in Pro+
+
 - **Design System**: Complete Figma design files
 - **Icon Pack**: 500+ custom SVG icons
 - **Asset Library**: Stock photos and illustrations
@@ -194,6 +210,7 @@ vauntico scaffold --template saas-starter
 - **Animation Library**: 100+ Framer Motion presets
 
 ### Exclusive to Creator Pass
+
 - **Monthly Live Workshops**: Learn from experts
 - **Custom Component Queue**: Request specific components
 - **Priority Feature Requests**: Vote on roadmap
@@ -205,18 +222,21 @@ vauntico scaffold --template saas-starter
 ## 📚 Learning Path
 
 ### Beginner Track (Free)
+
 1. **Week 1**: React Basics & Components
 2. **Week 2**: Props & State Management
 3. **Week 3**: Styling with Tailwind
 4. **Week 4**: Build Your First Project
 
 ### Intermediate Track (Pro)
+
 1. **Month 1**: Advanced React Patterns
 2. **Month 2**: Performance Optimization
 3. **Month 3**: Testing & Quality Assurance
 4. **Month 4**: Deployment & CI/CD
 
 ### Advanced Track (Creator Pass)
+
 1. **Custom Hooks Mastery**
 2. **State Management at Scale**
 3. **Micro-Frontend Architecture**
@@ -226,13 +246,13 @@ vauntico scaffold --template saas-starter
 
 ## 🌟 Success Stories
 
-> *"The Workshop Kit cut our development time by 60%. We shipped our MVP in 3 weeks instead of 2 months."*  
+> _"The Workshop Kit cut our development time by 60%. We shipped our MVP in 3 weeks instead of 2 months."_  
 > — Sarah Chen, Founder @ TechFlow
 
-> *"As a beginner, the tutorials and components helped me land my first dev job in 4 months."*  
+> _"As a beginner, the tutorials and components helped me land my first dev job in 4 months."_  
 > — Marcus Johnson, Junior Developer
 
-> *"We trained our entire team using Workshop Kit. Best investment we made this year."*  
+> _"We trained our entire team using Workshop Kit. Best investment we made this year."_  
 > — David Park, CTO @ ScaleUp
 
 ---
@@ -250,16 +270,19 @@ vauntico scaffold --template saas-starter
 ## 🚀 Roadmap
 
 ### Q1 2025
+
 - [ ] Vue 3 component library
 - [ ] Svelte support
 - [ ] Mobile component pack (React Native)
 
 ### Q2 2025
+
 - [ ] AI component generator
 - [ ] Accessibility compliance checker
 - [ ] Performance monitoring dashboard
 
 ### Q3 2025
+
 - [ ] Collaboration features (Figma-like)
 - [ ] Version control for components
 - [ ] Marketplace for community components

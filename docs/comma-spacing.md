@@ -1,5 +1,5 @@
 ---
-description: 'Enforce consistent spacing before and after commas.'
+description: "Enforce consistent spacing before and after commas."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

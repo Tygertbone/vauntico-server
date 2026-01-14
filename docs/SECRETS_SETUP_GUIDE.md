@@ -5,6 +5,7 @@
 Add the following secrets to your GitHub repository settings:
 
 ### Core API Keys
+
 - `RESEND_API_KEY`: Your Resend email service API key
 - `PAYSTACK_SECRET_KEY`: Your Paystack payment processor secret key
 - `ANTHROPIC_API_KEY`: Your Anthropic Claude API key
@@ -13,12 +14,15 @@ Add the following secrets to your GitHub repository settings:
 - `SERVICE_API_KEY`: Your internal service API key
 
 ### Email Configuration
+
 - `SENDER_EMAIL`: The email address used as sender (e.g., noreply@yourdomain.com)
 
 ### Payment Processing
+
 - `STRIPE_SECRET_KEY`: Your Stripe secret key (if using Stripe)
 
 ### OCI Cloud Infrastructure (if applicable)
+
 - `OCI_PRIVATE_KEY`: Oracle Cloud Infrastructure private key
 - `OCI_USER_OCID`: Oracle Cloud user OCID
 - `OCI_TENANCY_OCID`: Oracle Cloud tenancy OCID
@@ -28,6 +32,7 @@ Add the following secrets to your GitHub repository settings:
 - `OCI_BASTION_CIDR`: Oracle Cloud bastion CIDR configuration
 
 ### Additional Services
+
 - `RAILWAY_TOKEN`: Railway deployment token (if using Railway)
 
 ## Vercel Environment Variables
@@ -35,6 +40,7 @@ Add the following secrets to your GitHub repository settings:
 Add the following environment variables to your Vercel project:
 
 ### Public Variables (exposed to frontend)
+
 - `NEXT_PUBLIC_API_URL`: Your backend API URL
 - `NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY`: Your Paystack public key
 - `NEXT_PUBLIC_ENABLE_PAYMENT_BRIDGE`: true
@@ -42,6 +48,7 @@ Add the following environment variables to your Vercel project:
 - `NEXT_PUBLIC_ENABLE_CONTENT_RECOVERY`: true
 
 ### Secret Variables
+
 - `RESEND_API_KEY`: Same as GitHub Actions
 - `PAYSTACK_SECRET_KEY`: Same as GitHub Actions
 - `ANTHROPIC_API_KEY`: Same as GitHub Actions
@@ -53,6 +60,7 @@ Add the following environment variables to your Vercel project:
 ## Setup Instructions
 
 ### GitHub Actions
+
 1. Go to your repository on GitHub
 2. Navigate to Settings > Secrets and variables > Actions
 3. Click "New repository secret"
@@ -60,6 +68,7 @@ Add the following environment variables to your Vercel project:
 5. Ensure "Keep values for pull requests from forks" is checked if needed
 
 ### Vercel
+
 1. Go to your Vercel dashboard
 2. Select your Vauntico project
 3. Navigate to Settings > Environment Variables
@@ -85,6 +94,7 @@ After setting up secrets, you can validate by:
 ## Troubleshooting
 
 If services fail to start:
+
 1. Check that secrets are correctly spelled and formatted
 2. Verify environment variable names match exactly
 3. Check service provider dashboards for API key status

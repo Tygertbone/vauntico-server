@@ -1,5 +1,5 @@
 ---
-description: 'Disallow duplicate enum member values.'
+description: "Disallow duplicate enum member values."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -28,8 +28,8 @@ enum E {
 
 ```ts
 enum E {
-  A = 'A',
-  B = 'A',
+  A = "A",
+  B = "A",
 }
 ```
 
@@ -44,8 +44,8 @@ enum E {
 
 ```ts
 enum E {
-  A = 'A',
-  B = 'B',
+  A = "A",
+  B = "B",
 }
 ```
 

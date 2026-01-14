@@ -23,23 +23,23 @@ This rule reports an `export {}` that doesn't do anything in a file already usin
 ### ❌ Incorrect
 
 ```ts
-export const value = 'Hello, world!';
+export const value = "Hello, world!";
 export {};
 ```
 
 ```ts
-import 'some-other-module';
+import "some-other-module";
 export {};
 ```
 
 ### ✅ Correct
 
 ```ts
-export const value = 'Hello, world!';
+export const value = "Hello, world!";
 ```
 
 ```ts
-import 'some-other-module';
+import "some-other-module";
 ```
 
 ## When Not To Use It

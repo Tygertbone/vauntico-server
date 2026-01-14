@@ -61,12 +61,14 @@ Hire VA for R1,500/month → Frees 20 hours/month → You earn R2,000+ more = NE
 
 ### **Option #1: Local (In Your City)**
 
-**Pros:**  
+**Pros:**
+
 - Same timezone
 - Cultural understanding
 - Easy communication
 
-**Where:**  
+**Where:**
+
 - University job boards (students need work!)
 - Facebook groups ("Virtual Assistant Jobs [Your City]")
 - LinkedIn (search "VA" + your city)
@@ -77,15 +79,18 @@ Hire VA for R1,500/month → Frees 20 hours/month → You earn R2,000+ more = NE
 
 ### **Option #2: Online Platforms**
 
-**Fiverr** (fiverr.com)  
+**Fiverr** (fiverr.com)
+
 - Hire per task or monthly
 - R500-2,000/month
 
-**Upwork** (upwork.com)  
+**Upwork** (upwork.com)
+
 - More vetted, professional
 - R2,000-5,000/month
 
-**OnlineJobs.ph** (Philippines-based, English-speaking)  
+**OnlineJobs.ph** (Philippines-based, English-speaking)
+
 - Very affordable
 - R1,500-3,000/month full-time!
 
@@ -136,7 +141,8 @@ Apply: [Your email or DM]
 
 ### **Step 2: Screen Applicants**
 
-**Ask:**  
+**Ask:**
+
 - "Can you commit to 10 hours/week?"
 - "Do you have experience with [task]?"
 - "What's your rate expectation?"
@@ -150,7 +156,8 @@ Apply: [Your email or DM]
 
 ### **Step 3: Trial Period**
 
-**Week 1-2: Paid trial (R400)**  
+**Week 1-2: Paid trial (R400)**
+
 - Give 1-2 tasks
 - See quality, speed, communication
 - Decide to continue or not
@@ -163,7 +170,8 @@ Apply: [Your email or DM]
 
 **Create SOPs (Standard Operating Procedures):**
 
-**Example: Repurposing SOP**  
+**Example: Repurposing SOP**
+
 1. Download video from Google Drive
 2. Upload to TikTok (caption template)
 3. Upload to Instagram (caption template)

@@ -1,5 +1,5 @@
 ---
-description: 'Disallow empty functions.'
+description: "Disallow empty functions."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -17,10 +17,10 @@ This rule adds the following options:
 
 ```ts
 type AdditionalAllowOptionEntries =
-  | 'private-constructors'
-  | 'protected-constructors'
-  | 'decoratedFunctions'
-  | 'overrideMethods';
+  | "private-constructors"
+  | "protected-constructors"
+  | "decoratedFunctions"
+  | "overrideMethods";
 
 type AllowOptionEntries =
   | BaseNoEmptyFunctionAllowOptionEntries
@@ -73,7 +73,7 @@ Examples of correct code for the `{ "allow": ["overrideMethods"] }` option:
 ```ts option='{ "allow": ["overrideMethods"] }' showPlaygroundButton
 abstract class Base {
   protected greet(): void {
-    console.log('Hello!');
+    console.log("Hello!");
   }
 }
 

@@ -9,19 +9,23 @@ All code is committed and pushed to GitHub!
 ## ⚡ Quick Start (3 Steps)
 
 ### 1️⃣ Update `.env` File
+
 Open `.env` and add this line:
+
 ```bash
 VITE_MIXPANEL_TOKEN=f8d19eae67c8d6bef4f547d72d4b4b57
 ```
 
 ### 2️⃣ Restart Dev Server
+
 ```bash
 pnpm dev
 ```
 
 ### 3️⃣ Test in Browser Console
+
 ```javascript
-window.VaunticoAnalytics.trackEvent('test_event', { test: true })
+window.VaunticoAnalytics.trackEvent("test_event", { test: true });
 ```
 
 ---
@@ -42,16 +46,16 @@ Open browser console after starting dev server:
 
 ```javascript
 // Basic test
-window.VaunticoAnalytics.trackEvent('test', { source: 'console' })
+window.VaunticoAnalytics.trackEvent("test", { source: "console" });
 
 // User identification
-window.VaunticoAnalytics.identifyUser('test_user_123', {
-  name: 'Test User',
-  email: 'test@vauntico.com'
-})
+window.VaunticoAnalytics.identifyUser("test_user_123", {
+  name: "Test User",
+  email: "test@vauntico.com",
+});
 
 // Check Mixpanel directly
-mixpanel.track('manual_test', { timestamp: Date.now() })
+mixpanel.track("manual_test", { timestamp: Date.now() });
 ```
 
 ---
@@ -59,6 +63,7 @@ mixpanel.track('manual_test', { timestamp: Date.now() })
 ## 🚀 Production Deployment
 
 **Vercel**: Settings → Environment Variables → Add:
+
 - Name: `VITE_MIXPANEL_TOKEN`
 - Value: `f8d19eae67c8d6bef4f547d72d4b4b57`
 

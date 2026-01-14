@@ -7,6 +7,7 @@ The migration is **complete**. All critical scrolls are now enshrined in the Lor
 ### What We Built:
 
 #### 📚 The Lore Vault
+
 ```
 docs/lore/
 ├── README.md                    # Vault entrance guide
@@ -35,11 +36,13 @@ docs/lore/
 ## 🎯 YOUR FOUR PATHWAYS TO ACTIVATION
 
 ### Option 1: Bind Creator Pass to Gated Scroll Access ⚡
+
 **Status:** Architecture ready, needs UI implementation  
 **Time:** 4-6 hours  
 **Impact:** HIGH
 
 **What This Unlocks:**
+
 - Dynamic scroll access based on tier
 - Premium knowledge hub
 - Scroll marketplace potential
@@ -47,11 +50,13 @@ docs/lore/
 ---
 
 ### Option 2: Build CLI Onboarding Rituals 🎮
+
 **Status:** Designed, not implemented  
 **Time:** 6-8 hours  
 **Impact:** MEDIUM
 
 **What This Unlocks:**
+
 - Interactive user onboarding
 - Gamified first experience
 - Higher activation rates
@@ -59,11 +64,13 @@ docs/lore/
 ---
 
 ### Option 3: Polish Tier System ✨
+
 **Status:** 90% complete  
 **Time:** 2-3 hours  
 **Impact:** LOW
 
 **What This Unlocks:**
+
 - Smooth upgrade flows
 - Credit visualization
 - Tier calculator
@@ -71,11 +78,13 @@ docs/lore/
 ---
 
 ### Option 4: Create /lore Landing Page 🌟 **← RECOMMENDED**
+
 **Status:** Not started  
 **Time:** 8-10 hours  
 **Impact:** HIGH
 
 **What This Unlocks:**
+
 - Beautiful knowledge hub
 - Role-based navigation
 - Gated content demo
@@ -88,12 +97,14 @@ docs/lore/
 **Build the `/lore` Landing Page First**
 
 **Why:**
+
 1. **Visual Impact** - Creates premium knowledge experience
 2. **Foundation** - Required for scroll gating
 3. **Sales Tool** - Perfect for demos and pitches
 4. **Quick Win** - Can ship in one focused session
 
 **Quick Start:**
+
 ```bash
 # 1. Create the page
 src/pages/LoreVault.jsx
@@ -112,22 +123,26 @@ App.jsx → <Route path="/lore" element={<LoreVault />} />
 ## 📊 WHAT'S ALREADY WORKING
 
 ### ✅ Three-Tier Covenant System
+
 - **Starter:** R299/month - 500 credits
 - **Pro:** R999/month - 2,500 credits (MOST POPULAR)
 - **Legacy:** R2,999/month - 10,000 credits
 
 ### ✅ Access Control Infrastructure
+
 - `hasCreatorPass()` - Check subscription
 - `canAccessWorkshopKit()` - Check feature access
 - `<AccessGate>` - Paywall component
 - `<AccessBadge>` - Status indicators
 
 ### ✅ Regional Pricing
+
 - Automatic ZAR/USD detection
 - Localized pricing display
 - Approximate conversions
 
 ### ✅ Complete UI Pages
+
 - Creator Pass selection
 - Pricing comparison
 - Workshop Kit (gated)
@@ -140,6 +155,7 @@ App.jsx → <Route path="/lore" element={<LoreVault />} />
 **You Tell Me!**
 
 Do you want to:
+
 1. **Build the Lore Vault UI** (my recommendation)
 2. **Add CLI onboarding rituals**
 3. **Polish existing tier features**

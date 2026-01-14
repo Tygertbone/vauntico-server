@@ -1,5 +1,5 @@
 ---
-description: 'Require consistently using either `T[]` or `Array<T>` for arrays.'
+description: "Require consistently using either `T[]` or `Array<T>` for arrays."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -23,15 +23,15 @@ Always use `T[]` or `readonly T[]` for all array types.
 #### ❌ Incorrect
 
 ```ts option='{ "default": "array" }'
-const x: Array<string> = ['a', 'b'];
-const y: ReadonlyArray<string> = ['a', 'b'];
+const x: Array<string> = ["a", "b"];
+const y: ReadonlyArray<string> = ["a", "b"];
 ```
 
 #### ✅ Correct
 
 ```ts option='{ "default": "array" }'
-const x: string[] = ['a', 'b'];
-const y: readonly string[] = ['a', 'b'];
+const x: string[] = ["a", "b"];
+const y: readonly string[] = ["a", "b"];
 ```
 
 ### `"generic"`
@@ -43,15 +43,15 @@ Always use `Array<T>` or `ReadonlyArray<T>` for all array types.
 #### ❌ Incorrect
 
 ```ts option='{ "default": "generic" }'
-const x: string[] = ['a', 'b'];
-const y: readonly string[] = ['a', 'b'];
+const x: string[] = ["a", "b"];
+const y: readonly string[] = ["a", "b"];
 ```
 
 #### ✅ Correct
 
 ```ts option='{ "default": "generic" }'
-const x: Array<string> = ['a', 'b'];
-const y: ReadonlyArray<string> = ['a', 'b'];
+const x: Array<string> = ["a", "b"];
+const y: ReadonlyArray<string> = ["a", "b"];
 ```
 
 ### `"array-simple"`
@@ -64,23 +64,23 @@ Use `Array<T>` or `ReadonlyArray<T>` for all other types (union types, intersect
 #### ❌ Incorrect
 
 ```ts option='{ "default": "array-simple" }'
-const a: (string | number)[] = ['a', 'b'];
-const b: { prop: string }[] = [{ prop: 'a' }];
+const a: (string | number)[] = ["a", "b"];
+const b: { prop: string }[] = [{ prop: "a" }];
 const c: (() => void)[] = [() => {}];
-const d: Array<MyType> = ['a', 'b'];
-const e: Array<string> = ['a', 'b'];
-const f: ReadonlyArray<string> = ['a', 'b'];
+const d: Array<MyType> = ["a", "b"];
+const e: Array<string> = ["a", "b"];
+const f: ReadonlyArray<string> = ["a", "b"];
 ```
 
 #### ✅ Correct
 
 ```ts option='{ "default": "array-simple" }'
-const a: Array<string | number> = ['a', 'b'];
-const b: Array<{ prop: string }> = [{ prop: 'a' }];
+const a: Array<string | number> = ["a", "b"];
+const b: Array<{ prop: string }> = [{ prop: "a" }];
 const c: Array<() => void> = [() => {}];
-const d: MyType[] = ['a', 'b'];
-const e: string[] = ['a', 'b'];
-const f: readonly string[] = ['a', 'b'];
+const d: MyType[] = ["a", "b"];
+const e: string[] = ["a", "b"];
+const f: readonly string[] = ["a", "b"];
 ```
 
 ## Combination Matrix

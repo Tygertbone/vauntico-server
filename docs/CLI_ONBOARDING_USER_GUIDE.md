@@ -3,12 +3,15 @@
 ## Quick Start
 
 ### 1. Choose Your Role
+
 Navigate to `/lore` and select your path:
+
 - 👨‍💻 **Solo Creator**: Building your empire
 - 🏢 **Agency Partner**: Scale your services
 - 👥 **Team Lead**: Organize your squad
 
 ### 2. Start Onboarding
+
 After selecting a role, you'll see your **Onboarding Progress Card**:
 
 ```
@@ -26,6 +29,7 @@ After selecting a role, you'll see your **Onboarding Progress Card**:
 ### 3. Follow Interactive Steps
 
 Each step includes:
+
 - **Clear instructions** - What you're doing and why
 - **Copy-paste commands** - Click to copy to clipboard
 - **Verification steps** - How to confirm success
@@ -33,6 +37,7 @@ Each step includes:
 - **Optional indicators** - Skip non-essential steps
 
 Example step:
+
 ```
 ┌─────────────────────────────────────────┐
 │ ⚡ Install Dream Mover CLI              │
@@ -86,8 +91,9 @@ Example step:
 ```
 
 ### Steps:
+
 1. **Select a command template** from the left panel
-2. **Fill in required fields** (marked with *)
+2. **Fill in required fields** (marked with \*)
 3. **Click "Generate Command"**
 4. **Copy and run** in your terminal
 
@@ -97,16 +103,17 @@ Example step:
 
 Unlock badges as you progress:
 
-| Badge | Name | How to Unlock |
-|-------|------|---------------|
-| ⚡ | CLI Novice | Install Vauntico CLI |
-| 🔐 | Authenticated | Connect your account |
-| 🎨 | Dream Weaver | Generate first content |
-| 🏢 | Agency Pioneer | Onboard first client |
-| 👑 | CLI Master | Complete onboarding |
-| 🤖 | Automation Architect | Setup workflows |
+| Badge | Name                 | How to Unlock          |
+| ----- | -------------------- | ---------------------- |
+| ⚡    | CLI Novice           | Install Vauntico CLI   |
+| 🔐    | Authenticated        | Connect your account   |
+| 🎨    | Dream Weaver         | Generate first content |
+| 🏢    | Agency Pioneer       | Onboard first client   |
+| 👑    | CLI Master           | Complete onboarding    |
+| 🤖    | Automation Architect | Setup workflows        |
 
 View your achievements by expanding the progress card:
+
 ```
 ┌─────────────────────────────────────────┐
 │ 🏆 Achievements                    3/6  │
@@ -122,7 +129,9 @@ View your achievements by expanding the progress card:
 ## Tips & Tricks
 
 ### 💡 Save Time with Aliases
+
 After completing onboarding, create shell aliases:
+
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
 alias vg="vauntico generate"
@@ -131,7 +140,9 @@ alias vc="vauntico config"
 ```
 
 ### 📋 Batch Operations
+
 Use the command generator to create a batch script:
+
 ```bash
 #!/bin/bash
 # Generated batch commands
@@ -141,39 +152,46 @@ vauntico audit run --url site3.com
 ```
 
 ### 🔄 Reset Progress
+
 Need to start over? Expand the progress card and click **"Reset Progress"**.
 
 ### 🎯 Jump Between Steps
+
 Click any completed step number in the navigation bar to revisit.
 
 ---
 
 ## Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| `ESC` | Close onboarding modal |
-| `←` | Previous step |
-| `→` | Next step |
-| `Ctrl+C` | Copy current command |
+| Key      | Action                 |
+| -------- | ---------------------- |
+| `ESC`    | Close onboarding modal |
+| `←`      | Previous step          |
+| `→`      | Next step              |
+| `Ctrl+C` | Copy current command   |
 
 ---
 
 ## FAQ
 
 ### Q: What if I already have the CLI installed?
+
 **A:** You can skip to verification steps or mark steps as complete immediately.
 
 ### Q: Can I do onboarding later?
+
 **A:** Yes! Your progress saves automatically. Return anytime.
 
 ### Q: Do I need Creator Pass for CLI?
+
 **A:** Basic CLI is free. Creator Pass unlocks advanced features and higher usage limits.
 
 ### Q: Can I change my role?
+
 **A:** Yes! Go back to role selection and choose a different path. Your progress saves per role.
 
 ### Q: What if a command fails?
+
 **A:** Check the scroll reference for troubleshooting or contact support.
 
 ---

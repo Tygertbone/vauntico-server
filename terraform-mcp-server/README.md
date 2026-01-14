@@ -26,6 +26,7 @@
 ### Available Tools
 
 The MCP server provides the following tools:
+
 - `terraform_workflow_guide` - Security-focused development workflow
 - `aws_best_practices` - AWS Well-Architected guidance
 - `aws_provider_resources_listing` - AWS provider documentation
@@ -39,11 +40,13 @@ The MCP server provides the following tools:
 ### Security Scan Results
 
 Tested the server's capabilities with an example Terraform file:
+
 - **6 checks passed** (basic security compliance)
 - **12 checks failed** (areas for improvement)
 - **0 skipped checks**
 
 Key findings included:
+
 - Missing EC2 detailed monitoring
 - Missing EBS optimization
 - Missing IAM roles
@@ -52,8 +55,9 @@ Key findings included:
 ### Configuration
 
 The MCP server is configured with:
+
 - **Command**: `uv tool run --from awslabs.terraform-mcp-server@latest awslabs.terraform-mcp-server`
-- **Environment**: 
+- **Environment**:
   - `FASTMCP_LOG_LEVEL`: ERROR
   - `AWS_PROFILE`: default
   - `AWS_REGION`: us-east-1

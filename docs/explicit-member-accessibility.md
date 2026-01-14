@@ -1,5 +1,5 @@
 ---
-description: 'Require explicit accessibility modifiers on class properties and methods.'
+description: "Require explicit accessibility modifiers on class properties and methods."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -320,13 +320,13 @@ e.g. `[ { ignoredMethodNames: ['specificMethod', 'whateverMethod'] } ]`
 ```ts option='{ "ignoredMethodNames": ["specificMethod", "whateverMethod"] }' showPlaygroundButton
 class Animal {
   get specificMethod() {
-    console.log('No error because you specified this method on option');
+    console.log("No error because you specified this method on option");
   }
   get whateverMethod() {
-    console.log('No error because you specified this method on option');
+    console.log("No error because you specified this method on option");
   }
   public get otherMethod() {
-    console.log('This method comply with this rule');
+    console.log("This method comply with this rule");
   }
 }
 ```

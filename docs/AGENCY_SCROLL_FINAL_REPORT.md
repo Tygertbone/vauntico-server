@@ -9,7 +9,9 @@ The Agency Scroll has been successfully forged and integrated into the Vauntico 
 ## 📦 FILES CREATED
 
 ### 1. scrolls/10-agency-scroll.md (12,500+ words)
+
 **The main Agency Scroll with:**
+
 - 🧭 The Revelation (positioning)
 - 🏢 5 Agency Archetypes
 - 🧱 7 Core Modules with pricing
@@ -23,18 +25,22 @@ The Agency Scroll has been successfully forged and integrated into the Vauntico 
 - ❓ 10-question FAQ
 
 ### 2. scrolls/AGENCY_CLI_QUICKSTART.md
+
 **Quick reference guide with:**
+
 - Installation & authentication
 - Essential commands
 - Batch operations
 - Pro tips & automation
 
 ### 3. scrolls/00-index.md (UPDATED)
+
 - Added 'Agency & B2B Scrolls' section
 - New reseller use case
 - Agency success metrics
 
 ### 4. Summary Documents
+
 - AGENCY_SCROLL_COMPLETE.md
 - AGENCY_IMPLEMENTATION_SUMMARY.md
 - AGENCY_SCROLL_README.md
@@ -43,11 +49,11 @@ The Agency Scroll has been successfully forged and integrated into the Vauntico 
 
 ## 💰 REVENUE MODELS
 
-| Model | Services | Annual Net Profit |
-|-------|----------|------------------|
-| Conservative | 10 audits/month @ R7,500 | R864,012 |
-| Moderate | 20 audits + 5 workshops | R2.4M |
-| Aggressive | 30 audits + 10 workshops + distribution | R5.2M |
+| Model        | Services                                | Annual Net Profit |
+| ------------ | --------------------------------------- | ----------------- |
+| Conservative | 10 audits/month @ R7,500                | R864,012          |
+| Moderate     | 20 audits + 5 workshops                 | R2.4M             |
+| Aggressive   | 30 audits + 10 workshops + distribution | R5.2M             |
 
 **Key**: 100% margin after Legacy tier subscription (R2,999/month)
 
@@ -73,22 +79,26 @@ vauntico agency dashboard
 vauntico agency revenue --period '2025-Q1'
 vauntico brand configure --name 'Agency' --logo ./logo.png
 \\\`n
+
 ---
 
 ## 🚀 NEXT STEPS
 
 ### Week 1: Review & Refine
+
 - [ ] Review Agency Scroll content
 - [ ] Validate pricing for SA market
 - [ ] Create visual assets
 
 ### Week 2-4: Website Integration
+
 - [ ] Build /agency landing page
 - [ ] Add agency onboarding flow
 - [ ] Record CLI tutorial videos
 - [ ] Create agency pitch deck
 
 ### Month 2+: Launch & Scale
+
 - [ ] Launch agency partnership program
 - [ ] Outreach to 50 target agencies
 - [ ] Host agency webinar
@@ -99,6 +109,7 @@ vauntico brand configure --name 'Agency' --logo ./logo.png
 ## 🎨 BRAND VOICE
 
 ✅ Maintained throughout:
+
 - Epic but grounded
 - Empowering, not preachy
 - Specific metrics & examples
@@ -110,12 +121,14 @@ vauntico brand configure --name 'Agency' --logo ./logo.png
 ## 📊 MARKET OPPORTUNITY
 
 **South African Digital Agency Market:**
+
 - Estimated agencies: 500-800
 - Target segment: 50-100 (growth-focused)
 - Avg. monthly revenue: R50K-R500K
 - Vauntico add-on potential: R50K-R300K/month
 
 **If 25 agencies adopt at moderate model:**
+
 - Combined agency revenue: R5.1M/month
 - Vauntico revenue (subscriptions): R74,975/month
 - Client reach: 500 end clients
@@ -143,6 +156,7 @@ vauntico brand configure --name 'Agency' --logo ./logo.png
 ## 🏆 STATUS: ✅ COMPLETE
 
 **Ready for:**
+
 - Website /agency page integration
 - Sales deck creation
 - Partner recruitment campaigns

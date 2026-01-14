@@ -1,5 +1,5 @@
 ---
-description: 'Disallow comparing an enum value with a non-enum value.'
+description: "Disallow comparing an enum value with a non-enum value."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -10,12 +10,12 @@ The TypeScript compiler can be surprisingly lenient when working with enums. Str
 
 ```ts
 enum Vegetable {
-  Asparagus = 'asparagus',
+  Asparagus = "asparagus",
 }
 
 declare const vegetable: Vegetable;
 
-vegetable === 'asparagus'; // No error
+vegetable === "asparagus"; // No error
 ```
 
 The above code snippet should instead be written as `vegetable === Vegetable.Asparagus`. Allowing literals in comparisons subverts the point of using enums in the first place. By enforcing comparisons with properly typed enums:
@@ -42,12 +42,12 @@ fruit === 0;
 
 ```ts
 enum Vegetable {
-  Asparagus = 'asparagus',
+  Asparagus = "asparagus",
 }
 
 declare let vegetable: Vegetable;
 
-vegetable === 'asparagus';
+vegetable === "asparagus";
 ```
 
 ### ✅ Correct
@@ -64,7 +64,7 @@ fruit === Fruit.Apple;
 
 ```ts
 enum Vegetable {
-  Asparagus = 'asparagus',
+  Asparagus = "asparagus",
 }
 
 declare let vegetable: Vegetable;

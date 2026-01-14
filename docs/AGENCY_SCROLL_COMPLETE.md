@@ -3,6 +3,7 @@
 ## 📜 What Was Created
 
 ### Primary Scroll
+
 **Location:** scrolls/10-agency-scroll.md
 
 A comprehensive, mythic-voiced guide for agencies to resell Vauntico as white-label services.
@@ -26,14 +27,17 @@ A comprehensive, mythic-voiced guide for agencies to resell Vauntico as white-la
 ## 📊 Revenue Models Documented
 
 ### Conservative Model
+
 - 10 audits/month at R7,500
 - Annual profit: **R864,012**
 
-### Moderate Model  
+### Moderate Model
+
 - 20 audits + 5 workshops/month
 - Annual profit: **R2.4M**
 
 ### Aggressive Model
+
 - 30 audits + 10 workshops + 8 distribution setups/month
 - Annual profit: **R5.2M**
 
@@ -42,7 +46,7 @@ A comprehensive, mythic-voiced guide for agencies to resell Vauntico as white-la
 ## 🎯 Target Audiences
 
 1. **Digital Agencies** - Add white-label services
-2. **Brand Consultants** - Package diagnostics as offerings  
+2. **Brand Consultants** - Package diagnostics as offerings
 3. **Marketing Agencies** - Build SaaS revenue streams
 4. **Solo Consultants** - Scale without hiring
 5. **Creator-Preneurs** - Launch agency side-hustles
@@ -52,9 +56,11 @@ A comprehensive, mythic-voiced guide for agencies to resell Vauntico as white-la
 ## 🛠️ Companion Resources Created
 
 ### Agency CLI Quick Start
+
 **Location:** scrolls/AGENCY_CLI_QUICKSTART.md
 
 Quick reference guide with:
+
 - Installation instructions
 - Essential commands (audit, workshop, distribution, scrolls)
 - Batch operations
@@ -90,24 +96,28 @@ Updated **scrolls/00-index.md** to include:
 ## 🚀 Next Steps for Vauntico Team
 
 ### Phase 1: Review & Refine (Week 1)
+
 - [ ] Review Agency Scroll content
 - [ ] Validate pricing models for SA market
 - [ ] Adjust case study numbers if needed
 - [ ] Add real agency testimonials (when available)
 
 ### Phase 2: Website Integration (Week 2-3)
+
 - [ ] Create /agency landing page using scroll content
 - [ ] Add "For Agencies" nav item
 - [ ] Build white-label showcase
 - [ ] Create agency onboarding flow
 
 ### Phase 3: Sales Enablement (Week 4)
+
 - [ ] Create agency pitch deck (from scroll)
 - [ ] Build demo environment for prospects
 - [ ] Record CLI tutorial videos
 - [ ] Launch agency partnership program
 
 ### Phase 4: Launch & Scale (Month 2+)
+
 - [ ] Outreach to 50 target agencies
 - [ ] Host agency webinar
 - [ ] Create agency-specific affiliate tier
@@ -118,16 +128,19 @@ Updated **scrolls/00-index.md** to include:
 ## 📈 Success Metrics to Track
 
 ### Acquisition
+
 - Agency partnership signups
 - Demo requests
 - White-label activations
 
-### Activation  
+### Activation
+
 - Clients onboarded by agencies
 - Audits run by partners
 - Revenue generated via resellers
 
 ### Retention
+
 - Agency tier retention rate
 - Client churn via agencies
 - Expansion revenue (tier upgrades)
@@ -148,7 +161,7 @@ The scroll adheres to Vauntico's mythic voice:
 
 ## 💬 Sample Agency Pitch (from Scroll)
 
-> *"Before we build your new site, let's run our Brand Health Diagnostic—a comprehensive audit of your current digital presence. We'll identify what's working, what's costing you conversions, and where quick wins live. Investment: R8,500. Timeline: 5 business days."*
+> _"Before we build your new site, let's run our Brand Health Diagnostic—a comprehensive audit of your current digital presence. We'll identify what's working, what's costing you conversions, and where quick wins live. Investment: R8,500. Timeline: 5 business days."_
 
 This positions the audit as proprietary expertise, not a third-party tool.
 
@@ -157,32 +170,36 @@ This positions the audit as proprietary expertise, not a third-party tool.
 ## 🔧 Technical Integration Points
 
 ### CLI Commands Created
+
 - auntico agency onboard
-- auntico agency clients  
+- auntico agency clients
 - auntico agency audit-all
 - auntico agency dashboard
 - auntico agency revenue
 - auntico brand configure
 
 ### API Endpoints Implied
+
 - /api/agency/onboard
 - /api/agency/clients
 - /api/agency/reports
 - /api/brand/configure
 
-*(Implementation pending)*
+_(Implementation pending)_
 
 ---
 
 ## 📚 Resources for Implementation
 
 ### Existing Scrolls to Reference
+
 1. **04-audit-service-scroll.md** - Audit methodology details
 2. **03-workshop-kit-scroll.md** - Workshop framework
 3. **02-pricing-tiers.md** - Credit economy & tier structure
 4. **dream-mover-cli.md** - CLI architecture reference
 
 ### New Resources Needed
+
 - [ ] Agency onboarding video
 - [ ] White-label demo environment
 - [ ] Partner portal mockups
@@ -194,13 +211,16 @@ This positions the audit as proprietary expertise, not a third-party tool.
 ## 🌍 Market Opportunity
 
 ### South African Digital Agency Market
+
 - **Estimated agencies:** 500-800 (digital/marketing)
 - **Target segment:** 50-100 (growth-focused, 5-30 employees)
 - **Avg. monthly service revenue:** R50K-R500K
 - **Vauntico potential add-on:** R50K-R300K/month
 
 ### Potential Impact
+
 If **25 agencies** adopt at **moderate model** (R204K/month):
+
 - Combined agency revenue: **R5.1M/month**
 - Vauntico revenue (25 × R2,999): **R74,975/month**
 - Client reach: 25 agencies × 20 clients = **500 end clients**
@@ -221,7 +241,7 @@ If **25 agencies** adopt at **moderate model** (R204K/month):
 
 The scroll ends with:
 
-> *"The forge is ready. The systems are waiting. Your empire is calling. Begin your ascension."*
+> _"The forge is ready. The systems are waiting. Your empire is calling. Begin your ascension."_
 
 **Next step:** Book agency onboarding call
 
@@ -230,8 +250,9 @@ The scroll ends with:
 ## 📞 Contact & Support Channels
 
 Documented in scroll:
+
 - **Agency Partnerships:** agency@vauntico.com
-- **Technical Support:** support@vauntico.com  
+- **Technical Support:** support@vauntico.com
 - **Community:** Discord #agency-builders
 - **Documentation:** docs.vauntico.com/agency
 
@@ -240,6 +261,7 @@ Documented in scroll:
 ## 🏆 Mission Accomplished
 
 The Agency Scroll is:
+
 - ✅ Comprehensive (11 major sections)
 - ✅ Actionable (CLI commands, checklists, templates)
 - ✅ Profitable (Clear revenue models with margins)
@@ -250,8 +272,8 @@ The Agency Scroll is:
 
 ---
 
-*Forged with precision. Scaled for agencies worldwide.*  
-*This isn't white-label. It's soul-label.*
+_Forged with precision. Scaled for agencies worldwide._  
+_This isn't white-label. It's soul-label._
 
 **Version:** 1.0  
 **Date:** 2025-01-25  

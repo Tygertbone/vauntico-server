@@ -45,17 +45,17 @@ class Container {
   protected protectedMember: number;
 
   // This is modified later on by the class
-  private modifiedLater = 'unchanged';
+  private modifiedLater = "unchanged";
 
   public mutate() {
-    this.modifiedLater = 'mutated';
+    this.modifiedLater = "mutated";
   }
 
   // This is modified later on by the class
-  #modifiedLaterPrivateField = 'unchanged';
+  #modifiedLaterPrivateField = "unchanged";
 
   public mutatePrivateField() {
-    this.#modifiedLaterPrivateField = 'mutated';
+    this.#modifiedLaterPrivateField = "mutated";
   }
 }
 ```
@@ -93,7 +93,7 @@ class Container {
 
 ```ts option='{ "onlyInlineLambdas": true }'
 class Container {
-  private neverModifiedPrivate = 'unchanged';
+  private neverModifiedPrivate = "unchanged";
 }
 ```
 

@@ -1,5 +1,5 @@
 ---
-description: 'Enforce the use of Array.prototype.find() over Array.prototype.filter() followed by [0] when looking for a single result.'
+description: "Enforce the use of Array.prototype.find() over Array.prototype.filter() followed by [0] when looking for a single result."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -23,15 +23,15 @@ Therefore, when fixing errors from this rule, be sure that your `.filter()` call
 ### ❌ Incorrect
 
 ```ts
-[1, 2, 3].filter(x => x > 1)[0];
+[1, 2, 3].filter((x) => x > 1)[0];
 
-[1, 2, 3].filter(x => x > 1).at(0);
+[1, 2, 3].filter((x) => x > 1).at(0);
 ```
 
 ### ✅ Correct
 
 ```ts
-[1, 2, 3].find(x => x > 1);
+[1, 2, 3].find((x) => x > 1);
 ```
 
 ## When Not To Use It

@@ -1,5 +1,5 @@
 ---
-description: 'Enforce the use of `as const` over literal type.'
+description: "Enforce the use of `as const` over literal type."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -22,19 +22,19 @@ This rule reports when an `as` with an explicit literal type can be replaced wit
 
 ```ts
 let bar: 2 = 2;
-let foo = <'bar'>'bar';
-let foo = { bar: 'baz' as 'baz' };
+let foo = <"bar">"bar";
+let foo = { bar: "baz" as "baz" };
 ```
 
 ### ✅ Correct
 
 ```ts
-let foo = 'bar';
-let foo = 'bar' as const;
-let foo: 'bar' = 'bar' as const;
-let bar = 'bar' as string;
-let foo = <string>'bar';
-let foo = { bar: 'baz' };
+let foo = "bar";
+let foo = "bar" as const;
+let foo: "bar" = "bar" as const;
+let bar = "bar" as string;
+let foo = <string>"bar";
+let foo = { bar: "baz" };
 ```
 
 <!--/tabs-->

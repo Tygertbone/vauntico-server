@@ -1,0 +1,39 @@
+{
+  "mcpServers": {
+    "git-cleaner": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\admin\\vauntico-mvp\\mcp-tools\\git-cleaner\\index.js"
+      ],
+      "cwd": "c:\\Users\\admin\\vauntico-mvp\\mcp-tools\\git-cleaner"
+    },
+    "lint-fixer": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\admin\\vauntico-mvp\\mcp-tools\\lint-fixer\\index.js"
+      ],
+      "cwd": "c:\\Users\\admin\\vauntico-mvp\\mcp-tools\\lint-fixer"
+    },
+    "type-checker": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\admin\\vauntico-mvp\\mcp-tools\\type-checker\\index.js"
+      ],
+      "cwd": "c:\\Users\\admin\\vauntico-mvp\\mcp-tools\\type-checker"
+    },
+    "gitignore-enforcer": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\admin\\vauntico-mvp\\mcp-tools\\gitignore-enforcer\\index.js"
+      ],
+      "cwd": "c:\\Users\\admin\\vauntico-mvp\\mcp-tools\\gitignore-enforcer"
+    },
+    "config-sweeper": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\admin\\vauntico-mvp\\mcp-tools\\config-sweeper\\index.js"
+      ],
+      "cwd": "c:\\Users\\admin\\vauntico-mvp\\mcp-tools\\config-sweeper"
+    }
+  }
+}

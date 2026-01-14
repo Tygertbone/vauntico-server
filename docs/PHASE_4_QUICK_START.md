@@ -6,19 +6,19 @@
 
 ```jsx
 // In your LoreVault.jsx or similar
-import UnlockAnimation from './components/UnlockAnimation'
-import UpgradeModal from './components/UpgradeModal'
-import CreditTracker from './components/CreditTracker'
-import TierComparison from './components/TierComparison'
-import PersonalizedRecommendations from './components/PersonalizedRecommendations'
+import UnlockAnimation from "./components/UnlockAnimation";
+import UpgradeModal from "./components/UpgradeModal";
+import CreditTracker from "./components/CreditTracker";
+import TierComparison from "./components/TierComparison";
+import PersonalizedRecommendations from "./components/PersonalizedRecommendations";
 ```
 
 ### Step 2: Add State Management
 
 ```jsx
-const [showUpgradeModal, setShowUpgradeModal] = useState(false)
-const [showUnlockAnim, setShowUnlockAnim] = useState(false)
-const [selectedScroll, setSelectedScroll] = useState(null)
+const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+const [showUnlockAnim, setShowUnlockAnim] = useState(false);
+const [selectedScroll, setSelectedScroll] = useState(null);
 ```
 
 ### Step 3: Handle Locked Scroll Clicks
@@ -26,12 +26,12 @@ const [selectedScroll, setSelectedScroll] = useState(null)
 ```jsx
 const handleScrollClick = (scroll, canAccess) => {
   if (!canAccess) {
-    setSelectedScroll(scroll)
-    setShowUpgradeModal(true)
+    setSelectedScroll(scroll);
+    setShowUpgradeModal(true);
   } else {
-    openScroll(scroll)
+    openScroll(scroll);
   }
-}
+};
 ```
 
 ### Step 4: Render Components
@@ -41,16 +41,13 @@ return (
   <div>
     {/* Your existing scroll grid */}
     <ScrollGrid onScrollClick={handleScrollClick} />
-    
+
     {/* Sidebar */}
     <aside>
       <CreditTracker />
-      <PersonalizedRecommendations 
-        role={role}
-        progress={progress}
-      />
+      <PersonalizedRecommendations role={role} progress={progress} />
     </aside>
-    
+
     {/* Modals */}
     {showUpgradeModal && (
       <UpgradeModal
@@ -59,7 +56,7 @@ return (
         onUpgrade={(tier) => handleUpgrade(tier)}
       />
     )}
-    
+
     {showUnlockAnim && (
       <UnlockAnimation
         scroll={selectedScroll}
@@ -67,7 +64,7 @@ return (
       />
     )}
   </div>
-)
+);
 ```
 
 ---
@@ -79,12 +76,12 @@ return (
 **When to use:** After successful upgrade, when user unlocks new content
 
 ```jsx
-<UnlockAnimation 
+<UnlockAnimation
   scroll={{
-    id: 'agency-scroll',
-    icon: '🏢',
-    title: 'Agency Scroll',
-    subtitle: 'Partnership Framework'
+    id: "agency-scroll",
+    icon: "🏢",
+    title: "Agency Scroll",
+    subtitle: "Partnership Framework",
   }}
   onComplete={() => {
     // Navigate to scroll or close modal
@@ -106,12 +103,13 @@ return (
   onClose={() => setShowModal(false)}
   onUpgrade={(tierKey) => {
     // tierKey will be "starter", "pro", or "legacy"
-    subscribeToCreatorPassTier(tierKey, 'monthly')
+    subscribeToCreatorPassTier(tierKey, "monthly");
   }}
 />
 ```
 
 **Features:**
+
 - Auto-filters tiers (only shows tiers that unlock the scroll)
 - Highlights "Most Popular"
 - Shows monthly/yearly pricing
@@ -125,7 +123,7 @@ return (
 
 ```jsx
 // Full version (sidebar)
-<CreditTracker 
+<CreditTracker
   compact={false}
   showDetails={true}
 />
@@ -139,6 +137,7 @@ import { CreditBadge } from './components/CreditTracker'
 ```
 
 **Manages:**
+
 - Credit balance
 - Usage percentage
 - Rollover credits
@@ -153,16 +152,17 @@ import { CreditBadge } from './components/CreditTracker'
 
 ```jsx
 <TierComparison
-  currentTier={userTier || 'free'}
+  currentTier={userTier || "free"}
   onSelectTier={(tierKey, billingCycle) => {
     // tierKey: "starter" | "pro" | "legacy"
     // billingCycle: "monthly" | "yearly"
-    subscribeToCreatorPassTier(tierKey, billingCycle)
+    subscribeToCreatorPassTier(tierKey, billingCycle);
   }}
 />
 ```
 
 **Features:**
+
 - Monthly vs Yearly toggle
 - 3 comparison modes (Features, Savings, Value Score)
 - Detailed feature table
@@ -178,23 +178,20 @@ import { CreditBadge } from './components/CreditTracker'
 ```jsx
 <PersonalizedRecommendations
   role={{
-    id: 'agency',
-    icon: '🏢',
-    title: 'Agency Partner'
+    id: "agency",
+    icon: "🏢",
+    title: "Agency Partner",
   }}
   progress={{
-    completed: ['step1', 'step2'],
-    skipped: []
+    completed: ["step1", "step2"],
+    skipped: [],
   }}
-  achievements={[
-    'first-install',
-    'first-auth',
-    'onboarding-complete'
-  ]}
+  achievements={["first-install", "first-auth", "onboarding-complete"]}
 />
 ```
 
 **Generates recommendations based on:**
+
 - Role type (agency, solo-creator, team-lead)
 - Onboarding progress
 - Achievements earned
@@ -206,80 +203,82 @@ import { CreditBadge } from './components/CreditTracker'
 ## Complete Integration Example
 
 ```jsx
-import { useState, useEffect } from 'react'
-import { useCreatorPass } from '../hooks/useAccess'
-import { getCreatorPassTier } from '../utils/pricing'
-import UnlockAnimation from '../components/UnlockAnimation'
-import UpgradeModal from '../components/UpgradeModal'
-import CreditTracker from '../components/CreditTracker'
-import PersonalizedRecommendations from '../components/PersonalizedRecommendations'
+import { useState, useEffect } from "react";
+import { useCreatorPass } from "../hooks/useAccess";
+import { getCreatorPassTier } from "../utils/pricing";
+import UnlockAnimation from "../components/UnlockAnimation";
+import UpgradeModal from "../components/UpgradeModal";
+import CreditTracker from "../components/CreditTracker";
+import PersonalizedRecommendations from "../components/PersonalizedRecommendations";
 
 function EnhancedLoreVault() {
   // State
-  const [selectedRole, setSelectedRole] = useState(null)
-  const [selectedScroll, setSelectedScroll] = useState(null)
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
-  const [showUnlockAnim, setShowUnlockAnim] = useState(false)
-  
+  const [selectedRole, setSelectedRole] = useState(null);
+  const [selectedScroll, setSelectedScroll] = useState(null);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [showUnlockAnim, setShowUnlockAnim] = useState(false);
+
   // Access control
-  const { hasPass } = useCreatorPass()
-  const tier = getCreatorPassTier()
-  
+  const { hasPass } = useCreatorPass();
+  const tier = getCreatorPassTier();
+
   // Progress tracking
-  const [progress, setProgress] = useState({})
-  const [achievements, setAchievements] = useState([])
-  
+  const [progress, setProgress] = useState({});
+  const [achievements, setAchievements] = useState([]);
+
   useEffect(() => {
     if (selectedRole) {
-      loadProgress()
-      loadAchievements()
+      loadProgress();
+      loadAchievements();
     }
-  }, [selectedRole])
-  
+  }, [selectedRole]);
+
   const loadProgress = () => {
-    const saved = localStorage.getItem(`vauntico_cli_onboarding_${selectedRole.id}`)
-    if (saved) setProgress(JSON.parse(saved))
-  }
-  
+    const saved = localStorage.getItem(
+      `vauntico_cli_onboarding_${selectedRole.id}`,
+    );
+    if (saved) setProgress(JSON.parse(saved));
+  };
+
   const loadAchievements = () => {
-    const saved = localStorage.getItem('vauntico_achievements')
-    if (saved) setAchievements(JSON.parse(saved))
-  }
-  
+    const saved = localStorage.getItem("vauntico_achievements");
+    if (saved) setAchievements(JSON.parse(saved));
+  };
+
   const canAccessScroll = (scroll) => {
-    if (scroll.tier === 'free') return true
-    if (!tier) return false
-    
-    const tierHierarchy = { 'starter': 1, 'pro': 2, 'legacy': 3 }
-    return tierHierarchy[tier.tier] >= tierHierarchy[scroll.tier]
-  }
-  
+    if (scroll.tier === "free") return true;
+    if (!tier) return false;
+
+    const tierHierarchy = { starter: 1, pro: 2, legacy: 3 };
+    return tierHierarchy[tier.tier] >= tierHierarchy[scroll.tier];
+  };
+
   const handleScrollClick = (scroll) => {
     if (canAccessScroll(scroll)) {
-      setSelectedScroll(scroll)
+      setSelectedScroll(scroll);
       // Open scroll viewer
     } else {
       // Show upgrade modal
-      setSelectedScroll(scroll)
-      setShowUpgradeModal(true)
+      setSelectedScroll(scroll);
+      setShowUpgradeModal(true);
     }
-  }
-  
+  };
+
   const handleUpgrade = async (tierKey) => {
     // Close modal
-    setShowUpgradeModal(false)
-    
+    setShowUpgradeModal(false);
+
     // Trigger unlock animation
-    setShowUnlockAnim(true)
-    
+    setShowUnlockAnim(true);
+
     // After animation, complete upgrade
     setTimeout(() => {
-      setShowUnlockAnim(false)
+      setShowUnlockAnim(false);
       // Process actual subscription
-      subscribeToCreatorPassTier(tierKey, 'monthly')
-    }, 2500)
-  }
-  
+      subscribeToCreatorPassTier(tierKey, "monthly");
+    }, 2500);
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       {/* Hero */}
@@ -291,7 +290,7 @@ function EnhancedLoreVault() {
           Sacred Knowledge Repository of Vauntico
         </p>
       </div>
-      
+
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Main Area */}
@@ -302,10 +301,10 @@ function EnhancedLoreVault() {
             progress={progress}
             achievements={achievements}
           />
-          
+
           {/* Scroll Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {scrolls.map(scroll => (
+            {scrolls.map((scroll) => (
               <ScrollCard
                 key={scroll.id}
                 scroll={scroll}
@@ -315,29 +314,27 @@ function EnhancedLoreVault() {
             ))}
           </div>
         </div>
-        
+
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-6">
           <CreditTracker compact={false} showDetails={true} />
-          
-          {(!hasPass || tier?.tier === 'starter') && (
-            <QuickUpgradePrompt
-              onUpgrade={() => setShowUpgradeModal(true)}
-            />
+
+          {(!hasPass || tier?.tier === "starter") && (
+            <QuickUpgradePrompt onUpgrade={() => setShowUpgradeModal(true)} />
           )}
         </div>
       </div>
-      
+
       {/* Modals */}
       {showUpgradeModal && selectedScroll && (
         <UpgradeModal
           scroll={selectedScroll}
-          currentTier={tier?.tier || 'free'}
+          currentTier={tier?.tier || "free"}
           onClose={() => setShowUpgradeModal(false)}
           onUpgrade={handleUpgrade}
         />
       )}
-      
+
       {showUnlockAnim && selectedScroll && (
         <UnlockAnimation
           scroll={selectedScroll}
@@ -346,10 +343,10 @@ function EnhancedLoreVault() {
         />
       )}
     </div>
-  )
+  );
 }
 
-export default EnhancedLoreVault
+export default EnhancedLoreVault;
 ```
 
 ---
@@ -357,44 +354,54 @@ export default EnhancedLoreVault
 ## Testing Your Integration
 
 ### 1. Test Locked Scroll Click
+
 ```javascript
 // Set to free tier
-window.VaunticoDev.clearAll()
+window.VaunticoDev.clearAll();
 
 // Click a locked scroll (pro/legacy tier)
 // Should see: shake animation → upgrade modal
 ```
 
 ### 2. Test Unlock Animation
+
 ```javascript
 // Simulate upgrade
-window.VaunticoDev.setCreatorPassTier('pro')
+window.VaunticoDev.setCreatorPassTier("pro");
 
 // Should see: unlock animation → scroll opens
 ```
 
 ### 3. Test Credit Tracking
+
 ```javascript
 // Set custom credit balance
-localStorage.setItem('vauntico_credits', JSON.stringify({
-  used: 450,
-  total: 500,
-  remaining: 50,
-  rollover: 0,
-  resetDate: '2024-02-01'
-}))
+localStorage.setItem(
+  "vauntico_credits",
+  JSON.stringify({
+    used: 450,
+    total: 500,
+    remaining: 50,
+    rollover: 0,
+    resetDate: "2024-02-01",
+  }),
+);
 
 // Refresh page - should show low credit warning
 ```
 
 ### 4. Test Recommendations
+
 ```javascript
 // Set role and progress
 const progress = {
-  completed: ['step1'],
-  skipped: []
-}
-localStorage.setItem('vauntico_cli_onboarding_agency', JSON.stringify(progress))
+  completed: ["step1"],
+  skipped: [],
+};
+localStorage.setItem(
+  "vauntico_cli_onboarding_agency",
+  JSON.stringify(progress),
+);
 
 // Should show personalized recommendations
 ```
@@ -404,37 +411,43 @@ localStorage.setItem('vauntico_cli_onboarding_agency', JSON.stringify(progress))
 ## Customization Tips
 
 ### Change Animation Speed
+
 In `UnlockAnimation.jsx`:
+
 ```javascript
 // Make it faster
-setTimeout(() => setStage('opened'), 400) // was 800
-setTimeout(() => setStage('complete'), 1000) // was 2000
+setTimeout(() => setStage("opened"), 400); // was 800
+setTimeout(() => setStage("complete"), 1000); // was 2000
 ```
 
 ### Change Credit Thresholds
+
 In `CreditTracker.jsx`:
+
 ```javascript
 const getStatusColor = () => {
-  const percentage = getUsagePercentage()
-  if (percentage >= 95) return 'text-red-600' // was 90
-  if (percentage >= 80) return 'text-yellow-600' // was 70
-  return 'text-green-600'
-}
+  const percentage = getUsagePercentage();
+  if (percentage >= 95) return "text-red-600"; // was 90
+  if (percentage >= 80) return "text-yellow-600"; // was 70
+  return "text-green-600";
+};
 ```
 
 ### Add Custom Recommendation
+
 In `PersonalizedRecommendations.jsx`:
+
 ```javascript
 recs.push({
-  id: 'custom-action',
-  type: 'action',
-  priority: 'high',
-  icon: '🎯',
-  title: 'Custom Action',
-  description: 'Do something awesome',
-  action: 'Take Action',
-  category: 'custom'
-})
+  id: "custom-action",
+  type: "action",
+  priority: "high",
+  icon: "🎯",
+  title: "Custom Action",
+  description: "Do something awesome",
+  action: "Take Action",
+  category: "custom",
+});
 ```
 
 ---
@@ -442,21 +455,25 @@ recs.push({
 ## Troubleshooting
 
 ### Animation not playing
+
 - Check that `autoPlay={true}` is set
 - Verify CSS animations are loaded in `index.css`
 - Check browser console for errors
 
 ### Modal not opening
+
 - Ensure `showUpgradeModal` state is managed correctly
 - Check that `selectedScroll` is not null
 - Verify onClick handlers are bound
 
 ### Credits not updating
+
 - Check localStorage key: `vauntico_credits`
 - Verify JSON structure matches expected format
 - Clear cache and reload
 
 ### Recommendations not showing
+
 - Ensure `role` prop is passed
 - Check `progress` and `achievements` data
 - Verify role ID matches expected values
@@ -468,6 +485,7 @@ recs.push({
 ✅ All Phase 4 components are production-ready!
 
 **Suggested workflow:**
+
 1. Start with `CreditTracker` in sidebar
 2. Add `PersonalizedRecommendations` to main area
 3. Integrate `UpgradeModal` on locked scroll clicks

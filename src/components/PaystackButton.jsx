@@ -1,76 +1,81 @@
-import { useState } from 'react'
-import { initializePaystackPayment, redirectToSuccess, verifyPayment } from '../utils/paystack'
-import ErrorAlert from './ui/error-alert'
+import { useState } from "react";
+import {
+  initializePaystackPayment,
+  redirectToSuccess,
+  verifyPayment,
+} from "../utils/paystack";
+import ErrorAlert from "./ui/error-alert";
 
 const PaystackButton = ({
   amount,
-  email = '',
-  className = 'vauntico-btn',
-  children = 'Buy with Apple Pay'
+  email = "",
+  className = "vauntico-btn",
+  children = "Buy with Apple Pay",
 }) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [showEmailInput, setShowEmailInput] = useState(false)
-  const [userEmail, setUserEmail] = useState(email)
-  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false);
+  const [showEmailInput, setShowEmailInput] = useState(false);
+  const [userEmail, setUserEmail] = useState(email);
+  const [error, setError] = useState(null);
 
   const handlePayment = () => {
     if (!userEmail) {
-      setShowEmailInput(true)
-      return
+      setShowEmailInput(true);
+      return;
     }
 
-    setIsLoading(true)
-    setError(null)
-    
+    setIsLoading(true);
+    setError(null);
+
     initializePaystackPayment(
       userEmail,
       amount,
       async (response) => {
         // Payment successful - verify payment
-        console.log('Payment successful:', response)
-        
+        console.log("Payment successful:", response);
+
         try {
-          const verification = await verifyPayment(response.reference)
+          const verification = await verifyPayment(response.reference);
           if (verification.success) {
-            redirectToSuccess()
+            redirectToSuccess();
           } else {
-            console.error('Payment verification failed:', verification.message)
+            console.error("Payment verification failed:", verification.message);
             setError({
-              title: 'Payment Verification Failed',
-              message: 'Please contact support if this issue persists.'
-            })
-            setIsLoading(false)
+              title: "Payment Verification Failed",
+              message: "Please contact support if this issue persists.",
+            });
+            setIsLoading(false);
           }
         } catch (error) {
-          console.error('Payment verification error:', error)
+          console.error("Payment verification error:", error);
           setError({
-            title: 'Payment Error',
-            message: 'An error occurred during payment verification. Please try again or contact support.'
-          })
-          setIsLoading(false)
+            title: "Payment Error",
+            message:
+              "An error occurred during payment verification. Please try again or contact support.",
+          });
+          setIsLoading(false);
         }
       },
       () => {
         // Payment cancelled
-        console.log('Payment cancelled')
-        setIsLoading(false)
-      }
-    )
-  }
+        console.log("Payment cancelled");
+        setIsLoading(false);
+      },
+    );
+  };
 
   const handleEmailSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (userEmail) {
-      setShowEmailInput(false)
-      handlePayment()
+      setShowEmailInput(false);
+      handlePayment();
     }
-  }
+  };
 
   if (showEmailInput) {
     return (
       <div className="space-y-3">
         {error && (
-          <ErrorAlert 
+          <ErrorAlert
             title={error.title}
             message={error.message}
             onClose={() => setError(null)}
@@ -87,11 +92,7 @@ const PaystackButton = ({
             autoFocus
           />
           <div className="flex gap-2">
-            <button
-              type="submit"
-              className={className}
-              disabled={!userEmail}
-            >
+            <button type="submit" className={className} disabled={!userEmail}>
               Continue to Payment
             </button>
             <button
@@ -104,28 +105,30 @@ const PaystackButton = ({
           </div>
         </form>
       </div>
-    )
+    );
   }
 
   return (
     <div className="space-y-3">
       {error && (
-        <ErrorAlert 
+        <ErrorAlert
           title={error.title}
           message={error.message}
           onClose={() => setError(null)}
         />
       )}
-      <button 
+      <button
         onClick={handlePayment}
         disabled={isLoading}
         className={className}
-        aria-label={isLoading ? 'Processing payment...' : 'Start payment process'}
+        aria-label={
+          isLoading ? "Processing payment..." : "Start payment process"
+        }
       >
-        {isLoading ? 'Processing...' : children}
+        {isLoading ? "Processing..." : children}
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default PaystackButton
+export default PaystackButton;

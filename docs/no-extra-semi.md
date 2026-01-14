@@ -1,5 +1,5 @@
 ---
-description: 'Disallow unnecessary semicolons.'
+description: "Disallow unnecessary semicolons."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

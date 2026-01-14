@@ -42,6 +42,7 @@ objective: "Master negotiation to increase deal values by 30-50%"
 **❌ Bad response:** "That's insulting! No way!"
 
 **✅ Good response:**
+
 ```
 "Thanks for reaching out! My standard rate for video content is R800 based on my reach and engagement rates.
 
@@ -49,6 +50,7 @@ I'd love to work together - is there flexibility in the budget? Or we could redu
 ```
 
 **What this does:**
+
 - States your value
 - Shows willingness to work together
 - Offers alternative
@@ -63,6 +65,7 @@ I'd love to work together - is there flexibility in the budget? Or we could redu
 **❌ Bad response:** "Okay, I'll do it for free"
 
 **✅ Good response:**
+
 ```
 "I appreciate the opportunity! I've moved to paid partnerships only, but I'd be happy to discuss a gifted product collaboration where you send [product] and I create content.
 
@@ -70,6 +73,7 @@ Alternatively, if budget opens up, here's my rate card: [link]"
 ```
 
 **When to accept "exposure":**
+
 - ONLY if it's a MAJOR brand (100K+ followers themselves)
 - ONLY if you're under 500 followers
 - ONLY once or twice (build portfolio, then charge)
@@ -86,6 +90,7 @@ Alternatively, if budget opens up, here's my rate card: [link]"
 **Next time:** Start 20% higher. "My rate is R1,000"
 
 **They'll either:**
+
 - Accept (you make more!)
 - Counter with R800 (you "compromise" to your original rate)
 
@@ -98,6 +103,7 @@ Alternatively, if budget opens up, here's my rate card: [link]"
 **❌ Bad response:** "Sure!"
 
 **✅ Good response:**
+
 ```
 "My rate is R800 per video, so 3 videos would be R2,400.
 
@@ -118,6 +124,7 @@ Would that work?"
 **This is worth money!**
 
 **✅ Response:**
+
 ```
 "Absolutely! Usage rights are typically an additional fee:
 
@@ -135,6 +142,7 @@ Which works best for you?"
 ## 🤝 The Negotiation Framework
 
 ### **Step 1: Anchor High**
+
 Start 20-30% above your minimum acceptable price.
 
 **Your minimum:** R600  
@@ -144,6 +152,7 @@ Start 20-30% above your minimum acceptable price.
 ---
 
 ### **Step 2: Justify Your Price**
+
 Never just say a number. Explain WHY.
 
 **Bad:** "R800"  
@@ -152,6 +161,7 @@ Never just say a number. Explain WHY.
 ---
 
 ### **Step 3: Show Flexibility**
+
 Don't be rigid. Offer options.
 
 **Option A:** Full deliverable at full price  
@@ -161,9 +171,11 @@ Don't be rigid. Offer options.
 ---
 
 ### **Step 4: Know Your Walk-Away Number**
+
 Decide BEFORE negotiating: What's your minimum?
 
 **Example:**
+
 - Ideal: R1,000
 - Acceptable: R700
 - Walk away: Anything under R500
@@ -173,9 +185,11 @@ Decide BEFORE negotiating: What's your minimum?
 ---
 
 ### **Step 5: Get It In Writing**
+
 **Always. No exceptions.**
 
 After verbal agreement:
+
 ```
 "Great! Let me send over a brief agreement to confirm:
 
@@ -192,6 +206,7 @@ Reply to confirm and we'll get started!"
 ## 💬 Negotiation Scripts
 
 ### **Script #1: Counter a Low Offer**
+
 ```
 "Thanks for the offer! My rate for this type of content is R[your rate] based on my audience size and engagement.
 
@@ -203,6 +218,7 @@ Alternatively, I can adjust deliverables to fit your budget. What works best?"
 ---
 
 ### **Script #2: Ask for More Than Offered**
+
 ```
 "I'm excited about this opportunity! Based on the scope, my rate would be R[your rate].
 
@@ -217,6 +233,7 @@ Does that align with your budget?"
 ---
 
 ### **Script #3: Politely Decline Low Offer**
+
 ```
 "Thank you for considering me! Unfortunately, R[their offer] is below my minimum rate for video content.
 
@@ -230,6 +247,7 @@ Wishing you success with your campaign!"
 ---
 
 ### **Script #4: Negotiate Payment Terms**
+
 ```
 "I'm on board! For projects over R[X], I typically require:
 - 50% deposit before content creation
@@ -249,6 +267,7 @@ This protects both of us. Does that work?"
 **Old Wanjiku:** Would have accepted immediately.
 
 **New Wanjiku (after Day 33):**
+
 ```
 "Thanks for reaching out! My rate for Reels is R800 based on my engagement and niche expertise.
 
@@ -287,6 +306,7 @@ Or I could do an Instagram Story series (5 slides) for R400 if that fits your bu
 ## 💰 When to Walk Away
 
 **Walk away if:**
+
 - Offer is less than 50% your rate
 - Brand is disrespectful
 - They want unlimited revisions
@@ -315,6 +335,7 @@ Or I could do an Instagram Story series (5 slides) for R400 if that fits your bu
 Tomorrow we celebrate Week 5 and review your progress toward R2,000/month!
 
 **Week 5 was about SCALING:**
+
 - Brand partnerships
 - Professional positioning
 - Negotiation

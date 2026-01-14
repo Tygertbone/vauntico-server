@@ -3,12 +3,14 @@
 ## 🚀 Quick Start Commands
 
 ### Bash/Linux/Mac/WSL
+
 ```bash
 cd scripts
 ./setup-oci-infrastructure.sh
 ```
 
 ### Windows PowerShell
+
 ```powershell
 cd scripts
 .\setup-oci-infrastructure.ps1
@@ -30,28 +32,31 @@ cd scripts
 
 ## 🏗️ Infrastructure Components Created
 
-| Component | Name | CIDR/ID | Purpose |
-|-----------|------|---------|---------|
-| **VCN** | `Vauntico-MVP-VCN` | `10.0.0.0/16` | Main network container |
-| **Public Subnet** | `Vauntico-MVP-Public-Subnet` | `10.0.1.0/24` | Internet-facing resources |
-| **Private Subnet** | `Vauntico-MVP-Private-Subnet` | `10.0.2.0/24` | Backend services |
-| **Internet Gateway** | `Vauntico-MVP-IG` | - | Public subnet internet access |
-| **NAT Gateway** | `Vauntico-MVP-NAT` | - | Private subnet outbound access |
-| **Public RT** | `Vauntico-MVP-Public-RT` | - | Routes for public subnet |
-| **Private RT** | `Vauntico-MVP-Private-RT` | - | Routes for private subnet |
-| **Public SL** | `Vauntico-MVP-Public-SL` | - | Firewall rules for public subnet |
+| Component            | Name                          | CIDR/ID       | Purpose                          |
+| -------------------- | ----------------------------- | ------------- | -------------------------------- |
+| **VCN**              | `Vauntico-MVP-VCN`            | `10.0.0.0/16` | Main network container           |
+| **Public Subnet**    | `Vauntico-MVP-Public-Subnet`  | `10.0.1.0/24` | Internet-facing resources        |
+| **Private Subnet**   | `Vauntico-MVP-Private-Subnet` | `10.0.2.0/24` | Backend services                 |
+| **Internet Gateway** | `Vauntico-MVP-IG`             | -             | Public subnet internet access    |
+| **NAT Gateway**      | `Vauntico-MVP-NAT`            | -             | Private subnet outbound access   |
+| **Public RT**        | `Vauntico-MVP-Public-RT`      | -             | Routes for public subnet         |
+| **Private RT**       | `Vauntico-MVP-Private-RT`     | -             | Routes for private subnet        |
+| **Public SL**        | `Vauntico-MVP-Public-SL`      | -             | Firewall rules for public subnet |
 
 ## 🔒 Security Rules Summary
 
 ### Public Subnet (Inbound)
+
 - **Port 22** (SSH) - 0.0.0.0/0
-- **Port 80** (HTTP) - 0.0.0.0/0  
+- **Port 80** (HTTP) - 0.0.0.0/0
 - **Port 443** (HTTPS) - 0.0.0.0/0
 
 ### Public Subnet (Outbound)
+
 - **All traffic** - 0.0.0.0/0
 
 ### Private Subnet
+
 - **No inbound internet access**
 - **Outbound via NAT Gateway**
 - **Inter-subnet communication allowed**
@@ -59,6 +64,7 @@ cd scripts
 ## 🛠️ Useful OCI Commands
 
 ### List Resources
+
 ```bash
 # List all VCNs
 oci network vcn list --compartment-id <compartment-ocid>
@@ -80,6 +86,7 @@ oci network security-list list --compartment-id <compartment-ocid>
 ```
 
 ### Get Resource Details
+
 ```bash
 # Get VCN details
 oci network vcn get --vcn-id <vcn-id>
@@ -132,12 +139,12 @@ oci network vcn delete --vcn-id <vcn-id> --force
 
 ## 🔧 Common Issues & Solutions
 
-| Issue | Solution |
-|-------|----------|
-| `OCI CLI not found` | Install OCI CLI: `bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"` |
-| `AuthorizationFailed` | Check IAM policies and permissions |
-| `Invalid compartment ID` | Verify OCID format: `ocid1.compartment.oc1...` |
-| `Resource creation timeout` | Check compartment quotas and retry |
+| Issue                       | Solution                                                                                                                   |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `OCI CLI not found`         | Install OCI CLI: `bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"` |
+| `AuthorizationFailed`       | Check IAM policies and permissions                                                                                         |
+| `Invalid compartment ID`    | Verify OCID format: `ocid1.compartment.oc1...`                                                                             |
+| `Resource creation timeout` | Check compartment quotas and retry                                                                                         |
 
 ## 📞 Support Links
 

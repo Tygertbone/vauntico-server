@@ -1,5 +1,5 @@
 ---
-description: 'Disallow duplicate constituents of union or intersection types.'
+description: "Disallow duplicate constituents of union or intersection types."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -19,7 +19,7 @@ For example, given `type A = string` and `type T = string | A`, this rule would 
 ### ❌ Incorrect
 
 ```ts
-type T1 = 'A' | 'A';
+type T1 = "A" | "A";
 
 type T2 = A | A | B;
 
@@ -35,7 +35,7 @@ type T5 = StringA | StringB;
 ### ✅ Correct
 
 ```ts
-type T1 = 'A' | 'B';
+type T1 = "A" | "B";
 
 type T2 = A | B | C;
 

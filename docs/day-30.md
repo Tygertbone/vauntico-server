@@ -180,18 +180,23 @@ I'll tag you in the content and send you analytics after posting.
 ## ⚠️ Pitch Mistakes to Avoid
 
 ### **❌ Mistake #1: "I have 200 followers, pay me R5,000"**
+
 Be realistic about your rates based on your reach.
 
 ### **❌ Mistake #2: Copy-paste generic pitch**
+
 Brands can tell. Personalize every pitch.
 
 ### **❌ Mistake #3: "I need money, please hire me"**
+
 Focus on what YOU offer THEM, not your needs.
 
 ### **❌ Mistake #4: No follow-up**
+
 If no response in 5-7 days, send ONE polite follow-up.
 
 ### **❌ Mistake #5: Pitching competitors simultaneously**
+
 Don't tell Nike you're also pitching Adidas. Keep it separate.
 
 ---
@@ -199,19 +204,23 @@ Don't tell Nike you're also pitching Adidas. Keep it separate.
 ## 📈 The Pitch Process (Step-by-Step)
 
 ### **Day 1 (Today): Send 10 pitches**
+
 - 5 emails
 - 5 Instagram DMs
 - Track in spreadsheet
 
 ### **Day 3: Follow up on no-responses**
+
 Simple: "Hi [Brand], following up on my message from [Day]. Still interested in chatting!"
 
 ### **Day 5-7: Responses come in**
+
 - Some will say yes
 - Some will say no
 - Some will ghost (that's okay!)
 
 ### **Success rate: 10-30%**
+
 If you pitch 10 brands, expect 1-3 to respond positively.
 
 **That's 1-3 deals from ONE day of work!**
@@ -222,11 +231,11 @@ If you pitch 10 brands, expect 1-3 to respond positively.
 
 **Create this in Google Sheets:**
 
-| Brand Name | Contact Method | Date Sent | Response? | Status | Deal Value |
-|------------|----------------|-----------|-----------|--------|------------|
-| Superbalist | Email | Jan 15 | Yes | Negotiating | R800 |
-| Local Cafe | DM | Jan 15 | No response | Follow up | - |
-| TymeBank | Email | Jan 15 | No | Closed | - |
+| Brand Name  | Contact Method | Date Sent | Response?   | Status      | Deal Value |
+| ----------- | -------------- | --------- | ----------- | ----------- | ---------- |
+| Superbalist | Email          | Jan 15    | Yes         | Negotiating | R800       |
+| Local Cafe  | DM             | Jan 15    | No response | Follow up   | -          |
+| TymeBank    | Email          | Jan 15    | No          | Closed      | -          |
 
 **Track everything. Helps you see patterns and improve.**
 
@@ -237,11 +246,13 @@ If you pitch 10 brands, expect 1-3 to respond positively.
 **Kofi** (Finance niche, 850 followers, Ghana)
 
 **Week 1:**
+
 - Sent 15 pitches (10 local Accra businesses, 5 Pan-African brands)
 - 4 responded positively
 - 11 no response/rejection
 
 **Deals closed:**
+
 1. **Local bank (Accra):** R600 for 2 TikTok videos
 2. **MTN Ghana:** Free data + R400 for Instagram Reel
 3. **Local restaurant:** Free meal + R300 for review video
@@ -255,18 +266,23 @@ If you pitch 10 brands, expect 1-3 to respond positively.
 ## 💡 Pro Tips for Higher Response Rates
 
 ### **Tip #1: Pitch on Monday-Wednesday**
+
 Brands check emails early in the week. Fridays get buried.
 
 ### **Tip #2: Show your best work first**
+
 "Recent post: [Link to your top video]"
 
 ### **Tip #3: Make it easy to say yes**
+
 "I can have content ready by [specific date]"
 
 ### **Tip #4: Follow up ONCE**
+
 No response after 7 days + 1 follow-up = move on
 
 ### **Tip #5: Start local, scale global**
+
 Local businesses respond faster. Build portfolio, then pitch bigger brands.
 
 ---

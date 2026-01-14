@@ -1,31 +1,31 @@
-import { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Component } from "react";
+import { Link } from "react-router-dom";
 
 class ErrorBoundary extends Component {
   constructor(props) {
-    super(props)
-    this.state = { hasError: false, error: null, errorInfo: null }
+    super(props);
+    this.state = { hasError: false, error: null, errorInfo: null };
   }
 
   static getDerivedStateFromError() {
-    return { hasError: true }
+    return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
     // Log error to console in development
     if (import.meta.env.DEV) {
-      console.error('Error caught by boundary:', error, errorInfo)
+      console.error("Error caught by boundary:", error, errorInfo);
     }
-    
+
     // Send to error tracking service (Sentry, etc)
     if (window.Sentry) {
-      window.Sentry.captureException(error, { extra: errorInfo })
+      window.Sentry.captureException(error, { extra: errorInfo });
     }
-    
+
     this.setState({
       error,
-      errorInfo
-    })
+      errorInfo,
+    });
   }
 
   render() {
@@ -36,17 +36,16 @@ class ErrorBoundary extends Component {
             {/* Error Visual */}
             <div className="mb-8">
               <div className="text-8xl mb-4">⚠️</div>
-              <h1 className="text-4xl font-bold mb-4">
-                Something Went Wrong
-              </h1>
+              <h1 className="text-4xl font-bold mb-4">Something Went Wrong</h1>
             </div>
-            
+
             {/* Message */}
             <div className="card mb-8">
               <p className="text-lg text-gray-600 mb-4">
-                The vault encountered an unexpected error. Don't worry—your data is safe.
+                The vault encountered an unexpected error. Don't worry—your data
+                is safe.
               </p>
-              
+
               {import.meta.env.DEV && this.state.error && (
                 <details className="text-left mt-4">
                   <summary className="cursor-pointer font-semibold text-red-600 mb-2">
@@ -59,11 +58,11 @@ class ErrorBoundary extends Component {
                 </details>
               )}
             </div>
-            
+
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button 
-                onClick={() => window.location.reload()} 
+              <button
+                onClick={() => window.location.reload()}
                 className="btn-primary text-lg px-8 py-3"
               >
                 Reload Page
@@ -72,21 +71,24 @@ class ErrorBoundary extends Component {
                 Go Home
               </Link>
             </div>
-            
+
             {/* Support */}
             <p className="text-sm text-gray-500 mt-8">
-              If this keeps happening, contact{' '}
-              <a href="mailto:support@vauntico.com" className="text-vault-purple underline">
+              If this keeps happening, contact{" "}
+              <a
+                href="mailto:support@vauntico.com"
+                className="text-vault-purple underline"
+              >
                 support@vauntico.com
               </a>
             </p>
           </div>
         </div>
-      )
+      );
     }
 
-    return this.props.children
+    return this.props.children;
   }
 }
 
-export default ErrorBoundary
+export default ErrorBoundary;

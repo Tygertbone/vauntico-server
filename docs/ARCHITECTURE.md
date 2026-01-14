@@ -90,6 +90,7 @@ vauntico/
 ### Layout Components
 
 **App.jsx** - Root component
+
 - React Router setup
 - Navigation bar (responsive desktop/mobile)
 - Footer with sitemap
@@ -111,22 +112,26 @@ vauntico/
 ### Reusable Components
 
 **Access Control:**
+
 - `AccessGate.jsx` - Conditionally render based on user tier
 - `UpgradeModal.jsx` - Prompt for tier upgrade with CTAs
 - `UnlockAnimation.jsx` - Celebration animation for unlocked content
 
 **Scroll System:**
+
 - `ScrollViewer.jsx` - Renders markdown with syntax highlighting
 - `ScrollGallery.jsx` - Grid display with tier badges
 - `ScrollPreview.jsx` - Card preview with metadata
 - `ShareScrollModal.jsx` - Multi-tab sharing interface
 
 **Onboarding:**
+
 - `CLIOnboarding.jsx` - Terminal-style interactive walkthrough
 - `RoleSelector.jsx` - Choose creator path (solo/agency/team)
 - `OnboardingProgress.jsx` - Progress tracker
 
 **Conversion:**
+
 - `TierComparison.jsx` - Interactive pricing calculator
 - `CreditTracker.jsx` - Usage visualization
 - `PersonalizedRecommendations.jsx` - AI-suggested scrolls
@@ -212,38 +217,42 @@ Batch sent to providers:
 ### Current Implementation (Phase 5)
 
 **LocalStorage-Based State:**
+
 ```javascript
 // Access state
-localStorage.getItem('vauntico_creator_pass')         // 'true' | null
-localStorage.getItem('vauntico_creator_pass_tier')    // JSON: {tier, billingCycle}
-localStorage.getItem('vauntico_workshop_kit')         // 'true' | null
+localStorage.getItem("vauntico_creator_pass"); // 'true' | null
+localStorage.getItem("vauntico_creator_pass_tier"); // JSON: {tier, billingCycle}
+localStorage.getItem("vauntico_workshop_kit"); // 'true' | null
 
 // Analytics state
-localStorage.getItem('vauntico_session_id')           // Session tracking
-localStorage.getItem('vauntico_user_id')              // Authenticated user
-localStorage.getItem('vauntico_anonymous_id')         // Anonymous tracking
-localStorage.getItem('vauntico_referral_code')        // Attribution
+localStorage.getItem("vauntico_session_id"); // Session tracking
+localStorage.getItem("vauntico_user_id"); // Authenticated user
+localStorage.getItem("vauntico_anonymous_id"); // Anonymous tracking
+localStorage.getItem("vauntico_referral_code"); // Attribution
 
 // Preferences
-localStorage.getItem('vauntico_locale')               // 'USD' | 'ZAR'
-localStorage.getItem('vauntico_cli_progress_*')       // Onboarding progress
+localStorage.getItem("vauntico_locale"); // 'USD' | 'ZAR'
+localStorage.getItem("vauntico_cli_progress_*"); // Onboarding progress
 ```
 
 **React State (Component-Level):**
+
 - Navigation menu open/close
 - Modal visibility
 - Form inputs
 - Loading states
 
 **Custom Events:**
+
 ```javascript
 // Trigger re-check across components
-window.dispatchEvent(new Event('vauntico_access_changed'))
+window.dispatchEvent(new Event("vauntico_access_changed"));
 ```
 
 ### Future Implementation (Phase 6)
 
 **React Context Providers:**
+
 ```
 <AuthProvider>          // User authentication
   <AccessProvider>      // Tier-based permissions
@@ -261,27 +270,32 @@ window.dispatchEvent(new Event('vauntico_access_changed'))
 ### Analytics (Phase 5 - Active)
 
 **Google Analytics 4:**
+
 - Page views, events, conversions
 - Configured in `src/utils/analytics.js`
 - Measurement ID: `G-30N4CHF6JR` (default)
 
 **Mixpanel:**
+
 - Deep product analytics
 - User properties, event tracking
 - Token configured via env var: `VITE_MIXPANEL_TOKEN`
 
 **Plausible (Optional):**
+
 - Privacy-friendly analytics
 - Domain-based tracking
 
 ### Payment Gateways (Phase 6 - Pending)
 
 **Paystack (Primary - South Africa):**
+
 - ZAR payments
 - Utility file: `src/utils/paystack.js`
 - Webhook handling needed
 
 **Stripe (Secondary - International):**
+
 - USD/EUR payments
 - Utility file: `src/utils/stripe.js`
 - Subscription management
@@ -291,6 +305,7 @@ window.dispatchEvent(new Event('vauntico_access_changed'))
 ## 📊 Database Schema (Phase 6 - Planned)
 
 ### Users Table
+
 ```sql
 users (
   id: UUID PRIMARY KEY,
@@ -306,6 +321,7 @@ users (
 ```
 
 ### Referrals Table
+
 ```sql
 referrals (
   id: UUID PRIMARY KEY,
@@ -320,6 +336,7 @@ referrals (
 ```
 
 ### Analytics Events Table
+
 ```sql
 analytics_events (
   id: UUID PRIMARY KEY,
@@ -332,6 +349,7 @@ analytics_events (
 ```
 
 ### Scrolls Metadata Table
+
 ```sql
 scrolls (
   id: STRING PRIMARY KEY,
@@ -351,6 +369,7 @@ scrolls (
 ## 🌐 API Structure (Phase 6 - Planned)
 
 ### Authentication
+
 ```
 POST   /api/auth/signup              # Create account
 POST   /api/auth/login               # Get JWT token
@@ -359,6 +378,7 @@ GET    /api/auth/me                  # Get current user
 ```
 
 ### Subscriptions
+
 ```
 POST   /api/subscriptions/create     # Start subscription
 GET    /api/subscriptions/status     # Check status
@@ -367,6 +387,7 @@ POST   /api/subscriptions/cancel     # Cancel subscription
 ```
 
 ### Referrals
+
 ```
 GET    /api/referrals/my-code        # Get user's referral code
 GET    /api/referrals/stats          # View earnings & conversions
@@ -374,6 +395,7 @@ POST   /api/referrals/generate       # Generate new code
 ```
 
 ### Scrolls
+
 ```
 GET    /api/scrolls                  # List all scrolls
 GET    /api/scrolls/:id              # Get scroll content
@@ -382,12 +404,14 @@ POST   /api/scrolls/:id/share        # Track share
 ```
 
 ### Analytics
+
 ```
 POST   /api/analytics/track          # Send event batch
 GET    /api/analytics/dashboard      # Get user analytics
 ```
 
 ### Webhooks (Incoming)
+
 ```
 POST   /webhooks/paystack            # Payment events
 POST   /webhooks/stripe              # Subscription events
@@ -398,12 +422,14 @@ POST   /webhooks/stripe              # Subscription events
 ## 🔐 Security Considerations
 
 ### Current (Phase 5)
+
 - CSP headers configured in `vercel.json`
 - XSS protection headers
 - HSTS enabled
 - Client-side access control (mock)
 
 ### Planned (Phase 6)
+
 - JWT authentication
 - API rate limiting
 - CSRF protection
@@ -416,6 +442,7 @@ POST   /webhooks/stripe              # Subscription events
 ## 🚀 Build & Deployment
 
 ### Build Process
+
 ```bash
 vite build
   ↓
@@ -433,6 +460,7 @@ Assets hashed for cache busting
 ```
 
 ### Deployment (Vercel)
+
 ```
 Git push to main
   ↓
@@ -446,6 +474,7 @@ Custom domain (if configured)
 ```
 
 ### Environment Variables
+
 ```env
 # Analytics
 VITE_GA4_ID=G-30N4CHF6JR
@@ -466,15 +495,18 @@ VITE_API_BASE_URL=https://api.vauntico.com
 ## 🧪 Testing Strategy (Planned)
 
 ### Unit Tests
+
 - Utility functions (pricing, analytics, syndication)
 - React hooks (useAccess, useSubscription)
 
 ### Integration Tests
+
 - Access control flows
 - Payment processing
 - Referral attribution
 
 ### E2E Tests
+
 - User signup → scroll view → upgrade flow
 - Referral link → conversion → commission tracking
 
@@ -483,6 +515,7 @@ VITE_API_BASE_URL=https://api.vauntico.com
 ## 📈 Performance Optimization
 
 ### Current Optimizations
+
 - Lazy loading all pages except Home
 - Code splitting (vendor, markdown, analytics)
 - Image optimization (WebP format)
@@ -490,6 +523,7 @@ VITE_API_BASE_URL=https://api.vauntico.com
 - Event batching for analytics
 
 ### Planned Optimizations
+
 - CDN for scroll content
 - Image CDN (Cloudinary/Imgix)
 - Service worker for offline scrolls

@@ -1,15 +1,15 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export interface HapticOptions {
   pattern?: number[];
-  intensity?: 'light' | 'medium' | 'heavy';
+  intensity?: "light" | "medium" | "heavy";
   duration?: number;
 }
 
 export interface AudioOptions {
   frequency?: number;
   duration?: number;
-  type?: 'sine' | 'square' | 'sawtooth' | 'triangle';
+  type?: "sine" | "square" | "sawtooth" | "triangle";
   volume?: number;
 }
 
@@ -24,23 +24,29 @@ class HapticAudioSystem {
   }
 
   private checkOptOut() {
-    this.isOptedOut = localStorage.getItem('vauntico-haptic-optout') === 'true';
+    this.isOptedOut = localStorage.getItem("vauntico-haptic-optout") === "true";
   }
 
   private initializeAudio() {
-    if (typeof window !== 'undefined' && !this.audioContext && !this.isOptedOut) {
+    if (
+      typeof window !== "undefined" &&
+      !this.audioContext &&
+      !this.isOptedOut
+    ) {
       try {
-        this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        this.audioContext = new (
+          window.AudioContext || (window as any).webkitAudioContext
+        )();
         this.initialized = true;
       } catch (error) {
-        console.warn('Audio context not supported:', error);
+        console.warn("Audio context not supported:", error);
       }
     }
   }
 
   public optOut() {
     this.isOptedOut = true;
-    localStorage.setItem('vauntico-haptic-optout', 'true');
+    localStorage.setItem("vauntico-haptic-optout", "true");
     if (this.audioContext) {
       this.audioContext.close();
       this.audioContext = null;
@@ -49,34 +55,30 @@ class HapticAudioSystem {
 
   public optIn() {
     this.isOptedOut = false;
-    localStorage.removeItem('vauntico-haptic-optout');
+    localStorage.removeItem("vauntico-haptic-optout");
     this.initializeAudio();
   }
 
   public vibrate(options: HapticOptions = {}) {
     if (this.isOptedOut || !navigator.vibrate) return;
 
-    const {
-      pattern = [10],
-      intensity = 'medium',
-      duration = 10
-    } = options;
+    const { pattern = [10], intensity = "medium", duration = 10 } = options;
 
     // Adjust intensity based on device capability
     let adjustedPattern = pattern;
     switch (intensity) {
-      case 'light':
-        adjustedPattern = pattern.map(d => Math.max(1, d * 0.5));
+      case "light":
+        adjustedPattern = pattern.map((d) => Math.max(1, d * 0.5));
         break;
-      case 'heavy':
-        adjustedPattern = pattern.map(d => Math.min(100, d * 1.5));
+      case "heavy":
+        adjustedPattern = pattern.map((d) => Math.min(100, d * 1.5));
         break;
     }
 
     try {
       navigator.vibrate(adjustedPattern);
     } catch (error) {
-      console.warn('Vibration failed:', error);
+      console.warn("Vibration failed:", error);
     }
   }
 
@@ -86,8 +88,8 @@ class HapticAudioSystem {
     const {
       frequency = 528, // Love frequency (528 Hz)
       duration = 200,
-      type = 'sine',
-      volume = 0.1
+      type = "sine",
+      volume = 0.1,
     } = options;
 
     try {
@@ -98,16 +100,25 @@ class HapticAudioSystem {
       gainNode.connect(this.audioContext.destination);
 
       oscillator.type = type;
-      oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
+      oscillator.frequency.setValueAtTime(
+        frequency,
+        this.audioContext.currentTime,
+      );
 
       gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-      gainNode.gain.linearRampToValueAtTime(volume, this.audioContext.currentTime + 0.01);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration / 1000);
+      gainNode.gain.linearRampToValueAtTime(
+        volume,
+        this.audioContext.currentTime + 0.01,
+      );
+      gainNode.gain.exponentialRampToValueAtTime(
+        0.01,
+        this.audioContext.currentTime + duration / 1000,
+      );
 
       oscillator.start(this.audioContext.currentTime);
       oscillator.stop(this.audioContext.currentTime + duration / 1000);
     } catch (error) {
-      console.warn('Audio playback failed:', error);
+      console.warn("Audio playback failed:", error);
     }
   }
 
@@ -121,7 +132,7 @@ class HapticAudioSystem {
         this.playChime({
           frequency: freq,
           duration: 300,
-          volume: 0.08
+          volume: 0.08,
         });
       }, index * 150);
     });
@@ -145,17 +156,18 @@ class HapticAudioSystem {
   }
 
   public isSupported(): boolean {
-    return !this.isOptedOut && (
-      !!(navigator.vibrate) || 
-      !!(this.audioContext)
-    );
+    return !this.isOptedOut && (!!navigator.vibrate || !!this.audioContext);
   }
 
-  public getStatus(): { hapticSupported: boolean; audioSupported: boolean; isOptedOut: boolean } {
+  public getStatus(): {
+    hapticSupported: boolean;
+    audioSupported: boolean;
+    isOptedOut: boolean;
+  } {
     return {
-      hapticSupported: !!(navigator.vibrate) && !this.isOptedOut,
-      audioSupported: !!(this.audioContext) && !this.isOptedOut,
-      isOptedOut: this.isOptedOut
+      hapticSupported: !!navigator.vibrate && !this.isOptedOut,
+      audioSupported: !!this.audioContext && !this.isOptedOut,
+      isOptedOut: this.isOptedOut,
     };
   }
 }
@@ -205,7 +217,7 @@ export const useHapticFeedback = () => {
     optOut,
     optIn,
     getStatus,
-    isSupported: hapticSystem.isSupported()
+    isSupported: hapticSystem.isSupported(),
   };
 };
 
@@ -222,7 +234,7 @@ export const useHapticHover = () => {
     if (now - lastTriggerRef.current < 100) return;
     lastTriggerRef.current = now;
 
-    triggerHaptic({ pattern: [5], intensity: 'light' });
+    triggerHaptic({ pattern: [5], intensity: "light" });
     playChime({ frequency: 800, duration: 50, volume: 0.03 });
   };
 
@@ -231,17 +243,18 @@ export const useHapticHover = () => {
 
 // Hook for trust score updates
 export const useTrustFeedback = () => {
-  const { playTrustUpdate, triggerHaptic, playChime, isSupported } = useHapticFeedback();
+  const { playTrustUpdate, triggerHaptic, playChime, isSupported } =
+    useHapticFeedback();
 
   const onTrustIncrease = (amount: number) => {
     if (!isSupported) return;
 
     if (amount > 10) {
       playTrustUpdate();
-      triggerHaptic({ pattern: [20, 10, 20], intensity: 'medium' });
+      triggerHaptic({ pattern: [20, 10, 20], intensity: "medium" });
     } else if (amount > 5) {
       playChime({ frequency: 528, duration: 150 });
-      triggerHaptic({ pattern: [10], intensity: 'light' });
+      triggerHaptic({ pattern: [10], intensity: "light" });
     }
   };
 
@@ -249,11 +262,11 @@ export const useTrustFeedback = () => {
     if (!isSupported) return;
 
     if (amount > 10) {
-      playChime({ frequency: 200, duration: 200, type: 'sawtooth' });
-      triggerHaptic({ pattern: [30, 20, 30], intensity: 'heavy' });
+      playChime({ frequency: 200, duration: 200, type: "sawtooth" });
+      triggerHaptic({ pattern: [30, 20, 30], intensity: "heavy" });
     } else {
-      playChime({ frequency: 300, duration: 100, type: 'sawtooth' });
-      triggerHaptic({ pattern: [15], intensity: 'medium' });
+      playChime({ frequency: 300, duration: 100, type: "sawtooth" });
+      triggerHaptic({ pattern: [15], intensity: "medium" });
     }
   };
 

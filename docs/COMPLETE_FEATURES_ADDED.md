@@ -9,6 +9,7 @@
 ## 🎉 What We Built
 
 ### **1. Exit-Intent Popup** (`src/components/ExitIntentOffer.jsx`)
+
 - **Triggers:** Mouse leaves viewport from top
 - **Offer:** R50 OFF payment plan (R333/month x 3 instead of R349)
 - **Features:**
@@ -19,6 +20,7 @@
   - Full value breakdown display
 
 ### **2. Live Chat Widget** (`src/components/LiveChat.jsx`)
+
 - **Auto-responses:** 6 pre-programmed FAQs
 - **Quick questions:** Button shortcuts for common questions
 - **Features:**
@@ -29,6 +31,7 @@
   - Analytics tracking on open/questions
 
 ### **3. Earnings Calculator** (`src/components/EarningsCalculator.jsx`)
+
 - **Interactive sliders:**
   - Hours per day (0.5-4h)
   - Days per week (3-7 days)
@@ -41,6 +44,7 @@
 - **Smart tips:** Changes based on input levels
 
 ### **4. Course Comparison Table** (`src/components/CourseComparisonTable.jsx`)
+
 - **Comparison:** R2K Challenge vs Industry Average
 - **Categories:**
   - Core Offering (4 features)
@@ -51,6 +55,7 @@
 - **Visual indicators:** ✓ ✗ ~ for quick scanning
 
 ### **5. Niche Quiz** (`src/components/NicheQuiz.jsx`)
+
 - **4 questions:**
   1. What topics could you talk about for hours?
   2. What do people ask YOU for advice about?
@@ -68,6 +73,7 @@
 - **Smart algorithm:** Tallies niche mentions across answers
 
 ### **6. Countdown Timer** (`src/components/CountdownTimer.jsx`)
+
 - **Default:** 7 days from first visit (localStorage)
 - **Display:** Days, Hours, Minutes, Seconds (live update)
 - **Features:**
@@ -81,15 +87,18 @@
 ## 📍 Page Integration Points
 
 ### Hero Section
+
 - Exit Intent Offer (overlay)
 - Live Chat Widget (fixed bottom-right)
 - Countdown Timer (below hero, before "What You Get")
 
 ### Mid-Page
+
 - Niche Quiz (after "What You Get", before Bonuses)
 - Earnings Calculator (after Ubuntu Community, before Social Proof)
 
 ### Lower Page
+
 - Comparison Table (after Social Proof, before Guarantee)
 
 ---
@@ -97,6 +106,7 @@
 ## 🎨 Design Consistency
 
 All components use:
+
 - Purple-to-green gradient (brand colors)
 - White/10 backdrop blur for overlays
 - Rounded-2xl for cards
@@ -108,52 +118,56 @@ All components use:
 
 ## 📊 Expected Conversion Impact
 
-| Component | Conversion Lift | Rationale |
-|-----------|----------------|-----------|
-| Exit Intent Offer | +15-20% | Captures abandoning visitors with discount |
-| Live Chat | +10-15% | Reduces friction, answers objections |
-| Earnings Calculator | +12-18% | Visualizes personal potential, increases desire |
-| Comparison Table | +8-12% | Shows competitive advantage clearly |
-| Niche Quiz | +10-15% | Engages users, personalizes experience |
-| Countdown Timer | +5-8% | Creates urgency without aggression |
-| **Total Combined** | **+60-88%** | Synergistic effect of all elements |
+| Component           | Conversion Lift | Rationale                                       |
+| ------------------- | --------------- | ----------------------------------------------- |
+| Exit Intent Offer   | +15-20%         | Captures abandoning visitors with discount      |
+| Live Chat           | +10-15%         | Reduces friction, answers objections            |
+| Earnings Calculator | +12-18%         | Visualizes personal potential, increases desire |
+| Comparison Table    | +8-12%          | Shows competitive advantage clearly             |
+| Niche Quiz          | +10-15%         | Engages users, personalizes experience          |
+| Countdown Timer     | +5-8%           | Creates urgency without aggression              |
+| **Total Combined**  | **+60-88%**     | Synergistic effect of all elements              |
 
 ---
 
 ## 🔥 Key Features
 
 ### Exit Intent (Special Sauce)
+
 ```javascript
 // Detects mouse leaving viewport
 if (e.clientY <= 0 && !hasShown) {
-  setIsVisible(true) // Show offer
+  setIsVisible(true); // Show offer
 }
 ```
 
 ### Chat Auto-Responses
+
 ```javascript
 const responses = {
   "📱 What apps do I need?": "Just free apps! Canva, CapCut, Google Docs...",
   // 5 more pre-programmed answers
-}
+};
 ```
 
 ### Calculator Algorithm
+
 ```javascript
 // Conservative earnings model
-const affiliateEarnings = Math.min(projectedFollowers * 0.08, 800)
-const digitalProducts = Math.min(projectedFollowers * 0.05, 600)
-const brandDeals = projectedFollowers >= 1000 ? 800 : 0
+const affiliateEarnings = Math.min(projectedFollowers * 0.08, 800);
+const digitalProducts = Math.min(projectedFollowers * 0.05, 600);
+const brandDeals = projectedFollowers >= 1000 ? 800 : 0;
 ```
 
 ### Quiz Scoring
+
 ```javascript
 // Count niche mentions across all answers
-Object.values(answers).forEach(answer => {
-  answer.niches.forEach(niche => {
-    nicheScores[niche] = (nicheScores[niche] || 0) + 1
-  })
-})
+Object.values(answers).forEach((answer) => {
+  answer.niches.forEach((niche) => {
+    nicheScores[niche] = (nicheScores[niche] || 0) + 1;
+  });
+});
 ```
 
 ---
@@ -161,6 +175,7 @@ Object.values(answers).forEach(answer => {
 ## 📱 Mobile Optimization
 
 All components fully responsive:
+
 - Exit Offer: Full-screen on mobile, centered modal on desktop
 - Live Chat: Adjusts to screen size, max-w-[calc(100vw-3rem)]
 - Calculator: Stacked layout on mobile, side-by-side on desktop
@@ -173,6 +188,7 @@ All components fully responsive:
 ## 🚀 Next Steps
 
 ### Immediate (Pre-Launch)
+
 1. Test all components on real devices
 2. Verify analytics tracking fires correctly
 3. Check exit intent doesn't trigger too aggressively
@@ -180,6 +196,7 @@ All components fully responsive:
 5. Validate calculator math
 
 ### Post-Launch (Week 1)
+
 1. Monitor exit offer conversion rate
 2. Track most-asked chat questions (adjust responses)
 3. Analyze quiz completion rate
@@ -187,6 +204,7 @@ All components fully responsive:
 5. Adjust countdown deadline based on cohort schedule
 
 ### Future Enhancements
+
 1. Backend integration for chat (live support)
 2. Save quiz results for personalized emails
 3. A/B test different exit offer discounts
@@ -198,14 +216,17 @@ All components fully responsive:
 ## 🛠️ Technical Notes
 
 ### Dependencies Added
+
 None! All components built with React + Tailwind (already in project)
 
 ### Local Storage Keys
+
 - `exit_offer_dismissed` - Prevents repeated exit offers
 - `vauntico_countdown_deadline` - Persistent timer deadline
 - `r2k_challenge_payment` - Payment confirmation state
 
 ### Analytics Events Tracked
+
 - `exit_intent_triggered`
 - `exit_offer_dismissed`
 - `exit_offer_accepted`
@@ -234,14 +255,14 @@ None! All components built with React + Tailwind (already in project)
 
 ## 🎯 Success Metrics to Track
 
-| Metric | Baseline | Target | Notes |
-|--------|----------|--------|-------|
-| Landing page CR | 2-3% | 5-7% | With all enhancements |
-| Exit offer CTR | N/A | 15-25% | Of abandoning visitors |
-| Chat engagement | N/A | 10-15% | % who open chat |
-| Calculator usage | N/A | 20-30% | % who interact |
-| Quiz completion | N/A | 35-50% | % who finish 4 questions |
-| Timer urgency impact | N/A | 5-10% | Lift in conversions |
+| Metric               | Baseline | Target | Notes                    |
+| -------------------- | -------- | ------ | ------------------------ |
+| Landing page CR      | 2-3%     | 5-7%   | With all enhancements    |
+| Exit offer CTR       | N/A      | 15-25% | Of abandoning visitors   |
+| Chat engagement      | N/A      | 10-15% | % who open chat          |
+| Calculator usage     | N/A      | 20-30% | % who interact           |
+| Quiz completion      | N/A      | 35-50% | % who finish 4 questions |
+| Timer urgency impact | N/A      | 5-10%  | Lift in conversions      |
 
 ---
 
@@ -266,4 +287,4 @@ None! All components built with React + Tailwind (already in project)
 
 ---
 
-*"Tomorrow isn't guaranteed but our legacy will be." - Built with Ubuntu spirit 🌍*
+_"Tomorrow isn't guaranteed but our legacy will be." - Built with Ubuntu spirit 🌍_

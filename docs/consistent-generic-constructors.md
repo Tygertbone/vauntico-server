@@ -1,5 +1,5 @@
 ---
-description: 'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call.'
+description: "Enforce specifying generic type arguments on type annotation or constructor name of a constructor call."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

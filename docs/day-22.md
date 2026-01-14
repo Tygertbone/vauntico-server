@@ -13,6 +13,7 @@ objective: "Set up affiliate accounts and make your first commission within 7 da
 **Affiliate marketing = The fastest way to make your first R500.**
 
 **Why:**
+
 - Set up in 1 hour
 - No product creation
 - Start with ANY follower count
@@ -31,6 +32,7 @@ objective: "Set up affiliate accounts and make your first commission within 7 da
 **Step 5:** You earn commission (5-50% of sale)
 
 **Example:**
+
 - You promote Luno (crypto app)
 - Your follower clicks your link and signs up
 - You earn R50-100 per sign-up
@@ -45,18 +47,21 @@ objective: "Set up affiliate accounts and make your first commission within 7 da
 ### **CATEGORY 1: Finance & Investment**
 
 **1. Luno (Crypto)**
+
 - Commission: R50-100 per sign-up
 - Payment: Bitcoin to your Luno wallet
 - Best for: Finance, tech niches
 - Sign up: luno.com/affiliate
 
 **2. EasyEquities (Investing)**
+
 - Commission: R50 per funded account
 - Payment: Bank transfer (ZAR)
 - Best for: Finance, wealth-building content
 - Sign up: easyequities.co.za/affiliate
 
 **3. TymeBank (Digital Bank)**
+
 - Commission: R20-50 per account opened
 - Payment: Bank transfer
 - Best for: Finance, money-saving content
@@ -67,18 +72,21 @@ objective: "Set up affiliate accounts and make your first commission within 7 da
 ### **CATEGORY 2: E-Commerce**
 
 **4. Takealot Affiliate Program**
+
 - Commission: 2-8% of sale
 - Payment: Bank transfer (ZAR)
 - Best for: ALL niches (they sell everything)
 - Sign up: takealot.com/affiliate
 
 **5. Superbalist**
+
 - Commission: 5-10% of sale
 - Payment: Bank transfer (ZAR)
 - Best for: Fashion, lifestyle
 - Sign up: superbalist.com/affiliate
 
 **6. Shein Affiliate**
+
 - Commission: 10-20% of sale
 - Payment: PayPal (can transfer to SA bank)
 - Best for: Fashion, beauty
@@ -89,18 +97,21 @@ objective: "Set up affiliate accounts and make your first commission within 7 da
 ### **CATEGORY 3: International (PayPal/Payoneer)**
 
 **7. Amazon Associates**
+
 - Commission: 1-10% of sale
 - Payment: PayPal or direct deposit
 - Best for: Product reviews, recommendations
 - Sign up: affiliate-program.amazon.com
 
 **8. ClickBank**
+
 - Commission: 50-75% (digital products!)
 - Payment: Payoneer, bank transfer
 - Best for: Online courses, ebooks, software
 - Sign up: clickbank.com
 
 **9. ShareASale**
+
 - Commission: Varies (3-50%)
 - Payment: Payoneer
 - Best for: Wide variety of products
@@ -111,6 +122,7 @@ objective: "Set up affiliate accounts and make your first commission within 7 da
 ### **CATEGORY 4: Mobile & Tech**
 
 **10. Airtime/Data Reseller Programs**
+
 - Commission: 5-15% per sale
 - Payment: M-Pesa, bank transfer
 - Best for: General audience
@@ -121,12 +133,14 @@ objective: "Set up affiliate accounts and make your first commission within 7 da
 ### **CATEGORY 5: Services**
 
 **11. Fiverr Affiliates**
+
 - Commission: $15-150 per first-time buyer
 - Payment: PayPal, Payoneer
 - Best for: Business, freelancing content
 - Sign up: affiliates.fiverr.com
 
 **12. Canva Affiliate**
+
 - Commission: $36 per Canva Pro sign-up
 - Payment: PayPal
 - Best for: Content creators, designers
@@ -146,11 +160,13 @@ Most programs look for:
 **Application tips:**
 
 **Your bio should say:**
+
 - Your niche (e.g., "Finance tips for South Africans")
 - Your audience size (e.g., "Building a community of 500+")
 - Your content frequency (e.g., "Daily money-saving tips")
 
 **In application, mention:**
+
 - "I create content for [audience] about [niche]"
 - "I currently have [X] engaged followers"
 - "I post [frequency] and average [X] views per video"
@@ -163,14 +179,17 @@ Most programs look for:
 ## 🔗 Where to Put Your Affiliate Links
 
 ### **1. Bio Link**
+
 Most platforms let you have 1 clickable link.
 
 **Use a link-in-bio tool:**
+
 - **Linktree** (free) - linktree.com
 - **Beacons** (free, better design) - beacons.ai
 - **Stan Store** (paid, built for creators) - stan.store
 
 **Your Linktree setup:**
+
 ```
 🔗 My Links:
 
@@ -183,17 +202,20 @@ Most platforms let you have 1 clickable link.
 ---
 
 ### **2. Video Captions**
+
 "I use [product] for [result]. Link in bio! 🔗"
 
 ---
 
 ### **3. Pinned Comment**
+
 Pin a comment on your video:
 "Get [product] here: [link]"
 
 ---
 
 ### **4. TikTok/Instagram Stories**
+
 - Post your video
 - Share to Story
 - Add link sticker to Story
@@ -202,6 +224,7 @@ Pin a comment on your video:
 ---
 
 ### **5. WhatsApp/Telegram Community**
+
 Share affiliate links with context:
 "Hey fam! Someone asked what app I use for [thing]. It's [product]. Here's my link if you want to try: [link]"
 
@@ -212,9 +235,11 @@ Share affiliate links with context:
 ## 🎬 How to Promote Affiliate Products (Without Being Salesy)
 
 ### **Method #1: The Tutorial**
+
 "How I [result] using [product]"
 
 **Example:**
+
 - "How I save R500/month using TymeBank"
 - Show the app, walk through features
 - "Link in bio if you want to try it!"
@@ -222,9 +247,11 @@ Share affiliate links with context:
 ---
 
 ### **Method #2: The Honest Review**
+
 "I tried [product] for 30 days. Here's what happened..."
 
 **Be HONEST:**
+
 - Share pros AND cons
 - Your audience trusts honesty
 - Even if you mention 1-2 cons, people still buy (because you're real)
@@ -232,9 +259,11 @@ Share affiliate links with context:
 ---
 
 ### **Method #3: The Comparison**
+
 "[Product A] vs [Product B] - Which is better?"
 
 **Example:**
+
 - "Luno vs Binance for South Africans"
 - Compare features
 - "I personally use Luno (link in bio) because..."
@@ -242,6 +271,7 @@ Share affiliate links with context:
 ---
 
 ### **Method #4: The Results Proof**
+
 "I made R500 using [product]. Here's my proof..."
 
 - Screenshot your earnings/results
@@ -251,6 +281,7 @@ Share affiliate links with context:
 ---
 
 ### **Method #5: The "Ask Me Anything"**
+
 Answer follower questions and naturally mention products.
 
 **Follower:** "What app do you use for investing?"  
@@ -261,21 +292,25 @@ Answer follower questions and naturally mention products.
 ## 💰 Realistic Income Expectations
 
 ### **With 100-300 followers:**
+
 - 1-5 clicks per post
 - 1-2 conversions per week
 - Income: R200-500/month
 
 ### **With 300-1,000 followers:**
+
 - 5-20 clicks per post
 - 5-10 conversions per week
 - Income: R500-1,500/month
 
 ### **With 1,000-5,000 followers:**
+
 - 20-100 clicks per post
 - 10-30 conversions per week
 - Income: R1,500-5,000/month
 
 **Key factors:**
+
 - Trust (do they believe you?)
 - Relevance (does product match their need?)
 - Frequency (how often do you mention it?)
@@ -287,17 +322,20 @@ Answer follower questions and naturally mention products.
 **Kofi** (Accra, Ghana - Finance niche)
 
 **Week 1 (Setup):**
+
 - Joined Luno affiliate program
 - Added link to Linktree
 - Bio: "Link in bio for best crypto app"
 
 **Week 2 (First content):**
+
 - Posted: "How I buy Bitcoin with mobile money"
 - Showed Luno app interface
 - Caption: "Use my link in bio to get R25 bonus!"
 - Result: 4 sign-ups = R400
 
 **Week 3-4 (Consistency):**
+
 - Posted 2-3 Luno-related videos per week
 - Answered crypto questions in comments
 - Mentioned Luno naturally
@@ -306,6 +344,7 @@ Answer follower questions and naturally mention products.
 **Month 2 total: R1,600 from affiliate alone**
 
 **Month 3:**
+
 - Added EasyEquities affiliate
 - Promoted both (diversified)
 - Total: R2,400/month from affiliates
@@ -353,6 +392,7 @@ Answer follower questions and naturally mention products.
 You've got affiliate income starting. Tomorrow you add PASSIVE income.
 
 **You'll learn:**
+
 - How to create a digital product in 3-6 hours
 - What to charge (pricing psychology)
 - How to deliver instantly via WhatsApp

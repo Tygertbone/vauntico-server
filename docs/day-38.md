@@ -23,18 +23,22 @@ objective: "Increase average customer value by 50-100% through strategic upsells
 ## 🎯 Upselling vs Cross-Selling
 
 ### **Upselling:**
+
 Offering a better/bigger version of what they're buying
 
 **Example:**
+
 - They want: Budget template (R100)
 - You upsell: Budget template + 1-hour coaching (R400)
 
 ---
 
 ### **Cross-Selling:**
+
 Offering a complementary product
 
 **Example:**
+
 - They bought: Workout plan (R300)
 - You cross-sell: Meal prep guide (R200)
 
@@ -47,11 +51,13 @@ Offering a complementary product
 ## 💰 The Customer Value Ladder
 
 **Most creators:**
+
 - Sell one R150 product
 - Customer leaves
 - Total value: R150
 
 **Smart creators:**
+
 - Entry product: R150
 - Upsell #1: R300
 - Upsell #2: R800
@@ -62,26 +68,31 @@ Offering a complementary product
 ### **Your Value Ladder:**
 
 **Step 1: FREE (Lead Magnet)**
+
 - Free checklist/template
 - Builds email list
 - Entry point
 
 **Step 2: LOW-TICKET (R100-200)**
+
 - Digital product
 - Low commitment
 - Tests your content
 
 **Step 3: MID-TICKET (R300-800)**
+
 - Comprehensive guide
 - Video course
 - Small group coaching
 
 **Step 4: HIGH-TICKET (R1,000-3,000)**
+
 - 1-on-1 coaching
 - Done-for-you service
 - Mastermind/community
 
 **Step 5: RECURRING (R500-2,000/month)**
+
 - Monthly coaching
 - Membership
 - Retainer
@@ -98,6 +109,7 @@ Offer an add-on DURING purchase
 **Main product:** Budget template (R150)
 
 **At checkout:**
+
 ```
 ☑️ ADD THIS: Video tutorial on how to use the template (R50)
 
@@ -113,9 +125,11 @@ Offer an add-on DURING purchase
 ### **How to implement:**
 
 **Gumroad:**
+
 - Add "Suggested products" at checkout
 
 **Manual (DM sales):**
+
 ```
 "Hey! You're getting [Product] for R150.
 
@@ -138,6 +152,7 @@ Offer the next step AFTER they buy
 **They just bought: R150 ebook**
 
 **Immediate follow-up:**
+
 ```
 🎉 Thanks for your purchase!
 
@@ -164,15 +179,18 @@ Package multiple products at a discount
 **Example:**
 
 **Individual products:**
+
 - Budget template: R150
 - Meal prep guide: R200
 - Savings tracker: R100
 - Total: R450
 
 **Bundle offer:**
+
 - "Complete Money System Bundle" - ALL 3 for R350 (save R100!)
 
 **Why it works:**
+
 - Perceived value (getting more for less)
 - Higher cart value (R350 vs R150)
 - Happy customer (savings!)
@@ -224,22 +242,27 @@ Follow-up sequence moving them up the ladder
 **Thabo** (Fitness niche)
 
 **Step 1: FREE**
+
 - "7-Day Home Workout Challenge" (lead magnet)
 - Builds email list
 
 **Step 2: R200 (Low-ticket)**
+
 - "30-Day Home Workout Plan" (ebook)
 - Entry product
 
 **Step 3: R600 (Mid-ticket)**
+
 - "Complete Home Fitness System" (ebook + videos + meal plan)
 - Bundle upsell
 
 **Step 4: R1,500 (High-ticket)**
+
 - 1-month 1-on-1 coaching
 - Personal upsell
 
 **Step 5: R800/month (Recurring)**
+
 - Monthly accountability program
 - Ongoing income
 
@@ -249,7 +272,7 @@ Follow-up sequence moving them up the ladder
 
 **Month 1:** Buys R200 workout plan  
 **Month 2:** Upsells to R600 complete system (after getting results)  
-**Month 3:** Upsells to R800/month accountability program  
+**Month 3:** Upsells to R800/month accountability program
 
 **Total value from ONE customer: R2,200 over 3 months**
 
@@ -260,9 +283,11 @@ vs **R200 with no upsell**
 ## 📊 Upsell Math (The Power of 20%)
 
 **Without upsells:**
+
 - 100 customers × R150 = R15,000
 
 **With upsells (20% conversion on R300 upsell):**
+
 - 80 customers × R150 = R12,000
 - 20 customers × (R150 + R300) = R9,000
 - **Total: R21,000 (40% more!)**
@@ -276,10 +301,12 @@ vs **R200 with no upsell**
 **Wanjiku** (Finance, Kenya)
 
 **Month 2: No upsells**
+
 - Sold budget template (R150)
 - 30 sales = R4,500
 
 **Month 3: Added upsells**
+
 - Budget template: R150
 - Post-purchase upsell: "Want 1-hour budget review call? R500"
 - 8 out of 30 bought upsell (27%)

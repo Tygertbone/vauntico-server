@@ -5,7 +5,7 @@
 ### Parsing CSS
 
 ```javascript
-import { parse } from '@adobe/css-tools';
+import { parse } from "@adobe/css-tools";
 
 // Basic CSS parsing
 const css = `
@@ -27,9 +27,9 @@ console.log(ast);
 ### Stringifying AST
 
 ```javascript
-import { parse, stringify } from '@adobe/css-tools';
+import { parse, stringify } from "@adobe/css-tools";
 
-const css = 'body { font-size: 12px; color: #333; }';
+const css = "body { font-size: 12px; color: #333; }";
 const ast = parse(css);
 
 // Convert back to CSS
@@ -42,10 +42,10 @@ console.log(output); // "body { font-size: 12px; color: #333; }"
 ### Source Tracking
 
 ```javascript
-import { parse } from '@adobe/css-tools';
+import { parse } from "@adobe/css-tools";
 
-const css = 'body { color: red; }';
-const ast = parse(css, { source: 'styles.css' });
+const css = "body { color: red; }";
+const ast = parse(css, { source: "styles.css" });
 
 // Position information is available
 const rule = ast.stylesheet.rules[0];
@@ -57,7 +57,7 @@ console.log(rule.position?.end); // { line: 1, column: 20 }
 ### Silent Error Handling
 
 ```javascript
-import { parse } from '@adobe/css-tools';
+import { parse } from "@adobe/css-tools";
 
 const malformedCss = `
   body { color: red; }
@@ -70,14 +70,14 @@ const result = parse(malformedCss, { silent: true });
 
 // Check for parsing errors
 if (result.stylesheet.parsingErrors) {
-  console.log('Parsing errors:', result.stylesheet.parsingErrors.length);
-  result.stylesheet.parsingErrors.forEach(error => {
+  console.log("Parsing errors:", result.stylesheet.parsingErrors.length);
+  result.stylesheet.parsingErrors.forEach((error) => {
     console.log(`Error at line ${error.line}: ${error.message}`);
   });
 }
 
 // Valid rules are still parsed
-console.log('Valid rules:', result.stylesheet.rules.length);
+console.log("Valid rules:", result.stylesheet.rules.length);
 ```
 
 ## AST Structure Examples
@@ -85,7 +85,7 @@ console.log('Valid rules:', result.stylesheet.rules.length);
 ### Basic Rule
 
 ```javascript
-import { parse } from '@adobe/css-tools';
+import { parse } from "@adobe/css-tools";
 
 const css = `
   .header {
@@ -102,7 +102,7 @@ console.log(rule.type); // "rule"
 console.log(rule.selectors); // [".header"]
 console.log(rule.declarations.length); // 3
 
-rule.declarations.forEach(decl => {
+rule.declarations.forEach((decl) => {
   console.log(`${decl.property}: ${decl.value}`);
 });
 // Output:
@@ -114,7 +114,7 @@ rule.declarations.forEach(decl => {
 ### Media Queries
 
 ```javascript
-import { parse } from '@adobe/css-tools';
+import { parse } from "@adobe/css-tools";
 
 const css = `
   @media screen and (max-width: 768px) {
@@ -139,7 +139,7 @@ console.log(mediaRule.rules.length); // 2
 ### Keyframes
 
 ```javascript
-import { parse } from '@adobe/css-tools';
+import { parse } from "@adobe/css-tools";
 
 const css = `
   @keyframes fadeIn {
@@ -159,9 +159,9 @@ console.log(keyframesRule.type); // "keyframes"
 console.log(keyframesRule.name); // "fadeIn"
 console.log(keyframesRule.keyframes.length); // 2
 
-keyframesRule.keyframes.forEach(keyframe => {
-  console.log(`Keyframe: ${keyframe.values.join(', ')}`);
-  keyframe.declarations.forEach(decl => {
+keyframesRule.keyframes.forEach((keyframe) => {
+  console.log(`Keyframe: ${keyframe.values.join(", ")}`);
+  keyframe.declarations.forEach((decl) => {
     console.log(`  ${decl.property}: ${decl.value}`);
   });
 });
@@ -170,7 +170,7 @@ keyframesRule.keyframes.forEach(keyframe => {
 ### Comments
 
 ```javascript
-import { parse } from '@adobe/css-tools';
+import { parse } from "@adobe/css-tools";
 
 const css = `
   /* Header styles */
@@ -186,14 +186,14 @@ const css = `
 
 const ast = parse(css);
 
-ast.stylesheet.rules.forEach(rule => {
-  if (rule.type === 'comment') {
+ast.stylesheet.rules.forEach((rule) => {
+  if (rule.type === "comment") {
     console.log(`Comment: ${rule.comment}`);
-  } else if (rule.type === 'rule') {
-    console.log(`Rule: ${rule.selectors.join(', ')}`);
-    
-    rule.declarations.forEach(decl => {
-      if (decl.type === 'comment') {
+  } else if (rule.type === "rule") {
+    console.log(`Rule: ${rule.selectors.join(", ")}`);
+
+    rule.declarations.forEach((decl) => {
+      if (decl.type === "comment") {
         console.log(`  Comment: ${decl.comment}`);
       } else {
         console.log(`  ${decl.property}: ${decl.value}`);
@@ -208,7 +208,7 @@ ast.stylesheet.rules.forEach(rule => {
 ### Compressed Output
 
 ```javascript
-import { parse, stringify } from '@adobe/css-tools';
+import { parse, stringify } from "@adobe/css-tools";
 
 const css = `
   body {
@@ -230,13 +230,13 @@ console.log(compressed);
 ### Custom Indentation
 
 ```javascript
-import { parse, stringify } from '@adobe/css-tools';
+import { parse, stringify } from "@adobe/css-tools";
 
-const css = 'body { font-size: 12px; color: #333; }';
+const css = "body { font-size: 12px; color: #333; }";
 const ast = parse(css);
 
 // Custom indentation
-const formatted = stringify(ast, { indent: '    ' });
+const formatted = stringify(ast, { indent: "    " });
 console.log(formatted);
 // Output:
 // body {
@@ -250,7 +250,7 @@ console.log(formatted);
 ### Nested Rules and At-Rules
 
 ```javascript
-import { parse, stringify } from '@adobe/css-tools';
+import { parse, stringify } from "@adobe/css-tools";
 
 const complexCss = `
   @import url('https://fonts.googleapis.com/css2?family=Roboto');
@@ -282,25 +282,25 @@ const complexCss = `
 
 const ast = parse(complexCss);
 
-ast.stylesheet.rules.forEach(rule => {
+ast.stylesheet.rules.forEach((rule) => {
   switch (rule.type) {
-    case 'import':
+    case "import":
       console.log(`Import: ${rule.import}`);
       break;
-    case 'charset':
+    case "charset":
       console.log(`Charset: ${rule.charset}`);
       break;
-    case 'media':
+    case "media":
       console.log(`Media query: ${rule.media}`);
       break;
-    case 'supports':
+    case "supports":
       console.log(`Supports: ${rule.supports}`);
       break;
-    case 'keyframes':
+    case "keyframes":
       console.log(`Keyframes: ${rule.name}`);
       break;
-    case 'font-face':
-      console.log('Font-face rule');
+    case "font-face":
+      console.log("Font-face rule");
       break;
   }
 });
@@ -309,7 +309,7 @@ ast.stylesheet.rules.forEach(rule => {
 ### Manipulating the AST
 
 ```javascript
-import { parse, stringify } from '@adobe/css-tools';
+import { parse, stringify } from "@adobe/css-tools";
 
 const css = `
   .button {
@@ -324,19 +324,21 @@ const rule = ast.stylesheet.rules[0];
 
 // Add a new declaration
 rule.declarations.push({
-  type: 'declaration',
-  property: 'border-radius',
-  value: '5px'
+  type: "declaration",
+  property: "border-radius",
+  value: "5px",
 });
 
 // Modify existing declaration
-const backgroundDecl = rule.declarations.find(d => d.property === 'background');
+const backgroundDecl = rule.declarations.find(
+  (d) => d.property === "background",
+);
 if (backgroundDecl) {
-  backgroundDecl.value = 'red';
+  backgroundDecl.value = "red";
 }
 
 // Add a new selector
-rule.selectors.push('.btn');
+rule.selectors.push(".btn");
 
 const modifiedCss = stringify(ast);
 console.log(modifiedCss);
@@ -347,10 +349,10 @@ console.log(modifiedCss);
 ### Catching Parse Errors
 
 ```javascript
-import { parse, CssParseError } from '@adobe/css-tools';
+import { parse, CssParseError } from "@adobe/css-tools";
 
 try {
-  const ast = parse('body { color: red; } { invalid }');
+  const ast = parse("body { color: red; } { invalid }");
 } catch (error) {
   if (error instanceof CssParseError) {
     console.log(`Parse error at line ${error.line}, column ${error.column}:`);
@@ -363,7 +365,7 @@ try {
 ### Working with Silent Errors
 
 ```javascript
-import { parse } from '@adobe/css-tools';
+import { parse } from "@adobe/css-tools";
 
 const problematicCss = `
   body { color: red; }
@@ -372,18 +374,20 @@ const problematicCss = `
   .another { border: 1px solid; } /* Missing closing brace */
 `;
 
-const result = parse(problematicCss, { 
-  silent: true, 
-  source: 'problematic.css' 
+const result = parse(problematicCss, {
+  silent: true,
+  source: "problematic.css",
 });
 
 // Process valid rules
-const validRules = result.stylesheet.rules.filter(rule => rule.type === 'rule');
+const validRules = result.stylesheet.rules.filter(
+  (rule) => rule.type === "rule",
+);
 console.log(`Found ${validRules.length} valid rules`);
 
 // Log errors for debugging
 if (result.stylesheet.parsingErrors) {
-  result.stylesheet.parsingErrors.forEach(error => {
+  result.stylesheet.parsingErrors.forEach((error) => {
     console.log(`Error: ${error.message} at line ${error.line}`);
   });
 }
@@ -392,7 +396,7 @@ if (result.stylesheet.parsingErrors) {
 ### CSS Minification
 
 ```javascript
-import { parse, stringify } from '@adobe/css-tools';
+import { parse, stringify } from "@adobe/css-tools";
 
 function minifyCSS(css) {
   const ast = parse(css);
@@ -421,30 +425,32 @@ console.log(minified);
 ### CSS Validation
 
 ```javascript
-import { parse } from '@adobe/css-tools';
+import { parse } from "@adobe/css-tools";
 
-function validateCSS(css, filename = 'unknown') {
+function validateCSS(css, filename = "unknown") {
   try {
     const ast = parse(css, { source: filename });
     return {
       valid: true,
       rules: ast.stylesheet.rules.length,
-      errors: []
+      errors: [],
     };
   } catch (error) {
     return {
       valid: false,
       rules: 0,
-      errors: [{
-        message: error.message,
-        line: error.line,
-        column: error.column,
-        source: error.filename
-      }]
+      errors: [
+        {
+          message: error.message,
+          line: error.line,
+          column: error.column,
+          source: error.filename,
+        },
+      ],
     };
   }
 }
 
-const result = validateCSS('body { color: red; } { invalid }', 'test.css');
+const result = validateCSS("body { color: red; } { invalid }", "test.css");
 console.log(result);
 ```

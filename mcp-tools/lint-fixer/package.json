@@ -1,0 +1,25 @@
+{
+  "name": "lint-fixer-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for automatic ESLint and Prettier fixing",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0"
+  },
+  "keywords": [
+    "mcp",
+    "eslint",
+    "prettier",
+    "linting",
+    "code-quality"
+  ],
+  "author": "Vauntico",
+  "license": "MIT"
+}

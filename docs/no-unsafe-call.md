@@ -1,5 +1,5 @@
 ---
-description: 'Disallow calling a value with type `any`.'
+description: "Disallow calling a value with type `any`."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -28,7 +28,7 @@ anyVar();
 anyVar.a.b();
 
 nestedAny.prop();
-nestedAny.prop['a']();
+nestedAny.prop["a"]();
 
 new anyVar();
 new nestedAny.prop();

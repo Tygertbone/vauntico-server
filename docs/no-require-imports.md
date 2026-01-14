@@ -1,5 +1,5 @@
 ---
-description: 'Disallow invocation of `require()`.'
+description: "Disallow invocation of `require()`."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -15,17 +15,17 @@ Prefer the newer ES6-style imports over `require()`.
 ### ❌ Incorrect
 
 ```ts
-const lib1 = require('lib1');
-const { lib2 } = require('lib2');
-import lib3 = require('lib3');
+const lib1 = require("lib1");
+const { lib2 } = require("lib2");
+import lib3 = require("lib3");
 ```
 
 ### ✅ Correct
 
 ```ts
-import * as lib1 from 'lib1';
-import { lib2 } from 'lib2';
-import * as lib3 from 'lib3';
+import * as lib1 from "lib1";
+import { lib2 } from "lib2";
+import * as lib3 from "lib3";
 ```
 
 ## Options
@@ -41,13 +41,13 @@ With `{allow: ['/package\\.json$']}`:
 ### ❌ Incorrect
 
 ```ts
-console.log(require('../data.json').version);
+console.log(require("../data.json").version);
 ```
 
 ### ✅ Correct
 
 ```ts
-console.log(require('../package.json').version);
+console.log(require("../package.json").version);
 ```
 
 ## When Not To Use It

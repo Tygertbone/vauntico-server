@@ -9,9 +9,11 @@
 ## 🎯 What We Built
 
 ### 1. **CLIOnboarding Component** (`src/components/CLIOnboarding.jsx`)
+
 Interactive modal with role-based onboarding flows.
 
 **Features:**
+
 - ⚡ **Role-specific paths**: Different steps for Solo Creators, Agencies, Team Leads
 - 📊 **Progress tracking**: Visual progress bar with step-by-step navigation
 - 📋 **Copy-paste commands**: One-click command copying with terminal formatting
@@ -21,6 +23,7 @@ Interactive modal with role-based onboarding flows.
 - 💾 **LocalStorage persistence**: Progress saved across sessions
 
 **Step Structure:**
+
 ```javascript
 {
   id: 'install',
@@ -38,9 +41,11 @@ Interactive modal with role-based onboarding flows.
 ---
 
 ### 2. **CLICommandGenerator Component** (`src/components/CLICommandGenerator.jsx`)
+
 Dynamic CLI command builder based on scroll context.
 
 **Features:**
+
 - 🎨 **Template-based generation**: Pre-built command templates per scroll
 - 📝 **Dynamic inputs**: Text fields, dropdowns, required/optional parameters
 - 🔧 **Real-time generation**: Commands built as you type
@@ -48,6 +53,7 @@ Dynamic CLI command builder based on scroll context.
 - 💡 **Pro tips**: Best practices and usage hints
 
 **Supported Scrolls:**
+
 - `audit-as-a-service`: Audit commands
 - `dream-mover-cli`: Content generation
 - `AGENCY_CLI_QUICKSTART`: Agency operations
@@ -55,6 +61,7 @@ Dynamic CLI command builder based on scroll context.
 - `creator-pass`: Account management
 
 **Example Command Template:**
+
 ```javascript
 {
   id: 'run-audit',
@@ -71,9 +78,11 @@ Dynamic CLI command builder based on scroll context.
 ---
 
 ### 3. **OnboardingProgress Component** (`src/components/OnboardingProgress.jsx`)
+
 Visual progress tracker with achievements system.
 
 **Features:**
+
 - 📊 **Progress visualization**: Percentage bar and step counter
 - 🏆 **Achievement badges**: Unlock badges for milestones
 - 📈 **Expandable details**: Step breakdown and quick actions
@@ -81,6 +90,7 @@ Visual progress tracker with achievements system.
 - 🔄 **Reset functionality**: Clear progress and restart
 
 **Achievements:**
+
 - ⚡ **CLI Novice**: Installed CLI
 - 🔐 **Authenticated**: Connected account
 - 🎨 **Dream Weaver**: First generation
@@ -93,16 +103,19 @@ Visual progress tracker with achievements system.
 ### 4. **Integration Points**
 
 #### A. LoreVault Page (`src/pages/LoreVault.jsx`)
+
 - OnboardingProgress card shown after role selection
 - CLIOnboarding modal triggered by "Start/Continue" button
 - Achievement tracking on completion
 
 #### B. ScrollViewer Component (`src/components/ScrollViewer.jsx`)
+
 - CLICommandGenerator embedded in relevant scrolls
 - Context-aware command generation
 - Direct scroll-to-CLI pipeline
 
 #### C. DreamMover Page (`src/pages/DreamMover.jsx`)
+
 - CLI promotion banner with guide link
 - Quick access to onboarding
 
@@ -140,6 +153,7 @@ LoreVault
 ## 📊 Role-Based Onboarding Paths
 
 ### Solo Creator (5 steps)
+
 1. Install Dream Mover CLI
 2. Authenticate account
 3. Set creator profile
@@ -147,6 +161,7 @@ LoreVault
 5. Setup templates (optional)
 
 ### Agency (7 steps)
+
 1. Install Vauntico Agency CLI
 2. Authenticate agency account
 3. Enable agency mode
@@ -156,6 +171,7 @@ LoreVault
 7. Enable automation (optional)
 
 ### Team Lead (4 steps)
+
 1. Install Team CLI
 2. Authenticate team lead
 3. Create team workspace
@@ -166,10 +182,12 @@ LoreVault
 ## 💾 Data Persistence
 
 ### LocalStorage Keys:
+
 - `vauntico_cli_onboarding_{roleId}`: Progress per role
 - `vauntico_achievements`: Global achievement unlocks
 
 ### Data Structure:
+
 ```json
 {
   "completed": ["install", "auth", "profile"],
@@ -193,12 +211,14 @@ LoreVault
 ## 🚀 Next Steps & Enhancements
 
 ### Immediate Priorities:
+
 - [ ] Add actual CLI installation verification via API
 - [ ] Real-time progress sync across devices (with accounts)
 - [ ] Video walkthroughs for each step
 - [ ] More command templates for additional scrolls
 
 ### Future Enhancements:
+
 - [ ] In-app terminal emulator (run commands in browser)
 - [ ] CLI usage analytics (track most-used commands)
 - [ ] Community command library (share custom templates)
@@ -209,6 +229,7 @@ LoreVault
 ## 🔗 File References
 
 ### New Components:
+
 ```
 src/components/CLIOnboarding.jsx          (421 lines)
 src/components/CLICommandGenerator.jsx    (365 lines)
@@ -216,6 +237,7 @@ src/components/OnboardingProgress.jsx     (254 lines)
 ```
 
 ### Modified Files:
+
 ```
 src/pages/LoreVault.jsx                   (+3 imports, +18 lines)
 src/components/ScrollViewer.jsx           (+1 import, +4 lines)

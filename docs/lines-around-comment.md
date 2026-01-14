@@ -1,5 +1,5 @@
 ---
-description: 'Require empty lines around comments.'
+description: "Require empty lines around comments."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

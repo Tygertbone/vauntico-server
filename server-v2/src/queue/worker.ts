@@ -1,5 +1,5 @@
-import { Redis } from '@upstash/redis';
-import { logger } from '../utils/logger';
+import { Redis } from "@upstash/redis";
+import { logger } from "../utils/logger";
 
 // Initialize Redis client
 const redis = new Redis({
@@ -12,14 +12,14 @@ export class JobWorker {
   private isRunning = false;
   private pollInterval = 5000; // Poll every 5 seconds
 
-  constructor(private queueName: string = 'trust-score-jobs') {}
+  constructor(private queueName: string = "trust-score-jobs") {}
 
   // Start the worker
   async start(): Promise<void> {
     if (this.isRunning) return;
 
     this.isRunning = true;
-    logger.info('Starting job worker', { queueName: this.queueName });
+    logger.info("Starting job worker", { queueName: this.queueName });
 
     const pollJobs = async () => {
       if (!this.isRunning) return;
@@ -31,10 +31,12 @@ export class JobWorker {
         if (job) {
           try {
             await this.processJob(JSON.parse(job));
-            logger.info('Job processed successfully', { queueName: this.queueName });
+            logger.info("Job processed successfully", {
+              queueName: this.queueName,
+            });
           } catch (error) {
-            logger.error('Job processing failed', {
-              error: error instanceof Error ? error.message : 'Unknown error',
+            logger.error("Job processing failed", {
+              error: error instanceof Error ? error.message : "Unknown error",
               queueName: this.queueName,
               jobData: job,
             });
@@ -44,8 +46,8 @@ export class JobWorker {
           }
         }
       } catch (error) {
-        logger.error('Job polling failed', {
-          error: error instanceof Error ? error.message : 'Unknown error',
+        logger.error("Job polling failed", {
+          error: error instanceof Error ? error.message : "Unknown error",
           queueName: this.queueName,
         });
       }
@@ -61,33 +63,33 @@ export class JobWorker {
   // Stop the worker
   async stop(): Promise<void> {
     this.isRunning = false;
-    logger.info('Stopped job worker', { queueName: this.queueName });
+    logger.info("Stopped job worker", { queueName: this.queueName });
   }
 
   // Process a job
   private async processJob(job: any): Promise<void> {
     // Basic job structure validation
     if (!job.type || !job.payload) {
-      throw new Error('Invalid job structure');
+      throw new Error("Invalid job structure");
     }
 
     switch (job.type) {
-      case 'calculate-trust-score':
+      case "calculate-trust-score":
         await this.calculateTrustScore(job.payload);
         break;
 
-      case 'sync-social-data':
+      case "sync-social-data":
         await this.syncSocialData(job.payload);
         break;
 
       default:
-        logger.warn('Unknown job type', { jobType: job.type });
+        logger.warn("Unknown job type", { jobType: job.type });
     }
   }
 
   // Job handlers (stubs for Phase 2)
   private async calculateTrustScore(payload: any): Promise<void> {
-    logger.info('Processing trust score calculation', {
+    logger.info("Processing trust score calculation", {
       userId: payload.userId,
       dataPeriod: payload.dataPeriod,
     });
@@ -98,13 +100,13 @@ export class JobWorker {
     // - Apply scoring algorithm: 20% Consistency + 30% Engagement + 15% Revenue + 20% Platform Health + 15% Legacy
     // - Store results in trust_scores table
 
-    logger.info('Trust score calculation completed (stub - Phase 2)', {
+    logger.info("Trust score calculation completed (stub - Phase 2)", {
       userId: payload.userId,
     });
   }
 
   private async syncSocialData(payload: any): Promise<void> {
-    logger.info('Processing social data sync', {
+    logger.info("Processing social data sync", {
       userId: payload.userId,
       platforms: payload.platforms,
     });
@@ -114,7 +116,7 @@ export class JobWorker {
     // - Fetch metrics data and store in content_metrics table
     // - Trigger trust score calculation after sync
 
-    logger.info('Social data sync completed (stub - Phase 3)', {
+    logger.info("Social data sync completed (stub - Phase 3)", {
       userId: payload.userId,
     });
   }
@@ -149,18 +151,18 @@ const workers: Map<string, JobWorker> = new Map();
 
 // Start default worker
 export const startWorkers = async (): Promise<void> => {
-  const defaultWorker = new JobWorker('trust-score-jobs');
+  const defaultWorker = new JobWorker("trust-score-jobs");
   await defaultWorker.start();
-  workers.set('default', defaultWorker);
+  workers.set("default", defaultWorker);
 
-  logger.info('All job workers started');
+  logger.info("All job workers started");
 };
 
 // Stop all workers
 export const stopWorkers = async (): Promise<void> => {
   for (const [name, worker] of workers.entries()) {
     await worker.stop();
-    logger.info('Worker stopped', { workerName: name });
+    logger.info("Worker stopped", { workerName: name });
   }
 
   workers.clear();

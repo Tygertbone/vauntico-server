@@ -35,7 +35,8 @@ Since SSH port 22 is blocked on the OCI instance (84.8.135.161), we must use the
 Once connected via Console Connection, you need to upload the scripts. Since you're in the console, you can create the scripts directly using a text editor:
 
 1. **Create the deployment script**:
-```bash
+
+````bash
 cat > backend-deploy-v2-optimized.sh << 'EOF'
 #!/bin/bash
 
@@ -77,29 +78,29 @@ log_error() {
 # Error handling and rollback
 rollback() {
     log_warning "Initiating rollback procedure..."
-    
+
     if systemctl is-active --quiet "$SERVICE_NAME"; then
         sudo systemctl stop "$SERVICE_NAME" || true
         log_warning "Stopped $SERVICE_NAME service"
     fi
-    
+
     if systemctl is-enabled --quiet "$SERVICE_NAME"; then
         sudo systemctl disable "$SERVICE_NAME" || true
         log_warning "Disabled $SERVICE_NAME service"
     fi
-    
+
     if [[ -f "/etc/systemd/system/$SERVICE_NAME.service" ]]; then
         sudo rm -f "/etc/systemd/system/$SERVICE_NAME.service"
         sudo systemctl daemon-reload
         log_warning "Removed systemd service file"
     fi
-    
+
     if [[ -d "${APP_DIR}.backup" ]]; then
         sudo rm -rf "$APP_DIR"
         sudo mv "${APP_DIR}.backup" "$APP_DIR"
         log_warning "Restored application directory from backup"
     fi
-    
+
     log_error "Rollback completed. Please investigate the error and try again."
     exit 1
 }
@@ -108,20 +109,20 @@ rollback() {
 health_check() {
     local max_attempts=30
     local attempt=1
-    
+
     log "Performing health check..."
-    
+
     while [[ $attempt -le $max_attempts ]]; do
         if curl -f -s "http://localhost:$PORT/health" > /dev/null 2>&1; then
             log_success "Health check passed on attempt $attempt"
             return 0
         fi
-        
+
         log "Health check attempt $attempt/$max_attempts failed. Retrying in 10 seconds..."
         sleep 10
         ((attempt++))
     done
-    
+
     log_error "Health check failed after $max_attempts attempts"
     return 1
 }
@@ -129,17 +130,17 @@ health_check() {
 # Security hardening
 security_hardening() {
     log "Applying security hardening..."
-    
+
     if ! id "$SERVICE_NAME" &>/dev/null; then
         sudo useradd --system --shell /bin/false --home "$APP_DIR" "$SERVICE_NAME"
         log_success "Created dedicated user: $SERVICE_NAME"
     fi
-    
+
     sudo chown -R "$SERVICE_NAME:$SERVICE_NAME" "$APP_DIR"
     sudo chmod 755 "$APP_DIR"
     sudo chmod 644 "$APP_DIR"/*.json "$APP_DIR"/*.js 2>/dev/null || true
     log_success "Set proper file permissions"
-    
+
     sudo ufw --force enable
     sudo ufw allow ssh
     sudo ufw allow "$PORT/tcp"
@@ -149,10 +150,10 @@ security_hardening() {
 # Monitoring setup
 setup_monitoring() {
     log "Setting up monitoring..."
-    
+
     sudo mkdir -p "$LOG_DIR"
     sudo chown "$SERVICE_NAME:$SERVICE_NAME" "$LOG_DIR"
-    
+
     sudo tee /etc/logrotate.d/vauntico-trust-score > /dev/null << EOF
 $LOG_DIR/*.log {
     daily
@@ -167,29 +168,29 @@ $LOG_DIR/*.log {
     endscript
 }
 EOF
-    
+
     log_success "Set up log rotation"
 }
 
 # Main deployment function
 main() {
     log "🚀 Starting Vauntico Trust-Score Backend Deployment v2.0..."
-    
+
     trap rollback ERR
-    
+
     sudo mkdir -p "$LOG_DIR"
-    
+
     if [[ -d "$APP_DIR" ]]; then
         log_warning "Existing installation found. Creating backup..."
         sudo cp -r "$APP_DIR" "${APP_DIR}.backup"
     fi
-    
+
     log "📦 Updating system packages..."
     sudo apt update && sudo apt upgrade -y
-    
+
     log "📦 Installing required packages..."
     sudo apt-get install -y curl wget git ufw fail2ban unattended-upgrades
-    
+
     log "📦 Installing Node.js $NODE_VERSION..."
     if ! command -v node &> /dev/null; then
         curl -fsSL "https://deb.nodesource.com/setup_${NODE_VERSION}" | sudo -E bash -
@@ -197,19 +198,19 @@ main() {
     else
         log_warning "Node.js already installed: $(node --version)"
     fi
-    
+
     if ! command -v pm2 &> /dev/null; then
         log "📦 Installing PM2 process manager..."
         sudo npm install -g pm2
     else
         log_warning "PM2 already installed: $(pm2 --version)"
     fi
-    
+
     log "📁 Creating application directory..."
     sudo mkdir -p "$APP_DIR"
     sudo chown -R "$(whoami):$(whoami)" "$APP_DIR"
     cd "$APP_DIR"
-    
+
     log "🔧 Creating enhanced Express.js server..."
     cat > server.js << 'EOF'
 const express = require('express');
@@ -265,7 +266,7 @@ app.use((req, res, next) => {
     res.on('finish', () => {
         const duration = Date.now() - start;
         const logEntry = `${new Date().toISOString()} - ${req.method} ${req.originalUrl} - ${res.statusCode} - ${duration}ms`;
-        
+
         if (NODE_ENV === 'production') {
             fs.appendFile(path.join(LOG_DIR, 'requests.log'), logEntry + '\n', (err) => {
                 if (err) console.error('Error writing to request log:', err);
@@ -287,7 +288,7 @@ app.get('/health', (req, res) => {
         environment: NODE_ENV,
         port: PORT
     };
-    
+
     res.json(healthData);
 });
 
@@ -347,7 +348,7 @@ app.use('*', (req, res) => {
 app.use((err, req, res, next) => {
     const status = err.status || 500;
     const message = NODE_ENV === 'production' ? 'Internal Server Error' : err.message;
-    
+
     const errorLog = `${new Date().toISOString()} - ERROR: ${err.stack}\n`;
     if (NODE_ENV === 'production') {
         fs.appendFile(path.join(LOG_DIR, 'error.log'), errorLog, (err) => {
@@ -356,7 +357,7 @@ app.use((err, req, res, next) => {
     } else {
         console.error(errorLog);
     }
-    
+
     res.status(status).json({
         error: 'Internal Server Error',
         message: message,
@@ -457,14 +458,14 @@ EOF
 
     log "📦 Installing application dependencies..."
     npm ci --production
-    
+
     log "🔒 Running security audit..."
     npm audit --audit-level moderate || true
-    
+
     security_hardening
-    
+
     setup_monitoring
-    
+
     log "🔧 Creating PM2 ecosystem configuration..."
     cat > ecosystem.config.js << EOF
 module.exports = {
@@ -497,17 +498,17 @@ EOF
     pm2 start ecosystem.config.js
     pm2 save
     pm2 startup
-    
+
     log "⏳ Waiting for application to fully start..."
     sleep 15
-    
+
     if health_check; then
         log_success "Application is healthy and responding"
     else
         log_error "Health check failed"
         exit 1
     fi
-    
+
     log "🔧 Creating systemd service for PM2..."
     sudo tee /etc/systemd/system/trust-score.service > /dev/null << EOF
 [Unit]
@@ -535,7 +536,7 @@ EOF
     sudo systemctl daemon-reload
     sudo systemctl enable trust-score
     sudo systemctl start trust-score
-    
+
     log "📊 Verifying service status..."
     if sudo systemctl is-active --quiet trust-score; then
         log_success "Systemd service is running"
@@ -543,21 +544,21 @@ EOF
         log_error "Systemd service failed to start"
         exit 1
     fi
-    
+
     log "🧹 Cleaning up..."
     if [[ -d "${APP_DIR}.backup" ]]; then
         sudo rm -rf "${APP_DIR}.backup"
     fi
-    
+
     log "🧪 Performing final verification..."
-    
+
     endpoints=(
         "/health"
         "/api/v1/status"
         "/"
         "/api/docs"
     )
-    
+
     for endpoint in "${endpoints[@]}"; do
         if curl -f -s "http://localhost:$PORT$endpoint" > /dev/null 2>&1; then
             log_success "Endpoint $endpoint is responding"
@@ -565,7 +566,7 @@ EOF
             log_error "Endpoint $endpoint failed to respond"
         fi
     done
-    
+
     echo ""
     log_success "✅ Backend deployment completed successfully!"
     echo ""
@@ -642,11 +643,11 @@ log_error() {
 run_test() {
     local test_name="$1"
     local test_command="$2"
-    
+
     ((TESTS_TOTAL++))
-    
+
     log "Running test: $test_name"
-    
+
     if timeout "$TIMEOUT" bash -c "$test_command" > /dev/null 2>&1; then
         log_success "PASSED: $test_name"
         ((TESTS_PASSED++))
@@ -661,61 +662,61 @@ run_test() {
 main() {
     log "🧪 Starting Vauntico Trust-Score Backend Validation..."
     echo ""
-    
+
     if ! curl -f -s --connect-timeout 5 "$BASE_URL/health" > /dev/null 2>&1; then
         log_error "Service is not accessible at $BASE_URL"
         log_error "Please ensure the service is running before running validation"
         exit 1
     fi
-    
+
     log_success "Service is accessible at $BASE_URL"
     echo ""
-    
+
     log "=== Basic Connectivity Tests ==="
-    
+
     run_test "Health Check Endpoint" "curl -f -s '$BASE_URL/health' > /dev/null"
     run_test "Status Endpoint" "curl -f -s '$BASE_URL/api/v1/status' > /dev/null"
     run_test "Root Endpoint" "curl -f -s '$BASE_URL/' > /dev/null"
     run_test "API Docs Endpoint" "curl -f -s '$BASE_URL/api/docs' > /dev/null"
-    
+
     echo ""
-    
+
     log "=== Response Format Tests ==="
-    
+
     run_test "Health Endpoint JSON Structure" "
         curl -s '$BASE_URL/health' | grep -q '\"status\"' && curl -s '$BASE_URL/health' | grep -q '\"timestamp\"'
     "
-    
+
     run_test "Status Endpoint JSON Structure" "
         curl -s '$BASE_URL/api/v1/status' | grep -q '\"status\"' && curl -s '$BASE_URL/api/v1/status' | grep -q '\"service\"'
     "
-    
+
     echo ""
-    
+
     log "=== Performance Tests ==="
-    
+
     run_test "Health Endpoint Performance" "
         for i in {1..10}; do
             curl -s '$BASE_URL/health' > /dev/null || exit 1
         done
     "
-    
+
     echo ""
-    
+
     log "=== Validation Summary ==="
-    
+
     echo -e "${BLUE}Total Tests: $TESTS_TOTAL${NC}"
     echo -e "${GREEN}Passed: $TESTS_PASSED${NC}"
     echo -e "${RED}Failed: $TESTS_FAILED${NC}"
-    
+
     local success_rate=0
     if [[ $TESTS_TOTAL -gt 0 ]]; then
         success_rate=$((TESTS_PASSED * 100 / TESTS_TOTAL))
     fi
-    
+
     echo -e "${BLUE}Success Rate: $success_rate%${NC}"
     echo ""
-    
+
     if [[ $TESTS_FAILED -eq 0 ]]; then
         log_success "🎉 All tests passed! The deployment is working correctly."
         return 0
@@ -727,22 +728,25 @@ main() {
 
 main "$@"
 EOF
-```
+````
 
 ### Step 3: Execute Deployment
 
 1. **Make scripts executable**:
+
 ```bash
 chmod +x backend-deploy-v2-optimized.sh
 chmod +x validate-backend-deployment.sh
 ```
 
 2. **Run the deployment**:
+
 ```bash
 ./backend-deploy-v2-optimized.sh
 ```
 
 This will take approximately 10-15 minutes to complete. The script will:
+
 - Update system packages
 - Install Node.js 18.x and PM2
 - Create the application directory
@@ -752,6 +756,7 @@ This will take approximately 10-15 minutes to complete. The script will:
 - Configure firewall and monitoring
 
 3. **Verify deployment**:
+
 ```bash
 # Test the health endpoint
 curl http://localhost:3000/health
@@ -783,23 +788,27 @@ curl -I https://trust-score.vauntico.com/api/v1/status
 If you encounter issues:
 
 1. **Check service status**:
+
 ```bash
 sudo systemctl status trust-score
 pm2 status
 ```
 
 2. **View logs**:
+
 ```bash
 sudo journalctl -u trust-score -f
 pm2 logs trust-score
 ```
 
 3. **Restart service**:
+
 ```bash
 sudo systemctl restart trust-score
 ```
 
 4. **Check firewall**:
+
 ```bash
 sudo ufw status
 sudo ufw allow 3000/tcp
@@ -808,6 +817,7 @@ sudo ufw allow 3000/tcp
 ## 📞 Additional Support
 
 If you need assistance during the deployment:
+
 - Check the application logs: `/var/log/vauntico/`
 - Use PM2 monitoring: `pm2 monit`
 - Verify all endpoints are responding: `curl http://localhost:3000/health`

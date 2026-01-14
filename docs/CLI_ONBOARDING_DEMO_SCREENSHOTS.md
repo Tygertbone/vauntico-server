@@ -10,11 +10,13 @@
 ### 1. **Role Selection Screen** (`/lore`)
 
 **What to capture:**
+
 - Three role cards (Solo Creator, Agency, Team Lead)
 - Hover state on one card
 - Vault access info card at bottom
 
 **Key elements:**
+
 ```
 ✅ Role icons clearly visible (👨‍💻, 🏢, 👥)
 ✅ "Begin →" buttons visible
@@ -27,6 +29,7 @@
 ### 2. **Onboarding Progress Card** (After role selection)
 
 **What to capture:**
+
 - Full progress card in different states:
   - 0% (just started)
   - 40% (mid-progress)
@@ -34,6 +37,7 @@
 - Expanded view showing achievements
 
 **Key elements:**
+
 ```
 ✅ Progress bar with percentage
 ✅ Status emoji changes (🌱 → 🌿 → 🌳 → ⚡ → 🏆)
@@ -48,6 +52,7 @@
 **What to capture:**
 
 #### Step 1: Installation
+
 ```
 ┌─────────────────────────────────────────┐
 │ ⚡ Install Dream Mover CLI              │
@@ -65,6 +70,7 @@
 ```
 
 #### Step 2: Authentication
+
 ```
 ┌─────────────────────────────────────────┐
 │ 🔐 Authenticate Your Account            │
@@ -78,6 +84,7 @@
 ```
 
 #### Step 5: Completion
+
 ```
 ┌─────────────────────────────────────────┐
 │         Achievement Unlocked!           │
@@ -91,6 +98,7 @@
 ```
 
 **Key elements:**
+
 ```
 ✅ Step navigation dots at top
 ✅ Progress bar shows current position
@@ -107,6 +115,7 @@
 **What to capture:**
 
 #### Selection State
+
 ```
 ┌─────────────────────────────────────────────┐
 │ 🎨 CLI Command Generator                    │
@@ -127,6 +136,7 @@
 ```
 
 #### Generated Output
+
 ```
 ┌─────────────────────────────────────────────┐
 │ YOUR COMMAND:                          [📋]│
@@ -139,6 +149,7 @@
 ```
 
 **Key elements:**
+
 ```
 ✅ Two-column layout (templates | config)
 ✅ Dynamic form based on selected template
@@ -152,11 +163,13 @@
 ### 5. **Achievement System** (Expanded progress card)
 
 **What to capture:**
+
 - Grid of 6 achievement badges
 - Mix of unlocked (colored) and locked (grayscale) states
 - Achievement count indicator
 
 **Visual layout:**
+
 ```
 ┌─────────────────────────────────────────┐
 │ 🏆 Achievements                    3/6  │
@@ -173,6 +186,7 @@
 ```
 
 **Key elements:**
+
 ```
 ✅ Unlocked badges show icon + title + description
 ✅ Locked badges show 🔒 and grayed out
@@ -185,11 +199,13 @@
 ### 6. **Mobile Responsive Views**
 
 **What to capture:**
+
 - Onboarding modal on mobile (375px width)
 - Progress card on tablet (768px width)
 - Command generator stacked layout
 
 **Key elements:**
+
 ```
 ✅ Single column layouts
 ✅ Touch-friendly button sizes
@@ -202,6 +218,7 @@
 ## 🎥 Video Demo Script
 
 ### Scene 1: Introduction (0:00 - 0:15)
+
 ```
 "Welcome to Vauntico's CLI Onboarding System.
 Let me show you how we transform command-line complexity
@@ -209,18 +226,21 @@ into an intuitive, guided experience."
 ```
 
 ### Scene 2: Role Selection (0:15 - 0:30)
+
 ```
 "First, users choose their path: Solo Creator, Agency, or Team Lead.
 Each role gets a customized onboarding flow with relevant steps."
 ```
 
 ### Scene 3: Progress Tracking (0:30 - 0:45)
+
 ```
 "The progress card shows real-time completion status.
 Watch as the progress bar fills and achievements unlock."
 ```
 
 ### Scene 4: Step-by-Step Flow (0:45 - 1:15)
+
 ```
 "Let's walk through the onboarding steps.
 Each step includes:
@@ -233,6 +253,7 @@ Users can navigate freely between completed steps."
 ```
 
 ### Scene 5: Command Generator (1:15 - 1:40)
+
 ```
 "Inside our documentation scrolls, users find the Command Generator.
 Select a template, fill in the fields, and get a ready-to-use command.
@@ -240,6 +261,7 @@ No more syntax errors or documentation hunting."
 ```
 
 ### Scene 6: Achievements (1:40 - 2:00)
+
 ```
 "Gamification drives completion. Users unlock badges
 as they progress through the onboarding journey.
@@ -247,6 +269,7 @@ This creates a sense of accomplishment and encourages exploration."
 ```
 
 ### Scene 7: Conclusion (2:00 - 2:15)
+
 ```
 "The CLI Onboarding System bridges the gap between
 documentation and action, making powerful tools accessible to everyone."
@@ -257,16 +280,19 @@ documentation and action, making powerful tools accessible to everyone."
 ## 📊 A/B Testing Recommendations
 
 ### Test 1: Gamification Impact
+
 - **Variant A:** With achievements visible
 - **Variant B:** Without achievements
 - **Metric:** Completion rate
 
 ### Test 2: Step Count
+
 - **Variant A:** 5 steps (current)
 - **Variant B:** 3 steps (condensed)
 - **Metric:** Drop-off rate per step
 
 ### Test 3: Command Generator Placement
+
 - **Variant A:** Embedded in scrolls (current)
 - **Variant B:** Floating sidebar widget
 - **Metric:** Usage frequency
@@ -276,26 +302,25 @@ documentation and action, making powerful tools accessible to everyone."
 ## 🎨 Design Tokens
 
 ### Colors Used:
+
 ```css
---vault-purple: #7C3AED
---vault-blue: #3B82F6
---vault-cyan: #06B6D4
---success-green: #10B981
---warning-orange: #F59E0B
+--vault-purple: #7c3aed --vault-blue: #3b82f6 --vault-cyan: #06b6d4
+  --success-green: #10b981 --warning-orange: #f59e0b;
 ```
 
 ### Typography:
+
 ```css
---font-heading: 'Inter', sans-serif
---font-body: 'Inter', sans-serif
---font-mono: 'Fira Code', monospace (for code blocks)
+--font-heading:
+  "Inter", sans-serif --font-body: "Inter", sans-serif --font-mono: "Fira Code",
+  monospace (for code blocks);
 ```
 
 ### Animations:
+
 ```css
---fade-in: 300ms ease-in-out
---slide-up: 400ms cubic-bezier(0.4, 0, 0.2, 1)
---scale-hover: transform 200ms ease
+--fade-in: 300ms ease-in-out --slide-up: 400ms cubic-bezier(0.4, 0, 0.2, 1)
+  --scale-hover: transform 200ms ease;
 ```
 
 ---
@@ -333,11 +358,13 @@ Examples:
 ## 📹 Screen Recording Settings
 
 **Recommended Tools:**
+
 - macOS: QuickTime, ScreenFlow
 - Windows: OBS Studio, Camtasia
 - Web: Loom, ScreenPal
 
 **Settings:**
+
 - Resolution: 1920x1080 (Full HD)
 - Frame Rate: 60fps for smooth animations
 - Format: MP4 (H.264 codec)

@@ -29,43 +29,43 @@ marked --output="hello world.html" -i in.md --no-breaks
 
 ## OPTIONS
 
-* -o, --output [output file]
-Specify file output. If none is specified, write to stdout.
+- -o, --output [output file]
+  Specify file output. If none is specified, write to stdout.
 
-* -i, --input [input file]
-Specify file input, otherwise use last argument as input file.
-If no input file is specified, read from stdin.
+- -i, --input [input file]
+  Specify file input, otherwise use last argument as input file.
+  If no input file is specified, read from stdin.
 
-* -s, --string [markdown string]
-Specify string input instead of a file.
+- -s, --string [markdown string]
+  Specify string input instead of a file.
 
-* -c, --config [config file]
-Specify config file to use instead of the default `~/.marked.json` or `~/.marked.js` or `~/.marked/index.js`.
+- -c, --config [config file]
+  Specify config file to use instead of the default `~/.marked.json` or `~/.marked.js` or `~/.marked/index.js`.
 
-* -t, --tokens
-Output a token list instead of html.
+- -t, --tokens
+  Output a token list instead of html.
 
-* -n, --no-clobber
-Do not overwrite `output` if it exists.
+- -n, --no-clobber
+  Do not overwrite `output` if it exists.
 
-* --pedantic
-Conform to obscure parts of markdown.pl as much as possible.
-Don't fix original markdown bugs.
+- --pedantic
+  Conform to obscure parts of markdown.pl as much as possible.
+  Don't fix original markdown bugs.
 
-* --gfm
-Enable github flavored markdown.
+- --gfm
+  Enable github flavored markdown.
 
-* --breaks
-Enable GFM line breaks. Only works with the gfm option.
+- --breaks
+  Enable GFM line breaks. Only works with the gfm option.
 
-* --no-breaks, -no-etc...
-The inverse of any of the marked options above.
+- --no-breaks, -no-etc...
+  The inverse of any of the marked options above.
 
-* --silent
-Silence error output.
+- --silent
+  Silence error output.
 
-* -h, --help
-Display help information.
+- -h, --help
+  Display help information.
 
 ## CONFIGURATION
 
@@ -74,9 +74,9 @@ For configuring and running programmatically.
 Example
 
 ```js
-import { Marked } from 'marked';
+import { Marked } from "marked";
 const marked = new Marked({ gfm: true });
-marked.parse('*foo*');
+marked.parse("*foo*");
 ```
 
 ## BUGS

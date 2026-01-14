@@ -1,5 +1,5 @@
 ---
-description: 'Enforce constituents of a type union/intersection to be sorted alphabetically.'
+description: "Enforce constituents of a type union/intersection to be sorted alphabetically."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -36,10 +36,10 @@ type T4 =
   | { a: string }
   | (() => void)
   | (() => string)
-  | 'b'
-  | 'a'
-  | 'b'
-  | 'a'
+  | "b"
+  | "a"
+  | "b"
+  | "a"
   | readonly string[]
   | readonly number[]
   | string[]
@@ -68,10 +68,10 @@ type T4 =
   | string
   | readonly number[]
   | readonly string[]
-  | 'a'
-  | 'a'
-  | 'b'
-  | 'b'
+  | "a"
+  | "a"
+  | "b"
+  | "b"
   | (() => string)
   | (() => void)
   | { a: string }

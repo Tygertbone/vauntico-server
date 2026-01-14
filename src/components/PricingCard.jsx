@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 const PricingCard = ({ name, description, pricing, features = [] }) => {
   return (
@@ -15,7 +15,9 @@ const PricingCard = ({ name, description, pricing, features = [] }) => {
           <div className="space-y-2">
             {pricing.usd && (
               <div className="text-center">
-                <span className="text-3xl font-bold text-gray-900">${pricing.usd}</span>
+                <span className="text-3xl font-bold text-gray-900">
+                  ${pricing.usd}
+                </span>
                 <span className="text-gray-500 text-sm">/month (USD)</span>
               </div>
             )}
@@ -45,10 +47,15 @@ const PricingCard = ({ name, description, pricing, features = [] }) => {
       {/* Features List */}
       {features && features.length > 0 && (
         <div className="mb-6">
-          <h4 className="text-lg font-semibold mb-3 text-gray-900">Features:</h4>
+          <h4 className="text-lg font-semibold mb-3 text-gray-900">
+            Features:
+          </h4>
           <ul className="space-y-2">
             {features.map((feature, index) => (
-              <li key={index} className="flex items-center text-sm text-gray-600">
+              <li
+                key={index}
+                className="flex items-center text-sm text-gray-600"
+              >
                 <span className="text-green-500 mr-2">✓</span>
                 {feature}
               </li>
@@ -74,9 +81,9 @@ PricingCard.propTypes = {
     usd: PropTypes.number,
     zar: PropTypes.number,
     ngn: PropTypes.number,
-    eur: PropTypes.number
+    eur: PropTypes.number,
   }),
-  features: PropTypes.arrayOf(PropTypes.string)
+  features: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default PricingCard;

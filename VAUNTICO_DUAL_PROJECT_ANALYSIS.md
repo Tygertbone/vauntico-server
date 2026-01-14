@@ -13,13 +13,13 @@ Vauntico appears to be operating a dual frontend strategy with multiple deployme
 
 ### Active Domains Identified
 
-| Domain | Purpose | Platform | Status |
-|--------|---------|----------|--------|
-| `www.vauntico.com` | Main brand site | Vercel | ✅ Active |
-| `vault.vauntico.com` | Prompt vault landing | Vercel | ✅ Active |
-| `trust-score.vauntico.com` | Trust score API | Backend | ✅ Active |
-| `vauntico-server.vauntico.com` | Alternative API | Backend | ❓ Unclear |
-| `fulfillment.vauntico.com` | Fulfillment service | Backend | ❓ Unclear |
+| Domain                         | Purpose              | Platform | Status     |
+| ------------------------------ | -------------------- | -------- | ---------- |
+| `www.vauntico.com`             | Main brand site      | Vercel   | ✅ Active  |
+| `vault.vauntico.com`           | Prompt vault landing | Vercel   | ✅ Active  |
+| `trust-score.vauntico.com`     | Trust score API      | Backend  | ✅ Active  |
+| `vauntico-server.vauntico.com` | Alternative API      | Backend  | ❓ Unclear |
+| `fulfillment.vauntico.com`     | Fulfillment service  | Backend  | ❓ Unclear |
 
 ### Project Codebases Found
 
@@ -31,6 +31,7 @@ Vauntico appears to be operating a dual frontend strategy with multiple deployme
 ## Investigation Tasks
 
 ### Phase 1: Current State Assessment
+
 - [ ] Analyze deployment configurations for each project
 - [ ] Map domains to their respective codebases
 - [ ] Identify which projects are actively maintained
@@ -38,6 +39,7 @@ Vauntico appears to be operating a dual frontend strategy with multiple deployme
 - [ ] Review environment variables and deployment scripts
 
 ### Phase 2: Strategic Analysis
+
 - [ ] Determine purpose of each frontend (A/B testing, feature separation, etc.)
 - [ ] Analyze traffic routing and domain strategy
 - [ ] Identify resource duplication and optimization opportunities
@@ -45,6 +47,7 @@ Vauntico appears to be operating a dual frontend strategy with multiple deployme
 - [ ] Assess maintenance overhead of multiple frontends
 
 ### Phase 3: Technical Deep Dive
+
 - [ ] Compare feature sets between root project and homepage-redesign
 - [ ] Analyze shared components and dependencies
 - [ ] Review API endpoints and backend integrations
@@ -52,6 +55,7 @@ Vauntico appears to be operating a dual frontend strategy with multiple deployme
 - [ ] Assess performance implications of multiple deployments
 
 ### Phase 4: Recommendations
+
 - [ ] Propose consolidation strategy if applicable
 - [ ] Document best practices for multi-project management
 - [ ] Create migration plan if consolidation is recommended
@@ -82,4 +86,4 @@ Vauntico appears to be operating a dual frontend strategy with multiple deployme
 
 ---
 
-*This analysis will be updated as investigation progresses through each phase.*
+_This analysis will be updated as investigation progresses through each phase._

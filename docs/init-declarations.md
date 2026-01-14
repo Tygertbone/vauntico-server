@@ -1,5 +1,5 @@
 ---
-description: 'Require or disallow initialization in variable declarations.'
+description: "Require or disallow initialization in variable declarations."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

@@ -1,9 +1,9 @@
-import axios from 'axios';
-import { logger } from '../utils/logger';
-import { PaymentProvider } from '../utils/subscriptions';
-import { ProofVault } from './ProofVault';
-import { SlackService } from './SlackService';
-import crypto from 'crypto';
+import axios from "axios";
+import { logger } from "../utils/logger";
+import { PaymentProvider } from "../utils/subscriptions";
+import { ProofVault } from "./ProofVault";
+import { SlackService } from "./SlackService";
+import crypto from "crypto";
 
 export interface PaystackCustomer {
   customer_code: string;
@@ -28,13 +28,15 @@ export interface PaystackPlan {
 
 export class PaystackService {
   private static instance: PaystackService;
-  private baseUrl = 'https://api.paystack.co';
+  private baseUrl = "https://api.paystack.co";
   private secretKey: string;
 
   private constructor() {
-    this.secretKey = process.env.PAYSTACK_SECRET_KEY || '';
+    this.secretKey = process.env.PAYSTACK_SECRET_KEY || "";
     if (!this.secretKey) {
-      logger.warn('Paystack secret key not configured - Paystack services disabled');
+      logger.warn(
+        "Paystack secret key not configured - Paystack services disabled",
+      );
     }
   }
 
@@ -48,7 +50,10 @@ export class PaystackService {
   /**
    * Create or retrieve a Paystack customer
    */
-  async createOrGetCustomer(email: string, metadata?: any): Promise<PaystackCustomer> {
+  async createOrGetCustomer(
+    email: string,
+    metadata?: any,
+  ): Promise<PaystackCustomer> {
     try {
       // First try to get existing customer
       const existingCustomer = await this.getCustomerByEmail(email);
@@ -61,28 +66,28 @@ export class PaystackService {
         `${this.baseUrl}/customer`,
         {
           email,
-          metadata: metadata || {}
+          metadata: metadata || {},
         },
         {
           headers: {
             Authorization: `Bearer ${this.secretKey}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-        }
+        },
       );
 
-      logger.info('Paystack customer created', {
+      logger.info("Paystack customer created", {
         email,
-        customerCode: response.data.data.customer_code
+        customerCode: response.data.data.customer_code,
       });
 
       return response.data.data;
     } catch (error: any) {
-      logger.error('Failed to create Paystack customer', {
+      logger.error("Failed to create Paystack customer", {
         email,
-        error: error.response?.data || error.message
+        error: error.response?.data || error.message,
       });
-      throw new Error('Failed to create customer');
+      throw new Error("Failed to create customer");
     }
   }
 
@@ -91,15 +96,12 @@ export class PaystackService {
    */
   async getCustomerByEmail(email: string): Promise<PaystackCustomer | null> {
     try {
-      const response = await axios.get(
-        `${this.baseUrl}/customer`,
-        {
-          params: { email },
-          headers: {
-            Authorization: `Bearer ${this.secretKey}`,
-          },
-        }
-      );
+      const response = await axios.get(`${this.baseUrl}/customer`, {
+        params: { email },
+        headers: {
+          Authorization: `Bearer ${this.secretKey}`,
+        },
+      });
 
       const customers = response.data.data;
       if (customers.length > 0) {
@@ -108,9 +110,9 @@ export class PaystackService {
 
       return null;
     } catch (error: any) {
-      logger.error('Failed to get Paystack customer', {
+      logger.error("Failed to get Paystack customer", {
         email,
-        error: error.response?.data || error.message
+        error: error.response?.data || error.message,
       });
       return null;
     }
@@ -119,7 +121,11 @@ export class PaystackService {
   /**
    * Create a subscription plan
    */
-  async createPlan(name: string, amountCents: number, interval: string = 'monthly'): Promise<PaystackPlan> {
+  async createPlan(
+    name: string,
+    amountCents: number,
+    interval: string = "monthly",
+  ): Promise<PaystackPlan> {
     try {
       const response = await axios.post(
         `${this.baseUrl}/plan`,
@@ -127,30 +133,30 @@ export class PaystackService {
           name,
           amount: amountCents, // Amount in cents/kobo
           interval,
-          currency: 'NGN', // Default to NGN, can be changed based on region
+          currency: "NGN", // Default to NGN, can be changed based on region
         },
         {
           headers: {
             Authorization: `Bearer ${this.secretKey}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-        }
+        },
       );
 
-      logger.info('Paystack plan created', {
+      logger.info("Paystack plan created", {
         name,
         amount: amountCents,
-        planCode: response.data.data.plan_code
+        planCode: response.data.data.plan_code,
       });
 
       return response.data.data;
     } catch (error: any) {
-      logger.error('Failed to create Paystack plan', {
+      logger.error("Failed to create Paystack plan", {
         name,
         amount: amountCents,
-        error: error.response?.data || error.message
+        error: error.response?.data || error.message,
       });
-      throw new Error('Failed to create subscription plan');
+      throw new Error("Failed to create subscription plan");
     }
   }
 
@@ -161,7 +167,7 @@ export class PaystackService {
     customerCode: string,
     planCode: string,
     amount?: number,
-    trialDays?: number
+    trialDays?: number,
   ): Promise<{ authorization_url: string; reference: string }> {
     try {
       const payload: any = {
@@ -183,25 +189,25 @@ export class PaystackService {
         {
           headers: {
             Authorization: `Bearer ${this.secretKey}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-        }
+        },
       );
 
-      logger.info('Paystack subscription initialized', {
+      logger.info("Paystack subscription initialized", {
         customerCode,
         planCode,
-        reference: response.data.data.reference
+        reference: response.data.data.reference,
       });
 
       return response.data.data;
     } catch (error: any) {
-      logger.error('Failed to initialize Paystack subscription', {
+      logger.error("Failed to initialize Paystack subscription", {
         customerCode,
         planCode,
-        error: error.response?.data || error.message
+        error: error.response?.data || error.message,
       });
-      throw new Error('Failed to initialize subscription');
+      throw new Error("Failed to initialize subscription");
     }
   }
 
@@ -216,29 +222,33 @@ export class PaystackService {
           headers: {
             Authorization: `Bearer ${this.secretKey}`,
           },
-        }
+        },
       );
 
-      logger.info('Paystack payment verified', {
+      logger.info("Paystack payment verified", {
         reference,
         status: response.data.data.status,
-        amount: response.data.data.amount
+        amount: response.data.data.amount,
       });
 
       return response.data.data;
     } catch (error: any) {
-      logger.error('Failed to verify Paystack payment', {
+      logger.error("Failed to verify Paystack payment", {
         reference,
-        error: error.response?.data || error.message
+        error: error.response?.data || error.message,
       });
-      throw new Error('Failed to verify payment');
+      throw new Error("Failed to verify payment");
     }
   }
 
   /**
    * Create subscription directly (alternative to transaction flow)
    */
-  async createSubscription(customerCode: string, planCode: string, authorizationCode?: string): Promise<PaystackSubscription> {
+  async createSubscription(
+    customerCode: string,
+    planCode: string,
+    authorizationCode?: string,
+  ): Promise<PaystackSubscription> {
     try {
       const payload: any = {
         customer: customerCode,
@@ -255,25 +265,25 @@ export class PaystackService {
         {
           headers: {
             Authorization: `Bearer ${this.secretKey}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-        }
+        },
       );
 
-      logger.info('Paystack subscription created', {
+      logger.info("Paystack subscription created", {
         customerCode,
         planCode,
-        subscriptionCode: response.data.data.subscription_code
+        subscriptionCode: response.data.data.subscription_code,
       });
 
       return response.data.data;
     } catch (error: any) {
-      logger.error('Failed to create Paystack subscription', {
+      logger.error("Failed to create Paystack subscription", {
         customerCode,
         planCode,
-        error: error.response?.data || error.message
+        error: error.response?.data || error.message,
       });
-      throw new Error('Failed to create subscription');
+      throw new Error("Failed to create subscription");
     }
   }
 
@@ -289,42 +299,38 @@ export class PaystackService {
   }): Promise<{ reference: string; transfer_code: string; status: string }> {
     try {
       const payload: any = {
-        type: 'payout',
-        name: options.recipient.name || 'Creator Payout',
+        type: "payout",
+        name: options.recipient.name || "Creator Payout",
         email: options.recipient.email,
         amount: options.amount,
-        currency: options.currency || 'NGN',
+        currency: options.currency || "NGN",
         reference: options.reference,
-        reason: options.reason || 'Creator payment request payout',
+        reason: options.reason || "Creator payment request payout",
       };
 
-      const response = await axios.post(
-        `${this.baseUrl}/transfer`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${this.secretKey}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      const response = await axios.post(`${this.baseUrl}/transfer`, payload, {
+        headers: {
+          Authorization: `Bearer ${this.secretKey}`,
+          "Content-Type": "application/json",
+        },
+      });
 
-      logger.info('Paystack payout initiated', {
+      logger.info("Paystack payout initiated", {
         reference: options.reference,
         amount: options.amount,
-        currency: options.currency || 'NGN',
+        currency: options.currency || "NGN",
         transferCode: response.data.data.transfer_code,
         status: response.data.data.status,
       });
 
       return response.data.data;
     } catch (error: any) {
-      logger.error('Failed to initiate Paystack payout', {
+      logger.error("Failed to initiate Paystack payout", {
         reference: options.reference,
         amount: options.amount,
-        error: error.response?.data || error.message
+        error: error.response?.data || error.message,
       });
-      throw new Error('Failed to initiate Paystack payout');
+      throw new Error("Failed to initiate Paystack payout");
     }
   }
 
@@ -339,20 +345,20 @@ export class PaystackService {
         {
           headers: {
             Authorization: `Bearer ${this.secretKey}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-        }
+        },
       );
 
-      logger.info('Paystack subscription cancelled', { subscriptionCode });
+      logger.info("Paystack subscription cancelled", { subscriptionCode });
 
       return response.data.status;
     } catch (error: any) {
-      logger.error('Failed to cancel Paystack subscription', {
+      logger.error("Failed to cancel Paystack subscription", {
         subscriptionCode,
-        error: error.response?.data || error.message
+        error: error.response?.data || error.message,
       });
-      throw new Error('Failed to cancel subscription');
+      throw new Error("Failed to cancel subscription");
     }
   }
 
@@ -362,14 +368,14 @@ export class PaystackService {
   verifyWebhook(body: string, signature: string): boolean {
     try {
       const hash = crypto
-        .createHmac('sha512', this.secretKey)
+        .createHmac("sha512", this.secretKey)
         .update(body)
-        .digest('hex');
+        .digest("hex");
 
       return hash === signature;
     } catch (error) {
-      logger.error('Webhook verification failed', {
-        error: error instanceof Error ? error.message : 'Unknown error'
+      logger.error("Webhook verification failed", {
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return false;
     }
@@ -382,40 +388,40 @@ export class PaystackService {
     try {
       const { event: eventType, data } = event;
 
-      logger.info('Paystack webhook received', {
+      logger.info("Paystack webhook received", {
         eventType,
         reference: data.reference,
-        subscriptionCode: data.subscription_code
+        subscriptionCode: data.subscription_code,
       });
 
       switch (eventType) {
-        case 'subscription.create':
+        case "subscription.create":
           // Handle subscription creation
           await this.handleSubscriptionCreate(data);
           break;
 
-        case 'subscription.disable':
+        case "subscription.disable":
           // Handle subscription cancellation
           await this.handleSubscriptionCancel(data);
           break;
 
-        case 'charge.success':
+        case "charge.success":
           // Handle successful charge
           await this.handleChargeSuccess(data);
           break;
 
-        case 'charge.fail':
+        case "charge.fail":
           // Handle failed charge
           await this.handleChargeFail(data);
           break;
 
         default:
-          logger.info('Unhandled Paystack webhook event', { eventType });
+          logger.info("Unhandled Paystack webhook event", { eventType });
       }
     } catch (error) {
-      logger.error('Failed to handle Paystack webhook', {
+      logger.error("Failed to handle Paystack webhook", {
         event: event.event,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   }
@@ -430,32 +436,37 @@ export class PaystackService {
       const userId = customer_code; // This needs to be replaced with actual userId lookup
 
       // Determine currency (Paystack defaults to NGN, but could be others)
-      const currency = 'NGN'; // Default to NGN for now
+      const currency = "NGN"; // Default to NGN for now
 
       // Store proof in Proof Vault
       await ProofVault.storeProof(userId, subscription_code, currency, amount);
 
       // Send Slack alert
-      await SlackService.sendAlert(`New subscription: ${userId} → ${subscription_code} (${amount} ${currency})`);
+      await SlackService.sendAlert(
+        `New subscription: ${userId} → ${subscription_code} (${amount} ${currency})`,
+      );
 
-      logger.info('Subscription proof stored and alert sent', {
+      logger.info("Subscription proof stored and alert sent", {
         userId,
         subscriptionCode: subscription_code,
         amount,
-        currency
+        currency,
       });
     } catch (error) {
-      logger.error('Error handling subscription create', {
-        error: error instanceof Error ? error.message : 'Unknown error',
-        data
+      logger.error("Error handling subscription create", {
+        error: error instanceof Error ? error.message : "Unknown error",
+        data,
       });
 
       // Send error alert to Slack
       try {
-        await SlackService.sendAlert(`Payment failure: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        await SlackService.sendAlert(
+          `Payment failure: ${error instanceof Error ? error.message : "Unknown error"}`,
+        );
       } catch (alertError) {
-        logger.error('Failed to send error alert to Slack', {
-          error: alertError instanceof Error ? alertError.message : 'Unknown error'
+        logger.error("Failed to send error alert to Slack", {
+          error:
+            alertError instanceof Error ? alertError.message : "Unknown error",
         });
       }
     }
@@ -463,17 +474,17 @@ export class PaystackService {
 
   private async handleSubscriptionCancel(data: any): Promise<void> {
     // Implementation for handling subscription cancellation
-    logger.info('Handling subscription cancel', data);
+    logger.info("Handling subscription cancel", data);
   }
 
   private async handleChargeSuccess(data: any): Promise<void> {
     // Implementation for handling successful charges
-    logger.info('Handling charge success', data);
+    logger.info("Handling charge success", data);
   }
 
   private async handleChargeFail(data: any): Promise<void> {
     // Implementation for handling failed charges
-    logger.info('Handling charge failure', data);
+    logger.info("Handling charge failure", data);
   }
 }
 

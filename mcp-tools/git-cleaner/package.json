@@ -1,0 +1,23 @@
+{
+  "name": "git-cleaner-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for automatic git change categorization and semantic commits",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "simple-git": "^3.20.0"
+  },
+  "keywords": [
+    "mcp",
+    "git",
+    "semantic-commits",
+    "automation"
+  ],
+  "author": "Vauntico",
+  "license": "MIT"
+}

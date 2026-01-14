@@ -17,6 +17,7 @@ objective: "Edit yesterday's footage into a polished, viral-ready video"
 ## 📱 CapCut Quick Start
 
 ### **Import Your Video** (5 min)
+
 1. Open CapCut
 2. Tap "New Project"
 3. Select Take 2 from yesterday
@@ -27,6 +28,7 @@ objective: "Edit yesterday's footage into a polished, viral-ready video"
 ## ✂️ Basic Editing (30 min)
 
 ### **Step 1: Trim the Fat**
+
 - Cut beginning (before you start talking)
 - Cut end (after you finish)
 - Remove long pauses (tap clip → Split → Delete)
@@ -34,6 +36,7 @@ objective: "Edit yesterday's footage into a polished, viral-ready video"
 **Target length:** 27-30 seconds
 
 ### **Step 2: Add Captions** (Auto!)
+
 - Tap "Text" → "Auto Captions"
 - Select language (English/Swahili/etc)
 - Wait 20 seconds
@@ -42,6 +45,7 @@ objective: "Edit yesterday's footage into a polished, viral-ready video"
 **Why captions matter:** 85% watch with sound off
 
 ### **Step 3: Add Music** (Trending = Important)
+
 - Tap "Audio" → "Sounds"
 - Search "trending"
 - Pick one that fits your vibe
@@ -52,11 +56,13 @@ objective: "Edit yesterday's footage into a polished, viral-ready video"
 ## 🎨 Make It Pop (20 min)
 
 ### **Add Effects:**
+
 - Zoom in on face when saying something important
 - Add text overlay for key points
 - Use transitions (but don't overdo it)
 
 ### **Color Grade:**
+
 - Tap "Adjust" → "Brightness" (+5)
 - "Contrast" (+10)
 - "Saturation" (+5)

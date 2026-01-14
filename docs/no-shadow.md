@@ -1,5 +1,5 @@
 ---
-description: 'Disallow variable declarations from shadowing variables declared in the outer scope.'
+description: "Disallow variable declarations from shadowing variables declared in the outer scope."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -40,7 +40,7 @@ interface Bar {
 
 function f() {
   const Foo = 1;
-  const Bar = 'test';
+  const Bar = "test";
 }
 ```
 
@@ -60,7 +60,7 @@ Each of a function type's arguments creates a value variable within the scope of
 type Func = (test: string) => typeof test;
 
 declare const fn: Func;
-const result = fn('str'); // typeof result === string
+const result = fn("str"); // typeof result === string
 ```
 
 This means that function type arguments shadow value variable names in parent scopes:
@@ -71,7 +71,7 @@ type TestType = typeof test; // === number
 type Func = (test: string) => typeof test; // this "test" references the argument, not the variable
 
 declare const fn: Func;
-const result = fn('str'); // typeof result === string
+const result = fn("str"); // typeof result === string
 ```
 
 If you do not use the `typeof` operator in a function type return type position, you can safely turn this option on.

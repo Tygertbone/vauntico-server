@@ -33,22 +33,26 @@ objective: "Create service packages that command R500-1,500 per client"
 ## 💼 Services You Can Offer (By Niche)
 
 ### **FITNESS:**
+
 - 1-on-1 coaching (R800-1,500/month)
 - Custom workout plan creation (R400-600)
 - Form check service (R200/session)
 - Nutrition planning (R600-1,000/month)
 
 ### **FASHION:**
+
 - Personal styling (R800-1,500/session)
 - Wardrobe audit (R600-1,000)
 - Shopping assistant (R500 + commission)
 
 ### **FINANCE:**
+
 - Budget review + plan (R500-800)
 - Debt payoff strategy (R600-1,000)
 - Investment consultation (R800-1,500)
 
 ### **CONTENT CREATION (ANY NICHE):**
+
 - Video editing (R300-800/video)
 - Content strategy (R500-1,000/session)
 - Social media management (R2,000-5,000/month)
@@ -60,17 +64,20 @@ objective: "Create service packages that command R500-1,500 per client"
 ### **The 3-Tier Pricing Model:**
 
 **STARTER (R500-600):**
+
 - 1-hour consultation call
 - Written action plan
 - Email support for 7 days
 
 **STANDARD (R800-1,000):**
+
 - 2×1-hour sessions
 - Custom plan/strategy
 - WhatsApp support for 30 days
 - 1 revision/check-in
 
 **PREMIUM (R1,500-2,000):**
+
 - 4×1-hour sessions (weekly for a month)
 - Comprehensive plan
 - Unlimited WhatsApp support
@@ -85,6 +92,7 @@ objective: "Create service packages that command R500-1,500 per client"
 **Don't undercharge. Your time is valuable.**
 
 **Beginner pricing:**
+
 - 1-hour consultation: R500-800
 - Monthly coaching: R800-1,500
 - One-time service: R400-1,000

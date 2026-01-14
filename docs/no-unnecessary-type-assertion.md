@@ -1,5 +1,5 @@
 ---
-description: 'Disallow type assertions that do not change the type of an expression.'
+description: "Disallow type assertions that do not change the type of an expression."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -52,7 +52,7 @@ const foo = 3 as number;
 ```
 
 ```ts
-const foo = 'foo' as const;
+const foo = "foo" as const;
 ```
 
 ```ts

@@ -5,11 +5,13 @@
 ### **1. Create the Community (5 minutes)**
 
 On your phone:
+
 1. Open WhatsApp
 2. Go to **"Communities"** tab
 3. Tap **"Start a Community"** or **"+"** button
 4. Name: **Ubuntu R2K Creators Hub**
 5. Description:
+
    ```
    🦄 Pan-African space for Nigeria 🇳🇬, SA 🇿🇦, Kenya 🇰🇪, Ghana 🇬🇭 creators hitting R2,000+ milestones.
 
@@ -30,26 +32,32 @@ On your phone:
 Create these groups IN ORDER:
 
 #### **Group 1: 📢 Announcements**
+
 - Settings → **Only Admins Can Send Messages**
 - Purpose: Official updates, new lessons, community news
 
 #### **Group 2: 👥 Phase 1: Foundation**
+
 - Description: "Days 1-20 - Finding niche, filming basics, first content"
 - Purpose: Beginners help each other with Day 1-20
 
 #### **Group 3: 💰 Phase 2: Monetization**
+
 - Description: "Days 21-40 - First R500, affiliate marketing, brand deals"
 - Purpose: Making money strategies
 
 #### **Group 4: 🚀 Phase 3: Scale to R2K**
+
 - Description: "Days 41-60 - Multiple income streams, automation, R2K goal"
 - Purpose: Advanced growth tactics
 
 #### **Group 5: 🎉 Wins & Celebrations**
+
 - Description: "Share your wins! First 100 followers, first R500, first R2K!"
 - Purpose: Motivation, testimonials, celebration
 
 #### **Group 6: 💬 General Chat**
+
 - Description: "Questions, networking, helping each other"
 - Purpose: General discussion, Q&A
 
@@ -129,17 +137,20 @@ Once you have the link, update the code:
 ## COMMUNITY MANAGEMENT TIPS
 
 ### **Daily Tasks (10 min/day):**
+
 - Post morning motivation in Announcements
 - Respond to questions in General Chat
 - Celebrate wins in Wins group
 - Welcome new members
 
 ### **Weekly Tasks (30 min/week):**
+
 - Share a success story
 - Host a Q&A session
 - Post Day 1-7 recap for new joiners
 
 ### **Moderation:**
+
 - Remove spam immediately
 - Warn rule breakers once, then remove
 - Promote active helpful members to admins
@@ -149,17 +160,20 @@ Once you have the link, update the code:
 ## GROWTH STRATEGY
 
 ### **Phase 1: First 50 Members (Week 1-2)**
+
 - Invite friends personally
 - Share link on social media
 - Add to email signature
 - Mention in every sales page
 
 ### **Phase 2: 50-500 Members (Month 1-3)**
+
 - Customer testimonials mention it
 - Create TikToks about the community
 - Offer "early access" to new members
 
 ### **Phase 3: 500+ Members (Month 3+)**
+
 - Community becomes selling point
 - Members recruit friends
 - Self-sustaining growth
@@ -169,13 +183,15 @@ Once you have the link, update the code:
 ## SUCCESS METRICS
 
 Track these weekly:
+
 - [ ] New members joined
 - [ ] Daily active members (posting)
 - [ ] Success stories shared
 - [ ] Questions answered
 - [ ] Member satisfaction (ask monthly)
 
-**Target:** 
+**Target:**
+
 - Week 1: 10 members
 - Month 1: 100 members
 - Month 3: 500 members
@@ -186,6 +202,7 @@ Track these weekly:
 ## READY TO LAUNCH!
 
 Once your community is set up:
+
 1. ✅ Invite your first 5 friends
 2. ✅ Post welcome message
 3. ✅ Copy invite link

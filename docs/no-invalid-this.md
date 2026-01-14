@@ -1,5 +1,5 @@
 ---
-description: 'Disallow `this` keywords outside of classes or class-like objects.'
+description: "Disallow `this` keywords outside of classes or class-like objects."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

@@ -9,7 +9,9 @@ The Creator Pass has been **completely transformed** from a generic subscription
 ## 🏛️ The Three Covenants
 
 ### ⚔️ **Starter: The Apprentice Forge**
+
 **R299/month** (USD $17) | **R2,990/year** (Save 17%)
+
 - 500 credits/month
 - CLI access (core commands)
 - 5 landing page generations
@@ -22,7 +24,9 @@ The Creator Pass has been **completely transformed** from a generic subscription
 ---
 
 ### 🏰 **Pro: The Empire Builder** ⭐ MOST POPULAR
+
 **R999/month** (USD $59) | **R9,990/year** (Save 17%)
+
 - 2,500 credits/month (rollover up to 1,000)
 - Full CLI suite (advanced commands)
 - Unlimited landing pages & funnels
@@ -37,7 +41,9 @@ The Creator Pass has been **completely transformed** from a generic subscription
 ---
 
 ### 👑 **Legacy: The Mythmaker**
+
 **R2,999/month** (USD $170) | **R29,990/year** (Save 17%)
+
 - 10,000 credits/month (unlimited rollover)
 - White-glove implementation support
 - Custom scroll creation (quarterly)
@@ -55,6 +61,7 @@ The Creator Pass has been **completely transformed** from a generic subscription
 ## 🔁 Upgrade Rituals System
 
 Users can **ascend between tiers** seamlessly:
+
 - ✅ Credits are prorated and rolled over
 - ✅ Scroll access expands instantly
 - ✅ Support tier adjusts automatically
@@ -66,11 +73,13 @@ Users can **ascend between tiers** seamlessly:
 ## 💰 Regional Pricing Intelligence
 
 ### Auto-Detection
+
 - Automatically detects user location (ZAR for South Africa, USD elsewhere)
 - Shows primary currency with approximate conversion
 - Example: **R999/month** ≈ $55/month
 
 ### Dev Testing
+
 `javascript
 // Switch currencies for testing
 window.VaunticoDev.setLocale('ZAR')
@@ -87,22 +96,26 @@ window.VaunticoDev.setCreatorPassTier('legacy', 'yearly')
 ## 🎨 Design Features
 
 ### Hero Section
+
 - Mystical branding: "Unlock the Vault. Ascend the Tiers. Scale Your Legacy."
 - Positioning: "Most platforms sell subscriptions. Vauntico offers **ascension**."
 - Monthly/Yearly billing toggle with 17% savings indicator
 
 ### Tier Cards
+
 - **Starter:** Clean, minimal design with hover effects
 - **Pro:** Purple border + "MOST POPULAR" badge + scale effect (105%)
 - **Legacy:** Gradient background (white → yellow) + premium feel
 
 ### Interactive Elements
+
 - Smooth scroll to tiers on CTA click
 - Hover effects on all cards
 - Real-time pricing updates based on billing cycle
 - Disabled states for active subscriptions
 
 ### CLI Preview
+
 `ash
 vauntico pass upgrade \
   --tier "legacy" \
@@ -115,6 +128,7 @@ Styled like a terminal with green text on dark background
 ## 📜 Enhanced FAQ Section
 
 Rewritten with covenant/mystical language:
+
 - ⚔️ Can I ascend between tiers?
 - 💳 What payment methods are accepted?
 - 🔄 What happens to my credits when I upgrade?
@@ -127,6 +141,7 @@ Rewritten with covenant/mystical language:
 ## 🛠️ Technical Implementation
 
 ### Files Modified
+
 1. **src/utils/pricing.js**
    - Added `PRICING.CREATOR_PASS.tiers` structure
    - Added `subscribeToCreatorPassTier()` function
@@ -142,12 +157,11 @@ Rewritten with covenant/mystical language:
    - Enhanced FAQs with covenant theme
 
 ### Build Status
-`
-✅ Build successful (npm run build)
+
+`✅ Build successful (npm run build)
 ✅ Bundle size optimized
 ✅ Code splitting implemented
-✅ No console errors
-`
+✅ No console errors`
 
 ---
 
@@ -171,18 +185,21 @@ Rewritten with covenant/mystical language:
 ## 🚀 Next Steps
 
 ### Phase 1: MVP Polish (Immediate)
+
 - [ ] Add actual payment gateway integration (Stripe/Paddle)
 - [ ] Connect to backend authentication system
 - [ ] Implement tier-based feature gating
 - [ ] Add upgrade/downgrade flow handling
 
 ### Phase 2: CLI Integration
+
 - [ ] Build vauntico CLI tool
 - [ ] Implement `vauntico pass upgrade` command
 - [ ] Add CLI authentication flow
 - [ ] Create upgrade confirmation prompts
 
 ### Phase 3: Enhanced Features
+
 - [ ] Add tier comparison table
 - [ ] Implement credit usage dashboard
 - [ ] Create scroll marketplace

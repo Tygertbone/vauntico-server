@@ -9,6 +9,7 @@ Use this checklist when adding environment variables in Vercel.
 ## ✅ REQUIRED (Must Add Before Deploy)
 
 ### Paystack Payment Configuration
+
 ```
 Name: VITE_PAYSTACK_PUBLIC_KEY
 Value: pk_live_[YOUR_LIVE_PUBLIC_KEY]
@@ -23,6 +24,7 @@ Environment: Production
 ```
 
 ### App Configuration
+
 ```
 Name: VITE_APP_URL
 Value: https://vault.vauntico.com
@@ -36,6 +38,7 @@ Environment: Production, Preview
 ```
 
 ### Notion Integration
+
 ```
 Name: VITE_NOTION_EMBED_URL
 Value: https://classy-uranium-c6b.notion.site/Vauntico-Prompt-Vault-Founders-Edition-26a81beec93980c88b4ec6eefe61082c
@@ -43,6 +46,7 @@ Environment: Production, Preview
 ```
 
 ### Payment Details
+
 ```
 Name: VITE_PRODUCT_PRICE
 Value: 97
@@ -62,6 +66,7 @@ Environment: Production, Preview
 ### Email Marketing
 
 #### Buttondown
+
 ```
 Name: VITE_BUTTONDOWN_API_KEY
 Value: [YOUR_BUTTONDOWN_API_KEY]
@@ -69,6 +74,7 @@ Environment: Production
 ```
 
 #### MailerLite
+
 ```
 Name: VITE_MAILERLITE_API_KEY
 Value: [YOUR_MAILERLITE_API_KEY]
@@ -84,6 +90,7 @@ Environment: Production
 ### Analytics
 
 #### Google Analytics
+
 ```
 Name: VITE_GOOGLE_ANALYTICS_ID
 Value: G-XXXXXXXXXX
@@ -91,6 +98,7 @@ Environment: Production, Preview
 ```
 
 #### Vercel Analytics
+
 ```
 Name: VITE_VERCEL_ANALYTICS_ID
 Value: [YOUR_VERCEL_ANALYTICS_ID]
@@ -98,6 +106,7 @@ Environment: Production
 ```
 
 #### Hotjar
+
 ```
 Name: VITE_HOTJAR_ID
 Value: [YOUR_HOTJAR_ID]
@@ -107,6 +116,7 @@ Environment: Production
 ### Error Tracking
 
 #### Sentry
+
 ```
 Name: VITE_SENTRY_DSN
 Value: https://[YOUR_SENTRY_DSN]@sentry.io/[PROJECT_ID]
@@ -137,42 +147,50 @@ Environment: Production
 
 ## 🚨 Critical Reminders
 
-### 1. VITE_ Prefix Required
+### 1. VITE\_ Prefix Required
+
 All environment variables MUST start with `VITE_` to be accessible in the frontend.
 
 ❌ Wrong:
+
 ```
 PAYSTACK_PUBLIC_KEY=pk_live_xxx
 ```
 
 ✅ Correct:
+
 ```
 VITE_PAYSTACK_PUBLIC_KEY=pk_live_xxx
 ```
 
 ### 2. Use LIVE Keys in Production
+
 ❌ Wrong (Test Keys):
+
 ```
 VITE_PAYSTACK_PUBLIC_KEY=pk_test_xxx
 VITE_PAYSTACK_SECRET_KEY=sk_test_xxx
 ```
 
 ✅ Correct (Live Keys):
+
 ```
 VITE_PAYSTACK_PUBLIC_KEY=pk_live_xxx
 VITE_PAYSTACK_SECRET_KEY=sk_live_xxx
 ```
 
 ### 3. Secret Key Security
+
 ```
 ⚠️  VITE_PAYSTACK_SECRET_KEY should ONLY be in:
    - Production environment (NOT Preview)
    - Backend/API routes (if you add them later)
-   
+
 ⚠️  Frontend usage is OK for MVP but consider backend verification for production scale
 ```
 
 ### 4. Environment Selection
+
 For each variable, select appropriate environments:
 
 - **Production only:** Secret keys, live API keys
@@ -202,6 +220,7 @@ For each variable, select appropriate environments:
 ### Testing Environment Variables:
 
 After deployment, test by opening browser console on your site:
+
 ```javascript
 // These should NOT be undefined
 console.log(import.meta.env.VITE_APP_URL);
@@ -220,6 +239,7 @@ console.log(import.meta.env.VITE_PAYSTACK_PUBLIC_KEY);
 6. **Important:** Trigger a new deployment for changes to take effect
 
 **Quick Redeploy:**
+
 - Deployments tab → Latest deployment → "..." → "Redeploy"
 
 ---
@@ -227,14 +247,18 @@ console.log(import.meta.env.VITE_PAYSTACK_PUBLIC_KEY);
 ## 🧪 Test vs Live Keys
 
 ### During Development/Testing:
+
 Use test keys in Preview environment:
+
 ```
 VITE_PAYSTACK_PUBLIC_KEY=pk_test_xxx
 VITE_PAYSTACK_SECRET_KEY=sk_test_xxx
 ```
 
 ### In Production:
+
 Use live keys in Production environment:
+
 ```
 VITE_PAYSTACK_PUBLIC_KEY=pk_live_xxx
 VITE_PAYSTACK_SECRET_KEY=sk_live_xxx
@@ -245,18 +269,21 @@ VITE_PAYSTACK_SECRET_KEY=sk_live_xxx
 ## 📱 Where to Find These Values
 
 ### Paystack Keys
+
 1. Login to [paystack.com](https://dashboard.paystack.com)
 2. Settings → API Keys & Webhooks
 3. Toggle "Live Mode" ON
 4. Copy Public Key and Secret Key
 
 ### Notion Embed URL
+
 1. Open your Notion page
 2. Click "Share" → "Publish to web"
 3. Copy the public URL
 4. Format: `https://xxx.notion.site/Page-Name-xxx`
 
 ### Analytics IDs
+
 - **Google Analytics:** Admin → Data Streams → Measurement ID
 - **Hotjar:** Settings → Sites & Organizations → Site ID
 - **Sentry:** Project Settings → Client Keys (DSN)
@@ -268,8 +295,8 @@ VITE_PAYSTACK_SECRET_KEY=sk_live_xxx
 Before clicking Deploy, verify:
 
 - [ ] All REQUIRED variables added
-- [ ] Using LIVE Paystack keys (pk_live_ and sk_live_)
-- [ ] All variables have VITE_ prefix
+- [ ] Using LIVE Paystack keys (pk*live* and sk*live*)
+- [ ] All variables have VITE\_ prefix
 - [ ] Correct environments selected (Production for secrets)
 - [ ] VITE_APP_URL matches your custom domain
 - [ ] Notion URL is public and accessible
@@ -281,18 +308,23 @@ Before clicking Deploy, verify:
 ## 🆘 Common Issues
 
 ### Issue: "Cannot read property 'VITE_X' of undefined"
-**Fix:** Add VITE_ prefix to variable name
+
+**Fix:** Add VITE\_ prefix to variable name
 
 ### Issue: "Paystack public key is invalid"
-**Fix:** 
+
+**Fix:**
+
 1. Check you're using `pk_live_` not `pk_test_`
 2. Copy key again from Paystack dashboard
 3. No extra spaces or quotes
 
 ### Issue: "Changes not reflected after deploy"
+
 **Fix:** Redeploy after changing environment variables
 
 ### Issue: "Secret key exposed in frontend"
+
 **Warning:** This is OK for MVP but plan backend verification for scale
 
 ---
@@ -318,6 +350,7 @@ Replace the values after `=` with your actual credentials.
 ## 🎉 You're Set!
 
 Once all REQUIRED variables are added:
+
 1. ✅ Click Deploy
 2. ✅ Wait for build
 3. ✅ Test the site
@@ -327,4 +360,4 @@ Once all REQUIRED variables are added:
 
 ---
 
-*Keep this checklist open while configuring Vercel!*
+_Keep this checklist open while configuring Vercel!_

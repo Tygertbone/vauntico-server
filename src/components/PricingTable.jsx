@@ -1,4 +1,4 @@
-import CTAButton from './CTAButton';
+import CTAButton from "./CTAButton";
 
 export default function PricingTable() {
   return (

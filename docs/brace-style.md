@@ -1,5 +1,5 @@
 ---
-description: 'Enforce consistent brace style for blocks.'
+description: "Enforce consistent brace style for blocks."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

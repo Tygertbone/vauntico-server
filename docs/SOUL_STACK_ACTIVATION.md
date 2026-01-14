@@ -1,4 +1,5 @@
 # 🔥 Soul-Stack Activation Plan
+
 ## From Lore Vault to Living Platform
 
 ---
@@ -8,14 +9,16 @@
 **Achievement Unlocked:** The sacred scrolls are now enshrined in `docs/lore/scrolls/`
 
 **Files Migrated:**
+
 - ✅ `00-index.md` - Master scroll index
 - ✅ `10-agency-scroll.md` - Agency framework
-- ✅ `creator-pass.md` - Subscription details  
+- ✅ `creator-pass.md` - Subscription details
 - ✅ `AGENCY_CLI_QUICKSTART.md` - CLI reference
 - ✅ `distribution-layer-index-entry.json` - Metadata
 - ✅ `ASCENSION_SCROLL.md` - Master unification document
 
 **Documentation Created:**
+
 - ✅ `docs/lore/README.md` - Vault entrance
 - ✅ `docs/lore/MIGRATION_COMPLETE.md` - Migration record
 
@@ -31,6 +34,7 @@ Make scrolls **dynamically gated** based on user's Creator Pass tier.
 **Implementation:**
 
 1. **Create Scroll Metadata System**
+
    ```javascript
    // docs/lore/scrolls/scroll-manifest.json
    {
@@ -54,24 +58,25 @@ Make scrolls **dynamically gated** based on user's Creator Pass tier.
    ```
 
 2. **Create Scroll Viewer Component**
+
    ```jsx
    // src/pages/LoreVault.jsx
-   import { useCreatorPass } from '../hooks/useAccess'
-   import { AccessGate } from '../components/AccessGate'
-   
+   import { useCreatorPass } from "../hooks/useAccess";
+   import { AccessGate } from "../components/AccessGate";
+
    function ScrollViewer({ scrollId }) {
-     const { hasPass, tier } = useCreatorPass()
-     const scroll = getScrollMetadata(scrollId)
-     const hasAccess = checkScrollAccess(tier, scroll.tier)
-     
+     const { hasPass, tier } = useCreatorPass();
+     const scroll = getScrollMetadata(scrollId);
+     const hasAccess = checkScrollAccess(tier, scroll.tier);
+
      return (
-       <AccessGate 
+       <AccessGate
          hasAccess={hasAccess}
          message={`This scroll requires ${scroll.tier} tier`}
        >
          <ScrollContent file={scroll.file} />
        </AccessGate>
-     )
+     );
    }
    ```
 
@@ -95,6 +100,7 @@ Guide new users through interactive CLI-style onboarding.
 **Implementation:**
 
 1. **Create Onboarding Flow Component**
+
    ```jsx
    // src/components/OnboardingRitual.jsx
    const rituals = [
@@ -103,28 +109,31 @@ Guide new users through interactive CLI-style onboarding.
        title: "Identity Forging",
        command: "vauntico init --name 'Your Name'",
        action: "Set up your creator profile",
-       reward: "50 credits"
+       reward: "50 credits",
      },
      {
        day: 2,
        title: "First Scroll Generation",
        command: "vauntico scroll generate --type landing-page",
        action: "Create your first page",
-       reward: "Starter scroll template"
-     }
+       reward: "Starter scroll template",
+     },
      // ... more rituals
-   ]
+   ];
    ```
 
 2. **Add to Dashboard**
+
    ```jsx
    // src/pages/Dashboard.jsx
-   {!onboardingComplete && (
-     <OnboardingRitual 
-       rituals={rituals}
-       onComplete={() => setOnboardingComplete(true)}
-     />
-   )}
+   {
+     !onboardingComplete && (
+       <OnboardingRitual
+         rituals={rituals}
+         onComplete={() => setOnboardingComplete(true)}
+       />
+     );
+   }
    ```
 
 3. **Track Progress**
@@ -149,6 +158,7 @@ Guide new users through interactive CLI-style onboarding.
 **Status:** 90% Complete
 
 **What's Working:**
+
 - ✅ Three-tier pricing (Starter/Pro/Legacy)
 - ✅ Creator Pass subscription flow
 - ✅ Tier-based feature access
@@ -156,6 +166,7 @@ Guide new users through interactive CLI-style onboarding.
 - ✅ Billing cycle toggle (monthly/yearly)
 
 **What's Missing:**
+
 - ⚠️ Tier upgrade flow (Starter → Pro → Legacy)
 - ⚠️ Credit rollover visualization
 - ⚠️ Usage dashboard per tier
@@ -164,13 +175,14 @@ Guide new users through interactive CLI-style onboarding.
 **Quick Wins:**
 
 1. **Add Tier Comparison Tool**
+
    ```jsx
    // src/components/TierComparator.jsx
    function TierComparator() {
      return (
        <div className="tier-comparison">
          <h3>Find Your Perfect Tier</h3>
-         <TierCalculator 
+         <TierCalculator
            monthlyPages={userInput}
            monthlyAudits={userInput}
            → Shows recommended tier
@@ -183,12 +195,14 @@ Guide new users through interactive CLI-style onboarding.
 2. **Add Upgrade CTA**
    ```jsx
    // Show when credits running low
-   {credits < 100 && currentTier === 'starter' && (
-     <UpgradePrompt 
-       message="Running low on credits! Upgrade to Pro for 5x more."
-       cta="Upgrade Now"
-     />
-   )}
+   {
+     credits < 100 && currentTier === "starter" && (
+       <UpgradePrompt
+         message="Running low on credits! Upgrade to Pro for 5x more."
+         cta="Upgrade Now"
+       />
+     );
+   }
    ```
 
 **Effort:** 2-3 hours  
@@ -204,24 +218,25 @@ Create a beautiful, role-based entrance to the Lore Vault.
 **Implementation:**
 
 1. **Create Lore Landing Page**
+
    ```jsx
    // src/pages/LoreVault.jsx
    function LoreVault() {
      return (
        <div className="lore-vault">
-         <Hero 
+         <Hero
            title="The Lore Vault"
            subtitle="Sacred knowledge repository of Vauntico"
          />
-         
+
          <RoleSelector>
            <Role name="Solo Creator" scrolls={[...]} />
            <Role name="Agency Partner" scrolls={[...]} />
            <Role name="Team Lead" scrolls={[...]} />
          </RoleSelector>
-         
+
          <ScrollGallery scrolls={allScrolls} />
-         
+
          <QuickAccess>
            <ScrollCard scroll="00-index" />
            <ScrollCard scroll="creator-pass" />
@@ -233,6 +248,7 @@ Create a beautiful, role-based entrance to the Lore Vault.
    ```
 
 2. **Add Scroll Cards with Access Indicators**
+
    ```jsx
    function ScrollCard({ scroll, locked }) {
      return (
@@ -245,7 +261,7 @@ Create a beautiful, role-based entrance to the Lore Vault.
            <Link to={`/lore/${scroll.id}`}>Read Scroll</Link>
          )}
        </div>
-     )
+     );
    }
    ```
 
@@ -265,16 +281,15 @@ Create a beautiful, role-based entrance to the Lore Vault.
 ## 🚀 RECOMMENDED ACTIVATION SEQUENCE
 
 ### Phase 2A: Quick Wins (This Week)
+
 **Time:** 6-8 hours total
 
 1. ✅ **Create `/lore` landing page** (4 hours)
    - Beautiful hero section
    - Role-based navigation
    - Scroll gallery with lock icons
-   
 2. ✅ **Add scroll manifest** (1 hour)
    - `scroll-manifest.json` with metadata
-   
 3. ✅ **Create scroll viewer route** (3 hours)
    - `/lore/:scrollId` dynamic route
    - Markdown rendering
@@ -285,18 +300,17 @@ Create a beautiful, role-based entrance to the Lore Vault.
 ---
 
 ### Phase 2B: Power Features (Next Week)
+
 **Time:** 8-12 hours total
 
 1. ⚡ **CLI Onboarding Ritual** (6 hours)
    - Interactive onboarding flow
    - Progress tracking
    - Achievement unlocks
-   
 2. ⚡ **Tier Comparison Tool** (3 hours)
    - Usage calculator
    - Recommended tier suggestion
    - Upgrade prompts
-   
 3. ⚡ **Credit Dashboard** (3 hours)
    - Credit balance display
    - Usage history
@@ -307,16 +321,15 @@ Create a beautiful, role-based entrance to the Lore Vault.
 ---
 
 ### Phase 2C: Distribution Layer (Future)
+
 **Time:** 20+ hours
 
 1. 🌐 **Content Syndication**
    - Multi-platform publishing
    - Content repurposing
-   
 2. 🌐 **Analytics Dashboard**
    - Performance tracking
    - Attribution reporting
-   
 3. 🌐 **Launch Rituals**
    - Automated campaigns
    - Product Hunt integration
@@ -330,6 +343,7 @@ Create a beautiful, role-based entrance to the Lore Vault.
 **Do Option 4 First: Build the `/lore` Landing Page**
 
 **Why:**
+
 1. **Visual Impact:** Creates a premium knowledge hub
 2. **SEO Value:** Scrolls become discoverable content
 3. **Sales Tool:** Demo of tier-gated access
@@ -356,6 +370,7 @@ src/pages/ScrollViewer.jsx
 ```
 
 **After That:**
+
 - Add CLI onboarding (Option 2)
 - Then polish tier features (Option 3)
 - Finally build distribution (long-term)
@@ -365,17 +380,20 @@ src/pages/ScrollViewer.jsx
 ## 🎯 Success Metrics
 
 ### Phase 2A (Lore Vault)
+
 - [ ] `/lore` page live and beautiful
 - [ ] At least 3 scrolls viewable
 - [ ] Access gates working correctly
 - [ ] Role-based navigation functioning
 
 ### Phase 2B (Engagement)
+
 - [ ] Onboarding ritual completion rate > 60%
 - [ ] Tier upgrade CTA click rate > 5%
 - [ ] Credit dashboard views > 50/week
 
 ### Phase 2C (Distribution)
+
 - [ ] Content syndication to 3+ platforms
 - [ ] Launch ritual automation working
 - [ ] Analytics tracking engagement

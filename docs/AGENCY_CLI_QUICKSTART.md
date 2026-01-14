@@ -1,4 +1,5 @@
 # Agency CLI Quick Start Guide
+
 ## Master the Command Line for Agency Operations
 
 ---
@@ -280,6 +281,7 @@ vauntico audit batch --config batch-audits.yaml
 ### Common Issues
 
 **Authentication Failed:**
+
 ```bash
 # Clear credentials and re-login
 vauntico auth logout
@@ -287,6 +289,7 @@ vauntico auth login
 ```
 
 **Insufficient Credits:**
+
 ```bash
 # Check credit balance
 vauntico credits balance
@@ -296,6 +299,7 @@ vauntico credits usage --period this-month
 ```
 
 **API Rate Limit:**
+
 ```bash
 # Check rate limit status
 vauntico status
@@ -319,6 +323,7 @@ vauntico status
 ### Your First Week
 
 **Day 1:** Setup & authenticate
+
 ```bash
 npm i -g @vauntico/cli
 vauntico auth login
@@ -326,21 +331,25 @@ vauntico config set mode agency
 ```
 
 **Day 2:** Onboard first client
+
 ```bash
 vauntico agency onboard --client "test-client" --modules "audit"
 ```
 
 **Day 3:** Run first audit
+
 ```bash
 vauntico audit run --url https://test-client.com --pillars all
 ```
 
 **Day 4:** Configure branding
+
 ```bash
 vauntico brand configure --name "Your Agency" --logo ./logo.png
 ```
 
 **Day 5:** Generate first report
+
 ```bash
 vauntico agency report --client "test-client" --email-to you@agency.com
 ```

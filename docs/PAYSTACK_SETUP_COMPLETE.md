@@ -3,12 +3,14 @@
 ## ✅ **What's Been Built**
 
 ### **1. Payment Integration**
+
 - ✅ `src/utils/paystack.js` - Complete Paystack integration
 - ✅ `api/verify-paystack-payment.js` - Payment verification endpoint
 - ✅ `api/paystack-webhook.js` - Webhook handler for events
 - ✅ `.env.local` - Your test keys configured
 
 ### **2. Features Implemented**
+
 - ✅ All 3 tiers (Starter R299, Pro R999, Legacy R2,999)
 - ✅ Monthly & yearly billing
 - ✅ One-time payments (Workshop Kit)
@@ -17,6 +19,7 @@
 - ✅ Analytics tracking
 
 ### **3. Test Keys Added**
+
 - ✅ Public: `pk_test_07d44998c884b4d12e9b8524c72b9dbddb6263c9`
 - ✅ Secret: `sk_test_2bea0078ea794be853a7bbecc1e13b866837ff8b`
 
@@ -27,11 +30,13 @@
 ### **Step 1: Test Payments (Right Now!)**
 
 1. **Start dev server:**
+
    ```bash
    npm run dev
    ```
 
 2. **Go to Creator Pass page:**
+
    ```
    http://localhost:5173/creator-pass
    ```
@@ -94,19 +99,19 @@
    export const PAYSTACK_PLAN_CODES = {
      CREATOR_PASS: {
        starter: {
-         monthly: 'PLN_xxxxx', // Your actual plan code
-         yearly: 'PLN_yyyyy'
+         monthly: "PLN_xxxxx", // Your actual plan code
+         yearly: "PLN_yyyyy",
        },
        pro: {
-         monthly: 'PLN_xxxxx',
-         yearly: 'PLN_yyyyy'
+         monthly: "PLN_xxxxx",
+         yearly: "PLN_yyyyy",
        },
        legacy: {
-         monthly: 'PLN_xxxxx',
-         yearly: 'PLN_yyyyy'
-       }
-     }
-   }
+         monthly: "PLN_xxxxx",
+         yearly: "PLN_yyyyy",
+       },
+     },
+   };
    ```
 
 ---
@@ -118,9 +123,11 @@
    - Click "Add Webhook URL"
 
 2. **Add Your Webhook URL:**
+
    ```
    https://vauntico.com/api/paystack-webhook
    ```
+
    (Replace with your actual domain)
 
 3. **Select Events:**
@@ -147,6 +154,7 @@
      ```
 
 2. **Deploy:**
+
    ```bash
    git add .
    git commit -m "feat: integrate Paystack payment system"
@@ -164,6 +172,7 @@
    - Copy Live Keys
 
 2. **Update Vercel Environment Variables:**
+
    ```
    VITE_PAYSTACK_PUBLIC_KEY = pk_live_xxxxx
    VITE_PAYSTACK_SECRET_KEY = sk_live_xxxxx
@@ -180,26 +189,29 @@
 ## 🧪 **TEST CARDS**
 
 ### **Successful Payments:**
+
 - Card: `4084 0840 8408 4081`
 - CVV: `408`
 - Expiry: Any future date
 - OTP: `123456`
 
 ### **Declined Payments:**
+
 - Card: `4084 0800 0000 0408`
 
 ### **Insufficient Funds:**
+
 - Card: `5060 6666 6666 6666 6666`
 
 ---
 
 ## 💰 **PRICING SUMMARY**
 
-| Tier | Monthly | Yearly | Savings |
-|------|---------|--------|---------|
-| **Starter** | R299 | R2,990 | R598 (17%) |
-| **Pro** | R999 | R9,990 | R1,998 (17%) |
-| **Legacy** | R2,999 | R29,990 | R5,998 (17%) |
+| Tier        | Monthly | Yearly  | Savings      |
+| ----------- | ------- | ------- | ------------ |
+| **Starter** | R299    | R2,990  | R598 (17%)   |
+| **Pro**     | R999    | R9,990  | R1,998 (17%) |
+| **Legacy**  | R2,999  | R29,990 | R5,998 (17%) |
 
 **Workshop Kit:** R499 (one-time)
 
@@ -208,34 +220,46 @@
 ## 📊 **WHAT HAPPENS WHEN USER PAYS**
 
 ### **1. User Clicks Subscribe**
-   ↓
+
+↓
+
 ### **2. Paystack Modal Opens**
-   - User enters card details
-   - OTP verification
-   ↓
+
+- User enters card details
+- OTP verification
+  ↓
+
 ### **3. Payment Processes**
-   - Paystack charges card
-   - Generates reference
-   ↓
+
+- Paystack charges card
+- Generates reference
+  ↓
+
 ### **4. Payment Verified**
-   - Your API verifies with Paystack
-   - Updates user subscription
-   ↓
+
+- Your API verifies with Paystack
+- Updates user subscription
+  ↓
+
 ### **5. User Gets Access**
-   - localStorage updated
-   - Dashboard unlocked
-   - Welcome email sent
-   ↓
+
+- localStorage updated
+- Dashboard unlocked
+- Welcome email sent
+  ↓
+
 ### **6. Webhook Confirms**
-   - Paystack sends webhook
-   - Database updated
-   - Analytics tracked
+
+- Paystack sends webhook
+- Database updated
+- Analytics tracked
 
 ---
 
 ## 🎯 **CONVERSION TRACKING**
 
 All payments are tracked in Mixpanel:
+
 - ✅ `upgrade_clicked` - User clicks subscribe
 - ✅ `subscription_completed` - Payment successful
 - ✅ Revenue tracking
@@ -247,11 +271,13 @@ All payments are tracked in Mixpanel:
 ## 🔒 **SECURITY**
 
 ### **Keys Storage:**
+
 - ✅ Never committed to Git (.env.local in .gitignore)
 - ✅ Stored in Vercel environment variables
 - ✅ Only accessible server-side
 
 ### **Payment Security:**
+
 - ✅ PCI DSS Level 1 compliant (Paystack)
 - ✅ Webhook signature verification
 - ✅ Payment reference validation
@@ -262,6 +288,7 @@ All payments are tracked in Mixpanel:
 ## 🎊 **YOU'RE READY TO MAKE MONEY!**
 
 ### **Current Status:**
+
 - ✅ Paystack integrated
 - ✅ Test mode configured
 - ✅ Payment flow working
@@ -270,6 +297,7 @@ All payments are tracked in Mixpanel:
 - ✅ Mobile optimized
 
 ### **To Start Earning:**
+
 1. ✅ Test payments (now)
 2. ✅ Create subscription plans
 3. ✅ Set up webhooks
@@ -283,14 +311,16 @@ All payments are tracked in Mixpanel:
 ## 📞 **NEED HELP?**
 
 ### **Paystack Support:**
+
 - Email: support@paystack.com
 - Docs: https://paystack.com/docs
 - Slack: https://paystack.slack.com
 
 ### **Test the Integration:**
+
 ```javascript
 // Open browser console on your site
-window.VaunticoPaystack.testCheckout('pro', 'monthly')
+window.VaunticoPaystack.testCheckout("pro", "monthly");
 ```
 
 ---
@@ -309,8 +339,8 @@ git push origin main
 
 ---
 
-*Created: January 2025*  
-*Status: ✅ PRODUCTION READY*  
-*Payment Gateway: Paystack*  
-*Currency: ZAR*  
-*Mode: Test (Switch to Live when ready)*
+_Created: January 2025_  
+_Status: ✅ PRODUCTION READY_  
+_Payment Gateway: Paystack_  
+_Currency: ZAR_  
+_Mode: Test (Switch to Live when ready)_

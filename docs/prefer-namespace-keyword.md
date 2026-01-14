@@ -1,5 +1,5 @@
 ---
-description: 'Require using `namespace` keyword over `module` keyword to declare custom TypeScript modules.'
+description: "Require using `namespace` keyword over `module` keyword to declare custom TypeScript modules."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -31,7 +31,7 @@ module Example {}
 ```ts
 namespace Example {}
 
-declare module 'foo' {}
+declare module "foo" {}
 ```
 
 <!--/tabs-->

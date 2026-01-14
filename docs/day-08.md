@@ -14,6 +14,7 @@ objective: "Create a sustainable content system with 4 rotating video types"
 **Week 2:** You learn the STRATEGY (what to post, when, and why)
 
 **The problem most creators face:**
+
 - "What do I post today?"
 - "I'm out of ideas!"
 - "I'm burned out after 5 videos"
@@ -37,6 +38,7 @@ Instead of random videos, you create a SYSTEM:
 **Sunday:** REST
 
 **Result:**
+
 - Never run out of ideas (you have 4 categories)
 - Easier to batch film (film all Pillar 1 videos at once)
 - Audience knows what to expect (builds loyalty)
@@ -49,9 +51,11 @@ Instead of random videos, you create a SYSTEM:
 Every successful creator uses some version of this:
 
 ### **Pillar 1: EDUCATION (Teach)**
+
 Teach your audience something valuable in your niche.
 
 **Examples by niche:**
+
 - **Fitness:** "3 exercises for bigger arms (no gym)"
 - **Fashion:** "How to tie a headwrap like a Zulu queen"
 - **Finance:** "5 ways to save R500 this month"
@@ -62,9 +66,11 @@ Teach your audience something valuable in your niche.
 ---
 
 ### **Pillar 2: ENTERTAINMENT (Engage)**
+
 Make your audience laugh, feel inspired, or relate to something.
 
 **Examples by niche:**
+
 - **Fitness:** "When your friend says they're on a diet but orders 3 burgers 😂"
 - **Fashion:** "POV: You're getting ready for a Lagos party"
 - **Finance:** "Things Nigerians buy that waste money (part 1)"
@@ -75,9 +81,11 @@ Make your audience laugh, feel inspired, or relate to something.
 ---
 
 ### **Pillar 3: INSPIRATION (Connect)**
+
 Share your story, struggles, wins, and behind-the-scenes.
 
 **Examples by niche:**
+
 - **Fitness:** "I lost 20kg using only my phone. Here's how..."
 - **Fashion:** "From hawking clothes in Nairobi to 10K followers"
 - **Finance:** "I was broke 6 months ago. Now I make R2K/month online."
@@ -88,9 +96,11 @@ Share your story, struggles, wins, and behind-the-scenes.
 ---
 
 ### **Pillar 4: PROMOTION (Sell)**
+
 Directly promote your product, service, or affiliate offer.
 
 **Examples by niche:**
+
 - **Fitness:** "DM me 'FIT' for my free 7-day workout plan"
 - **Fashion:** "Get my African fashion lookbook (R150, pay via M-Pesa)"
 - **Finance:** "Join my money challenge (link in bio)"
@@ -108,32 +118,40 @@ Directly promote your product, service, or affiliate offer.
 
 Open your phone notes and answer:
 
-### **Your Niche:** _______________
+### **Your Niche:** **\*\***\_\_\_**\*\***
 
 ### **Pillar 1: Education**
+
 What can you teach? (List 5 topics):
-1. _______________
-2. _______________
-3. _______________
-4. _______________
-5. _______________
+
+1. ***
+2. ***
+3. ***
+4. ***
+5. ***
 
 ### **Pillar 2: Entertainment**
+
 What makes your audience laugh/relate? (List 5 ideas):
-1. _______________
-2. _______________
-3. _______________
-4. _______________
-5. _______________
+
+1. ***
+2. ***
+3. ***
+4. ***
+5. ***
 
 ### **Pillar 3: Inspiration**
+
 What's your story? (List 3 story angles):
-1. _______________
-2. _______________
-3. _______________
+
+1. ***
+2. ***
+3. ***
 
 ### **Pillar 4: Promotion**
+
 What will you sell? (Choose 1-2 to start):
+
 - [ ] Digital product (template, guide, ebook)
 - [ ] Service (coaching, editing, consulting)
 - [ ] Affiliate product (promote others' products)
@@ -145,15 +163,15 @@ What will you sell? (Choose 1-2 to start):
 
 **Now map your pillars to a posting schedule:**
 
-| Day | Pillar | Video Idea |
-|-----|--------|------------|
-| **Monday** | Education | _______________ |
-| **Tuesday** | Entertainment | _______________ |
-| **Wednesday** | Inspiration | _______________ |
-| **Thursday** | Promotion | _______________ |
-| **Friday** | Education | _______________ |
-| **Saturday** | Entertainment | _______________ |
-| **Sunday** | REST | Batch film for Week 3 |
+| Day           | Pillar        | Video Idea             |
+| ------------- | ------------- | ---------------------- |
+| **Monday**    | Education     | **\*\***\_\_\_**\*\*** |
+| **Tuesday**   | Entertainment | **\*\***\_\_\_**\*\*** |
+| **Wednesday** | Inspiration   | **\*\***\_\_\_**\*\*** |
+| **Thursday**  | Promotion     | **\*\***\_\_\_**\*\*** |
+| **Friday**    | Education     | **\*\***\_\_\_**\*\*** |
+| **Saturday**  | Entertainment | **\*\***\_\_\_**\*\*** |
+| **Sunday**    | REST          | Batch film for Week 3  |
 
 **Save this in your notes. This is your roadmap.**
 
@@ -164,12 +182,14 @@ What will you sell? (Choose 1-2 to start):
 **Meet Thabo** (Cape Town, South Africa - Fitness niche)
 
 **His 4 pillars:**
+
 1. **Education:** "3 push-up variations for bigger chest"
 2. **Entertainment:** "When you skip leg day for 6 months 😂"
 3. **Inspiration:** "I was 110kg. Now 85kg. Here's my story..."
 4. **Promotion:** "DM me 'PLAN' for my R150 home workout guide"
 
 **Results:**
+
 - Week 1-4: Random videos, 200 followers
 - Week 5-8: Used pillars, 1,200 followers
 - Week 9: First R1,000 month (sold 7 workout guides)
@@ -217,6 +237,7 @@ Get ready to film your entire Week 2 content tomorrow! 🎥
 ## 💬 Share Your Pillars
 
 Post in the community:
+
 ```
 📊 MY 4 CONTENT PILLARS:
 

@@ -7,9 +7,11 @@ This document summarizes the migration from Railway deployment to a comprehensiv
 ## Migration Actions Completed
 
 ### ✅ Files Archived
+
 All Railway-specific deployment files have been moved to `docs/archive/railway/` for historical reference:
 
 #### Documentation Moved:
+
 - `RAILWAY_DEPLOYMENT_GUIDE.md`
 - `RAILWAY_DEPLOYMENT_CHECKLIST.md`
 - `RAILWAY_DEPLOYMENT_SUMMARY.md`
@@ -19,6 +21,7 @@ All Railway-specific deployment files have been moved to `docs/archive/railway/`
 - `VAUNTICO_SERVER_V2_DEPLOYMENT_SUMMARY.md`
 
 #### Scripts Moved:
+
 - `scripts/railway-smoke-test.sh`
 - `scripts/railway-smoke-test.ps1`
 - `scripts/railway-health-test.ps1`
@@ -34,18 +37,22 @@ All Railway-specific deployment files have been moved to `docs/archive/railway/`
 - `scripts/railway-deploy-all.ps1`
 
 #### Configuration Files Moved:
+
 - `railway.toml` (multiple instances)
 - `.railwayignore`
 - `railpack-plan.json`
 - `railway.json`
 
 ### ✅ Files Removed from Root
+
 All Railway-specific files have been removed from the root directory to maintain a clean, VPS-focused structure.
 
 ## New VPS Deployment Stack
 
 ### ✅ Created Files
+
 #### Core Infrastructure:
+
 - `docker-compose.yml` - Complete multi-service orchestration
 - `Dockerfile.trust-score` - Trust Score backend container
 - `Dockerfile.vauntico-server` - Vauntico server container
@@ -53,6 +60,7 @@ All Railway-specific files have been removed from the root directory to maintain
 - `Dockerfile.legacy-server` - Legacy server container
 
 #### NGINX Configuration:
+
 - `nginx/nginx.conf` - Main NGINX configuration
 - `nginx/conf.d/trust-score-backend.conf` - Reverse proxy for trust score
 - `nginx/conf.d/vauntico-server.conf` - Reverse proxy for vauntico server
@@ -60,16 +68,19 @@ All Railway-specific files have been removed from the root directory to maintain
 - `nginx/conf.d/legacy-server.conf` - Reverse proxy for legacy server
 
 #### Monitoring Stack:
+
 - `monitoring/prometheus.yml` - Prometheus metrics collection
 - `monitoring/alertmanager.yml` - Alert routing and notifications
 - `monitoring/grafana/provisioning/datasources.yml` - Grafana datasources
 - `monitoring/grafana/provisioning/dashboards.yml` - Dashboard provisioning
 
 #### Deployment Scripts:
+
 - `scripts/vps/deploy.sh` - Automated deployment script
 - `scripts/vps/health-check.sh` - Comprehensive health monitoring
 
 #### Documentation:
+
 - `VPS_DEPLOYMENT_GUIDE.md` - Complete VPS deployment guide
 - `VPS_DEPLOYMENT_CHECKLIST.md` - Deployment checklist
 - `MONITORING_GUIDE.md` - Comprehensive monitoring guide
@@ -78,6 +89,7 @@ All Railway-specific files have been removed from the root directory to maintain
 ## Key Improvements
 
 ### 🚀 Enhanced Capabilities
+
 1. **Comprehensive Monitoring Stack**
    - Uptime Kuma for service monitoring
    - Prometheus for metrics collection
@@ -142,41 +154,47 @@ All Railway-specific files have been removed from the root directory to maintain
 ## Deployment Services
 
 ### Application Services
-| Service | Port | Health Endpoint |
-|---------|------|----------------|
-| Trust Score Backend | 3001 | /health |
-| Vauntico Server | 3002 | /health |
-| Fulfillment Engine | 5000 | /api/status |
-| Legacy Server | 5001 | /api/status |
+
+| Service             | Port | Health Endpoint |
+| ------------------- | ---- | --------------- |
+| Trust Score Backend | 3001 | /health         |
+| Vauntico Server     | 3002 | /health         |
+| Fulfillment Engine  | 5000 | /api/status     |
+| Legacy Server       | 5001 | /api/status     |
 
 ### Monitoring Services
-| Service | Port | Access |
-|---------|------|--------|
-| Uptime Kuma | 3003 | http://your-vps-ip:3003 |
-| Prometheus | 9090 | http://your-vps-ip:9090 |
-| Grafana | 3004 | http://your-vps-ip:3004 |
-| AlertManager | 9093 | http://your-vps-ip:9093 |
+
+| Service       | Port | Access                  |
+| ------------- | ---- | ----------------------- |
+| Uptime Kuma   | 3003 | http://your-vps-ip:3003 |
+| Prometheus    | 9090 | http://your-vps-ip:9090 |
+| Grafana       | 3004 | http://your-vps-ip:3004 |
+| AlertManager  | 9093 | http://your-vps-ip:9093 |
 | Node Exporter | 9100 | http://your-vps-ip:9100 |
-| cAdvisor | 8080 | http://your-vps-ip:8080 |
+| cAdvisor      | 8080 | http://your-vps-ip:8080 |
 
 ## Benefits Achieved
 
 ### 🎯 Zero Monitoring Costs
+
 - Everything runs on your VPS
 - No external monitoring services needed
 - Full control over data and privacy
 
 ### 📊 Enterprise-Grade Monitoring
+
 - Real-time alerting and dashboards
 - Historical data analysis
 - Professional incident management
 
 ### 🔒 Production Security
+
 - SSL/TLS encryption with auto-renewal
 - Rate limiting and DDoS protection
 - Container isolation and health monitoring
 
 ### 🚀 Simplified Operations
+
 - One-command deployment
 - Automated health checks
 - Comprehensive documentation

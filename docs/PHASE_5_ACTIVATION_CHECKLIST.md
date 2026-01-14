@@ -7,6 +7,7 @@
 ## 📋 Pre-Launch Checklist
 
 ### Development Complete
+
 - [x] Analytics system built (`src/utils/analytics.js`)
 - [x] Syndication layer built (`src/utils/syndication.js`)
 - [x] /ascend page created (`src/pages/Ascend.jsx`)
@@ -16,6 +17,7 @@
 - [x] Documentation written
 
 ### Testing
+
 - [ ] Test all pages load without errors
 - [ ] Test /ascend page tier unlock logic
 - [ ] Test share modal opens and closes
@@ -26,6 +28,7 @@
 - [ ] Verify no console errors
 
 ### Configuration
+
 - [ ] Analytics provider IDs added (optional)
 - [ ] Environment variables set (if any)
 - [ ] Vercel.json configuration verified
@@ -36,6 +39,7 @@
 ## 🚀 Deployment Checklist
 
 ### Build & Deploy
+
 - [ ] Run `npm run build` successfully
 - [ ] Deploy to Vercel: `vercel --prod`
 - [ ] OR deploy to Netlify/Other host
@@ -43,6 +47,7 @@
 - [ ] Check all routes accessible
 
 ### Post-Deploy Verification
+
 - [ ] Visit homepage - loads correctly
 - [ ] Visit /lore - scroll gallery works
 - [ ] Visit /ascend - soul stack displays
@@ -59,6 +64,7 @@
 ### Setup Analytics Provider (Choose One)
 
 #### Option A: Google Analytics 4
+
 - [ ] Create GA4 property
 - [ ] Get Measurement ID (G-XXXXXXXXXX)
 - [ ] Add ID to `analytics.js`
@@ -66,6 +72,7 @@
 - [ ] Test event appears in GA4 real-time
 
 #### Option B: Plausible
+
 - [ ] Create Plausible account
 - [ ] Add domain to Plausible
 - [ ] Update `analytics.js` config
@@ -73,11 +80,13 @@
 - [ ] Verify tracking in dashboard
 
 #### Option C: No Analytics (Start Simple)
+
 - [ ] Keep `debug: true` in development
 - [ ] Monitor console logs
 - [ ] Add analytics later
 
 ### Test Analytics Events
+
 - [ ] Open browser console
 - [ ] Run: `window.VaunticoAnalytics.logState()`
 - [ ] Visit a scroll - verify `scroll_viewed` event
@@ -90,6 +99,7 @@
 ## 🔗 Syndication Activation
 
 ### Referral System Setup
+
 - [ ] Get your referral code: `window.VaunticoSyndication.getMyCode()`
 - [ ] Test share link generation
 - [ ] Copy Creator Pass referral link
@@ -97,6 +107,7 @@
 - [ ] Test commission rate shows correctly
 
 ### Social Sharing Setup
+
 - [ ] Test Twitter/X share button
 - [ ] Test LinkedIn share button
 - [ ] Test copy link functionality
@@ -104,6 +115,7 @@
 - [ ] Test on mobile devices
 
 ### Embed System Setup
+
 - [ ] Generate iframe embed code
 - [ ] Test embed in external site (optional)
 - [ ] Generate preview card HTML
@@ -115,6 +127,7 @@
 ## 🎨 /ascend Page Activation
 
 ### Visual Verification
+
 - [ ] Hero section displays correctly
 - [ ] Progress bar animates smoothly
 - [ ] All 4 soul stack tiers show
@@ -125,6 +138,7 @@
 - [ ] Mobile responsive (test on phone)
 
 ### Functional Testing
+
 - [ ] Free tier - shows unlocked foundation
 - [ ] Starter tier - unlocks amplification
 - [ ] Pro tier - unlocks transformation
@@ -139,6 +153,7 @@
 ## 📢 Launch Activation
 
 ### Social Announcement
+
 - [ ] Write launch tweet
 - [ ] Create LinkedIn post
 - [ ] Prepare Instagram story
@@ -146,6 +161,7 @@
 - [ ] Schedule posts
 
 ### Launch Tweet Template:
+
 ```
 🚀 Vauntico is LIVE!
 
@@ -161,6 +177,7 @@ Start your ascent: [YOUR-URL]/ascend
 ```
 
 ### Community Sharing
+
 - [ ] Post in relevant Slack/Discord communities
 - [ ] Share in Facebook groups
 - [ ] Post on Reddit (r/SideProject, etc.)
@@ -172,6 +189,7 @@ Start your ascent: [YOUR-URL]/ascend
 ## 🎯 First Week Goals
 
 ### Metrics to Track
+
 - [ ] **Traffic**: 100+ unique visitors
 - [ ] **Engagement**: 50+ scroll views
 - [ ] **Shares**: 10+ social shares
@@ -179,19 +197,23 @@ Start your ascent: [YOUR-URL]/ascend
 - [ ] **Referrals**: 3+ referral clicks
 
 ### Daily Tasks (Days 1-7)
+
 **Day 1:**
+
 - [ ] Deploy to production
 - [ ] Share on all personal channels
 - [ ] Monitor analytics
 - [ ] Fix any critical bugs
 
 **Day 2-3:**
+
 - [ ] Email waitlist/network
 - [ ] Engage in 3 online communities
 - [ ] Respond to feedback
 - [ ] Track referral metrics
 
 **Day 4-7:**
+
 - [ ] Reach out to 5 potential agency partners
 - [ ] Create demo kit for agencies
 - [ ] A/B test upgrade modal
@@ -202,6 +224,7 @@ Start your ascent: [YOUR-URL]/ascend
 ## 🏆 Success Criteria
 
 ### Phase 5 is "Activated" When:
+
 - ✅ Site is live and accessible
 - ✅ Analytics tracking all events
 - ✅ Referral system generating links
@@ -215,6 +238,7 @@ Start your ascent: [YOUR-URL]/ascend
 ## 🐛 Troubleshooting Guide
 
 ### Site Won't Deploy
+
 ```bash
 # Clear and rebuild
 rm -rf node_modules dist
@@ -223,18 +247,21 @@ npm run build
 ```
 
 ### Analytics Not Tracking
+
 1. Check provider configuration
 2. Verify scripts loaded (Network tab)
 3. Enable debug mode in `analytics.js`
 4. Test with: `window.VaunticoAnalytics.logState()`
 
 ### Referral Links Broken
+
 1. Clear localStorage
 2. Reset code: `window.VaunticoSyndication.resetCode()`
 3. Generate fresh link
 4. Test in incognito window
 
 ### /ascend Not Showing Correct Tiers
+
 1. Check tier in localStorage
 2. Set tier: `window.VaunticoDev.setCreatorPassTier('pro')`
 3. Refresh page
@@ -256,6 +283,7 @@ npm run build
 Once all checkboxes are ticked, Phase 5 is fully activated!
 
 **Final Steps:**
+
 1. ✅ Mark this checklist complete
 2. 🎊 Celebrate the launch
 3. 📊 Monitor metrics daily
@@ -266,6 +294,6 @@ Once all checkboxes are ticked, Phase 5 is fully activated!
 
 **Status**: ⏳ Pending Activation
 **Deploy Command**: `npm run build && vercel --prod`
-**Launch Date**: _______________
+**Launch Date**: **\*\***\_\_\_**\*\***
 
 🔥 **Let's activate syndication and go live!**

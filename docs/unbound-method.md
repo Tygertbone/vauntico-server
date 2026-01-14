@@ -1,5 +1,5 @@
 ---
-description: 'Enforce unbound methods are called with their expected scope.'
+description: "Enforce unbound methods are called with their expected scope."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

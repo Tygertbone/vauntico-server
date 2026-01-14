@@ -1,4 +1,5 @@
 # 🎆 Soul-Stack Activation Status
+
 ## Real-Time Progress Tracker
 
 ---
@@ -16,6 +17,7 @@
 ## ✅ COMPLETED MILESTONES
 
 ### 🏛️ Lore Vault Foundation
+
 - [x] **Vault Created:** `docs/lore/` directory structure
 - [x] **Scrolls Migrated:** 5 critical scrolls moved from `/scrolls`
 - [x] **Documentation:** README.md and MIGRATION_COMPLETE.md
@@ -27,6 +29,7 @@
 ---
 
 ### 💎 Creator Pass Architecture
+
 - [x] **Three-Tier System:** Starter, Pro, Legacy covenants
 - [x] **Pricing Logic:** Complete `src/utils/pricing.js` implementation
 - [x] **Access Hooks:** `useCreatorPass()`, `useWorkshopKitAccess()`, etc.
@@ -39,6 +42,7 @@
 ---
 
 ### 🎨 UI Components
+
 - [x] **AccessGate.jsx:** Paywall component with multiple variants
 - [x] **AccessBadge.jsx:** Status indicators (locked/unlocked)
 - [x] **FeatureLock.jsx:** Premium feature overlays
@@ -52,11 +56,13 @@
 ## 🚧 IN PROGRESS
 
 ### 📚 Lore Vault UI (Pathway 4)
+
 **Status:** Not Started  
 **Priority:** HIGH  
 **Effort:** 8-10 hours
 
 **Tasks:**
+
 - [ ] Create `/lore` landing page
 - [ ] Build role-based navigation (Solo Creator, Agency, Team)
 - [ ] Create scroll gallery with access indicators
@@ -65,6 +71,7 @@
 - [ ] Add search/filter functionality
 
 **Files to Create:**
+
 - `src/pages/LoreVault.jsx`
 - `src/pages/ScrollViewer.jsx`
 - `src/components/ScrollCard.jsx`
@@ -74,11 +81,13 @@
 ---
 
 ### 🎮 CLI Onboarding Rituals (Pathway 2)
+
 **Status:** Designed, Not Implemented  
 **Priority:** MEDIUM  
 **Effort:** 6-8 hours
 
 **Vision:** Interactive onboarding that guides new users through:
+
 1. Identity forging (profile setup)
 2. First scroll generation
 3. Workshop creation
@@ -86,6 +95,7 @@
 5. Tier evaluation
 
 **Files to Create:**
+
 - `src/components/OnboardingRitual.jsx`
 - `src/components/RitualStep.jsx`
 - `src/utils/onboarding.js`
@@ -94,11 +104,13 @@
 ---
 
 ### ⚡ Tier Enhancement (Pathway 3)
+
 **Status:** 90% Complete  
 **Priority:** LOW  
 **Effort:** 2-3 hours
 
 **Missing Features:**
+
 - [ ] Tier upgrade flow (smooth Starter → Pro → Legacy)
 - [ ] Credit rollover visualization
 - [ ] Usage dashboard (credits consumed this month)
@@ -109,17 +121,20 @@
 ## 🎯 NEXT RECOMMENDED ACTIONS
 
 ### Option A: Build Lore Vault Landing Page 🌟
+
 **Time:** 4-6 hours  
 **Impact:** HIGH  
 **Complexity:** Medium
 
 **Why Do This:**
+
 - Creates premium knowledge hub
 - Demonstrates tier-gated access
 - SEO value (scrolls = content)
 - Sales tool for agencies
 
 **First Steps:**
+
 1. Create `src/pages/LoreVault.jsx` with hero section
 2. Add route in `App.jsx`
 3. Build scroll cards with lock indicators
@@ -128,17 +143,20 @@
 ---
 
 ### Option B: Add CLI Onboarding Flow 🎮
+
 **Time:** 6-8 hours  
 **Impact:** MEDIUM  
 **Complexity:** Medium-High
 
 **Why Do This:**
+
 - Improves user activation
 - Gamifies initial experience
 - Reduces time-to-value
 - Educates about CLI mythology
 
 **First Steps:**
+
 1. Create `OnboardingRitual.jsx` component
 2. Define 5 ritual steps
 3. Add progress tracking (localStorage)
@@ -147,17 +165,20 @@
 ---
 
 ### Option C: Quick Polish Pass ✨
+
 **Time:** 2-3 hours  
 **Impact:** LOW  
 **Complexity:** Low
 
 **Why Do This:**
+
 - Finish existing features
 - Add tier calculator
 - Polish upgrade flows
 - Fix any UX rough edges
 
 **First Steps:**
+
 1. Add tier comparison tool
 2. Build upgrade CTA component
 3. Create credit balance widget
@@ -168,18 +189,21 @@
 ## 📈 Success Metrics
 
 ### Lore Vault (If Built)
+
 - **Engagement:** 60%+ of visitors browse scrolls
 - **Conversion:** 10%+ scroll viewers upgrade to Creator Pass
 - **SEO:** Scrolls indexed and ranking for keywords
 - **Sales:** Demo'd in 100% of agency pitches
 
 ### Onboarding (If Built)
+
 - **Completion:** 60%+ finish all rituals
 - **Activation:** 80%+ take first action within 24 hours
 - **Retention:** 2x higher 30-day retention
 - **Advocacy:** 40%+ share their achievements
 
 ### Tier Polish (If Built)
+
 - **Upgrades:** 15% of Starter → Pro within 3 months
 - **Churn:** <5% monthly churn
 - **Satisfaction:** >4.5/5 user rating
@@ -232,6 +256,7 @@ You asked: **"What's our next move to activate the full soul-stack?"**
 ### My Recommendation: **BUILD THE /lore LANDING PAGE** 🌟
 
 **Reason:**
+
 1. **Visual Impact:** Creates "wow" moment
 2. **Foundation:** Enables all other features
 3. **Sales Tool:** Perfect for demos/pitches
@@ -247,7 +272,7 @@ You asked: **"What's our next move to activate the full soul-stack?"**
 # Option A: Build Lore Vault Landing
 echo "Let's forge the Lore Vault entrance"
 
-# Option B: Add Onboarding Rituals  
+# Option B: Add Onboarding Rituals
 echo "Let's build the ritual system"
 
 # Option C: Polish Existing

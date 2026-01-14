@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { FullLogo } from '../components/Logo'
-import { 
-  Lock, 
-  Shield, 
-  Zap, 
-  Users, 
-  TrendingUp, 
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { FullLogo } from "../components/Logo";
+import {
+  Lock,
+  Shield,
+  Zap,
+  Users,
+  TrendingUp,
   Eye,
   Plus,
   Key,
@@ -17,86 +17,89 @@ import {
   ArrowRight,
   Clock,
   BarChart3,
-  Activity
-} from 'lucide-react'
+  Activity,
+} from "lucide-react";
 
 const Vaults = () => {
-  const [selectedVault, setSelectedVault] = useState(null)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [filterType, setFilterType] = useState('all')
+  const [selectedVault, setSelectedVault] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterType, setFilterType] = useState("all");
 
   const vaults = [
     {
       id: 1,
-      name: 'Creator Portfolio Vault',
-      description: 'Showcase your best content in a secure, customizable vault',
-      type: 'portfolio',
+      name: "Creator Portfolio Vault",
+      description: "Showcase your best content in a secure, customizable vault",
+      type: "portfolio",
       items: 12,
-      access: 'premium',
-      encryption: 'military-grade',
-      lastModified: '2 hours ago'
+      access: "premium",
+      encryption: "military-grade",
+      lastModified: "2 hours ago",
     },
     {
       id: 2,
-      name: 'NFT Collection Vault',
-      description: 'Store and manage your digital collectibles with blockchain security',
-      type: 'nft',
+      name: "NFT Collection Vault",
+      description:
+        "Store and manage your digital collectibles with blockchain security",
+      type: "nft",
       items: 8,
-      access: 'pro',
-      encryption: 'blockchain',
-      lastModified: '1 day ago'
+      access: "pro",
+      encryption: "blockchain",
+      lastModified: "1 day ago",
     },
     {
       id: 3,
-      name: 'Private Content Archive',
-      description: 'Secure private documents and media with granular access controls',
-      type: 'archive',
+      name: "Private Content Archive",
+      description:
+        "Secure private documents and media with granular access controls",
+      type: "archive",
       items: 25,
-      access: 'creator-pass',
-      encryption: 'zero-knowledge',
-      lastModified: '3 days ago'
+      access: "creator-pass",
+      encryption: "zero-knowledge",
+      lastModified: "3 days ago",
     },
     {
       id: 4,
-      name: 'Collaboration Vault',
-      description: 'Shared workspace for team projects and co-creation',
-      type: 'collaboration',
+      name: "Collaboration Vault",
+      description: "Shared workspace for team projects and co-creation",
+      type: "collaboration",
       items: 15,
-      access: 'team',
-      encryption: 'end-to-end',
-      lastModified: '5 hours ago'
-    }
-  ]
+      access: "team",
+      encryption: "end-to-end",
+      lastModified: "5 hours ago",
+    },
+  ];
 
-  const filteredVaults = vaults.filter(vault => {
-    if (filterType === 'all') return true
-    return vault.type === filterType
-  })
+  const filteredVaults = vaults.filter((vault) => {
+    if (filterType === "all") return true;
+    return vault.type === filterType;
+  });
 
-  const filteredAndSearched = filteredVaults.filter(vault => 
-    vault.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    vault.description.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredAndSearched = filteredVaults.filter(
+    (vault) =>
+      vault.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      vault.description.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   const getAccessLevel = (access) => {
     const levels = {
-      'premium': { color: 'text-yellow-400', label: 'Premium' },
-      'pro': { color: 'text-purple-400', label: 'Pro' },
-      'creator-pass': { color: 'text-blue-400', label: 'Creator Pass' },
-      'team': { color: 'text-green-400', label: 'Team' }
-    }
-    return levels[access] || levels.premium
-  }
+      premium: { color: "text-yellow-400", label: "Premium" },
+      pro: { color: "text-purple-400", label: "Pro" },
+      "creator-pass": { color: "text-blue-400", label: "Creator Pass" },
+      team: { color: "text-green-400", label: "Team" },
+    };
+    return levels[access] || levels.premium;
+  };
 
   const getEncryptionIcon = (encryption) => {
     const icons = {
-      'military-grade': <Shield className="w-4 h-4" />,
-      'blockchain': <Lock className="w-4 h-4" />,
-      'zero-knowledge': <Eye className="w-4 h-4" />,
-      'end-to-end': <Users className="w-4 h-4" />
-    }
-    return icons[encryption] || <Shield className="w-4 h-4" />
-  }
+      "military-grade": <Shield className="w-4 h-4" />,
+      blockchain: <Lock className="w-4 h-4" />,
+      "zero-knowledge": <Eye className="w-4 h-4" />,
+      "end-to-end": <Users className="w-4 h-4" />,
+    };
+    return icons[encryption] || <Shield className="w-4 h-4" />;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white">
@@ -115,15 +118,29 @@ const Vaults = () => {
               <FullLogo size="md" />
             </Link>
             <div className="hidden md:flex items-center space-x-6">
-              <Link to="/vaults" className="text-white font-medium">Vaults</Link>
-              <Link to="/creator-pass" className="text-gray-300 hover:text-white transition-colors">Creator Pass</Link>
-              <Link to="/pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</Link>
+              <Link to="/vaults" className="text-white font-medium">
+                Vaults
+              </Link>
+              <Link
+                to="/creator-pass"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Creator Pass
+              </Link>
+              <Link
+                to="/pricing"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Pricing
+              </Link>
             </div>
             <div className="flex items-center space-x-4">
               <button className="p-2 text-gray-300 hover:text-white transition-colors">
                 <Search className="w-5 h-5" />
               </button>
-              <Link to="/dashboard" className="btn-primary text-sm">Dashboard</Link>
+              <Link to="/dashboard" className="btn-primary text-sm">
+                Dashboard
+              </Link>
             </div>
           </div>
         </div>
@@ -137,7 +154,8 @@ const Vaults = () => {
             Your <span className="text-gradient">Vaults</span>
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Secure your valuable content with AI-powered vaults and blockchain security
+            Secure your valuable content with AI-powered vaults and blockchain
+            security
           </p>
         </div>
 
@@ -157,31 +175,31 @@ const Vaults = () => {
           </div>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => setFilterType('all')}
+              onClick={() => setFilterType("all")}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                filterType === 'all' 
-                  ? 'bg-purple-600 text-white' 
-                  : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                filterType === "all"
+                  ? "bg-purple-600 text-white"
+                  : "bg-white/10 text-gray-300 hover:bg-white/20"
               }`}
             >
               All
             </button>
             <button
-              onClick={() => setFilterType('portfolio')}
+              onClick={() => setFilterType("portfolio")}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                filterType === 'portfolio' 
-                  ? 'bg-purple-600 text-white' 
-                  : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                filterType === "portfolio"
+                  ? "bg-purple-600 text-white"
+                  : "bg-white/10 text-gray-300 hover:bg-white/20"
               }`}
             >
               Portfolio
             </button>
             <button
-              onClick={() => setFilterType('nft')}
+              onClick={() => setFilterType("nft")}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                filterType === 'nft' 
-                  ? 'bg-purple-600 text-white' 
-                  : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                filterType === "nft"
+                  ? "bg-purple-600 text-white"
+                  : "bg-white/10 text-gray-300 hover:bg-white/20"
               }`}
             >
               NFTs
@@ -202,8 +220,12 @@ const Vaults = () => {
                   <div className="flex items-center space-x-3 mb-2">
                     {getEncryptionIcon(vault.encryption)}
                     <div>
-                      <h3 className="text-xl font-bold text-white mb-1">{vault.name}</h3>
-                      <span className={`ml-2 px-2 py-1 rounded-full text-xs font-semibold ${getAccessLevel(vault.access).color}`}>
+                      <h3 className="text-xl font-bold text-white mb-1">
+                        {vault.name}
+                      </h3>
+                      <span
+                        className={`ml-2 px-2 py-1 rounded-full text-xs font-semibold ${getAccessLevel(vault.access).color}`}
+                      >
                         {getAccessLevel(vault.access).label}
                       </span>
                     </div>
@@ -241,9 +263,7 @@ const Vaults = () => {
               </div>
 
               <div className="mt-4 pt-4 border-t border-gray-600">
-                <button className="w-full btn-primary py-3">
-                  Open Vault
-                </button>
+                <button className="w-full btn-primary py-3">Open Vault</button>
               </div>
             </div>
           ))}
@@ -259,13 +279,20 @@ const Vaults = () => {
                 Secure Your Digital Legacy
               </h2>
               <p className="text-xl text-white/90">
-                Create and protect your most valuable content with military-grade security
+                Create and protect your most valuable content with
+                military-grade security
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/creator-pass" className="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg">
+                <Link
+                  to="/creator-pass"
+                  className="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg"
+                >
                   Upgrade to Creator Pass
                 </Link>
-                <Link to="/pricing" className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-colors text-lg">
+                <Link
+                  to="/pricing"
+                  className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-colors text-lg"
+                >
                   Compare Plans
                 </Link>
               </div>
@@ -274,7 +301,7 @@ const Vaults = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Vaults
+export default Vaults;

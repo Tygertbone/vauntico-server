@@ -1,5 +1,5 @@
 ---
-description: 'Disallow magic numbers.'
+description: "Disallow magic numbers."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

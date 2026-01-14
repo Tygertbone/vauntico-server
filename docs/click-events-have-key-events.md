@@ -11,6 +11,7 @@ Enforce `onClick` is accompanied by at least one of the following: `onKeyUp`, `o
 This rule takes no arguments.
 
 ### Succeed
+
 ```jsx
 <div onClick={() => {}} onKeyDown={this.handleKeyDown} />
 <div onClick={() => {}} onKeyUp={this.handleKeyUp} />
@@ -20,9 +21,11 @@ This rule takes no arguments.
 ```
 
 ### Fail
+
 ```jsx
 <div onClick={() => {}} />
 ```
 
 ## Accessibility guidelines
+
 - [WCAG 2.1.1](https://www.w3.org/WAI/WCAG21/Understanding/keyboard)

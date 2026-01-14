@@ -23,7 +23,7 @@ export function test() {
 }
 
 // Should indicate that a string is returned
-export var arrowFn = () => 'test';
+export var arrowFn = () => "test";
 
 // All arguments should be typed
 export var arrowFn = (arg): string => `test ${arg}`;
@@ -46,7 +46,7 @@ export function test(): void {
 }
 
 // A return value of type string
-export var arrowFn = (): string => 'test';
+export var arrowFn = (): string => "test";
 
 // All arguments should be typed
 export var arrowFn = (arg: string): string => `test ${arg}`;
@@ -116,7 +116,7 @@ Examples of code for this rule with `{ allowDirectConstAssertionInArrowFunctions
 #### ❌ Incorrect
 
 ```ts option='{ "allowArgumentsExplicitlyTypedAsAny": false }'
-export const func = (value: number) => ({ type: 'X', value });
+export const func = (value: number) => ({ type: "X", value });
 export const foo = () => ({
   bar: true,
 });
@@ -126,7 +126,7 @@ export const bar = () => 1;
 #### ✅ Correct
 
 ```ts option='{ "allowArgumentsExplicitlyTypedAsAny": false }'
-export const func = (value: number) => ({ type: 'X', value }) as const;
+export const func = (value: number) => ({ type: "X", value }) as const;
 export const foo = () =>
   ({
     bar: true,
@@ -192,17 +192,17 @@ Examples of code for this rule with `{ allowTypedFunctionExpressions: false }`:
 #### ❌ Incorrect
 
 ```ts option='{ "allowTypedFunctionExpressions": false }'
-export let arrowFn = () => 'test';
+export let arrowFn = () => "test";
 
 export let funcExpr = function () {
-  return 'test';
+  return "test";
 };
 
 export let objectProp = {
   foo: () => 1,
 };
 
-export const foo = bar => {};
+export const foo = (bar) => {};
 ```
 
 #### ✅ Correct
@@ -210,14 +210,14 @@ export const foo = bar => {};
 ```ts option='{ "allowTypedFunctionExpressions": false }'
 type FuncType = () => string;
 
-export let arrowFn: FuncType = () => 'test';
+export let arrowFn: FuncType = () => "test";
 
 export let funcExpr: FuncType = function () {
-  return 'test';
+  return "test";
 };
 
-export let asTyped = (() => '') as () => string;
-export let castTyped = <() => string>(() => '');
+export let asTyped = (() => "") as () => string;
+export let castTyped = <() => string>(() => "");
 
 interface ObjectType {
   foo(): number;
@@ -233,7 +233,7 @@ export let objectPropCast = <ObjectType>{
 };
 
 type FooType = (bar: string) => void;
-export const foo: FooType = bar => {};
+export const foo: FooType = (bar) => {};
 ```
 
 ## When Not To Use It

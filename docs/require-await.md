@@ -1,5 +1,5 @@
 ---
-description: 'Disallow async functions which have no `await` expression.'
+description: "Disallow async functions which have no `await` expression."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

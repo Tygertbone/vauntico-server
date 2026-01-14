@@ -1,5 +1,5 @@
 ---
-description: 'Disallow `void` type outside of generic or return types.'
+description: "Disallow `void` type outside of generic or return types."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

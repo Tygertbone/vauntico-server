@@ -1,5 +1,5 @@
 ---
-description: 'Disallow extra non-null assertions.'
+description: "Disallow extra non-null assertions."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

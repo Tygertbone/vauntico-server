@@ -1,5 +1,5 @@
 ---
-description: 'Disallow duplicate class members.'
+description: "Disallow duplicate class members."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

@@ -3,13 +3,17 @@
 ## ✅ What's Been Done
 
 ### 1. **Mixpanel SDK Installed**
+
 ```json
 "mixpanel-browser": "^2.71.0"
 ```
+
 ✅ Already in `package.json`
 
 ### 2. **Analytics.js Updated**
+
 ✅ `src/utils/analytics.js` has full Mixpanel integration including:
+
 - Automatic initialization
 - Event tracking wrapper
 - User identification
@@ -17,6 +21,7 @@
 - Debug utilities
 
 ### 3. **Environment Configuration**
+
 ✅ `.env.example` created with template
 ⚠️ **YOU NEED TO MANUALLY UPDATE `.env`** (security restriction)
 
@@ -31,6 +36,7 @@ VITE_MIXPANEL_TOKEN=f8d19eae67c8d6bef4f547d72d4b4b57
 ```
 
 ### Steps:
+
 1. Open `.env` in your editor
 2. Add the line above (or update if it exists)
 3. Save the file
@@ -41,35 +47,39 @@ VITE_MIXPANEL_TOKEN=f8d19eae67c8d6bef4f547d72d4b4b57
 ## 🧪 Test Your Integration
 
 ### 1. **Check Console on Startup**
+
 After restarting your dev server, open browser console. You should see:
+
 ```
 🎯 Mixpanel initialized with token: f8d19ea...
 📊 Vauntico Analytics initialized
 ```
 
 ### 2. **Test Event Tracking**
+
 Open browser console and run:
 
 ```javascript
 // Test basic event
-window.VaunticoAnalytics.trackEvent('test_event', {
-  test_property: 'hello_mixpanel'
-})
+window.VaunticoAnalytics.trackEvent("test_event", {
+  test_property: "hello_mixpanel",
+});
 
 // Test user identification
-window.VaunticoAnalytics.identifyUser('test_user_123', {
-  name: 'Test User',
-  email: 'test@vauntico.com'
-})
+window.VaunticoAnalytics.identifyUser("test_user_123", {
+  name: "Test User",
+  email: "test@vauntico.com",
+});
 
 // Test property increment
-window.VaunticoAnalytics.incrementUserProperty('test_count', 1)
+window.VaunticoAnalytics.incrementUserProperty("test_count", 1);
 
 // Check Mixpanel directly
-mixpanel.track('manual_test', { source: 'console' })
+mixpanel.track("manual_test", { source: "console" });
 ```
 
 ### 3. **Verify in Mixpanel Dashboard**
+
 1. Go to https://mixpanel.com
 2. Open your Vauntico project
 3. Navigate to "Events" tab
@@ -82,29 +92,33 @@ mixpanel.track('manual_test', { source: 'console' })
 All tracking is already integrated in `src/utils/analytics.js`:
 
 ### Scroll Tracking
+
 - `trackScrollView(scrollId, scrollTitle, scrollTier)`
 - `trackScrollLockClick(scrollId, scrollTitle, requiredTier, userTier)`
 - `trackScrollUnlock(scrollId, scrollTitle, tier)`
 - `trackScrollComplete(scrollId, scrollTitle)`
 
 ### Conversion Tracking
+
 - `trackUpgradeModalOpen(trigger, currentTier, scrollId)`
 - `trackTierSelected(selectedTier, billingCycle, currentTier)`
 - `trackUpgradeClick(tier, billingCycle, price, currency)`
 - `trackSubscriptionSuccess(tier, billingCycle, price, currency)`
 
 ### CLI Onboarding
+
 - `trackCLIOnboardingStart(roleId, roleName)`
 - `trackCLICommand(command, roleId)`
 - `trackCLIStepComplete(stepIndex, stepTitle, roleId)`
 - `trackCLIOnboardingComplete(roleId, roleName, time)`
 
 ### Custom Events (via console or code)
+
 ```javascript
-window.VaunticoAnalytics.trackEvent('event_name', { prop: 'value' })
-window.VaunticoAnalytics.identifyUser(userId, userProps)
-window.VaunticoAnalytics.setUserProperties({ key: 'value' })
-window.VaunticoAnalytics.incrementUserProperty('count', 1)
+window.VaunticoAnalytics.trackEvent("event_name", { prop: "value" });
+window.VaunticoAnalytics.identifyUser(userId, userProps);
+window.VaunticoAnalytics.setUserProperties({ key: "value" });
+window.VaunticoAnalytics.incrementUserProperty("count", 1);
 ```
 
 ---
@@ -112,6 +126,7 @@ window.VaunticoAnalytics.incrementUserProperty('count', 1)
 ## 🚀 Production Deployment
 
 ### Add to Vercel Environment Variables
+
 1. Go to Vercel Dashboard → Your Project → Settings → Environment Variables
 2. Add new variable:
    - **Name**: `VITE_MIXPANEL_TOKEN`
@@ -120,6 +135,7 @@ window.VaunticoAnalytics.incrementUserProperty('count', 1)
 3. Redeploy your app
 
 ### Add to Netlify (if using)
+
 1. Site Settings → Build & Deploy → Environment
 2. Add: `VITE_MIXPANEL_TOKEN=f8d19eae67c8d6bef4f547d72d4b4b57`
 3. Trigger new deploy
@@ -129,9 +145,11 @@ window.VaunticoAnalytics.incrementUserProperty('count', 1)
 ## 🐛 Troubleshooting
 
 ### ❌ "Mixpanel not initialized"
+
 **Cause**: Environment variable not set or dev server not restarted
 
 **Fix**:
+
 ```bash
 # 1. Verify .env has the token
 cat .env | grep MIXPANEL
@@ -143,14 +161,17 @@ pnpm dev
 ```
 
 ### ❌ Events not showing in dashboard
+
 **Cause**: Events are batched and sent every 5 seconds
 
 **Fix**: Wait ~60 seconds or force flush:
+
 ```javascript
-window.VaunticoAnalytics.flush()
+window.VaunticoAnalytics.flush();
 ```
 
 ### ❌ "Access denied" error
+
 **Cause**: Token might be incorrect or project deleted
 
 **Fix**: Get new token from https://mixpanel.com/project/YOUR_PROJECT/settings/project
@@ -159,12 +180,12 @@ window.VaunticoAnalytics.flush()
 
 ## 📝 Key Files
 
-| File | Purpose |
-|------|---------|
-| `.env` | **Add VITE_MIXPANEL_TOKEN here** |
-| `.env.example` | Template for environment variables |
+| File                     | Purpose                                   |
+| ------------------------ | ----------------------------------------- |
+| `.env`                   | **Add VITE_MIXPANEL_TOKEN here**          |
+| `.env.example`           | Template for environment variables        |
 | `src/utils/analytics.js` | Mixpanel integration + tracking functions |
-| `package.json` | Mixpanel SDK dependency |
+| `package.json`           | Mixpanel SDK dependency                   |
 
 ---
 
@@ -195,6 +216,7 @@ window.VaunticoAnalytics.flush()
 ## 📚 Documentation
 
 For more details, see:
+
 - [Mixpanel Quick Start](./MIXPANEL_QUICK_START.md)
 - [Mixpanel Architecture](./MIXPANEL_ARCHITECTURE.md)
 - [Mixpanel Integration Complete](./MIXPANEL_INTEGRATION_COMPLETE.md)
@@ -207,5 +229,5 @@ For more details, see:
 
 ---
 
-*Setup completed: 2025-01-26*  
-*Commit: Mixpanel integration complete + env template*
+_Setup completed: 2025-01-26_  
+_Commit: Mixpanel integration complete + env template_

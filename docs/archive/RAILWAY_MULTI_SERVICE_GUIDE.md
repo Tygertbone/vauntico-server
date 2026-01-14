@@ -7,6 +7,7 @@ This configuration deploys all Vauntico backend services as separate Railway ins
 ## Services Configuration
 
 ### 1. Trust Score Backend (`trust-score-backend`)
+
 - **Path:** `server-v2/`
 - **Port:** 3001
 - **Health:** `/health`
@@ -25,6 +26,7 @@ This configuration deploys all Vauntico backend services as separate Railway ins
   ```
 
 ### 2. Fulfillment Engine (`fulfillment-engine`)
+
 - **Path:** `vauntico-fulfillment-engine/`
 - **Port:** 5000
 - **Health:** `/api/status`
@@ -40,6 +42,7 @@ This configuration deploys all Vauntico backend services as separate Railway ins
   ```
 
 ### 3. Legacy Server (`legacy-server`)
+
 - **Path:** `server/`
 - **Port:** 5000
 - **Health:** `/api/status`
@@ -47,6 +50,7 @@ This configuration deploys all Vauntico backend services as separate Railway ins
 - **Environment Variables:** (Same as fulfillment-engine)
 
 ### 4. Vauntico Server Alternative (`vauntico-server`)
+
 - **Path:** `vauntico-server/`
 - **Port:** 3001
 - **Health:** `/health`
@@ -56,17 +60,20 @@ This configuration deploys all Vauntico backend services as separate Railway ins
 ## Deployment Process
 
 ### 1. Environment Setup
+
 1. Go to Railway dashboard
 2. Create 4 separate projects for each service
 3. Configure environment variables for each service as shown above
 4. Connect GitHub repository to each project
 
 ### 2. Automatic Deployment
+
 - Push to GitHub triggers automatic deployment
 - Each service deploys independently with isolated environments
 - Health checks ensure services are running correctly
 
 ### 3. Health Check Endpoints
+
 - `trust-score-backend`: `GET /health` → `{ "status": "ok" }`
 - `fulfillment-engine`: `GET /api/status` → `{ "status": "ok", "message": "Vauntico Fulfillment Engine is live" }`
 - `legacy-server`: `GET /api/status` → Same as fulfillment-engine
@@ -75,12 +82,14 @@ This configuration deploys all Vauntico backend services as separate Railway ins
 ## Service Isolation
 
 ### Benefits
+
 - **Independent Scaling:** Each service can scale based on its own load
 - **Fault Tolerance:** Failure in one service doesn't affect others
 - **Environment Separation:** No shared environment variables between services
 - **Independent Rollbacks:** Each service can be rolled back independently
 
 ### Communication Between Services
+
 - Use Railway internal networking for service-to-service communication
 - Environment variables for service URLs:
   ```env
@@ -91,11 +100,13 @@ This configuration deploys all Vauntico backend services as separate Railway ins
 ## Monitoring
 
 ### Railway Dashboard
+
 - Monitor each service individually
 - Check logs, metrics, and health status separately
 - Set up alerts for each service
 
 ### Health Monitoring
+
 - All services expose health endpoints
 - Railway automatically monitors health check paths
 - Configure alerting for service failures
@@ -103,12 +114,14 @@ This configuration deploys all Vauntico backend services as separate Railway ins
 ## Troubleshooting
 
 ### Service-Specific Issues
+
 1. **Check service logs** in Railway dashboard
 2. **Verify environment variables** for the specific service
 3. **Test health endpoint** manually
 4. **Check build logs** for deployment issues
 
 ### Common Issues
+
 - **Port conflicts:** Each service uses different default ports
 - **Environment variables:** Ensure correct variables per service
 - **Health check failures:** Verify health endpoint exists and returns 200
@@ -116,11 +129,13 @@ This configuration deploys all Vauntico backend services as separate Railway ins
 ## Rollback Strategy
 
 ### Individual Service Rollback
+
 1. Go to Railway project for the specific service
 2. Deploy previous commit
 3. Other services continue running unaffected
 
 ### Full Rollback
+
 1. Rollback each service individually
 2. Use GitHub revert if needed
 3. Redeploy all services
@@ -128,11 +143,13 @@ This configuration deploys all Vauntico backend services as separate Railway ins
 ## Performance Optimization
 
 ### Railway-Specific Optimizations
+
 - Use Railway's built-in CDN for static assets
 - Configure appropriate service sizes based on expected load
 - Enable Railway's automatic scaling for high-traffic services
 
 ### Database Connections
+
 - Use Railway's managed PostgreSQL for primary services
 - Configure connection pooling for optimal performance
 - Consider Redis caching for frequently accessed data
@@ -140,11 +157,13 @@ This configuration deploys all Vauntico backend services as separate Railway ins
 ## Security Considerations
 
 ### Environment Variables
+
 - Never commit sensitive environment variables
 - Use Railway's encrypted environment variable storage
 - Rotate API keys regularly
 
 ### Service Communication
+
 - Use Railway's internal networking for secure service-to-service communication
 - Implement proper authentication between services
 - Validate all incoming requests
@@ -152,11 +171,13 @@ This configuration deploys all Vauntico backend services as separate Railway ins
 ## Cost Optimization
 
 ### Resource Allocation
+
 - Monitor resource usage per service
 - Right-size Railway plans based on actual usage
 - Consider scaling patterns (vertical vs horizontal)
 
 ### Database Costs
+
 - Use Railway's managed PostgreSQL efficiently
 - Implement proper indexing
 - Consider read replicas for read-heavy services
@@ -164,6 +185,7 @@ This configuration deploys all Vauntico backend services as separate Railway ins
 ## Deployment Commands
 
 ### Manual Deployment
+
 ```bash
 # Deploy all services
 git push origin main
@@ -174,6 +196,7 @@ git push origin trust-score-backend
 ```
 
 ### Environment Promotion
+
 ```bash
 # Deploy to staging
 git push origin staging
@@ -185,6 +208,7 @@ git push origin main
 ## Conclusion
 
 This multi-service Railway configuration provides:
+
 - ✅ **Service Isolation** - Each backend runs independently
 - ✅ **Health Monitoring** - All services have health checks
 - ✅ **Independent Scaling** - Scale services based on individual needs

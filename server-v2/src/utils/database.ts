@@ -1,12 +1,12 @@
-import { Pool, PoolClient } from 'pg';
+import { Pool, PoolClient } from "pg";
 
 // Database configuration
 const poolConfig = {
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432'),
-  database: process.env.DB_NAME || 'vauntico',
-  user: process.env.DB_USER || 'vauntico_user',
-  password: process.env.DB_PASSWORD || 'vauntico_password',
+  host: process.env.DB_HOST || "localhost",
+  port: parseInt(process.env.DB_PORT || "5432"),
+  database: process.env.DB_NAME || "vauntico",
+  user: process.env.DB_USER || "vauntico_user",
+  password: process.env.DB_PASSWORD || "vauntico_password",
   max: 20, // maximum number of clients in the pool
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
   connectionTimeoutMillis: 2000, // how long to wait when connecting a new client
@@ -16,8 +16,8 @@ const poolConfig = {
 export const pool = new Pool(poolConfig);
 
 // Handle pool errors
-pool.on('error', (err) => {
-  console.error('Unexpected error on idle client', err);
+pool.on("error", (err) => {
+  console.error("Unexpected error on idle client", err);
   process.exit(-1);
 });
 
@@ -27,11 +27,11 @@ export async function query(text: string, params?: any[]): Promise<any> {
   try {
     const res = await pool.query(text, params);
     const duration = Date.now() - start;
-    console.log('Executed query', { text, duration, rows: res.rowCount });
+    console.log("Executed query", { text, duration, rows: res.rowCount });
     return res;
   } catch (error) {
     const duration = Date.now() - start;
-    console.error('Query error', { text, duration, error });
+    console.error("Query error", { text, duration, error });
     throw error;
   }
 }
@@ -45,11 +45,11 @@ export async function getClient(): Promise<PoolClient> {
 export async function healthCheck(): Promise<boolean> {
   try {
     const client = await pool.connect();
-    await client.query('SELECT 1');
+    await client.query("SELECT 1");
     client.release();
     return true;
   } catch (error) {
-    console.error('Database health check failed:', error);
+    console.error("Database health check failed:", error);
     return false;
   }
 }
@@ -57,14 +57,14 @@ export async function healthCheck(): Promise<boolean> {
 // Graceful shutdown
 export async function closePool(): Promise<void> {
   await pool.end();
-  console.log('Database pool closed');
+  console.log("Database pool closed");
 }
 
 // Initialize database tables if they don't exist
 export async function initializeDatabase(): Promise<void> {
   const client = await getClient();
   try {
-    await client.query('BEGIN');
+    await client.query("BEGIN");
 
     // Create users table
     await client.query(`
@@ -228,24 +228,48 @@ export async function initializeDatabase(): Promise<void> {
     `);
 
     // Create indexes for better performance
-    await client.query('CREATE INDEX IF NOT EXISTS idx_council_members_user_id ON council_members(user_id)');
-    await client.query('CREATE INDEX IF NOT EXISTS idx_proposals_created_by ON proposals(created_by)');
-    await client.query('CREATE INDEX IF NOT EXISTS idx_proposals_status ON proposals(status)');
-    await client.query('CREATE INDEX IF NOT EXISTS idx_votes_proposal_id ON votes(proposal_id)');
-    await client.query('CREATE INDEX IF NOT EXISTS idx_votes_user_id ON votes(user_id)');
-    await client.query('CREATE INDEX IF NOT EXISTS idx_audit_trail_entity ON audit_trail(entity_type, entity_id)');
-    await client.query('CREATE INDEX IF NOT EXISTS idx_audit_trail_timestamp ON audit_trail(timestamp)');
-    await client.query('CREATE INDEX IF NOT EXISTS idx_sponsorships_creator_id ON sponsorships(creator_id)');
-    await client.query('CREATE INDEX IF NOT EXISTS idx_marketplace_items_creator_id ON marketplace_items(creator_id)');
-    await client.query('CREATE INDEX IF NOT EXISTS idx_marketplace_purchases_buyer_id ON marketplace_purchases(buyer_id)');
-    await client.query('CREATE INDEX IF NOT EXISTS idx_community_engagement_user_id ON community_engagement(user_id)');
-    await client.query('CREATE INDEX IF NOT EXISTS idx_vauntico_credits_user_id ON vauntico_credits(user_id)');
+    await client.query(
+      "CREATE INDEX IF NOT EXISTS idx_council_members_user_id ON council_members(user_id)",
+    );
+    await client.query(
+      "CREATE INDEX IF NOT EXISTS idx_proposals_created_by ON proposals(created_by)",
+    );
+    await client.query(
+      "CREATE INDEX IF NOT EXISTS idx_proposals_status ON proposals(status)",
+    );
+    await client.query(
+      "CREATE INDEX IF NOT EXISTS idx_votes_proposal_id ON votes(proposal_id)",
+    );
+    await client.query(
+      "CREATE INDEX IF NOT EXISTS idx_votes_user_id ON votes(user_id)",
+    );
+    await client.query(
+      "CREATE INDEX IF NOT EXISTS idx_audit_trail_entity ON audit_trail(entity_type, entity_id)",
+    );
+    await client.query(
+      "CREATE INDEX IF NOT EXISTS idx_audit_trail_timestamp ON audit_trail(timestamp)",
+    );
+    await client.query(
+      "CREATE INDEX IF NOT EXISTS idx_sponsorships_creator_id ON sponsorships(creator_id)",
+    );
+    await client.query(
+      "CREATE INDEX IF NOT EXISTS idx_marketplace_items_creator_id ON marketplace_items(creator_id)",
+    );
+    await client.query(
+      "CREATE INDEX IF NOT EXISTS idx_marketplace_purchases_buyer_id ON marketplace_purchases(buyer_id)",
+    );
+    await client.query(
+      "CREATE INDEX IF NOT EXISTS idx_community_engagement_user_id ON community_engagement(user_id)",
+    );
+    await client.query(
+      "CREATE INDEX IF NOT EXISTS idx_vauntico_credits_user_id ON vauntico_credits(user_id)",
+    );
 
-    await client.query('COMMIT');
-    console.log('Database initialized successfully');
+    await client.query("COMMIT");
+    console.log("Database initialized successfully");
   } catch (error) {
-    await client.query('ROLLBACK');
-    console.error('Database initialization failed:', error);
+    await client.query("ROLLBACK");
+    console.error("Database initialization failed:", error);
     throw error;
   } finally {
     client.release();

@@ -1,5 +1,5 @@
 ---
-description: 'Require `.toString()` to only be called on objects which provide useful information when stringified.'
+description: "Require `.toString()` to only be called on objects which provide useful information when stringified."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -21,11 +21,11 @@ This rule reports on stringified values that aren't primitives and don't define 
 
 ```ts
 // Passing an object or class instance to string concatenation:
-'' + {};
+"" + {};
 
 class MyClass {}
 const value = new MyClass();
-value + '';
+value + "";
 
 // Interpolation and manual .toString() calls too:
 `Value: ${value}`;
@@ -36,7 +36,7 @@ value + '';
 
 ```ts
 // These types all have useful .toString()s
-'Text' + true;
+"Text" + true;
 `Value: ${123}`;
 `Arrays too: ${[1, 2, 3]}`;
 (() => {}).toString();
@@ -44,13 +44,13 @@ value + '';
 // Defining a custom .toString class is considered acceptable
 class CustomToString {
   toString() {
-    return 'Hello, world!';
+    return "Hello, world!";
   }
 }
 `Value: ${new CustomToString()}`;
 
 const literalWithToString = {
-  toString: () => 'Hello, world!',
+  toString: () => "Hello, world!",
 };
 
 `Value: ${literalWithToString}`;
@@ -67,7 +67,7 @@ The following patterns are considered correct with the default options `{ ignore
 
 ```ts option='{ "ignoredTypeNames": ["RegExp"] }' showPlaygroundButton
 `${/regex/}`;
-'' + /regex/;
+"" + /regex/;
 /regex/.toString();
 let value = /regex/;
 value.toString();

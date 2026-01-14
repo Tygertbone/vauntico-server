@@ -1,5 +1,5 @@
 ---
-description: 'Disallow `@ts-<directive>` comments or require descriptions after directives.'
+description: "Disallow `@ts-<directive>` comments or require descriptions after directives."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -36,13 +36,13 @@ A value of `true` for a particular directive means that this rule will report if
 ```ts option='{ "ts-ignore": true }'
 if (false) {
   // @ts-ignore: Unreachable code error
-  console.log('hello');
+  console.log("hello");
 }
 if (false) {
   /*
   @ts-ignore: Unreachable code error
   */
-  console.log('hello');
+  console.log("hello");
 }
 ```
 
@@ -51,7 +51,7 @@ if (false) {
 ```ts option='{ "ts-ignore": true }'
 if (false) {
   // Compiler warns about unreachable code error
-  console.log('hello');
+  console.log("hello");
 }
 ```
 
@@ -68,11 +68,11 @@ For example, with `{ 'ts-expect-error': 'allow-with-description' }`:
 ```ts option='{ "ts-expect-error": "allow-with-description" }'
 if (false) {
   // @ts-expect-error
-  console.log('hello');
+  console.log("hello");
 }
 if (false) {
   /* @ts-expect-error */
-  console.log('hello');
+  console.log("hello");
 }
 ```
 
@@ -81,13 +81,13 @@ if (false) {
 ```ts option='{ "ts-expect-error": "allow-with-description" }'
 if (false) {
   // @ts-expect-error: Unreachable code error
-  console.log('hello');
+  console.log("hello");
 }
 if (false) {
   /*
   @ts-expect-error: Unreachable code error
   */
-  console.log('hello');
+  console.log("hello");
 }
 ```
 
@@ -128,7 +128,7 @@ For example, with `{ 'ts-expect-error': 'allow-with-description', minimumDescrip
 ```ts option='{ "ts-expect-error": "allow-with-description", "minimumDescriptionLength": 10 }'
 if (false) {
   // @ts-expect-error: TODO
-  console.log('hello');
+  console.log("hello");
 }
 ```
 
@@ -137,7 +137,7 @@ if (false) {
 ```ts option='{ "ts-expect-error": "allow-with-description", "minimumDescriptionLength": 10 }'
 if (false) {
   // @ts-expect-error The rationale for this override is described in issue #1337 on GitLab
-  console.log('hello');
+  console.log("hello");
 }
 ```
 

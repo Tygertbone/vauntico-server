@@ -36,22 +36,25 @@ objective: "Review Week 2 wins, hit 100+ followers, and prep for monetization"
 Open your analytics and fill in:
 
 **Followers:**
-- Week 1 end: _____ followers
-- Week 2 end: _____ followers
-- Growth: _____ new followers
+
+- Week 1 end: **\_** followers
+- Week 2 end: **\_** followers
+- Growth: **\_** new followers
 
 **Best performing video this week:**
-- Topic: _____
-- Views: _____
-- Engagement rate: _____%
-- What made it work: _____
 
-**Total videos posted Week 2:** _____
+- Topic: **\_**
+- Views: **\_**
+- Engagement rate: **\_**%
+- What made it work: **\_**
+
+**Total videos posted Week 2:** **\_**
 
 **Engagement:**
-- Total comments received: _____
-- Total shares: _____
-- Total saves: _____
+
+- Total comments received: **\_**
+- Total shares: **\_**
+- Total saves: **\_**
 
 ---
 
@@ -63,12 +66,14 @@ Open your analytics and fill in:
 ⏳ **NOT YET:** Totally normal! Keep showing up. It's coming.
 
 **Why 100 followers matters:**
+
 - Proof people want your content
 - Algorithm starts taking you seriously
 - Momentum builds faster from here
 - You're ready to monetize (even with 100 followers!)
 
 **If you're not at 100 yet:**
+
 - Review Day 13 (Analytics) - find what works
 - Double down on your top-performing content
 - Post 5-7 videos next week using your winning formula
@@ -79,22 +84,27 @@ Open your analytics and fill in:
 ## 💡 Week 2 Key Lessons
 
 ### **Lesson #1: Consistency > Perfection**
+
 - Your Week 1 videos probably sucked. Week 2 are better. Week 3 will be even better.
 - Don't wait for "perfect" - publish and improve.
 
 ### **Lesson #2: The Algorithm Rewards Strategy**
+
 - Random posting = random results
 - Strategic posting (right hooks, engagement tactics, peak times) = consistent growth
 
 ### **Lesson #3: Engagement = Money**
+
 - Views are vanity. Engagement is currency.
 - 500 engaged followers > 5,000 passive followers
 
 ### **Lesson #4: Your Data Tells You What to Do**
+
 - Stop guessing. Start tracking.
 - Your analytics show you exactly what works.
 
 ### **Lesson #5: Batch Systems = Sustainability**
+
 - You can't film 1 video/day forever (burnout).
 - Batch filming = you can sustain this for MONTHS (and hit R2K/month).
 
@@ -103,12 +113,14 @@ Open your analytics and fill in:
 ## 🦄 The Mindset Shift
 
 **2 weeks ago you:**
+
 - Had 0 videos posted
 - Didn't know what a hook was
 - Posted randomly and hoped
 - Had no strategy
 
 **Today you:**
+
 - Have 10+ videos published
 - Use proven hooks to stop the scroll
 - Post strategically based on data
@@ -149,6 +161,7 @@ Now that you know HOW to create and WHAT works, Week 3 is about GROWTH:
 ## 🎉 Week 2 Graduation
 
 **YOU ARE NOW:**
+
 - ✅ A strategic content creator
 - ✅ A data-driven optimizer
 - ✅ An engagement master
@@ -162,6 +175,7 @@ Now that you know HOW to create and WHAT works, Week 3 is about GROWTH:
 ## 💬 Share Your Week 2 Journey
 
 Post in the community:
+
 ```
 ✅ WEEK 2 = CRUSHED! 💪
 
@@ -182,6 +196,7 @@ Who else finished Week 2? Let's celebrate! 🎉🦄
 ## 🔥 Special Week 2 Milestone
 
 **If you:**
+
 - Posted 7+ videos
 - Gained any followers
 - Replied to comments
@@ -196,6 +211,7 @@ Most quit after Week 1. You kept going. **That's the difference between dreamers
 ## 💪 The Road to R2,000
 
 **Your progress:**
+
 - ✅ Week 1: Learned the basics (how to create)
 - ✅ Week 2: Learned the strategy (what works)
 - ⏳ Week 3: Build your audience (500+ followers)
@@ -213,6 +229,7 @@ Most quit after Week 1. You kept going. **That's the difference between dreamers
 Week 3 starts Monday. We're shifting focus from "views" to "FOLLOWS."
 
 **You'll learn:**
+
 - The psychology of why people follow
 - 7 content types that make people hit "Follow"
 - How to turn 1,000 views into 100 followers (10% conversion)
@@ -226,16 +243,19 @@ Week 3 starts Monday. We're shifting focus from "views" to "FOLLOWS."
 **Meet Wanjiku** (Nairobi, Kenya - Finance niche)
 
 **End of Week 2:**
+
 - 87 followers
 - Average 400 views/video
 - No money yet
 
 **End of Week 4 (after Week 3 + Monetization Week):**
+
 - 520 followers
 - Average 2,000 views/video
 - First R750 from digital product
 
 **End of Week 8:**
+
 - 3,200 followers
 - R2,400/month income
 - "I quit my job. I'm a full-time creator now."

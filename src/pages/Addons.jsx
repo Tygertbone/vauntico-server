@@ -1,196 +1,197 @@
-import { useState } from 'react'
+import { useState } from "react";
 
 function Addons() {
-  const [selectedCategory, setSelectedCategory] = useState('all')
-  const [cart, setCart] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [cart, setCart] = useState([]);
 
   const categories = [
-    { id: 'all', name: 'All Add-ons', icon: '🌟' },
-    { id: 'content', name: 'Content Tools', icon: '✍️' },
-    { id: 'automation', name: 'Automation', icon: '🤖' },
-    { id: 'analytics', name: 'Analytics', icon: '📊' },
-    { id: 'integration', name: 'Integrations', icon: '🔌' }
-  ]
+    { id: "all", name: "All Add-ons", icon: "🌟" },
+    { id: "content", name: "Content Tools", icon: "✍️" },
+    { id: "automation", name: "Automation", icon: "🤖" },
+    { id: "analytics", name: "Analytics", icon: "📊" },
+    { id: "integration", name: "Integrations", icon: "🔌" },
+  ];
 
   const addons = [
     {
-      id: 'auto-fix',
-      name: 'Auto-Fix Service',
-      category: 'automation',
+      id: "auto-fix",
+      name: "Auto-Fix Service",
+      category: "automation",
       price: 299,
-      period: '/month',
-      description: 'Automated fixes for common code issues',
+      period: "/month",
+      description: "Automated fixes for common code issues",
       features: [
-        'Automatic dependency updates',
-        'Security vulnerability patching',
-        'Code style enforcement',
-        'Dead code removal'
+        "Automatic dependency updates",
+        "Security vulnerability patching",
+        "Code style enforcement",
+        "Dead code removal",
       ],
-      icon: '🤖',
+      icon: "🤖",
       popular: true,
-      creatorPassDiscount: 20
+      creatorPassDiscount: 20,
     },
     {
-      id: 'custom-reporting',
-      name: 'Custom Reporting',
-      category: 'analytics',
+      id: "custom-reporting",
+      name: "Custom Reporting",
+      category: "analytics",
       price: 199,
-      period: '/month',
-      description: 'Branded reports with custom metrics',
+      period: "/month",
+      description: "Branded reports with custom metrics",
       features: [
-        'White-label reports',
-        'Custom KPI tracking',
-        'Executive summaries',
-        'Scheduled delivery'
+        "White-label reports",
+        "Custom KPI tracking",
+        "Executive summaries",
+        "Scheduled delivery",
       ],
-      icon: '📈',
+      icon: "📈",
       popular: false,
-      creatorPassDiscount: 15
+      creatorPassDiscount: 15,
     },
     {
-      id: 'team-training',
-      name: 'Team Training',
-      category: 'content',
+      id: "team-training",
+      name: "Team Training",
+      category: "content",
       price: 1499,
-      period: '/session',
-      description: 'Hands-on workshop for your team',
+      period: "/session",
+      description: "Hands-on workshop for your team",
       features: [
-        '3-hour live workshop',
-        'Custom curriculum',
-        'Recording provided',
-        '30-day email support'
+        "3-hour live workshop",
+        "Custom curriculum",
+        "Recording provided",
+        "30-day email support",
       ],
-      icon: '🎓',
+      icon: "🎓",
       popular: false,
-      creatorPassDiscount: 10
+      creatorPassDiscount: 10,
     },
     {
-      id: 'emergency-audit',
-      name: 'Emergency Audit',
-      category: 'automation',
+      id: "emergency-audit",
+      name: "Emergency Audit",
+      category: "automation",
       price: 2999,
-      period: '/one-time',
-      description: '24-hour critical issue analysis',
+      period: "/one-time",
+      description: "24-hour critical issue analysis",
       features: [
-        '24-hour turnaround',
-        'Senior engineer review',
-        'Video walkthrough',
-        'Priority fix recommendations'
+        "24-hour turnaround",
+        "Senior engineer review",
+        "Video walkthrough",
+        "Priority fix recommendations",
       ],
-      icon: '🚨',
+      icon: "🚨",
       popular: false,
-      creatorPassDiscount: 25
+      creatorPassDiscount: 25,
     },
     {
-      id: 'ai-content-boost',
-      name: 'AI Content Boost',
-      category: 'content',
+      id: "ai-content-boost",
+      name: "AI Content Boost",
+      category: "content",
       price: 399,
-      period: '/month',
-      description: '10x your AI generation limits',
+      period: "/month",
+      description: "10x your AI generation limits",
       features: [
-        '10,000 AI generations/month',
-        'Priority processing',
-        'Advanced models access',
-        'Bulk generation tools'
+        "10,000 AI generations/month",
+        "Priority processing",
+        "Advanced models access",
+        "Bulk generation tools",
       ],
-      icon: '🚀',
+      icon: "🚀",
       popular: true,
-      creatorPassDiscount: 30
+      creatorPassDiscount: 30,
     },
     {
-      id: 'white-label',
-      name: 'White Label',
-      category: 'integration',
+      id: "white-label",
+      name: "White Label",
+      category: "integration",
       price: 799,
-      period: '/month',
-      description: 'Remove Vauntico branding',
+      period: "/month",
+      description: "Remove Vauntico branding",
       features: [
-        'Custom domain',
-        'Your logo & colors',
-        'Custom email templates',
-        'API white-labeling'
+        "Custom domain",
+        "Your logo & colors",
+        "Custom email templates",
+        "API white-labeling",
       ],
-      icon: '🏷️',
+      icon: "🏷️",
       popular: false,
-      creatorPassDiscount: 20
+      creatorPassDiscount: 20,
     },
     {
-      id: 'api-access',
-      name: 'API Access Pro',
-      category: 'integration',
+      id: "api-access",
+      name: "API Access Pro",
+      category: "integration",
       price: 499,
-      period: '/month',
-      description: 'Full API access for integrations',
+      period: "/month",
+      description: "Full API access for integrations",
       features: [
-        'Unlimited API calls',
-        'Webhook support',
-        'Priority rate limits',
-        'Dedicated support'
+        "Unlimited API calls",
+        "Webhook support",
+        "Priority rate limits",
+        "Dedicated support",
       ],
-      icon: '🔌',
+      icon: "🔌",
       popular: true,
-      creatorPassDiscount: 15
+      creatorPassDiscount: 15,
     },
     {
-      id: 'priority-support',
-      name: 'Priority Support',
-      category: 'automation',
+      id: "priority-support",
+      name: "Priority Support",
+      category: "automation",
       price: 299,
-      period: '/month',
-      description: '24/7 priority assistance',
+      period: "/month",
+      description: "24/7 priority assistance",
       features: [
-        '1-hour response time',
-        'Direct engineer access',
-        'Screen sharing sessions',
-        'Dedicated Slack channel'
+        "1-hour response time",
+        "Direct engineer access",
+        "Screen sharing sessions",
+        "Dedicated Slack channel",
       ],
-      icon: '💬',
+      icon: "💬",
       popular: false,
-      creatorPassDiscount: 25
+      creatorPassDiscount: 25,
     },
     {
-      id: 'advanced-analytics',
-      name: 'Advanced Analytics',
-      category: 'analytics',
+      id: "advanced-analytics",
+      name: "Advanced Analytics",
+      category: "analytics",
       price: 349,
-      period: '/month',
-      description: 'Deep insights into your content',
+      period: "/month",
+      description: "Deep insights into your content",
       features: [
-        'Custom dashboards',
-        'Predictive analytics',
-        'A/B testing tools',
-        'Export to BI tools'
+        "Custom dashboards",
+        "Predictive analytics",
+        "A/B testing tools",
+        "Export to BI tools",
       ],
-      icon: '📊',
+      icon: "📊",
       popular: false,
-      creatorPassDiscount: 20
-    }
-  ]
+      creatorPassDiscount: 20,
+    },
+  ];
 
-  const filteredAddons = selectedCategory === 'all' 
-    ? addons 
-    : addons.filter(addon => addon.category === selectedCategory)
+  const filteredAddons =
+    selectedCategory === "all"
+      ? addons
+      : addons.filter((addon) => addon.category === selectedCategory);
 
   const addToCart = (addon) => {
-    if (!cart.find(item => item.id === addon.id)) {
-      setCart([...cart, addon])
+    if (!cart.find((item) => item.id === addon.id)) {
+      setCart([...cart, addon]);
     }
-  }
+  };
 
   const removeFromCart = (addonId) => {
-    setCart(cart.filter(item => item.id !== addonId))
-  }
+    setCart(cart.filter((item) => item.id !== addonId));
+  };
 
   const calculateTotal = () => {
-    return cart.reduce((total, item) => total + item.price, 0)
-  }
+    return cart.reduce((total, item) => total + item.price, 0);
+  };
 
   const calculateSavings = () => {
     return cart.reduce((total, item) => {
-      return total + (item.price * (item.creatorPassDiscount / 100))
-    }, 0)
-  }
+      return total + item.price * (item.creatorPassDiscount / 100);
+    }, 0);
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -200,10 +201,12 @@ function Addons() {
           ADD-ONS & EXTENSIONS
         </div>
         <h1 className="text-5xl font-bold mb-4">
-          Supercharge Your <span className="text-gradient">Vauntico Experience</span>
+          Supercharge Your{" "}
+          <span className="text-gradient">Vauntico Experience</span>
         </h1>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-6">
-          Enhance your workflow with powerful add-ons. Mix and match to create your perfect toolkit.
+          Enhance your workflow with powerful add-ons. Mix and match to create
+          your perfect toolkit.
         </p>
         <p className="text-lg text-vault-purple font-semibold">
           🎉 Creator Pass members save 10-30% on all add-ons
@@ -219,8 +222,8 @@ function Addons() {
               onClick={() => setSelectedCategory(category.id)}
               className={`px-6 py-2 rounded-full font-medium transition-all whitespace-nowrap ${
                 selectedCategory === category.id
-                  ? 'bg-white shadow-md text-vault-purple'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? "bg-white shadow-md text-vault-purple"
+                  : "text-gray-600 hover:text-gray-900"
               }`}
             >
               {category.icon} {category.name}
@@ -234,10 +237,10 @@ function Addons() {
         <div className="lg:col-span-2">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredAddons.map((addon) => (
-              <div 
+              <div
                 key={addon.id}
                 className={`card hover:shadow-xl transition-all ${
-                  addon.popular ? 'border-2 border-vault-purple' : ''
+                  addon.popular ? "border-2 border-vault-purple" : ""
                 }`}
               >
                 {addon.popular && (
@@ -245,15 +248,19 @@ function Addons() {
                     POPULAR
                   </div>
                 )}
-                
+
                 <div className="text-5xl mb-3">{addon.icon}</div>
                 <h3 className="text-xl font-bold mb-2">{addon.name}</h3>
-                <p className="text-gray-600 text-sm mb-4">{addon.description}</p>
-                
+                <p className="text-gray-600 text-sm mb-4">
+                  {addon.description}
+                </p>
+
                 <div className="mb-4">
                   <div className="flex items-end mb-1">
                     <span className="text-3xl font-bold">R{addon.price}</span>
-                    <span className="text-gray-500 ml-1 mb-1">{addon.period}</span>
+                    <span className="text-gray-500 ml-1 mb-1">
+                      {addon.period}
+                    </span>
                   </div>
                   {addon.creatorPassDiscount > 0 && (
                     <div className="text-sm text-green-600 font-semibold">
@@ -261,7 +268,7 @@ function Addons() {
                     </div>
                   )}
                 </div>
-                
+
                 <ul className="space-y-2 mb-4">
                   {addon.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start text-sm">
@@ -270,17 +277,19 @@ function Addons() {
                     </li>
                   ))}
                 </ul>
-                
+
                 <button
                   onClick={() => addToCart(addon)}
-                  disabled={cart.find(item => item.id === addon.id)}
+                  disabled={cart.find((item) => item.id === addon.id)}
                   className={`w-full py-2 rounded-lg font-semibold transition-all ${
-                    cart.find(item => item.id === addon.id)
-                      ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                      : 'btn-primary'
+                    cart.find((item) => item.id === addon.id)
+                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                      : "btn-primary"
                   }`}
                 >
-                  {cart.find(item => item.id === addon.id) ? '✓ Added' : 'Add to Cart'}
+                  {cart.find((item) => item.id === addon.id)
+                    ? "✓ Added"
+                    : "Add to Cart"}
                 </button>
               </div>
             ))}
@@ -291,7 +300,7 @@ function Addons() {
         <div className="lg:col-span-1">
           <div className="card sticky top-8">
             <h3 className="text-2xl font-bold mb-4">Your Selection</h3>
-            
+
             {cart.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-6xl mb-4">🛒</div>
@@ -301,10 +310,16 @@ function Addons() {
               <>
                 <div className="space-y-3 mb-6">
                   {cart.map((item) => (
-                    <div key={item.id} className="flex items-start justify-between p-3 bg-gray-50 rounded-lg">
+                    <div
+                      key={item.id}
+                      className="flex items-start justify-between p-3 bg-gray-50 rounded-lg"
+                    >
                       <div className="flex-1">
                         <div className="font-semibold text-sm">{item.name}</div>
-                        <div className="text-xs text-gray-600">R{item.price}{item.period}</div>
+                        <div className="text-xs text-gray-600">
+                          R{item.price}
+                          {item.period}
+                        </div>
                       </div>
                       <button
                         onClick={() => removeFromCart(item.id)}
@@ -324,19 +339,23 @@ function Addons() {
                   {calculateSavings() > 0 && (
                     <div className="flex justify-between mb-2 text-green-600">
                       <span>Creator Pass Savings</span>
-                      <span className="font-semibold">-R{calculateSavings().toFixed(0)}</span>
+                      <span className="font-semibold">
+                        -R{calculateSavings().toFixed(0)}
+                      </span>
                     </div>
                   )}
                   <div className="flex justify-between text-lg font-bold border-t pt-2">
                     <span>Total</span>
-                    <span className="text-gradient">R{(calculateTotal() - calculateSavings()).toFixed(0)}</span>
+                    <span className="text-gradient">
+                      R{(calculateTotal() - calculateSavings()).toFixed(0)}
+                    </span>
                   </div>
                 </div>
 
                 <button className="btn-primary w-full mb-3">
                   🚀 Activate Add-ons
                 </button>
-                <button 
+                <button
                   onClick={() => setCart([])}
                   className="btn-outline w-full text-sm"
                 >
@@ -350,9 +369,12 @@ function Addons() {
           <div className="card mt-6 bg-gradient-to-br from-vault-purple/10 to-vault-blue/10 border-2 border-vault-purple/20">
             <div className="text-center">
               <div className="text-4xl mb-3">💎</div>
-              <h4 className="font-bold text-lg mb-2">Not a Creator Pass member?</h4>
+              <h4 className="font-bold text-lg mb-2">
+                Not a Creator Pass member?
+              </h4>
               <p className="text-sm text-gray-600 mb-4">
-                Unlock 10-30% discounts on all add-ons, plus unlimited AI generations and more.
+                Unlock 10-30% discounts on all add-ons, plus unlimited AI
+                generations and more.
               </p>
               <button className="btn-secondary w-full text-sm">
                 Upgrade to Creator Pass
@@ -369,27 +391,39 @@ function Addons() {
         </h2>
         <div className="space-y-4">
           <div className="card">
-            <h3 className="font-semibold text-lg mb-2">Can I cancel add-ons anytime?</h3>
+            <h3 className="font-semibold text-lg mb-2">
+              Can I cancel add-ons anytime?
+            </h3>
             <p className="text-gray-600">
-              Yes! All subscription add-ons can be canceled anytime. One-time add-ons are non-refundable after delivery.
+              Yes! All subscription add-ons can be canceled anytime. One-time
+              add-ons are non-refundable after delivery.
             </p>
           </div>
           <div className="card">
-            <h3 className="font-semibold text-lg mb-2">Do add-ons work without Creator Pass?</h3>
+            <h3 className="font-semibold text-lg mb-2">
+              Do add-ons work without Creator Pass?
+            </h3>
             <p className="text-gray-600">
-              Absolutely. Add-ons are standalone purchases. However, Creator Pass members enjoy significant discounts.
+              Absolutely. Add-ons are standalone purchases. However, Creator
+              Pass members enjoy significant discounts.
             </p>
           </div>
           <div className="card">
-            <h3 className="font-semibold text-lg mb-2">How do discounts stack?</h3>
+            <h3 className="font-semibold text-lg mb-2">
+              How do discounts stack?
+            </h3>
             <p className="text-gray-600">
-              Creator Pass discounts are automatically applied. We occasionally run promotions that can stack for even bigger savings.
+              Creator Pass discounts are automatically applied. We occasionally
+              run promotions that can stack for even bigger savings.
             </p>
           </div>
           <div className="card">
-            <h3 className="font-semibold text-lg mb-2">Can I share add-ons with my team?</h3>
+            <h3 className="font-semibold text-lg mb-2">
+              Can I share add-ons with my team?
+            </h3>
             <p className="text-gray-600">
-              Most add-ons are account-level, so your entire team can benefit. Enterprise plans offer team-specific features.
+              Most add-ons are account-level, so your entire team can benefit.
+              Enterprise plans offer team-specific features.
             </p>
           </div>
         </div>
@@ -397,9 +431,7 @@ function Addons() {
 
       {/* CTA */}
       <div className="mt-16 text-center vault-gradient rounded-2xl p-12 text-white">
-        <h2 className="text-3xl font-bold mb-4">
-          Build Your Perfect Toolkit
-        </h2>
+        <h2 className="text-3xl font-bold mb-4">Build Your Perfect Toolkit</h2>
         <p className="text-xl mb-8 opacity-90">
           Mix and match add-ons to create the ultimate content creation system
         </p>
@@ -408,7 +440,7 @@ function Addons() {
         </button>
       </div>
     </div>
-  )
+  );
 }
 
-export default Addons
+export default Addons;

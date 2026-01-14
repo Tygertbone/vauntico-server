@@ -1,5 +1,5 @@
 ---
-description: 'Enforce consistent usage of type assertions.'
+description: "Enforce consistent usage of type assertions."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

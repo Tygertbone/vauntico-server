@@ -1,7 +1,7 @@
-import { pool } from '../db/pool';
-import { logger } from '../utils/logger';
-import { subscriptionManager } from '../utils/subscriptions';
-import { emailCampaignWorker } from '../queue/emailCampaignWorker'; // Temporarily disabled for build
+import { pool } from "../db/pool";
+import { logger } from "../utils/logger";
+import { subscriptionManager } from "../utils/subscriptions";
+import { emailCampaignWorker } from "../queue/emailCampaignWorker"; // Temporarily disabled for build
 
 export interface UsageRecord {
   userId: string;
@@ -42,13 +42,13 @@ export class FeatureUsageService {
       const upgradeRequired = !allowed && limits >= 0;
 
       if (!allowed) {
-        logger.warn('Feature usage limit exceeded', {
+        logger.warn("Feature usage limit exceeded", {
           userId,
           featureName,
           currentUsage,
           limit: limits,
           attemptedUsage: quantity,
-          totalAfterUse: newTotal
+          totalAfterUse: newTotal,
         });
 
         return {
@@ -56,7 +56,7 @@ export class FeatureUsageService {
           remaining,
           limit: limits,
           upgradeRequired: true,
-          message: this.getLimitExceededMessage(featureName, limits)
+          message: this.getLimitExceededMessage(featureName, limits),
         };
       }
 
@@ -64,35 +64,34 @@ export class FeatureUsageService {
       // await emailCampaignWorker.recordFeatureUsage(userId.toString(), featureName); // Temporarily disabled for build
 
       // Log successful usage
-      logger.info('Feature usage recorded successfully', {
+      logger.info("Feature usage recorded successfully", {
         userId,
         featureName,
         quantity,
         currentTotal: currentUsage + quantity,
         limit: limits,
-        remaining: remaining - quantity
+        remaining: remaining - quantity,
       });
 
       return {
         allowed: true,
         remaining: remaining - quantity,
         limit: limits,
-        upgradeRequired: false
+        upgradeRequired: false,
       };
-
     } catch (error) {
-      logger.error('Failed to record feature usage', {
+      logger.error("Failed to record feature usage", {
         userId: usage.userId,
         featureName: usage.featureName,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : "Unknown error",
       });
 
       // Fallback to allow usage in case of errors
       return {
         allowed: true,
         remaining: -1, // Unknown
-        limit: -1,     // Unknown
-        upgradeRequired: false
+        limit: -1, // Unknown
+        upgradeRequired: false,
       };
     }
   }
@@ -115,7 +114,9 @@ export class FeatureUsageService {
         remaining,
         limit: limits,
         upgradeRequired,
-        message: allowed ? undefined : this.getLimitExceededMessage(featureName, limits)
+        message: allowed
+          ? undefined
+          : this.getLimitExceededMessage(featureName, limits),
       };
     } catch (error) {
       // Allow usage if we can't check
@@ -123,7 +124,7 @@ export class FeatureUsageService {
         allowed: true,
         remaining: -1,
         limit: -1,
-        upgradeRequired: false
+        upgradeRequired: false,
       };
     }
   }
@@ -131,23 +132,29 @@ export class FeatureUsageService {
   /**
    * Get current usage for a feature this month
    */
-  private async getCurrentUsage(userId: string, featureName: string): Promise<number> {
+  private async getCurrentUsage(
+    userId: string,
+    featureName: string,
+  ): Promise<number> {
     try {
       // Get usage from email_campaigns service (reusing existing tracking)
       // This provides a unified usage tracking system
 
-      const result = await pool.query(`
+      const result = await pool.query(
+        `
         SELECT usage_count
         FROM user_feature_usage
         WHERE user_id = $1 AND feature_name = $2
-      `, [userId, featureName]);
+      `,
+        [userId, featureName],
+      );
 
       return result.rows[0]?.usage_count || 0;
     } catch (error) {
-      logger.error('Failed to get current usage', {
+      logger.error("Failed to get current usage", {
         userId,
         featureName,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return 0;
     }
@@ -158,23 +165,23 @@ export class FeatureUsageService {
    */
   private getFeatureLimits(featureName: string, tier?: string): number {
     const freeLimits: Record<string, number> = {
-      'ai_generation': 50,    // AI generations per month
-      'vault_create': 3,      // Maximum vaults
-      'collaborator_add': 1,  // Max collaborators (single user)
-      'storage_gb': 1,        // Storage in GB
-      'analytics_queries': 5  // Analytics requests per day
+      ai_generation: 50, // AI generations per month
+      vault_create: 3, // Maximum vaults
+      collaborator_add: 1, // Max collaborators (single user)
+      storage_gb: 1, // Storage in GB
+      analytics_queries: 5, // Analytics requests per day
     };
 
-    if (!tier || tier === 'free') {
+    if (!tier || tier === "free") {
       return freeLimits[featureName] || 0;
     }
 
-    if (tier === 'creator_pass') {
+    if (tier === "creator_pass") {
       // Unlimited for creator pass
       return -1; // Unlimited
     }
 
-    if (tier === 'enterprise') {
+    if (tier === "enterprise") {
       // Unlimited for enterprise
       return -1; // Unlimited
     }
@@ -188,14 +195,17 @@ export class FeatureUsageService {
    */
   private getLimitExceededMessage(featureName: string, limit: number): string {
     const messages: Record<string, string> = {
-      'ai_generation': `You've reached your monthly AI generation limit (${limit}). Upgrade to Creator Pass for unlimited AI generations.`,
-      'vault_create': `You've reached your vault limit (${limit}). Upgrade to Creator Pass for unlimited vaults.`,
-      'collaborator_add': `You've reached your collaborator limit (${limit}). Creator Pass allows up to 10 team members.`,
-      'storage_gb': `You've reached your storage limit (${limit}GB). Creator Pass includes 100GB of storage.`,
-      'analytics_queries': `You've reached your daily analytics limit (${limit}). Upgrade for advanced analytics.`
+      ai_generation: `You've reached your monthly AI generation limit (${limit}). Upgrade to Creator Pass for unlimited AI generations.`,
+      vault_create: `You've reached your vault limit (${limit}). Upgrade to Creator Pass for unlimited vaults.`,
+      collaborator_add: `You've reached your collaborator limit (${limit}). Creator Pass allows up to 10 team members.`,
+      storage_gb: `You've reached your storage limit (${limit}GB). Creator Pass includes 100GB of storage.`,
+      analytics_queries: `You've reached your daily analytics limit (${limit}). Upgrade for advanced analytics.`,
     };
 
-    return messages[featureName] || `You've reached your ${featureName} limit. Upgrade to continue.`;
+    return (
+      messages[featureName] ||
+      `You've reached your ${featureName} limit. Upgrade to continue.`
+    );
   }
 
   /**
@@ -205,11 +215,11 @@ export class FeatureUsageService {
     try {
       const subscription = await subscriptionManager.getSubscription(userId);
 
-      const features = ['ai_generation', 'vault_create', 'collaborator_add'];
+      const features = ["ai_generation", "vault_create", "collaborator_add"];
 
       const report: any = {
-        tier: subscription?.tier || 'free',
-        features: {}
+        tier: subscription?.tier || "free",
+        features: {},
       };
 
       for (const feature of features) {
@@ -222,15 +232,15 @@ export class FeatureUsageService {
           limit,
           remaining: usageCheck.remaining,
           percentUsed: limit > 0 ? (currentUsage / limit) * 100 : 0,
-          upgradeRecommended: currentUsage >= limit * 0.8 && limit > 0
+          upgradeRecommended: currentUsage >= limit * 0.8 && limit > 0,
         };
       }
 
       return report;
     } catch (error) {
-      logger.error('Failed to generate usage report', {
+      logger.error("Failed to generate usage report", {
         userId,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       return null;
     }
@@ -253,8 +263,8 @@ export class FeatureUsageService {
           metadata: {
             endpoint: req.path,
             method: req.method,
-            ip: req.ip
-          }
+            ip: req.ip,
+          },
         });
 
         // Add usage info to request for handlers to use
@@ -264,10 +274,10 @@ export class FeatureUsageService {
         next();
       } catch (error) {
         // Continue anyway - don't break functionality due to tracking issues
-        logger.error('Usage middleware error', {
+        logger.error("Usage middleware error", {
           userId: req.user?.userId,
           featureName,
-          error: error instanceof Error ? error.message : 'Unknown error'
+          error: error instanceof Error ? error.message : "Unknown error",
         });
         next();
       }

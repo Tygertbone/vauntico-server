@@ -7,20 +7,25 @@
 ## 🚀 DEPLOY IN 3 STEPS
 
 ### 1️⃣ BUILD
+
 ```bash
 npm run build
 ```
+
 ✅ Verify: `dist/` folder created
 
 ### 2️⃣ DEPLOY
+
 **Choose ONE:**
 
 **Option A: Vercel (Easiest)**
+
 ```bash
 vercel --prod
 ```
 
 **Option B: Git Push (Auto-Deploy)**
+
 ```bash
 git add .
 git commit -m "Deploy v1.0.0"
@@ -28,11 +33,13 @@ git push origin main
 ```
 
 **Option C: Netlify**
+
 ```bash
 netlify deploy --prod --dir=dist
 ```
 
 ### 3️⃣ VERIFY
+
 ```bash
 # Preview locally first (recommended)
 npm run preview
@@ -50,7 +57,7 @@ After deployment, verify:
 
 ```javascript
 // Open browser console on live site
-window.VaunticoDev
+window.VaunticoDev;
 // Should return: undefined ✅
 
 // Should see in console:
@@ -62,6 +69,7 @@ window.VaunticoDev
 ## 🔧 TROUBLESHOOTING
 
 ### Build Fails
+
 ```bash
 rm -rf node_modules dist
 npm install
@@ -69,10 +77,12 @@ npm run build
 ```
 
 ### Routes Don't Work (404)
+
 - Verify `vercel.json` exists
 - Check hosting provider SPA settings
 
 ### Dev Tools Exposed
+
 ```bash
 # Rebuild production mode
 npm run build
@@ -94,6 +104,7 @@ npm run build
 ## 🎯 POST-DEPLOY TESTS
 
 **Essential (< 5 min)**:
+
 1. Visit homepage
 2. Check console (F12)
 3. Test navigation
@@ -133,7 +144,7 @@ Or use hosting dashboard: Deployments → Previous → Promote
 ✅ Dev tools not exposed  
 ✅ All routes work  
 ✅ Mobile responsive  
-✅ PageSpeed >90  
+✅ PageSpeed >90
 
 **All green? You're live!** 🚀
 

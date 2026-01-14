@@ -1,5 +1,5 @@
 ---
-description: 'Enforce consistent spacing before and after keywords.'
+description: "Enforce consistent spacing before and after keywords."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

@@ -1,5 +1,5 @@
 ---
-description: 'Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs.'
+description: "Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -112,7 +112,7 @@ enum Foo {
 function enumArg(arg: Foo) {}
 
 function symb1(arg: symbol) {}
-const customSymbol = Symbol('a');
+const customSymbol = Symbol("a");
 function symb2(arg: typeof customSymbol) {}
 
 // function types
@@ -186,8 +186,8 @@ function fn3(arg: WrapperWithOther) {}
 ```
 
 ```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
-import { Foo } from 'some-lib';
-import { Bar } from 'incorrect-lib';
+import { Foo } from "some-lib";
+import { Bar } from "incorrect-lib";
 
 interface HTMLElement {
   prop: string;
@@ -223,7 +223,7 @@ function fn2(arg: Wrapper) {}
 ```
 
 ```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
-import { Bar } from 'bar-lib';
+import { Bar } from "bar-lib";
 
 interface Foo {
   prop: string;
@@ -240,7 +240,7 @@ function fn3(arg: Bar) {}
 ```
 
 ```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
-import { Foo } from './foo';
+import { Foo } from "./foo";
 
 // Works because Foo is still a local type - it has to be in the same package
 function fn(arg: Foo) {}
@@ -295,7 +295,7 @@ Examples of code for this rule with `{ignoreInferredTypes: true}`:
 #### ❌ Incorrect
 
 ```ts option='{ "ignoreInferredTypes": true }'
-import { acceptsCallback, CallbackOptions } from 'external-dependency';
+import { acceptsCallback, CallbackOptions } from "external-dependency";
 
 acceptsCallback((options: CallbackOptions) => {});
 ```
@@ -318,9 +318,9 @@ export const acceptsCallback: AcceptsCallback;
 #### ✅ Correct
 
 ```ts option='{ "ignoreInferredTypes": true }'
-import { acceptsCallback } from 'external-dependency';
+import { acceptsCallback } from "external-dependency";
 
-acceptsCallback(options => {});
+acceptsCallback((options) => {});
 ```
 
 <details>

@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
   push:
-    branches: [main, 'feature/*', 'hotfix/*']
+    branches: [main, "feature/*", "hotfix/*"]
 
 jobs:
   governance-validation:
@@ -19,7 +19,7 @@ jobs:
       - name: Validate PR Template Compliance
         run: |
           echo "🔍 Validating PR governance compliance..."
-          
+
           # Check if PR has monetization phase selected
           if [[ "${{ github.event.pull_request.body }}" != *"Phase 1: Foundation"* ]] && \
              [[ "${{ github.event.pull_request.body }}" != *"Phase 2: B2B API Licensing"* ]] && \
@@ -30,30 +30,30 @@ jobs:
             echo "::error::PR must specify monetization phase"
             exit 1
           fi
-          
+
           # Check if PR has revenue target specified
           if [[ "${{ github.event.pull_request.body }}" != *"Revenue Target:"* ]]; then
             echo "❌ PR missing revenue target specification"
             echo "::error::PR must specify revenue target from memories.md"
             exit 1
           fi
-          
+
           # Check if PR references memories.md
           if [[ "${{ github.event.pull_request.body }}" != *"memories.md"* ]]; then
             echo "❌ PR missing memories.md reference"
             echo "::error::PR must reference memories.md section"
             exit 1
           fi
-          
+
           echo "✅ PR template validation passed"
 
       - name: Validate Commit Convention Compliance
         run: |
           echo "🔍 Validating commit convention compliance..."
-          
+
           # Get recent commits for this PR
           COMMITS=$(git log --oneline --since="${{ github.event.pull_request.base.sha }}" --format="%s")
-          
+
           # Check each commit for proper format
           while IFS= read -r commit; do
             if [[ ! "$commit" =~ ^(Phase [1-5]): (feat|fix|docs|style|refactor|test|chore): .+ ]]; then
@@ -62,13 +62,13 @@ jobs:
               exit 1
             fi
           done
-          
+
           echo "✅ Commit convention validation passed"
 
       - name: Validate KPI Impact Assessment
         run: |
           echo "🔍 Validating KPI impact assessment..."
-          
+
           # Check if PR specifies KPI metrics affected
           if [[ "${{ github.event.pull_request.body }}" != *"pro_subscriptions"* ]] && \
              [[ "${{ github.event.pull_request.body }}" != *"score_insurance_signups"* ]] && \
@@ -76,7 +76,7 @@ jobs:
             echo "⚠️ PR should specify KPI metrics affected"
             echo "::warning::Consider specifying which KPIs are affected by this change"
           fi
-          
+
           echo "✅ KPI impact assessment validated"
 
   kpi-tracking-validation:
@@ -88,10 +88,10 @@ jobs:
       - name: Validate KPI Implementation
         run: |
           echo "🔍 Validating KPI implementation..."
-          
+
           # Check for Phase 1 KPI endpoints in code
           KPI_ENDPOINTS_FOUND=true
-          
+
           # Check for pro subscriptions tracking
           if grep -r "pro_subscriptions" server-v2/src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
             echo "✅ Pro subscriptions tracking found"
@@ -115,7 +115,7 @@ jobs:
             echo "⚠️ Trust calculator usage tracking not found"
             KPI_ENDPOINTS_FOUND=false
           fi
-          
+
           if [ "$KPI_ENDPOINTS_FOUND" = true ]; then
             echo "✅ KPI implementation validation passed"
           else
@@ -130,7 +130,7 @@ jobs:
       - name: Validate Blind Spot Mitigations
         run: |
           echo "🔍 Validating blind spot mitigations..."
-          
+
           # Check for data privacy mitigations
           PRIVACY_MITIGATIONS_FOUND=true
           if ! grep -r "data_privacy" server-v2/src/ --include="*.ts,*.js,*.tsx" >/dev/null; then
@@ -158,7 +158,7 @@ jobs:
             echo "⚠️ Commoditization mitigations not found"
             COMMODITIZATION_MITIGATIONS_FOUND=false
           fi
-          
+
           if [ "$PRIVACY_MITIGATIONS_FOUND" = true ] && \
              [ "$PLATFORM_MITIGATIONS_FOUND" = true ] && \
              [ "$GAMING_MITIGATIONS_FOUND" = true ] && \
@@ -177,12 +177,12 @@ jobs:
       - name: Track Deployment Metrics
         run: |
           echo "📊 Tracking deployment metrics..."
-          
+
           # Extract deployment information
           DEPLOYMENT_ID="deploy-$(date +%Y%m%d-%H%M%S)-${{ github.sha }}"
           MONETIZATION_PHASE="Phase 1: Foundation"
           REVENUE_TARGET="100K MRR from creators"
-          
+
           # Create deployment tracking payload
           cat > deployment-payload.json <<EOF
           {
@@ -198,9 +198,9 @@ jobs:
             "github_actor": "${{ github.actor }}"
           }
           EOF
-          
+
           echo "📋 Deployment tracking payload created"
           cat deployment-payload.json
-          
+
           # In a real implementation, this would be sent to monitoring system
           echo "✅ Deployment metrics tracked"

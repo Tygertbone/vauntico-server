@@ -44,13 +44,13 @@ This guide covers the comprehensive monitoring stack included with your Vauntico
 
 After deployment, monitoring services are available at:
 
-| Service | URL | Default Credentials |
-|---------|-----|-------------------|
-| Uptime Kuma | http://your-vps-ip:3003 | admin/admin123 |
-| Prometheus | http://your-vps-ip:9090 | No authentication |
-| Grafana | http://your-vps-ip:3004 | admin/admin123 |
-| AlertManager | http://your-vps-ip:9093 | No authentication |
-| cAdvisor | http://your-vps-ip:8080 | No authentication |
+| Service      | URL                     | Default Credentials |
+| ------------ | ----------------------- | ------------------- |
+| Uptime Kuma  | http://your-vps-ip:3003 | admin/admin123      |
+| Prometheus   | http://your-vps-ip:9090 | No authentication   |
+| Grafana      | http://your-vps-ip:3004 | admin/admin123      |
+| AlertManager | http://your-vps-ip:9093 | No authentication   |
+| cAdvisor     | http://your-vps-ip:8080 | No authentication   |
 
 **⚠️ Security Note:** Change default passwords before going to production!
 
@@ -66,13 +66,13 @@ After deployment, monitoring services are available at:
 
 Add these monitors:
 
-| Name | URL | Type | Interval |
-|------|-----|------|----------|
-| Trust Score Backend | http://localhost:3001/health | HTTP |
-| Vauntico Server | http://localhost:3002/health | HTTP |
-| Fulfillment Engine | http://localhost:5000/api/status | HTTP |
-| Legacy Server | http://localhost:5001/api/status | HTTP |
-| NGINX Proxy | http://localhost/health | HTTP |
+| Name                | URL                              | Type | Interval |
+| ------------------- | -------------------------------- | ---- | -------- |
+| Trust Score Backend | http://localhost:3001/health     | HTTP |
+| Vauntico Server     | http://localhost:3002/health     | HTTP |
+| Fulfillment Engine  | http://localhost:5000/api/status | HTTP |
+| Legacy Server       | http://localhost:5001/api/status | HTTP |
+| NGINX Proxy         | http://localhost/health          | HTTP |
 
 #### Status Page Setup
 
@@ -104,18 +104,21 @@ Prometheus is configured to collect metrics from:
 ### Key Metrics
 
 #### System Metrics (Node Exporter)
+
 - `node_cpu_seconds_total` - CPU usage
 - `node_memory_MemAvailable_bytes` - Available memory
 - `node_filesystem_avail_bytes` - Disk space
 - `node_network_receive_bytes_total` - Network traffic
 
 #### Container Metrics (cAdvisor)
+
 - `container_cpu_usage_seconds_total` - Container CPU usage
 - `container_memory_usage_bytes` - Container memory usage
 - `container_fs_usage_bytes` - Container disk usage
 - `container_network_receive_bytes_total` - Container network traffic
 
 #### Application Metrics
+
 - `http_requests_total` - HTTP request count
 - `http_request_duration_seconds` - Request latency
 - `database_connections_active` - Active DB connections
@@ -153,24 +156,28 @@ Grafana is pre-configured with:
 ### Key Dashboards
 
 #### 1. System Overview
+
 - CPU, Memory, Disk usage
 - Network traffic
 - System load
 - Uptime metrics
 
 #### 2. Application Performance
+
 - Request rate and latency
 - Error rates
 - Database performance
 - Cache hit rates
 
 #### 3. Container Monitoring
+
 - Resource usage by container
 - Container health
 - Restart counts
 - Network I/O
 
 #### 4. Infrastructure Health
+
 - Service availability
 - SSL certificate status
 - NGINX performance
@@ -212,12 +219,14 @@ AlertManager routes alerts to:
 ### Alert Types
 
 #### Critical Alerts
+
 - Service down
 - High resource usage (>90%)
 - SSL certificate expiry (<7 days)
 - Database connection failures
 
 #### Warning Alerts
+
 - High error rates (>5%)
 - Slow response times (>2s)
 - Disk space low (<20%)
@@ -225,24 +234,27 @@ AlertManager routes alerts to:
 ### Notification Channels
 
 #### Email Setup
+
 Update `monitoring/alertmanager.yml`:
+
 ```yaml
 global:
-  smtp_smarthost: 'your-smtp-server:587'
-  smtp_from: 'alerts@yourdomain.com'
-  smtp_auth_username: 'your-email@yourdomain.com'
-  smtp_auth_password: 'your-app-password'
+  smtp_smarthost: "your-smtp-server:587"
+  smtp_from: "alerts@yourdomain.com"
+  smtp_auth_username: "your-email@yourdomain.com"
+  smtp_auth_password: "your-app-password"
 ```
 
 #### Webhook Setup
+
 ```yaml
 receivers:
-  - name: 'webhook'
+  - name: "webhook"
     webhook_configs:
-      - url: 'https://your-webhook-url.com/alert'
+      - url: "https://your-webhook-url.com/alert"
         send_resolved: true
         http_config:
-          bearer_token: 'your-token'
+          bearer_token: "your-token"
 ```
 
 ## Security Configuration
@@ -274,14 +286,16 @@ receivers:
 ### Data Retention
 
 Configure Prometheus retention in `monitoring/prometheus.yml`:
+
 ```yaml
 global:
-  storage.tsdb.retention.time: 30d  # 30 days
+  storage.tsdb.retention.time: 30d # 30 days
 ```
 
 ### Resource Limits
 
 Add to docker-compose.yml:
+
 ```yaml
 services:
   prometheus:
@@ -289,7 +303,7 @@ services:
       resources:
         limits:
           memory: 2G
-          cpus: '1.0'
+          cpus: "1.0"
 ```
 
 ### Query Optimization
@@ -304,6 +318,7 @@ services:
 ### Common Issues
 
 #### Services Not Starting
+
 ```bash
 # Check logs
 docker-compose logs prometheus
@@ -314,6 +329,7 @@ docker exec prometheus promtool check config /etc/prometheus/prometheus.yml
 ```
 
 #### Metrics Not Appearing
+
 ```bash
 # Check Prometheus targets
 curl http://localhost:9090/api/v1/targets
@@ -323,6 +339,7 @@ curl http://localhost:9090/api/v1/scrape_pool
 ```
 
 #### Grafana Dashboard Issues
+
 ```bash
 # Check datasource connection
 curl -u admin:admin123 http://localhost:3004/api/datasources
@@ -332,6 +349,7 @@ curl http://localhost:9090/api/v1/query?query=up
 ```
 
 #### AlertManager Not Working
+
 ```bash
 # Check AlertManager logs
 docker-compose logs alertmanager
@@ -394,23 +412,23 @@ Add metrics to your applications:
 
 ```javascript
 // Express.js example
-const prometheus = require('prom-client');
+const prometheus = require("prom-client");
 
 const httpRequestDuration = new prometheus.Histogram({
-  name: 'http_request_duration_seconds',
-  help: 'Duration of HTTP requests in seconds',
-  labelNames: ['method', 'route', 'status']
+  name: "http_request_duration_seconds",
+  help: "Duration of HTTP requests in seconds",
+  labelNames: ["method", "route", "status"],
 });
 
 const httpRequestTotal = new prometheus.Counter({
-  name: 'http_requests_total',
-  help: 'Total number of HTTP requests',
-  labelNames: ['method', 'route', 'status']
+  name: "http_requests_total",
+  help: "Total number of HTTP requests",
+  labelNames: ["method", "route", "status"],
 });
 
 app.use((req, res, next) => {
   const start = Date.now();
-  res.on('finish', () => {
+  res.on("finish", () => {
     const duration = (Date.now() - start) / 1000;
     httpRequestDuration
       .labels(req.method, req.route?.path || req.path, res.statusCode)
@@ -426,6 +444,7 @@ app.use((req, res, next) => {
 ### Recording Rules
 
 Add to `monitoring/prometheus.yml`:
+
 ```yaml
 rule_files:
   - "recording_rules.yml"
@@ -436,7 +455,7 @@ groups:
     rules:
       - record: job:http_requests:rate5m
         expr: rate(http_requests_total[5m])
-      
+
       - record: job:http_request_errors:rate5m
         expr: rate(http_requests_total{status=~"5.."}[5m])
 ```
@@ -444,6 +463,7 @@ groups:
 ### Alerting Rules
 
 Create `monitoring/alert_rules.yml`:
+
 ```yaml
 groups:
   - name: application
@@ -463,16 +483,19 @@ groups:
 ### Regular Tasks
 
 #### Daily
+
 - Check alert status
 - Review dashboard anomalies
 - Verify data collection
 
 #### Weekly
+
 - Update monitoring configurations
 - Review alert thresholds
 - Check storage usage
 
 #### Monthly
+
 - Update monitoring tools
 - Review and rotate secrets
 - Performance optimization
@@ -501,33 +524,33 @@ done
 ```yaml
 # AlertManager configuration
 receivers:
-  - name: 'slack'
+  - name: "slack"
     slack_configs:
-      - api_url: 'YOUR_SLACK_WEBHOOK_URL'
-        channel: '#alerts'
-        title: 'Vauntico Alert'
-        text: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+      - api_url: "YOUR_SLACK_WEBHOOK_URL"
+        channel: "#alerts"
+        title: "Vauntico Alert"
+        text: "{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}"
 ```
 
 ### Discord Integration
 
 ```yaml
 receivers:
-  - name: 'discord'
+  - name: "discord"
     webhook_configs:
-      - url: 'YOUR_DISCORD_WEBHOOK_URL'
-        title: 'Vauntico Alert'
-        message: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+      - url: "YOUR_DISCORD_WEBHOOK_URL"
+        title: "Vauntico Alert"
+        message: "{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}"
 ```
 
 ### PagerDuty Integration
 
 ```yaml
 receivers:
-  - name: 'pagerduty'
+  - name: "pagerduty"
     pagerduty_configs:
-      - routing_key: 'YOUR_PAGERDUTY_KEY'
-        description: '{{ .GroupLabels.alertname }}'
+      - routing_key: "YOUR_PAGERDUTY_KEY"
+        description: "{{ .GroupLabels.alertname }}"
 ```
 
 This comprehensive monitoring stack provides enterprise-grade observability for your Vauntico deployment, ensuring you can monitor, alert on, and troubleshoot issues effectively.

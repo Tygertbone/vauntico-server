@@ -1,5 +1,5 @@
 ---
-description: 'Require or disallow an empty line between class members.'
+description: "Require or disallow an empty line between class members."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -14,7 +14,6 @@ It adds support for ignoring overload methods in a class.
 In addition to the options supported by the `lines-between-class-members` rule in ESLint core, the rule adds the following options:
 
 - Object option:
-
   - `"exceptAfterOverload": true` (default) - Skip checking empty lines after overload class members
   - `"exceptAfterOverload": false` - **do not** skip checking empty lines after overload class members
 

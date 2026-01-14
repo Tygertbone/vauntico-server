@@ -1,5 +1,5 @@
 ---
-description: 'Disallow using the `delete` operator on array values.'
+description: "Disallow using the `delete` operator on array values."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

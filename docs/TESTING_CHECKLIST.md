@@ -9,6 +9,7 @@
 ## 🚀 Quick Smoke Test (5 minutes)
 
 ### Homepage (/)
+
 - [ ] Page loads successfully
 - [ ] Hero headline visible
 - [ ] Terminal animation works
@@ -17,6 +18,7 @@
 - [ ] No console errors
 
 ### Navigation
+
 - [ ] Desktop nav links work
 - [ ] Mobile hamburger menu works
 - [ ] Services dropdown works
@@ -24,6 +26,7 @@
 - [ ] Logo links to home
 
 ### Key Pages Load
+
 - [ ] /creator-pass loads
 - [ ] /pricing loads
 - [ ] /vaults loads
@@ -35,6 +38,7 @@
 ## 📱 Mobile Testing (10 minutes)
 
 ### iPhone Testing
+
 - [ ] Open site in Safari
 - [ ] Tap hamburger menu (works?)
 - [ ] Scroll through homepage (smooth?)
@@ -44,6 +48,7 @@
 - [ ] Images load properly
 
 ### Android Testing
+
 - [ ] Open site in Chrome
 - [ ] Test hamburger menu
 - [ ] Test all interactions
@@ -51,6 +56,7 @@
 - [ ] Verify forms work
 
 ### Tablet Testing
+
 - [ ] iPad: Layout adapts
 - [ ] Touch targets work
 - [ ] No broken layouts
@@ -60,6 +66,7 @@
 ## ♿ Accessibility Testing (15 minutes)
 
 ### Keyboard Navigation
+
 - [ ] Tab through homepage
 - [ ] Reach all interactive elements
 - [ ] Skip link works (Tab first)
@@ -68,6 +75,7 @@
 - [ ] Escape closes menus
 
 ### Screen Reader Test (Optional)
+
 - [ ] Install NVDA (Windows) or VoiceOver (Mac)
 - [ ] Navigate homepage
 - [ ] Headings announced correctly
@@ -75,6 +83,7 @@
 - [ ] Buttons labeled properly
 
 ### Color Contrast
+
 - [ ] Use WebAIM Contrast Checker
 - [ ] Test hero headline
 - [ ] Test button text
@@ -86,6 +95,7 @@
 ## 🎨 Visual Testing (10 minutes)
 
 ### Desktop (1920px)
+
 - [ ] Layout correct
 - [ ] No text overflow
 - [ ] Images sharp
@@ -93,16 +103,19 @@
 - [ ] No broken elements
 
 ### Laptop (1280px)
+
 - [ ] Layout adapts
 - [ ] Content readable
 - [ ] Navigation works
 
 ### Tablet (768px)
+
 - [ ] Columns stack correctly
 - [ ] Images resize
 - [ ] Touch targets sized properly
 
 ### Mobile (375px)
+
 - [ ] Single column layout
 - [ ] Content fits screen
 - [ ] No horizontal scroll
@@ -113,6 +126,7 @@
 ## ⚡ Performance Testing (15 minutes)
 
 ### Lighthouse Test
+
 ```bash
 1. Open Chrome DevTools (F12)
 2. Go to Lighthouse tab
@@ -126,6 +140,7 @@
 ```
 
 ### Network Test
+
 ```bash
 1. DevTools → Network tab
 2. Reload page
@@ -136,6 +151,7 @@
 ```
 
 ### Slow 3G Test
+
 ```bash
 1. DevTools → Network → Throttling → Slow 3G
 2. Reload page
@@ -147,6 +163,7 @@
 ## 🔍 SEO Testing (10 minutes)
 
 ### Meta Tags
+
 - [ ] View source (Ctrl+U)
 - [ ] Check `<title>` present
 - [ ] Check meta description
@@ -154,16 +171,19 @@
 - [ ] Check canonical URL
 
 ### Structured Data
+
 - [ ] Go to: https://search.google.com/test/rich-results
 - [ ] Test homepage
 - [ ] Verify: No errors
 
 ### Robots & Sitemap
+
 - [ ] Visit: /robots.txt (exists?)
 - [ ] Visit: /sitemap.xml (valid XML?)
 - [ ] Check: All pages listed
 
 ### Google Search Console
+
 - [ ] Check for crawl errors
 - [ ] Verify: Pages indexed
 - [ ] Check: Mobile usability
@@ -173,6 +193,7 @@
 ## 🔒 Security Testing (10 minutes)
 
 ### Security Headers
+
 ```bash
 1. Go to: https://securityheaders.com/
 2. Test: vauntico.com
@@ -185,12 +206,14 @@
 ```
 
 ### SSL Certificate
+
 - [ ] HTTPS works
 - [ ] No mixed content warnings
 - [ ] Certificate valid
 - [ ] Redirects http → https
 
 ### Forms (if applicable)
+
 - [ ] No sensitive data in URLs
 - [ ] CSRF protection
 - [ ] Input validation
@@ -201,6 +224,7 @@
 ## 🎯 Functionality Testing (20 minutes)
 
 ### Creator Pass Page
+
 - [ ] Pricing tiers display
 - [ ] Monthly/Yearly toggle works
 - [ ] "Start Free Trial" works
@@ -208,23 +232,27 @@
 - [ ] Structured data present
 
 ### Pricing Page
+
 - [ ] Comparison table loads
 - [ ] Mobile: Scroll works
 - [ ] Add-ons section works
 - [ ] CTA buttons work
 
 ### Vaults Page
+
 - [ ] Vault cards display
 - [ ] Filters work
 - [ ] Stats accurate
 - [ ] Create button present
 
 ### About Page
+
 - [ ] Content loads
 - [ ] Images display
 - [ ] Links work
 
 ### Lore Vault
+
 - [ ] Scrolls load
 - [ ] Path selector works
 - [ ] Search works (if present)
@@ -235,21 +263,25 @@
 ## 🌐 Cross-Browser Testing (15 minutes)
 
 ### Chrome (Primary)
+
 - [ ] All features work
 - [ ] Performance good
 - [ ] DevTools clean
 
 ### Firefox
+
 - [ ] Layout correct
 - [ ] Animations smooth
 - [ ] No console errors
 
 ### Safari
+
 - [ ] iOS compatibility
 - [ ] Webkit rendering
 - [ ] Fonts load
 
 ### Edge
+
 - [ ] Chromium base works
 - [ ] No IE fallbacks needed
 
@@ -258,16 +290,19 @@
 ## 📊 Analytics Testing (5 minutes)
 
 ### Google Analytics
+
 - [ ] Open: https://analytics.google.com/
 - [ ] Verify: Real-time tracking works
 - [ ] Check: Page views recorded
 
 ### Mixpanel
+
 - [ ] Events firing
 - [ ] User tracking
 - [ ] Funnels recording
 
 ### Console Check
+
 ```bash
 Open DevTools Console:
 - Check: No analytics errors
@@ -280,17 +315,20 @@ Open DevTools Console:
 ## 🐛 Error Testing (10 minutes)
 
 ### 404 Page
+
 - [ ] Visit: /nonexistent-page
 - [ ] Verify: Custom 404 shows
 - [ ] Check: Navigation works
 - [ ] Check: Search works
 
 ### Error Boundary
+
 - [ ] Works (hard to test)
 - [ ] Check: ErrorBoundary.jsx exists
 - [ ] Code review passed
 
 ### Form Errors
+
 - [ ] Submit empty form
 - [ ] Check: Validation messages
 - [ ] Check: Error styling
@@ -300,11 +338,13 @@ Open DevTools Console:
 ## 💾 Data Persistence (5 minutes)
 
 ### LocalStorage
+
 - [ ] Theme preference saved
 - [ ] Currency preference saved
 - [ ] User ID created
 
 ### Cookies
+
 - [ ] Session cookies set
 - [ ] Consent handled (if applicable)
 - [ ] httpOnly for sensitive data
@@ -314,17 +354,21 @@ Open DevTools Console:
 ## 🔄 Build & Deployment (5 minutes)
 
 ### Build Process
+
 ```bash
 npm run build
 ```
+
 - [ ] No errors
 - [ ] Bundle sizes reasonable
 - [ ] Source maps excluded
 
 ### Git Status
+
 ```bash
 git status
 ```
+
 - [ ] All changes committed
 - [ ] Branch up to date
 - [ ] No sensitive files tracked
@@ -334,16 +378,19 @@ git status
 ## 📈 Monitoring Setup (10 minutes)
 
 ### Uptime Monitoring
+
 - [ ] Service configured
 - [ ] Alerts working
 - [ ] Status page updated
 
 ### Error Tracking
+
 - [ ] Sentry/similar configured
 - [ ] Test error sends alert
 - [ ] Team notified
 
 ### Performance Monitoring
+
 - [ ] Core Web Vitals tracked
 - [ ] Lighthouse CI set up
 - [ ] Weekly reports scheduled
@@ -353,6 +400,7 @@ git status
 ## ✅ Final Sign-Off
 
 ### Pre-Launch Checklist
+
 - [ ] All critical bugs fixed
 - [ ] All tests passed
 - [ ] Performance targets met
@@ -365,6 +413,7 @@ git status
 - [ ] Team trained
 
 ### Launch Approval
+
 - [ ] Product Owner approved
 - [ ] Technical Lead approved
 - [ ] QA signed off
@@ -377,6 +426,7 @@ git status
 Use this section to track any problems:
 
 ### Critical Issues
+
 ```
 Issue: [Description]
 Page: [URL]
@@ -385,6 +435,7 @@ Status: [Open/Fixed/Wontfix]
 ```
 
 ### Minor Issues
+
 ```
 Issue: [Description]
 Priority: [Low/Medium/High]
@@ -406,4 +457,4 @@ Add any additional observations:
 **Testing Status**: ⬜ Not Started | 🔄 In Progress | ✅ Complete  
 **Overall Health**: [Add rating: 🟢 Excellent | 🟡 Good | 🔴 Issues]
 
-*Last Updated: [Date]*
+_Last Updated: [Date]_

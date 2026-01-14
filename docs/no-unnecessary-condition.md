@@ -1,5 +1,5 @@
 ---
-description: 'Disallow conditionals where the type is always truthy or always falsy.'
+description: "Disallow conditionals where the type is always truthy or always falsy."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -29,7 +29,7 @@ function head<T>(items: T[]) {
   }
 }
 
-function foo(arg: 'bar' | 'baz') {
+function foo(arg: "bar" | "baz") {
   // arg is never nullable or empty string, so this is unnecessary
   if (arg) {
   }
@@ -44,7 +44,7 @@ function bar<T>(arg: string) {
 [
   [1, 2],
   [3, 4],
-].filter(t => t); // number[] is always truthy
+].filter((t) => t); // number[] is always truthy
 ```
 
 ### ✅ Correct
@@ -68,7 +68,7 @@ function bar(arg?: string | null) {
   return arg?.length;
 }
 
-[0, 1, 2, 3].filter(t => t); // number can be truthy or falsy
+[0, 1, 2, 3].filter((t) => t); // number can be truthy or falsy
 ```
 
 ## Options

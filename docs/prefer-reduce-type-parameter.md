@@ -1,5 +1,5 @@
 ---
-description: 'Enforce using type parameter when calling `Array#reduce` instead of casting.'
+description: "Enforce using type parameter when calling `Array#reduce` instead of casting."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -30,7 +30,7 @@ It will suggest instead pass the asserted type to `Array#reduce` as a generic ty
 ```ts
 [1, 2, 3].reduce((arr, num) => arr.concat(num * 2), [] as number[]);
 
-['a', 'b'].reduce(
+["a", "b"].reduce(
   (accum, name) => ({
     ...accum,
     [name]: true,
@@ -44,7 +44,7 @@ It will suggest instead pass the asserted type to `Array#reduce` as a generic ty
 ```ts
 [1, 2, 3].reduce<number[]>((arr, num) => arr.concat(num * 2), []);
 
-['a', 'b'].reduce<Record<string, boolean>>(
+["a", "b"].reduce<Record<string, boolean>>(
   (accum, name) => ({
     ...accum,
     [name]: true,

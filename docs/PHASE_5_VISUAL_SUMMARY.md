@@ -67,17 +67,17 @@
     ════════════════════════════════════
     • 10K credits/month • API access
     • Unlimited audits  • Co-creation
-    
+
     ✨ TRANSFORMATION LAYER (10% commission)
     ════════════════════════════════════
     • 2.5K credits/mo   • White-label
     • Full CLI suite    • Priority support
-    
+
     📣 AMPLIFICATION LAYER (5% commission)
     ════════════════════════════════════
     • 500 credits/mo    • Core commands
     • 5 landing pages   • Community vault
-    
+
     🏗️ FOUNDATION LAYER (Free)
     ════════════════════════════════════
     • Basic scrolls     • Core features

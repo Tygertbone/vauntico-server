@@ -1,11 +1,11 @@
-import { pool } from '../utils/database';
-import logger from '../utils/logger';
-import { TrustScoreService } from './trustScoreService';
+import { pool } from "../utils/database";
+import logger from "../utils/logger";
+import { TrustScoreService } from "./trustScoreService";
 
 export interface CommunityEngagement {
   id: string;
   userId: string;
-  actionType: 'love_loop' | 'legacy_tree' | 'leaderboard' | 'echo_chamber';
+  actionType: "love_loop" | "legacy_tree" | "leaderboard" | "echo_chamber";
   targetId?: string;
   data: any;
   creditsEarned: number;
@@ -28,9 +28,13 @@ export interface LegacyTreeEntry {
   id: string;
   creatorId: string;
   contributorId: string;
-  contributionType: 'mentorship' | 'collaboration' | 'resource_sharing' | 'skill_development';
+  contributionType:
+    | "mentorship"
+    | "collaboration"
+    | "resource_sharing"
+    | "skill_development";
   description: string;
-  impactLevel: 'low' | 'medium' | 'high' | 'critical';
+  impactLevel: "low" | "medium" | "high" | "critical";
   creditsEarned: number;
   createdAt: Date;
   parentEntryId?: string;
@@ -39,9 +43,13 @@ export interface LegacyTreeEntry {
 export interface LeaderboardEntry {
   id: string;
   userId: string;
-  category: 'trust_score' | 'credits_earned' | 'contributions_made' | 'community_impact';
+  category:
+    | "trust_score"
+    | "credits_earned"
+    | "contributions_made"
+    | "community_impact";
   score: number;
-  period: 'daily' | 'weekly' | 'monthly' | 'yearly';
+  period: "daily" | "weekly" | "monthly" | "yearly";
   achievedAt: Date;
   badge?: string;
 }
@@ -53,7 +61,7 @@ export interface EchoChamberStory {
   content: string;
   tags: string[];
   collaborators: string[];
-  status: 'draft' | 'published' | 'archived';
+  status: "draft" | "published" | "archived";
   views: number;
   likes: number;
   shares: number;
@@ -85,13 +93,18 @@ class CommunityEngagementService {
     leaderboard_weekly: 25,
     contribution_made: 3,
     story_published: 20,
-    story_liked: 2
+    story_liked: 2,
   };
 
-  async recordEngagement(engagementData: Omit<CommunityEngagement, 'id' | 'createdAt'>): Promise<CommunityEngagement> {
+  async recordEngagement(
+    engagementData: Omit<CommunityEngagement, "id" | "createdAt">,
+  ): Promise<CommunityEngagement> {
     try {
       const id = this.generateId();
-      const creditsEarned = this.calculateCreditsEarned(engagementData.actionType, engagementData.data);
+      const creditsEarned = this.calculateCreditsEarned(
+        engagementData.actionType,
+        engagementData.data,
+      );
 
       const query = `
         INSERT INTO community_engagement (
@@ -110,28 +123,35 @@ class CommunityEngagementService {
         id,
         engagementData.userId,
         creditsEarned,
-        'engagement_activity',
-        id
+        "engagement_activity",
+        id,
       ];
 
       // Award credits to user
-      await this.awardCredits(engagementData.userId, creditsEarned, engagementData.actionType, id);
+      await this.awardCredits(
+        engagementData.userId,
+        creditsEarned,
+        engagementData.actionType,
+        id,
+      );
 
       const result = await pool.query(query, values);
 
       return this.mapCommunityEngagement(result.rows[0]);
     } catch (error) {
-      logger.error('Error recording community engagement:', error);
+      logger.error("Error recording community engagement:", error);
       throw error;
     }
   }
 
-  async createLoveLoop(loopData: Omit<LoveLoop, 'id' | 'createdAt'>): Promise<LoveLoop> {
+  async createLoveLoop(
+    loopData: Omit<LoveLoop, "id" | "createdAt">,
+  ): Promise<LoveLoop> {
     try {
       const client = await pool.connect();
-      
+
       try {
-        await client.query('BEGIN');
+        await client.query("BEGIN");
 
         const id = this.generateId();
         const creditsDonated = loopData.creditsDonated || 10;
@@ -149,33 +169,47 @@ class CommunityEngagementService {
           loopData.supporterId,
           loopData.message,
           loopData.isPublic || false,
-          creditsDonated
+          creditsDonated,
         ];
 
         const result = await client.query(query, values);
 
         // Award credits to supporter
-        await this.awardCredits(loopData.supporterId, this.CREDIT_REWARDS.love_loop, 'love_loop_created', id);
+        await this.awardCredits(
+          loopData.supporterId,
+          this.CREDIT_REWARDS.love_loop,
+          "love_loop_created",
+          id,
+        );
 
         // Award credits to creator
-        await this.awardCredits(loopData.creatorId, Math.floor(creditsDonated * 0.5), 'love_loop_received', id);
+        await this.awardCredits(
+          loopData.creatorId,
+          Math.floor(creditsDonated * 0.5),
+          "love_loop_received",
+          id,
+        );
 
-        await client.query('COMMIT');
+        await client.query("COMMIT");
 
         return this.mapLoveLoop(result.rows[0]);
       } catch (error) {
-        await client.query('ROLLBACK');
+        await client.query("ROLLBACK");
         throw error;
       } finally {
         client.release();
       }
     } catch (error) {
-      logger.error('Error creating love loop:', error);
+      logger.error("Error creating love loop:", error);
       throw error;
     }
   }
 
-  async respondToLoveLoop(loopId: string, responderId: string, responseMessage: string): Promise<LoveLoop> {
+  async respondToLoveLoop(
+    loopId: string,
+    responderId: string,
+    responseMessage: string,
+  ): Promise<LoveLoop> {
     try {
       const query = `
         UPDATE love_loops 
@@ -187,30 +221,42 @@ class CommunityEngagementService {
 
       // Check if user is the creator of this loop
       const loopCheck = await pool.query(
-        'SELECT creator_id FROM love_loops WHERE id = $1',
-        [loopId]
+        "SELECT creator_id FROM love_loops WHERE id = $1",
+        [loopId],
       );
 
-      if (loopCheck.rows.length === 0 || loopCheck.rows[0].creator_id !== responderId) {
-        throw new Error('You can only respond to your own love loops');
+      if (
+        loopCheck.rows.length === 0 ||
+        loopCheck.rows[0].creator_id !== responderId
+      ) {
+        throw new Error("You can only respond to your own love loops");
       }
 
-      const result = await pool.query(query, [responseMessage, responderId, loopId]);
+      const result = await pool.query(query, [
+        responseMessage,
+        responderId,
+        loopId,
+      ]);
 
       // Award credits for responding
-      await this.awardCredits(responderId, 3, 'love_loop_responded', loopId);
+      await this.awardCredits(responderId, 3, "love_loop_responded", loopId);
 
       return this.mapLoveLoop(result.rows[0]);
     } catch (error) {
-      logger.error('Error responding to love loop:', error);
+      logger.error("Error responding to love loop:", error);
       throw error;
     }
   }
 
-  async addLegacyEntry(entryData: Omit<LegacyTreeEntry, 'id' | 'createdAt'>): Promise<LegacyTreeEntry> {
+  async addLegacyEntry(
+    entryData: Omit<LegacyTreeEntry, "id" | "createdAt">,
+  ): Promise<LegacyTreeEntry> {
     try {
       const id = this.generateId();
-      const creditsEarned = this.calculateLegacyCredits(entryData.contributionType, entryData.impactLevel);
+      const creditsEarned = this.calculateLegacyCredits(
+        entryData.contributionType,
+        entryData.impactLevel,
+      );
 
       const query = `
         INSERT INTO legacy_tree (
@@ -228,22 +274,29 @@ class CommunityEngagementService {
         entryData.description,
         entryData.impactLevel,
         creditsEarned,
-        entryData.parentEntryId
+        entryData.parentEntryId,
       ];
 
       const result = await pool.query(query, values);
 
       // Award credits to contributor
-      await this.awardCredits(entryData.contributorId, creditsEarned, 'legacy_tree_entry', id);
+      await this.awardCredits(
+        entryData.contributorId,
+        creditsEarned,
+        "legacy_tree_entry",
+        id,
+      );
 
       return this.mapLegacyTreeEntry(result.rows[0]);
     } catch (error) {
-      logger.error('Error adding legacy tree entry:', error);
+      logger.error("Error adding legacy tree entry:", error);
       throw error;
     }
   }
 
-  async createEchoChamberStory(storyData: Omit<EchoChamberStory, 'id' | 'createdAt'>): Promise<EchoChamberStory> {
+  async createEchoChamberStory(
+    storyData: Omit<EchoChamberStory, "id" | "createdAt">,
+  ): Promise<EchoChamberStory> {
     try {
       const id = this.generateId();
       const creditsEarned = this.CREDIT_REWARDS.echo_chamber;
@@ -262,22 +315,30 @@ class CommunityEngagementService {
         storyData.content,
         storyData.tags || [],
         storyData.collaborators || [],
-        storyData.status || 'draft'
+        storyData.status || "draft",
       ];
 
       const result = await pool.query(query, values);
 
       // Award credits for creating story
-      await this.awardCredits(storyData.authorId, creditsEarned, 'echo_chamber_created', id);
+      await this.awardCredits(
+        storyData.authorId,
+        creditsEarned,
+        "echo_chamber_created",
+        id,
+      );
 
       return this.mapEchoChamberStory(result.rows[0]);
     } catch (error) {
-      logger.error('Error creating echo chamber story:', error);
+      logger.error("Error creating echo chamber story:", error);
       throw error;
     }
   }
 
-  async publishEchoChamberStory(storyId: string, authorId: string): Promise<EchoChamberStory> {
+  async publishEchoChamberStory(
+    storyId: string,
+    authorId: string,
+  ): Promise<EchoChamberStory> {
     try {
       const query = `
         UPDATE echo_chamber 
@@ -290,20 +351,29 @@ class CommunityEngagementService {
       const result = await pool.query(query, [storyId, authorId]);
 
       if (result.rows.length === 0) {
-        throw new Error('Story not found or unauthorized');
+        throw new Error("Story not found or unauthorized");
       }
 
       // Award additional credits for publishing
-      await this.awardCredits(authorId, this.CREDIT_REWARDS.story_published, 'echo_chamber_published', storyId);
+      await this.awardCredits(
+        authorId,
+        this.CREDIT_REWARDS.story_published,
+        "echo_chamber_published",
+        storyId,
+      );
 
       return this.mapEchoChamberStory(result.rows[0]);
     } catch (error) {
-      logger.error('Error publishing echo chamber story:', error);
+      logger.error("Error publishing echo chamber story:", error);
       throw error;
     }
   }
 
-  async getLeaderboards(category: LeaderboardEntry['category'], period: LeaderboardEntry['period'] = 'monthly', limit = 100): Promise<LeaderboardEntry[]> {
+  async getLeaderboards(
+    category: LeaderboardEntry["category"],
+    period: LeaderboardEntry["period"] = "monthly",
+    limit = 100,
+  ): Promise<LeaderboardEntry[]> {
     try {
       const query = `
         SELECT le.*, u.username
@@ -317,12 +387,15 @@ class CommunityEngagementService {
       const result = await pool.query(query, [category, period, limit]);
       return result.rows.map(this.mapLeaderboardEntry);
     } catch (error) {
-      logger.error('Error fetching leaderboards:', error);
+      logger.error("Error fetching leaderboards:", error);
       throw error;
     }
   }
 
-  async updateLeaderboardEntry(id: string, entryData: Omit<LeaderboardEntry, 'id' | 'userId' | 'achievedAt'>): Promise<LeaderboardEntry> {
+  async updateLeaderboardEntry(
+    id: string,
+    entryData: Omit<LeaderboardEntry, "id" | "userId" | "achievedAt">,
+  ): Promise<LeaderboardEntry> {
     try {
       const query = `
         UPDATE leaderboard_entries 
@@ -333,32 +406,37 @@ class CommunityEngagementService {
         RETURNING *
       `;
 
-      const result = await pool.query(query, [id, entryData.score, entryData.badge]);
+      const result = await pool.query(query, [
+        id,
+        entryData.score,
+        entryData.badge,
+      ]);
 
       if (result.rows.length === 0) {
-        throw new Error('Leaderboard entry not found');
+        throw new Error("Leaderboard entry not found");
       }
 
       return this.mapLeaderboardEntry(result.rows[0]);
     } catch (error) {
-      logger.error('Error updating leaderboard entry:', error);
+      logger.error("Error updating leaderboard entry:", error);
       throw error;
     }
   }
 
   async getCommunityStats(): Promise<CommunityStats> {
     try {
-      const [loveLoopsResult, legacyResult, echoResult, engagementResult] = await Promise.all([
-        pool.query('SELECT COUNT(*) as total FROM love_loops'),
-        pool.query('SELECT COUNT(*) as total FROM legacy_tree'),
-        pool.query('SELECT COUNT(*) as total FROM echo_chamber'),
-        pool.query(`
+      const [loveLoopsResult, legacyResult, echoResult, engagementResult] =
+        await Promise.all([
+          pool.query("SELECT COUNT(*) as total FROM love_loops"),
+          pool.query("SELECT COUNT(*) as total FROM legacy_tree"),
+          pool.query("SELECT COUNT(*) as total FROM echo_chamber"),
+          pool.query(`
           SELECT COUNT(DISTINCT user_id) as active_users, 
                  COALESCE(SUM(credits_earned), 0) as credits_distributed
           FROM community_engagement 
           WHERE created_at >= NOW() - INTERVAL '30 days'
-        `)
-      ]);
+        `),
+        ]);
 
       // Get top contributors
       const topContributorsResult = await pool.query(`
@@ -385,52 +463,73 @@ class CommunityEngagementService {
         totalLegacyEntries: parseInt(legacyResult.rows[0].total),
         totalEchoStories: parseInt(echoResult.rows[0].total),
         activeUsers: parseInt(engagementResult.rows[0].active_users),
-        creditsDistributed: parseFloat(engagementResult.rows[0].credits_distributed),
+        creditsDistributed: parseFloat(
+          engagementResult.rows[0].credits_distributed,
+        ),
         topContributors: topContributorsResult.rows.map((row: any) => ({
           userId: row.user_id,
           totalCredits: parseInt(row.total_credits),
-          rank: row.rank
+          rank: row.rank,
         })),
-        recentActivities: recentActivitiesResult.rows.map(this.mapCommunityEngagement)
+        recentActivities: recentActivitiesResult.rows.map(
+          this.mapCommunityEngagement,
+        ),
       };
     } catch (error) {
-      logger.error('Error fetching community stats:', error);
+      logger.error("Error fetching community stats:", error);
       throw error;
     }
   }
 
-  private calculateCreditsEarned(actionType: CommunityEngagement['actionType'], data?: any): number {
+  private calculateCreditsEarned(
+    actionType: CommunityEngagement["actionType"],
+    data?: any,
+  ): number {
     switch (actionType) {
-      case 'love_loop':
+      case "love_loop":
         return this.CREDIT_REWARDS.love_loop;
-      case 'legacy_tree':
-        return this.calculateLegacyCredits(data?.contributionType, data?.impactLevel);
-      case 'echo_chamber':
+      case "legacy_tree":
+        return this.calculateLegacyCredits(
+          data?.contributionType,
+          data?.impactLevel,
+        );
+      case "echo_chamber":
         return this.CREDIT_REWARDS.echo_chamber;
-      case 'leaderboard':
+      case "leaderboard":
         return data?.position ? 50 : 25; // Top position bonus
       default:
         return 1;
     }
   }
 
-  private calculateLegacyCredits(contributionType: LegacyTreeEntry['contributionType'], impactLevel: LegacyTreeEntry['impactLevel']): number {
+  private calculateLegacyCredits(
+    contributionType: LegacyTreeEntry["contributionType"],
+    impactLevel: LegacyTreeEntry["impactLevel"],
+  ): number {
     const baseCredits = {
       mentorship: { low: 5, medium: 10, high: 20, critical: 50 },
       collaboration: { low: 3, medium: 8, high: 15, critical: 30 },
       resource_sharing: { low: 2, medium: 5, high: 10, critical: 20 },
-      skill_development: { low: 8, medium: 15, high: 25, critical: 40 }
+      skill_development: { low: 8, medium: 15, high: 25, critical: 40 },
     };
 
     return baseCredits[contributionType]?.[impactLevel] || 5;
   }
 
-  private async awardCredits(userId: string, amount: number, source: string, referenceId: string): Promise<void> {
+  private async awardCredits(
+    userId: string,
+    amount: number,
+    source: string,
+    referenceId: string,
+  ): Promise<void> {
     const creditId = this.generateId();
-    await pool.query(`
+    await pool.query(
+      `
       INSERT INTO vauntico_credits (id, user_id, amount, source, reference_id, created_at)
       VALUES ($1, $2, $3, $4, $5, NOW())
-    `, [creditId, userId, amount, source, referenceId]);
+    `,
+      [creditId, userId, amount, source, referenceId],
+    );
   }
 
   private mapCommunityEngagement(row: any): CommunityEngagement {
@@ -441,7 +540,7 @@ class CommunityEngagementService {
       targetId: row.target_id,
       data: row.data ? JSON.parse(row.data) : undefined,
       creditsEarned: parseInt(row.credits_earned),
-      createdAt: row.created_at
+      createdAt: row.created_at,
     };
   }
 
@@ -455,7 +554,7 @@ class CommunityEngagementService {
       creditsDonated: parseInt(row.credits_donated),
       createdAt: row.created_at,
       responseMessage: row.response_message,
-      respondedAt: row.responded_at
+      respondedAt: row.responded_at,
     };
   }
 
@@ -469,7 +568,7 @@ class CommunityEngagementService {
       impactLevel: row.impact_level,
       creditsEarned: parseInt(row.credits_earned),
       createdAt: row.created_at,
-      parentEntryId: row.parent_entry_id
+      parentEntryId: row.parent_entry_id,
     };
   }
 
@@ -481,7 +580,7 @@ class CommunityEngagementService {
       score: parseFloat(row.score),
       period: row.period,
       achievedAt: row.achieved_at,
-      badge: row.badge
+      badge: row.badge,
     };
   }
 
@@ -499,7 +598,7 @@ class CommunityEngagementService {
       shares: parseInt(row.shares || 0),
       creditsEarned: parseInt(row.credits_earned || 0),
       createdAt: row.created_at,
-      publishedAt: row.published_at
+      publishedAt: row.published_at,
     };
   }
 
@@ -517,12 +616,14 @@ class CommunityEngagementService {
       const result = await pool.query(query, [userId]);
       return result.rows.map(this.mapLoveLoop);
     } catch (error) {
-      logger.error('Error fetching love loops for user:', error);
+      logger.error("Error fetching love loops for user:", error);
       throw error;
     }
   }
 
-  async getEchoChamberStoriesForUser(userId: string): Promise<EchoChamberStory[]> {
+  async getEchoChamberStoriesForUser(
+    userId: string,
+  ): Promise<EchoChamberStory[]> {
     try {
       const query = `
         SELECT ecs.*,
@@ -536,13 +637,13 @@ class CommunityEngagementService {
       `;
 
       const result = await pool.query(query, [userId]);
-      return result.rows.map(row => ({
+      return result.rows.map((row) => ({
         ...this.mapEchoChamberStory(row),
         likes: parseInt(row.likes || 0),
-        shares: parseInt(row.shares || 0)
+        shares: parseInt(row.shares || 0),
       }));
     } catch (error) {
-      logger.error('Error fetching echo chamber stories for user:', error);
+      logger.error("Error fetching echo chamber stories for user:", error);
       throw error;
     }
   }

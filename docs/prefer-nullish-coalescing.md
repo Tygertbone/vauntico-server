@@ -1,5 +1,5 @@
 ---
-description: 'Enforce using the nullish coalescing operator instead of logical assignments or chaining.'
+description: "Enforce using the nullish coalescing operator instead of logical assignments or chaining."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -27,37 +27,37 @@ Setting this option to `true` will cause the rule to ignore any ternary expressi
 Incorrect code for `ignoreTernaryTests: false`, and correct code for `ignoreTernaryTests: true`:
 
 ```ts option='{ "ignoreTernaryTests": false }' showPlaygroundButton
-const foo: any = 'bar';
-foo !== undefined && foo !== null ? foo : 'a string';
-foo === undefined || foo === null ? 'a string' : foo;
-foo == undefined ? 'a string' : foo;
-foo == null ? 'a string' : foo;
+const foo: any = "bar";
+foo !== undefined && foo !== null ? foo : "a string";
+foo === undefined || foo === null ? "a string" : foo;
+foo == undefined ? "a string" : foo;
+foo == null ? "a string" : foo;
 
-const foo: string | undefined = 'bar';
-foo !== undefined ? foo : 'a string';
-foo === undefined ? 'a string' : foo;
+const foo: string | undefined = "bar";
+foo !== undefined ? foo : "a string";
+foo === undefined ? "a string" : foo;
 
-const foo: string | null = 'bar';
-foo !== null ? foo : 'a string';
-foo === null ? 'a string' : foo;
+const foo: string | null = "bar";
+foo !== null ? foo : "a string";
+foo === null ? "a string" : foo;
 ```
 
 Correct code for `ignoreTernaryTests: false`:
 
 ```ts option='{ "ignoreTernaryTests": false }' showPlaygroundButton
-const foo: any = 'bar';
-foo ?? 'a string';
-foo ?? 'a string';
-foo ?? 'a string';
-foo ?? 'a string';
+const foo: any = "bar";
+foo ?? "a string";
+foo ?? "a string";
+foo ?? "a string";
+foo ?? "a string";
 
-const foo: string | undefined = 'bar';
-foo ?? 'a string';
-foo ?? 'a string';
+const foo: string | undefined = "bar";
+foo ?? "a string";
+foo ?? "a string";
 
-const foo: string | null = 'bar';
-foo ?? 'a string';
-foo ?? 'a string';
+const foo: string | null = "bar";
+foo ?? "a string";
+foo ?? "a string";
 ```
 
 ### `ignoreConditionalTests`
@@ -99,7 +99,7 @@ while (a ?? b) {}
 while ((a ??= b)) {}
 do {} while (a ?? b);
 for (let i = 0; a ?? b; i += 1) {}
-a ?? b ? true : false;
+(a ?? b) ? true : false;
 ```
 
 ### `ignoreMixedLogicalExpressions`
@@ -154,15 +154,15 @@ If you would like to ignore expressions containing operands of certain primitive
 Incorrect code for `ignorePrimitives: { string: false }`, and correct code for `ignorePrimitives: { string: true }`:
 
 ```ts option='{ "ignorePrimitives": { "string": true } }' showPlaygroundButton
-const foo: string | undefined = 'bar';
-foo || 'a string';
+const foo: string | undefined = "bar";
+foo || "a string";
 ```
 
 Correct code for both `ignorePrimitives: { string: false }` and `ignorePrimitives: { string: true }`:
 
 ```ts option='{ "ignorePrimitives": { "string": true } }' showPlaygroundButton
-const foo: string | undefined = 'bar';
-foo ?? 'a string';
+const foo: string | undefined = "bar";
+foo ?? "a string";
 ```
 
 Also, if you would like to ignore all primitives types, you can set `ignorePrimitives: true`. It is equivalent to `ignorePrimitives: { string: true, number: true, bigint: true, boolean: true }`.

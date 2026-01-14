@@ -1,5 +1,5 @@
 ---
-description: 'Disallow unnecessary constructors.'
+description: "Disallow unnecessary constructors."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

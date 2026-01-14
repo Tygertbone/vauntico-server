@@ -8,11 +8,11 @@ The constants could be imported from `date-fns/constants` or directly
 from `date-fns`:
 
 ```js
-import { maxTime } from 'date-fns/constants'
-import { minTime } from 'date-fns'
+import { maxTime } from "date-fns/constants";
+import { minTime } from "date-fns";
 
 function isAllowedTime(time) {
-  return time <= maxTime && time >= minTime
+  return time <= maxTime && time >= minTime;
 }
 ```
 
@@ -23,12 +23,12 @@ function isAllowedTime(time) {
 Maximum allowed time:
 
 ```js
-import { maxTime } from 'date-fns'
+import { maxTime } from "date-fns";
 
-const isValid = 8640000000000001 <= maxTime
+const isValid = 8640000000000001 <= maxTime;
 //=> false
 
-new Date(8640000000000001)
+new Date(8640000000000001);
 //=> Invalid Date
 ```
 
@@ -37,11 +37,11 @@ new Date(8640000000000001)
 Minimum allowed time:
 
 ```js
-import { minTime } from 'date-fns'
+import { minTime } from "date-fns";
 
-const isValid = -8640000000000001 >= minTime
+const isValid = -8640000000000001 >= minTime;
 //=> false
 
-new Date(-8640000000000001)
+new Date(-8640000000000001);
 //=> Invalid Date
 ```

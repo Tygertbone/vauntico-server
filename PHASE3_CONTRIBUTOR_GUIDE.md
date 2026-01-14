@@ -37,25 +37,30 @@ Each issue should be focused and achievable:
 ## Example Issue Template
 
 ### 🎯 Scope
+
 Replace 5-10 `any` types in `server-v2/src/services/`
 
 ### 📝 Description
+
 - Target files: `featureUsageService.ts`, `trustScoreService.ts`
 - Current `any` usage: 8 instances
 - Define proper interfaces for unknown types
 
 ### ✅ Acceptance Criteria
+
 - [ ] All `any` types replaced with specific types
 - [ ] New interfaces exported where needed
 - [ ] No new `any` types introduced
 - [ ] Tests pass with new types
 
 ### 🔍 Files to Modify
+
 - `server-v2/src/services/featureUsageService.ts`
 - `server-v2/src/services/trustScoreService.ts`
 - `server-v2/src/types/` (new interfaces if needed)
 
 ### 🧪 Testing Notes
+
 - Run affected tests locally
 - Verify service integration still works
 - Check API responses unchanged
@@ -117,12 +122,12 @@ server-v2/src/app.ts#27
 
 ```typescript
 // 3. Console statements (6 instances)
-docs/scripts/validate-health-endpoints.js
-api/waitlist.js
-assets/vauntico_cookie_banner.tsx
+docs / scripts / validate - health - endpoints.js;
+api / waitlist.js;
+assets / vauntico_cookie_banner.tsx;
 
 // 4. Unused variables (3 instances)
-assets/vauntico_cookie_banner.tsx
+assets / vauntico_cookie_banner.tsx;
 ```
 
 ### 💡 Low Priority (Cleanup)
@@ -145,6 +150,7 @@ assets/vauntico_cookie_banner.tsx
 ### 🔍 Review Process
 
 **PR reviewers should check:**
+
 - [ ] Issue scope respected (no scope creep)
 - [ ] All type improvements are justified
 - [ ] No new `any` types introduced
@@ -154,6 +160,7 @@ assets/vauntico_cookie_banner.tsx
 ## 🎊 Success Metrics
 
 **Phase 3 Success When:**
+
 - ✅ All `any` types eliminated
 - ✅ Proper interfaces defined for all unknown types
 - ✅ Type guards implemented for runtime checks
@@ -166,6 +173,7 @@ assets/vauntico_cookie_banner.tsx
 ### 📞 Troubleshooting
 
 **CI fails on lint:**
+
 ```bash
 # Check locally first
 npm run lint -- --max-warnings 0
@@ -177,6 +185,7 @@ npm run lint -- --max-warnings 0
 ```
 
 **Tests fail after refactoring:**
+
 ```bash
 # Check type compatibility
 npm run build

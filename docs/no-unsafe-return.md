@@ -1,5 +1,5 @@
 ---
-description: 'Disallow returning a value with type `any` from a function.'
+description: "Disallow returning a value with type `any` from a function."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -73,13 +73,13 @@ function foo2() {
 }
 
 const foo3 = () => [];
-const foo4 = () => ['a'];
+const foo4 = () => ["a"];
 
 function assignability1(): Set<string> {
-  return new Set<string>(['foo']);
+  return new Set<string>(["foo"]);
 }
 type TAssign = () => Set<string>;
-const assignability2: TAssign = () => new Set(['foo']);
+const assignability2: TAssign = () => new Set(["foo"]);
 ```
 
 <!--/tabs-->

@@ -7,28 +7,28 @@ const featureFlags = {
   // Dual-personality platform features with gradual rollout
   dualPersonalityHomepage: {
     enabled: true,
-    rolloutPercentage: 10,  // Start with 10% of users
-    audiences: ['new-visitors']  // Only new visitors first
+    rolloutPercentage: 10, // Start with 10% of users
+    audiences: ["new-visitors"], // Only new visitors first
   },
 
   enterpriseApiDocs: {
     enabled: true,
-    rolloutPercentage: 100  // Can go 100% immediately (new page)
+    rolloutPercentage: 100, // Can go 100% immediately (new page)
   },
 
   routeAliases: {
     enabled: true,
-    rolloutPercentage: 100  // Safe to enable (backward compatible)
+    rolloutPercentage: 100, // Safe to enable (backward compatible)
   },
 
   sacredFeaturesShowcase: {
     enabled: true,
-    rolloutPercentage: 10   // Gradual rollout
+    rolloutPercentage: 10, // Gradual rollout
   },
 
   trustScoreCalculator: {
     enabled: true,
-    rolloutPercentage: 100  // Core feature, always available
+    rolloutPercentage: 100, // Core feature, always available
   },
 
   // Legacy flags for backward compatibility
@@ -41,14 +41,14 @@ const featureFlags = {
   // Route alias features (now enabled)
   ROUTE_ALIASES: true,
   TRUST_LINEAGE_ALIAS: true,
-  CREDIBILITY_CIRCLES_ALIAS: true,   // Now enabled
-  NARRATIVE_ENGINE_ALIAS: true,      // Now enabled
-  COMMUNITY_RESONANCE_ALIAS: true,   // Now enabled
+  CREDIBILITY_CIRCLES_ALIAS: true, // Now enabled
+  NARRATIVE_ENGINE_ALIAS: true, // Now enabled
+  COMMUNITY_RESONANCE_ALIAS: true, // Now enabled
 
   // Analytics and tracking
   ANALYTICS_TRACKING: true,
   ROUTE_ALIAS_ANALYTICS: true,
-  FEATURE_USAGE_ANALYTICS: true
+  FEATURE_USAGE_ANALYTICS: true,
 };
 
 /**
@@ -60,7 +60,7 @@ export function isFeatureEnabled(featureName) {
   const flag = featureFlags[featureName];
 
   // Handle new structured flags
-  if (typeof flag === 'object' && flag !== null) {
+  if (typeof flag === "object" && flag !== null) {
     return flag.enabled || false;
   }
 
@@ -79,7 +79,7 @@ export function isFeatureEnabledForUser(featureName, userId, audience = null) {
   const flag = featureFlags[featureName];
 
   // Handle new structured flags
-  if (typeof flag === 'object' && flag !== null) {
+  if (typeof flag === "object" && flag !== null) {
     if (!flag.enabled) return false;
 
     // Check audience if specified
@@ -145,7 +145,7 @@ function simpleHash(str) {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
     hash = hash & hash; // Convert to 32bit integer
   }
   return Math.abs(hash);
@@ -159,7 +159,7 @@ export function getFeatureFlagContext() {
   return {
     isFeatureEnabled,
     isUserInTestGroup,
-    featureFlags: getAllFeatureFlags()
+    featureFlags: getAllFeatureFlags(),
   };
 }
 
@@ -170,5 +170,5 @@ module.exports = {
   setFeatureFlag,
   getAllFeatureFlags,
   isUserInTestGroup,
-  getFeatureFlagContext
+  getFeatureFlagContext,
 };

@@ -11,12 +11,14 @@
 We've built a **comprehensive CLI onboarding system** that transforms new users from CLI-curious to CLI-confident through interactive, role-based guidance.
 
 ### The Problem We Solved:
+
 - ❌ CLI tools are powerful but intimidating
 - ❌ Users didn't know where to start
 - ❌ No connection between docs (scrolls) and action (CLI)
 - ❌ High drop-off rates during setup
 
 ### The Solution We Built:
+
 - ✅ **Interactive guided onboarding** with step-by-step commands
 - ✅ **Role-based paths** (Creator/Agency/Team Lead)
 - ✅ **Dynamic command generator** for custom CLI usage
@@ -30,6 +32,7 @@ We've built a **comprehensive CLI onboarding system** that transforms new users 
 ### 🎮 Core Components
 
 #### 1. **CLIOnboarding** - Interactive Setup Modal
+
 ```
 Features:
 ✨ Role-specific onboarding flows (3 paths)
@@ -43,6 +46,7 @@ Features:
 ```
 
 #### 2. **CLICommandGenerator** - Live Command Builder
+
 ```
 Features:
 🎨 Pre-built templates per scroll
@@ -54,6 +58,7 @@ Features:
 ```
 
 #### 3. **OnboardingProgress** - Gamified Tracker
+
 ```
 Features:
 📊 Visual progress card (expandable)
@@ -116,6 +121,7 @@ Features:
 ## 📊 Technical Architecture
 
 ### Component Hierarchy
+
 ```
 LoreVault.jsx
 ├── RoleSelector (choose path)
@@ -135,6 +141,7 @@ LoreVault.jsx
 ```
 
 ### Data Flow
+
 ```
 User Action → Component State → LocalStorage
                     ↓
@@ -144,18 +151,16 @@ User Action → Component State → LocalStorage
 ```
 
 ### State Management
+
 ```javascript
 // Per-role onboarding progress
-localStorage.setItem('vauntico_cli_onboarding_solo-creator', {
-  completed: ['install', 'auth'],
-  skipped: []
-})
+localStorage.setItem("vauntico_cli_onboarding_solo-creator", {
+  completed: ["install", "auth"],
+  skipped: [],
+});
 
 // Global achievements
-localStorage.setItem('vauntico_achievements', [
-  'first-install',
-  'first-auth'
-])
+localStorage.setItem("vauntico_achievements", ["first-install", "first-auth"]);
 ```
 
 ---
@@ -163,6 +168,7 @@ localStorage.setItem('vauntico_achievements', [
 ## 🎯 Role-Based Paths
 
 ### Solo Creator (5 steps)
+
 ```
 1. ⚡ Install CLI
 2. 🔐 Authenticate
@@ -174,6 +180,7 @@ Focus: Personal productivity, content creation
 ```
 
 ### Agency (7 steps)
+
 ```
 1. 🏢 Install Agency CLI
 2. 🔐 Auth Agency Account
@@ -187,6 +194,7 @@ Focus: Client management, white-label, reporting
 ```
 
 ### Team Lead (4 steps)
+
 ```
 1. 👥 Install Team CLI
 2. 🔐 Auth Team Lead
@@ -200,35 +208,39 @@ Focus: Collaboration, team workflows
 
 ## 🏆 Achievement System
 
-| Badge | Trigger | Reward |
-|-------|---------|--------|
-| ⚡ CLI Novice | Install CLI | Progress visibility |
-| 🔐 Authenticated | Link account | Full access |
-| 🎨 Dream Weaver | First generation | Confidence boost |
-| 🏢 Agency Pioneer | Onboard client | Agency credibility |
-| 👑 CLI Master | Complete onboarding | Social proof |
-| 🤖 Automation Architect | Setup workflows | Power user status |
+| Badge                   | Trigger             | Reward              |
+| ----------------------- | ------------------- | ------------------- |
+| ⚡ CLI Novice           | Install CLI         | Progress visibility |
+| 🔐 Authenticated        | Link account        | Full access         |
+| 🎨 Dream Weaver         | First generation    | Confidence boost    |
+| 🏢 Agency Pioneer       | Onboard client      | Agency credibility  |
+| 👑 CLI Master           | Complete onboarding | Social proof        |
+| 🤖 Automation Architect | Setup workflows     | Power user status   |
 
 ---
 
 ## 📈 Success Metrics
 
 ### User Activation
+
 - **Before**: 15% of users installed CLI
 - **After**: Target 60%+ completion rate
 - **Driver**: Guided, gamified experience
 
 ### Engagement
+
 - **Progress Tracking**: Visual feedback keeps users engaged
 - **Achievements**: Gamification drives completion
 - **Scroll Integration**: Learning → Action pipeline
 
 ### Retention
+
 - **Persistent Progress**: Users can return anytime
 - **Role-Specific**: Relevant content per user type
 - **Command Generator**: Reduces CLI friction
 
 ### Conversion
+
 - **CLI Power Users**: More likely to upgrade to Creator Pass
 - **Agency Adoption**: White-label tools drive B2B growth
 
@@ -237,6 +249,7 @@ Focus: Collaboration, team workflows
 ## 🔗 Integration Points
 
 ### Pages Enhanced:
+
 1. **LoreVault** (`/lore`)
    - OnboardingProgress card
    - CLIOnboarding modal
@@ -255,6 +268,7 @@ Focus: Collaboration, team workflows
 ## 🧪 Quality Assurance
 
 ### Testing Completed ✅
+
 - [x] Role selection triggers correct flow
 - [x] Progress persists across sessions
 - [x] Commands copy successfully
@@ -267,31 +281,34 @@ Focus: Collaboration, team workflows
 - [x] Completion awards final badge
 
 ### Known Limitations
-- ⚠️  No actual CLI verification (future: API check)
-- ⚠️  No cross-device sync yet (future: account-based)
-- ⚠️  Limited command templates (future: expand library)
+
+- ⚠️ No actual CLI verification (future: API check)
+- ⚠️ No cross-device sync yet (future: account-based)
+- ⚠️ Limited command templates (future: expand library)
 
 ---
 
 ## 📚 Documentation Delivered
 
-| File | Purpose |
-|------|---------|
-| `CLI_ONBOARDING_COMPLETE.md` | Technical implementation details |
-| `CLI_ONBOARDING_USER_GUIDE.md` | End-user instructions |
-| `PHASE_3_CLI_ONBOARDING_SUMMARY.md` | This executive summary |
+| File                                | Purpose                          |
+| ----------------------------------- | -------------------------------- |
+| `CLI_ONBOARDING_COMPLETE.md`        | Technical implementation details |
+| `CLI_ONBOARDING_USER_GUIDE.md`      | End-user instructions            |
+| `PHASE_3_CLI_ONBOARDING_SUMMARY.md` | This executive summary           |
 
 ---
 
 ## 🚀 What's Next?
 
 ### Immediate Enhancements (Phase 3.5)
+
 - [ ] Add video walkthrough per step
 - [ ] Expand command templates (more scrolls)
 - [ ] In-app terminal emulator (run CLI in browser)
 - [ ] Social sharing for achievements
 
 ### Phase 4 Options
+
 1. **Enhanced Scroll Access UI** (dynamic unlocks, upgrade prompts)
 2. **Polish Tier System** (credit viz, calculator)
 3. **Community Features** (share templates, leaderboards)
@@ -301,11 +318,13 @@ Focus: Collaboration, team workflows
 ## 💬 User Feedback Loop
 
 ### How Users Can Report Issues:
+
 1. Via Discord community
 2. Email support@vauntico.com
 3. In-app feedback widget (future)
 
 ### Analytics to Track:
+
 - Onboarding completion rates per role
 - Most-used command templates
 - Achievement unlock rates
@@ -316,12 +335,14 @@ Focus: Collaboration, team workflows
 ## 🎉 Impact Summary
 
 ### Before Phase 3:
+
 - Static documentation
 - No onboarding flow
 - CLI = black box for users
 - High setup friction
 
 ### After Phase 3:
+
 - ✨ Interactive guided setup
 - 🎯 Role-based personalization
 - 📊 Progress tracking & gamification
@@ -342,4 +363,4 @@ Users now have a clear, guided path from curiosity to capability. The combinatio
 ---
 
 Built with 🔥 by the Vauntico team  
-*Empowering creators through intuitive tools and mythic narratives*
+_Empowering creators through intuitive tools and mythic narratives_

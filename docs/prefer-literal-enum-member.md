@@ -1,5 +1,5 @@
 ---
-description: 'Require all enum members to be literal values.'
+description: "Require all enum members to be literal values."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -35,7 +35,7 @@ This rule reports when an enum member is given a value that is not a literal.
 ### ❌ Incorrect
 
 ```ts
-const str = 'Test';
+const str = "Test";
 enum Invalid {
   A = str, // Variable assignment
   B = {}, // Object assignment
@@ -50,7 +50,7 @@ enum Invalid {
 ```ts
 enum Valid {
   A,
-  B = 'TestStr', // A regular string
+  B = "TestStr", // A regular string
   C = 4, // A number
   D = null,
   E = /some_regex/,

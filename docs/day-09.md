@@ -14,12 +14,14 @@ objective: "Master the batch filming system to create a week's content efficient
 **Today:** You film an ENTIRE WEEK of content in one session
 
 **The trap most creators fall into:**
+
 - Film 1 video → Edit → Post → Repeat
 - Takes 3 hours per video
 - Burnout after 5 days
 - Quit after 2 weeks
 
 **The pro creator method:**
+
 - Film 7 videos in 2 hours (batch filming)
 - Edit in 1 session tomorrow
 - Schedule posts for the week
@@ -34,6 +36,7 @@ objective: "Master the batch filming system to create a week's content efficient
 **Batch filming = recording multiple videos in one focused session**
 
 **Why it works:**
+
 - **Setup once** (no need to redo lighting, outfit, location)
 - **Flow state** (you get better as you go, video 5 > video 1)
 - **Saves time** (2 hours batch vs 10+ hours spread out)
@@ -53,26 +56,31 @@ Amara (Nigerian fashion creator) films 10 videos every Sunday in 2 hours. She po
 Before you film ANYTHING, prepare:
 
 **✅ Content list ready**
+
 - Pull up your Week 2 content calendar (Day 8)
 - Know exactly what 7 videos you're filming
 - Have scripts/bullet points for each
 
 **✅ Location locked**
+
 - Pick 1-2 locations (bedroom, living room, outdoor spot)
 - Clear background (no clutter!)
 - Natural light available (daytime filming best)
 
 **✅ Outfit check**
+
 - Wear something you can film multiple videos in
 - OR bring 2 outfit changes for variety
 - Pro tip: Same top + different accessories = "different" looks
 
 **✅ Phone fully charged**
+
 - 100% battery (or charger nearby)
 - Tripod/phone stand ready
 - Apps open (CapCut, TikTok, Instagram)
 
 **✅ Distractions eliminated**
+
 - Tell family: "I'm filming for 2 hours, please don't interrupt"
 - Put phone on Do Not Disturb (except camera app)
 - Lock the door if possible
@@ -82,21 +90,25 @@ Before you film ANYTHING, prepare:
 ### **STEP 2: Setup Your "Studio" (10 minutes)**
 
 **Lighting:**
+
 - Face a window (natural light = best light)
 - OR film during "golden hour" (1 hour after sunrise, 1 hour before sunset)
 - Avoid overhead lights (creates shadows)
 
 **Framing:**
+
 - Use your phone tripod or stack books
 - Camera at eye level or slightly above
 - Leave space above your head (don't cut off the frame)
 
 **Background:**
+
 - Clean, uncluttered
 - Add 1-2 interesting items (plant, artwork, colorful wall)
 - Avoid busy/distracting backgrounds
 
 **Sound check:**
+
 - Film 10-second test
 - Play it back - is audio clear?
 - If noisy location, move or film when quiet
@@ -106,22 +118,26 @@ Before you film ANYTHING, prepare:
 ### **STEP 3: Filming Process (90 minutes)**
 
 **Video 1: Warm-up (this will be your worst video, it's okay!)**
+
 - Film your first script
 - Do 2-3 takes until comfortable
 - Don't over-perfect it (you'll improve as you go)
 
 **Videos 2-4: Flow state**
+
 - You're warmed up now
 - Takes get shorter
 - Confidence increases
 - Energy feels natural
 
 **Videos 5-7: Peak performance**
+
 - These will be your BEST videos
 - Consider posting Video 7 first (strongest content!)
 - You're in the zone
 
 **⏱️ Time per video:**
+
 - 30-60 second video = 3-5 takes = 10-15 minutes total
 - 7 videos × 12 minutes average = 84 minutes (~1.5 hours)
 
@@ -135,6 +151,7 @@ Film 3 videos → Change shirt/add jacket → Film 3 more videos → Change agai
 **Result:** Looks like you filmed over 7 days, but it's the same 2 hours!
 
 **🎬 The "Location Mix" Hack**
+
 - Videos 1-3: Indoor (bedroom)
 - Videos 4-5: Window/balcony
 - Videos 6-7: Outdoor (street, park, car)
@@ -142,12 +159,14 @@ Film 3 videos → Change shirt/add jacket → Film 3 more videos → Change agai
 **Result:** Variety keeps audience engaged.
 
 **🎬 The "Talk to Camera" Position**
+
 - Mark your floor with tape/paper where you stand
 - Look directly at camera (builds connection)
 - Stand, don't sit (more energy on camera)
 
 **🎬 The "B-Roll" Hack**
 While you're set up, film 20-30 seconds of:
+
 - You writing in a notebook
 - You looking at your phone
 - You walking
@@ -163,6 +182,7 @@ While you're set up, film 20-30 seconds of:
 Print/save this checklist for every batch session:
 
 **Before filming:**
+
 - [ ] 7 video scripts/ideas written
 - [ ] Location clean & prepped
 - [ ] Phone charged (90%+)
@@ -173,6 +193,7 @@ Print/save this checklist for every batch session:
 - [ ] 2-hour block scheduled
 
 **During filming:**
+
 - [ ] Video 1 filmed (warm-up)
 - [ ] Video 2 filmed
 - [ ] Video 3 filmed
@@ -184,6 +205,7 @@ Print/save this checklist for every batch session:
 - [ ] B-roll footage captured (optional)
 
 **After filming:**
+
 - [ ] All videos saved to "Week 2" folder
 - [ ] Phone backed up (don't lose footage!)
 - [ ] Props/setup put away
@@ -196,6 +218,7 @@ Print/save this checklist for every batch session:
 **Chipo** (Harare, Zimbabwe - Cooking niche)
 
 **Her Sunday 2-hour batch session:**
+
 - **8:00 AM:** Prep (write 7 recipes, clean kitchen, charge phone)
 - **8:15 AM:** Film Recipe 1-3 (breakfast ideas)
 - **9:00 AM:** Change apron, Film Recipe 4-5 (lunch)
@@ -249,6 +272,7 @@ We're building your personal hook library tomorrow! 🎣
 ## 💬 Share Your Batch Filming Win
 
 Post in the community:
+
 ```
 🎬 BATCH FILMING = UNLOCKED!
 

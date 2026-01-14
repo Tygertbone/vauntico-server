@@ -1,5 +1,5 @@
 ---
-description: 'Require unary negation to take a number.'
+description: "Require unary negation to take a number."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -9,7 +9,7 @@ description: 'Require unary negation to take a number.'
 TypeScript does not prevent you from putting a minus sign before things other than numbers:
 
 ```ts
-const s = 'hello';
+const s = "hello";
 const x = -s; // x is NaN
 ```
 

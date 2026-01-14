@@ -7,6 +7,7 @@
 ## 🎯 What You Built
 
 An **interactive CLI onboarding system** that:
+
 - Guides users through CLI setup step-by-step
 - Generates custom commands from templates
 - Tracks progress with achievements
@@ -30,16 +31,16 @@ An **interactive CLI onboarding system** that:
 ### 1. Add Onboarding to Your Page
 
 ```jsx
-import CLIOnboarding from './components/CLIOnboarding'
-import OnboardingProgress from './components/OnboardingProgress'
+import CLIOnboarding from "./components/CLIOnboarding";
+import OnboardingProgress from "./components/OnboardingProgress";
 
 function YourPage() {
-  const [showOnboarding, setShowOnboarding] = useState(false)
-  const [selectedRole, setSelectedRole] = useState(null)
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [selectedRole, setSelectedRole] = useState(null);
 
   return (
     <>
-      <OnboardingProgress 
+      <OnboardingProgress
         roleId={selectedRole?.id}
         onStartOnboarding={() => setShowOnboarding(true)}
       />
@@ -52,24 +53,26 @@ function YourPage() {
         />
       )}
     </>
-  )
+  );
 }
 ```
 
 ### 2. Add Command Generator to Scrolls
 
 ```jsx
-import CLICommandGenerator from './components/CLICommandGenerator'
+import CLICommandGenerator from "./components/CLICommandGenerator";
 
 function ScrollViewer({ scroll }) {
   return (
     <>
-      {['audit-as-a-service', 'dream-mover-cli', 'AGENCY_CLI_QUICKSTART'].includes(scroll.id) && (
-        <CLICommandGenerator scrollId={scroll.id} />
-      )}
+      {[
+        "audit-as-a-service",
+        "dream-mover-cli",
+        "AGENCY_CLI_QUICKSTART",
+      ].includes(scroll.id) && <CLICommandGenerator scrollId={scroll.id} />}
       {/* Your scroll content */}
     </>
-  )
+  );
 }
 ```
 
@@ -77,38 +80,40 @@ function ScrollViewer({ scroll }) {
 
 ## 🎨 Key Components
 
-| Component | Purpose | Location |
-|-----------|---------|----------|
-| **CLIOnboarding** | Step-by-step modal | `/components/CLIOnboarding.jsx` |
-| **CLICommandGenerator** | Command builder | `/components/CLICommandGenerator.jsx` |
-| **OnboardingProgress** | Progress tracker | `/components/OnboardingProgress.jsx` |
+| Component               | Purpose            | Location                              |
+| ----------------------- | ------------------ | ------------------------------------- |
+| **CLIOnboarding**       | Step-by-step modal | `/components/CLIOnboarding.jsx`       |
+| **CLICommandGenerator** | Command builder    | `/components/CLICommandGenerator.jsx` |
+| **OnboardingProgress**  | Progress tracker   | `/components/OnboardingProgress.jsx`  |
 
 ---
 
 ## 💾 Data Storage
 
 **LocalStorage Keys:**
+
 - `vauntico_cli_onboarding_{roleId}` → Per-role progress
 - `vauntico_achievements` → Global achievement list
 
 **Clear Data:**
+
 ```javascript
-localStorage.removeItem('vauntico_cli_onboarding_solo-creator')
-localStorage.removeItem('vauntico_achievements')
+localStorage.removeItem("vauntico_cli_onboarding_solo-creator");
+localStorage.removeItem("vauntico_achievements");
 ```
 
 ---
 
 ## 🏆 Achievements
 
-| Badge | ID | Trigger |
-|-------|----|----|
-| ⚡ CLI Novice | `first-install` | Install CLI |
-| 🔐 Authenticated | `first-auth` | Login complete |
-| 🎨 Dream Weaver | `first-generation` | First content generated |
-| 🏢 Agency Pioneer | `first-client` | Onboard first client |
-| 👑 CLI Master | `onboarding-complete` | Finish onboarding |
-| 🤖 Automation Architect | `automation-setup` | Setup automation |
+| Badge                   | ID                    | Trigger                 |
+| ----------------------- | --------------------- | ----------------------- |
+| ⚡ CLI Novice           | `first-install`       | Install CLI             |
+| 🔐 Authenticated        | `first-auth`          | Login complete          |
+| 🎨 Dream Weaver         | `first-generation`    | First content generated |
+| 🏢 Agency Pioneer       | `first-client`        | Onboard first client    |
+| 👑 CLI Master           | `onboarding-complete` | Finish onboarding       |
+| 🤖 Automation Architect | `automation-setup`    | Setup automation        |
 
 ---
 
@@ -117,6 +122,7 @@ localStorage.removeItem('vauntico_achievements')
 ### Add a New Role:
 
 **1. RoleSelector.jsx**
+
 ```javascript
 {
   id: 'new-role',
@@ -129,49 +135,50 @@ localStorage.removeItem('vauntico_achievements')
 ```
 
 **2. CLIOnboarding.jsx**
+
 ```javascript
 const ONBOARDING_STEPS = {
-  'new-role': [
+  "new-role": [
     {
-      id: 'step1',
-      title: 'Step Title',
-      description: 'Description',
-      icon: '⚡',
-      command: 'your-command',
-      optional: false
-    }
-  ]
-}
+      id: "step1",
+      title: "Step Title",
+      description: "Description",
+      icon: "⚡",
+      command: "your-command",
+      optional: false,
+    },
+  ],
+};
 ```
 
 **3. OnboardingProgress.jsx**
+
 ```javascript
 const stepCounts = {
-  'new-role': 5
-}
+  "new-role": 5,
+};
 ```
 
 ### Add Command Templates:
 
 **CLICommandGenerator.jsx**
+
 ```javascript
 const COMMAND_TEMPLATES = {
-  'your-scroll-id': {
-    category: 'Category',
-    icon: '🔧',
+  "your-scroll-id": {
+    category: "Category",
+    icon: "🔧",
     commands: [
       {
-        id: 'cmd-id',
-        name: 'Command Name',
-        template: 'vauntico cmd --flag {{INPUT}}',
-        inputs: [
-          { key: 'INPUT', label: 'Label', required: true }
-        ],
-        description: 'What it does'
-      }
-    ]
-  }
-}
+        id: "cmd-id",
+        name: "Command Name",
+        template: "vauntico cmd --flag {{INPUT}}",
+        inputs: [{ key: "INPUT", label: "Label", required: true }],
+        description: "What it does",
+      },
+    ],
+  },
+};
 ```
 
 ---
@@ -179,21 +186,24 @@ const COMMAND_TEMPLATES = {
 ## 🐛 Debug
 
 **Check Progress:**
+
 ```javascript
-const progress = localStorage.getItem('vauntico_cli_onboarding_solo-creator')
-console.log(JSON.parse(progress))
+const progress = localStorage.getItem("vauntico_cli_onboarding_solo-creator");
+console.log(JSON.parse(progress));
 ```
 
 **Check Achievements:**
+
 ```javascript
-const achievements = localStorage.getItem('vauntico_achievements')
-console.log(JSON.parse(achievements))
+const achievements = localStorage.getItem("vauntico_achievements");
+console.log(JSON.parse(achievements));
 ```
 
 **Reset Everything:**
+
 ```javascript
-localStorage.clear()
-window.location.reload()
+localStorage.clear();
+window.location.reload();
 ```
 
 ---
@@ -201,6 +211,7 @@ window.location.reload()
 ## 📊 Analytics Events (Future)
 
 Track these for insights:
+
 - `onboarding_started` → User begins onboarding
 - `onboarding_step_completed` → Step finished
 - `onboarding_step_skipped` → Optional step skipped
@@ -214,6 +225,7 @@ Track these for insights:
 ## 🎯 Success Metrics
 
 **Track These:**
+
 - Onboarding completion rate (target: >60%)
 - Average time to complete (target: <10 mins)
 - Step drop-off points (identify friction)
@@ -234,12 +246,12 @@ Track these for insights:
 
 ## 🆘 Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| Progress not saving | Check localStorage availability |
-| Modal not opening | Verify role state is set |
-| Commands not copying | Check clipboard API permissions |
-| Achievements not unlocking | Verify achievement ID matches |
+| Issue                      | Solution                        |
+| -------------------------- | ------------------------------- |
+| Progress not saving        | Check localStorage availability |
+| Modal not opening          | Verify role state is set        |
+| Commands not copying       | Check clipboard API permissions |
+| Achievements not unlocking | Verify achievement ID matches   |
 
 ---
 
@@ -259,6 +271,7 @@ Track these for insights:
 ## 🔥 What's Next?
 
 **Phase 4 Options:**
+
 1. **Enhanced Scroll Access UI** - Dynamic unlocks, upgrade prompts
 2. **Polish Tier System** - Credit viz, calculator
 3. **Community Features** - Share templates, leaderboards

@@ -1,5 +1,5 @@
 ---
-description: 'Require consistent spacing around type annotations.'
+description: "Require consistent spacing around type annotations."
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

@@ -118,6 +118,7 @@ HOST=api.example.com PORT=8080 ./validate-backend-deployment.sh
 ### Phase 1: System Preparation
 
 1. **System Update**
+
    ```bash
    sudo apt update && sudo apt upgrade -y
    ```
@@ -136,6 +137,7 @@ HOST=api.example.com PORT=8080 ./validate-backend-deployment.sh
 ### Phase 2: Application Setup
 
 1. **Directory Structure**
+
    ```
    /home/ubuntu/trust-score-backend/
    ├── server.js                 # Main application
@@ -158,6 +160,7 @@ HOST=api.example.com PORT=8080 ./validate-backend-deployment.sh
 ### Phase 3: Application Deployment
 
 1. **Dependency Installation**
+
    ```bash
    npm ci --production  # Faster, more reliable than npm install
    npm audit --audit-level moderate  # Security vulnerability check
@@ -194,13 +197,13 @@ HOST=api.example.com PORT=8080 ./validate-backend-deployment.sh
 
 ### Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | 3000 | Application port |
-| `NODE_ENV` | production | Node environment |
-| `LOG_DIR` | /var/log/vauntico | Log directory |
-| `API_VERSION` | 2.0.0 | API version |
-| `REPO_URL` | - | Git repository URL (optional) |
+| Variable      | Default           | Description                   |
+| ------------- | ----------------- | ----------------------------- |
+| `PORT`        | 3000              | Application port              |
+| `NODE_ENV`    | production        | Node environment              |
+| `LOG_DIR`     | /var/log/vauntico | Log directory                 |
+| `API_VERSION` | 2.0.0             | API version                   |
+| `REPO_URL`    | -                 | Git repository URL (optional) |
 
 ### PM2 Configuration
 
@@ -302,6 +305,7 @@ pm2 logs trust-score
    - Compressed archives
 
 2. **Updates**
+
    ```bash
    # Update application
    cd /home/ubuntu/trust-score-backend
@@ -321,29 +325,32 @@ pm2 logs trust-score
 ### Common Issues
 
 1. **Service Won't Start**
+
    ```bash
    # Check logs
    sudo journalctl -u trust-score -n 50
    pm2 logs trust-score --lines 50
-   
+
    # Check configuration
    pm2 show trust-score
    ```
 
 2. **High Memory Usage**
+
    ```bash
    # Monitor memory
    pm2 monit
-   
+
    # Restart if needed
    pm2 restart trust-score
    ```
 
 3. **Port Conflicts**
+
    ```bash
    # Check what's using the port
    sudo netstat -tlnp | grep :3000
-   
+
    # Kill conflicting process
    sudo kill -9 <PID>
    ```
@@ -351,21 +358,23 @@ pm2 logs trust-score
 ### Performance Issues
 
 1. **High Response Times**
+
    ```bash
    # Check system resources
    top
    htop
    iostat
-   
+
    # Check PM2 metrics
    pm2 show trust-score
    ```
 
 2. **Database Connection Issues**
+
    ```bash
    # Check network connectivity
    ping database-host
-   
+
    # Test connection
    nc -zv database-host 5432
    ```

@@ -36,6 +36,7 @@ People perceive R300 as a deal when anchored against R800.
 R297 feels cheaper than R300 (even though it's R3 difference)
 
 **Use:**
+
 - R149 (not R150)
 - R297 (not R300)
 - R497 (not R500)
@@ -54,11 +55,13 @@ R297 feels cheaper than R300 (even though it's R3 difference)
 ### **Principle #4: The 3-Option Rule**
 
 Always offer 3 tiers:
+
 - **Cheap option:** Few buy (makes middle look reasonable)
 - **Middle option:** Most buy (the "goldilocks")
 - **Expensive option:** Some buy (increases average price)
 
 **Example:**
+
 - Basic: R300
 - Standard: R500 ← MOST CHOOSE THIS
 - Premium: R900
@@ -82,6 +85,7 @@ Always offer 3 tiers:
 **Retainer (monthly management):** R2,000-5,000
 
 ### **AFFILIATE (You Don't Control Price):**
+
 Focus on high-commission products (R50-150 per sale)
 
 ---
@@ -89,12 +93,14 @@ Focus on high-commission products (R50-150 per sale)
 ## 🎯 The R997 Sweet Spot (For Future Products)
 
 **Why R997 is perfect for premium offers:**
+
 - Under R1,000 psychological barrier
 - High enough to be taken seriously
 - African market can afford it (payment plans help)
 - Not "cheap" - signals quality
 
 **Use for:**
+
 - Full courses (60-day programs)
 - High-touch coaching
 - Comprehensive bundles
@@ -104,14 +110,17 @@ Focus on high-commission products (R50-150 per sale)
 ## 📊 Pricing by Follower Count
 
 ### **100-500 followers:**
+
 - Digital products: R99-197
 - Services: R500-800/month
 
 ### **500-2,000 followers:**
+
 - Digital products: R149-297
 - Services: R800-1,500/month
 
 ### **2,000-10,000 followers:**
+
 - Digital products: R297-497
 - Services: R1,500-3,000/month
 - Premium offers: R997+
@@ -126,11 +135,13 @@ Focus on high-commission products (R50-150 per sale)
 Offer: "R300 one-time OR 3 × R120" (total R360)
 
 **Why this works:**
+
 - Lower barrier to entry
 - You make more (R360 vs R300)
 - More people say yes
 
 **Use payment plan services:**
+
 - Paystack (supports recurring)
 - Manual (trust-based - they pay weekly via bank transfer)
 
@@ -139,6 +150,7 @@ Offer: "R300 one-time OR 3 × R120" (total R360)
 ## 🌍 African Market Considerations
 
 **Income varies by country:**
+
 - **Nigeria/Kenya:** Middle class can afford R150-400 easily
 - **South Africa:** R300-600 is accessible
 - **Zimbabwe/Ghana:** R100-300 sweet spot
@@ -146,6 +158,7 @@ Offer: "R300 one-time OR 3 × R120" (total R360)
 **Adjust based on YOUR audience location (check analytics).**
 
 **Pro tip:** Create "local currency" offers:
+
 - R300 (South Africa)
 - 5,000 Naira (Nigeria)
 - 2,000 KSH (Kenya)

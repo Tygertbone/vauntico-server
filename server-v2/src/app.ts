@@ -24,7 +24,7 @@ Sentry.init({
   ],
   // Performance monitoring (sampled for free tier)
   tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
-  beforeSend: (event: any) => {
+  beforeSend: (event: Sentry.ErrorEvent, hint?: Sentry.EventHint) => {
     // Don't capture health check errors
     if (event.request?.url?.includes('/health')) {
       return null;

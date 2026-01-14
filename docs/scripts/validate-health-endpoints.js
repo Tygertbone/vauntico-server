@@ -1,8 +1,10 @@
 // ES Module - no axios needed for this validation script
 
+import { logger } from '../server-v2/src/utils/logger';
+
 async function validateHealthEndpoints() {
-  console.log('🔍 Vauntico Production Readiness Validation\n');
-  console.log('=' .repeat(50));
+  logger.info('🔍 Vauntico Production Readiness Validation');
+  logger.info('='.repeat(50));
 
   const validations = {
     security: {
@@ -38,7 +40,7 @@ async function validateHealthEndpoints() {
         { name: 'Sentry Error Tracking', status: 'enabled', result: '✅ Production error reporting activated' },
         { name: 'Security Event Logging', status: 'ready', result: '✅ Database security events table configured' },
         { name: 'Subscription Analytics', status: 'ready', result: '✅ Revenue attribution services prepared' },
-        { name: 'Performance Metrics', status: 'baselined', result: '✅ Load testing scripts prepared' },
+        { name: 'Performance Metrics', status: 'baseline', result: '✅ Load testing scripts prepared' },
       ]
     }
   };
@@ -47,11 +49,11 @@ async function validateHealthEndpoints() {
   let passedTests = 0;
 
   for (const category of Object.values(validations)) {
-    console.log(`\n📋 ${category.title}`);
-    console.log('-'.repeat(30));
+    logger.info(`📋 ${category.title}`);
+    logger.info('-'.repeat(30));
 
     for (const test of category.tests) {
-      console.log(`  ${test.result} - ${test.name}`);
+      logger.info(`  ${test.result} - ${test.name}`);
       totalTests++;
       if (test.result.includes('✅')) {
         passedTests++;
@@ -59,25 +61,25 @@ async function validateHealthEndpoints() {
     }
   }
 
-  console.log('\n' + '='.repeat(50));
-  console.log(`🎯 VALIDATION SUMMARY`);
-  console.log('='.repeat(50));
-  console.log(`✅ Tests Passed: ${passedTests}/${totalTests} (${Math.round((passedTests/totalTests)*100)}%)`);
-  console.log(`⚠️  Ready for Production Configuration`);
-  console.log(`🎉 Enterprise Security Controls: ACTIVE`);
+  logger.info('\n' + '='.repeat(50));
+  logger.info('🎯 VALIDATION SUMMARY');
+  logger.info('='.repeat(50));
+  logger.info(`✅ Tests Passed: ${passedTests}/${totalTests} (${Math.round((passedTests/totalTests)*100)}%)`);
+  logger.info('⚠️  Ready for Production Configuration');
+  logger.info(`🎉 Enterprise Security Controls: ACTIVE`);
 
   // Production Readiness Score
   const readinessScore = Math.round((passedTests/totalTests)*100);
-  console.log(`\n🏆 PRODUCTION READINESS: ${readinessScore}%`);
-  console.log(`📋 Next Steps: Configure API keys and deploy to production`);
+  logger.info(`\n🏆 PRODUCTION READINESS: ${readinessScore}%`);
+  logger.info(`📋 Next Steps: Configure API keys and deploy to production`);
 
   if (readinessScore >= 95) {
-    console.log(`\n🎊 EXCELLENT: Platform ready for enterprise deployment!`);
+    logger.info(`\n🎊 EXCELLENT: Platform ready for enterprise deployment!`);
   } else if (readinessScore >= 85) {
-    console.log(`\n👍 GOOD: Minor configuration required before launch`);
+    logger.info(`\n👍 GOOD: Minor configuration required before launch`);
   } else {
-    console.log(`\n⚠️  CAUTION: Additional validation needed`);
+    logger.info(`\n⚠️  CAUTION: Additional validation needed`);
   }
 }
 
-validateHealthEndpoints().catch(console.error);
+validateHealthEndpoints().catch(logger.error);

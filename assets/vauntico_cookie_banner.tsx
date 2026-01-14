@@ -46,7 +46,7 @@ const CookieConsentBanner = () => {
     setShowPreferences(false);
   };
 
-  const savePreferences = (prefs) => {
+  const savePreferences = (prefs: Record<string, boolean>) => {
     localStorage.setItem('vauntico_cookie_consent', JSON.stringify(prefs));
     localStorage.setItem('vauntico_consent_date', new Date().toISOString());
     setShowBanner(false);
@@ -59,7 +59,7 @@ const CookieConsentBanner = () => {
 
   const initializeAnalytics = () => {
     // Initialize Google Analytics or other services here
-    console.log('Analytics initialized');
+    // Analytics initialization completed
   };
 
   if (!showBanner) return null;
@@ -87,7 +87,7 @@ const CookieConsentBanner = () => {
                     </h3>
                     <p className="text-slate-600 leading-relaxed mb-4">
                       We use cookies to enhance your experience, analyze site traffic, and personalize content. 
-                      By clicking "Accept All", you consent to our use of cookies.{' '}
+                      By clicking "Accept All", you consent to our use of cookies{' '}
                       <a href="/privacy" className="text-blue-600 hover:underline font-medium">
                         Learn more
                       </a>
@@ -153,7 +153,7 @@ const CookieConsentBanner = () => {
                         <span className="text-xs px-2 py-1 bg-slate-200 rounded-full font-medium">Required</span>
                       </div>
                       <p className="text-sm text-slate-600">
-                        Required for the website to function. These cannot be disabled.
+                        Required for website to function. These cannot be disabled.
                       </p>
                     </div>
                   </div>
@@ -175,7 +175,7 @@ const CookieConsentBanner = () => {
                     <div className="flex-1">
                       <h4 className="font-bold text-slate-900 mb-1">Analytics Cookies</h4>
                       <p className="text-sm text-slate-600">
-                        Help us understand how visitors use our website to improve the experience.
+                        Help us understand how visitors use our website to improve experience.
                       </p>
                     </div>
                   </div>

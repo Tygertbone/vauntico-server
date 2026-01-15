@@ -18,5 +18,4 @@ module.exports = {
   detectOpenHandles: true,
   forceExit: true,
   verbose: true,
-  setupFiles: ["<rootDir>/tests/setup.ts"],
 };

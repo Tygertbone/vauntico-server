@@ -1,4 +1,5 @@
-import { Router, Request, Response } from "express";
+import type { Request, Response } from "express";
+import { Router } from "express";
 import { authenticateApiKey } from "../middleware/auth";
 import ApiUsageService from "../services/apiUsageService";
 import { normalizeQueryParam } from "../utils/queryParams";

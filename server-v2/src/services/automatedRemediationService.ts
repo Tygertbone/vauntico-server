@@ -636,7 +636,7 @@ export class AutomatedRemediationService {
 
     // Try to infer semantic type
     let inferredType = "feat"; // default
-    let description = message;
+    const description = message;
 
     if (
       message.toLowerCase().includes("fix") ||

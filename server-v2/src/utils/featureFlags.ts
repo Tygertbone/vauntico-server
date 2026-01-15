@@ -75,7 +75,7 @@ export class FeatureFlagManager {
       // Get flag definition from Redis/database
       const flag = await this.getFeatureFlag(key);
 
-      if (!flag || !flag.enabled) {
+      if (!flag?.enabled) {
         await this.cache.set(cacheKey, false, { ttl: this.cacheTTL });
         return false;
       }

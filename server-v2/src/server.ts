@@ -7,40 +7,40 @@ const envPath = path.resolve(__dirname, "..", ".env");
 const result = dotenv.config({ path: envPath });
 
 // Add debug logs for environment variables
-console.log("=== ENVIRONMENT LOADING DEBUG ===");
-console.log("Dotenv config result:", result);
-console.log("Env file path:", envPath);
-console.log(
+logger.debug("=== ENVIRONMENT LOADING DEBUG ===");
+logger.debug("Dotenv config result:", result);
+logger.debug("Env file path:", envPath);
+logger.debug(
   "DATABASE_URL defined:",
   !!process.env.DATABASE_URL,
   "length:",
-  process.env.DATABASE_URL?.length || 0,
+  process.env.DATABASE_URL?.length || 0
 );
-console.log(
+logger.debug(
   "UPSTASH_REDIS_REST_URL defined:",
   !!process.env.UPSTASH_REDIS_REST_URL,
   "length:",
-  process.env.UPSTASH_REDIS_REST_URL?.length || 0,
+  process.env.UPSTASH_REDIS_REST_URL?.length || 0
 );
-console.log(
+logger.debug(
   "UPSTASH_REDIS_REST_TOKEN defined:",
   !!process.env.UPSTASH_REDIS_REST_TOKEN,
   "length:",
-  process.env.UPSTASH_REDIS_REST_TOKEN?.length || 0,
+  process.env.UPSTASH_REDIS_REST_TOKEN?.length || 0
 );
-console.log(
+logger.debug(
   "PAYSTACK_SECRET_KEY defined:",
   !!process.env.PAYSTACK_SECRET_KEY,
   "length:",
-  process.env.PAYSTACK_SECRET_KEY?.length || 0,
+  process.env.PAYSTACK_SECRET_KEY?.length || 0
 );
-console.log(
+logger.debug(
   "JWT_SECRET defined:",
   !!process.env.JWT_SECRET,
   "length:",
-  process.env.JWT_SECRET?.length || 0,
+  process.env.JWT_SECRET?.length || 0
 );
-console.log("=================================");
+logger.debug("=================================");
 
 // Import logger early for startup logging
 import { logger } from "./utils/logger";
@@ -52,7 +52,7 @@ const envValidation = validateEnvironment();
 // Exit if environment validation fails
 if (!envValidation.isValid) {
   logger.error(
-    "Server startup aborted due to environment configuration issues",
+    "Server startup aborted due to environment configuration issues"
   );
   process.exit(1);
 }

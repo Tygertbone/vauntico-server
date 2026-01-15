@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import crypto from "crypto";
 import { alertManager, AlertSeverity } from "../utils/slack-alerts";
 
@@ -127,10 +127,10 @@ export class SecurityMonitor {
           JSON.stringify(event.payload),
           JSON.stringify(event.details),
           event.timestamp,
-        ],
+        ]
       );
     } catch (error) {
-      // Database errors shouldn't crash the app
+      // Database errors shouldn't crash app
       console.error("Failed to store security event:", error);
     }
   }
@@ -143,11 +143,11 @@ export class SecurityMonitor {
   // Get events by type
   getEventsByType(
     type: SecurityEventType,
-    hours: number = 24,
+    hours: number = 24
   ): SecurityEvent[] {
     const cutoff = new Date(Date.now() - hours * 60 * 60 * 1000);
     return this.securityEvents.filter(
-      (event) => event.type === type && event.timestamp >= cutoff,
+      (event) => event.type === type && event.timestamp >= cutoff
     );
   }
 
@@ -155,7 +155,7 @@ export class SecurityMonitor {
   getEventsByIP(ip: string, hours: number = 24): SecurityEvent[] {
     const cutoff = new Date(Date.now() - hours * 60 * 60 * 1000);
     return this.securityEvents.filter(
-      (event) => event.ip === ip && event.timestamp >= cutoff,
+      (event) => event.ip === ip && event.timestamp >= cutoff
     );
   }
 
@@ -168,7 +168,7 @@ export class SecurityMonitor {
   } {
     const cutoff = new Date(Date.now() - hours * 60 * 60 * 1000);
     const recentEvents = this.securityEvents.filter(
-      (event) => event.timestamp >= cutoff,
+      (event) => event.timestamp >= cutoff
     );
 
     const eventsByType = recentEvents.reduce(
@@ -176,7 +176,7 @@ export class SecurityMonitor {
         acc[event.type] = (acc[event.type] || 0) + 1;
         return acc;
       },
-      {} as Record<SecurityEventType, number>,
+      {} as Record<SecurityEventType, number>
     );
 
     const eventsBySeverity = recentEvents.reduce(
@@ -184,7 +184,7 @@ export class SecurityMonitor {
         acc[event.severity] = (acc[event.severity] || 0) + 1;
         return acc;
       },
-      {} as Record<string, number>,
+      {} as Record<string, number>
     );
 
     const ipCounts = recentEvents.reduce(
@@ -192,7 +192,7 @@ export class SecurityMonitor {
         acc[event.ip] = (acc[event.ip] || 0) + 1;
         return acc;
       },
-      {} as Record<string, number>,
+      {} as Record<string, number>
     );
 
     const topIPs = Object.entries(ipCounts)
@@ -233,7 +233,7 @@ export class InputSanitizer {
 
   static sanitizeInput(
     input: string,
-    fieldName: string,
+    fieldName: string
   ): { sanitized: string; suspicious: boolean; reasons: string[] } {
     if (typeof input !== "string") {
       return { sanitized: String(input), suspicious: false, reasons: [] };
@@ -244,7 +244,7 @@ export class InputSanitizer {
 
     // Check for SQL injection patterns
     const sqlMatches = this.SQL_PATTERNS.filter((pattern) =>
-      pattern.test(input),
+      pattern.test(input)
     );
     if (sqlMatches.length > 0) {
       reasons.push("Potential SQL injection patterns detected");
@@ -254,7 +254,7 @@ export class InputSanitizer {
 
     // Check for XSS patterns
     const xssMatches = this.XSS_PATTERNS.filter((pattern) =>
-      pattern.test(input),
+      pattern.test(input)
     );
     if (xssMatches.length > 0) {
       reasons.push("Potential XSS patterns detected");
@@ -286,7 +286,7 @@ export class InputSanitizer {
         acc[char] = (acc[char] || 0) + 1;
         return acc;
       },
-      {} as Record<string, number>,
+      {} as Record<string, number>
     );
 
     return Object.values(charCount).reduce((entropy, count) => {
@@ -300,7 +300,7 @@ export class InputSanitizer {
 export const securityLogger = (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   const monitor = SecurityMonitor.getInstance();
   const originalSend = res.send;
@@ -349,7 +349,7 @@ export const securityLogger = (
 export const csrfProtection = (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   // Skip CSRF for safe methods
   if (["GET", "HEAD", "OPTIONS"].includes(req.method)) {
@@ -373,7 +373,7 @@ export const csrfProtection = (
     return res.status(403).json({ error: "CSRF token required" });
   }
 
-  // For simplicity, we'll just check if the token exists
+  // For simplicity, we'll just check if token exists
   // In production, you'd validate it against a session or JWT
   next();
 };
@@ -382,7 +382,7 @@ export const csrfProtection = (
 export const suspiciousActivityDetector = (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   const monitor = SecurityMonitor.getInstance();
   const ip = req.ip || req.socket.remoteAddress || "unknown";

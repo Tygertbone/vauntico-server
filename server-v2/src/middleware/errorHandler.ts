@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { sendSlackAlert } from "../utils/slack-alerts";
 import { securityMonitor, SecurityEventType } from "./security";
 

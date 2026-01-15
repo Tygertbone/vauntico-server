@@ -6,9 +6,11 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Simple logger for this API endpoint
-const logger = {
-  info: (message) => console.log(message),
-  error: (message) => console.error(message),
+import { logger } from "../server-v2/src/utils/logger.js";
+
+const loggerInstance = {
+  info: (message) => logger.info(message),
+  error: (message) => logger.error(message),
 };
 
 // Simple file-based storage for waitlist

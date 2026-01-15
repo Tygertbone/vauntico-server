@@ -3,9 +3,11 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
 // Simple logger for this script
-const logger = {
-  info: (message) => console.log(message),
-  error: (message) => console.error(message),
+import { logger } from "../../server-v2/src/utils/logger.js";
+
+const loggerInstance = {
+  info: (message) => logger.info(message),
+  error: (message) => logger.error(message),
 };
 
 async function validateHealthEndpoints() {

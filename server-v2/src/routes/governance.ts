@@ -1,8 +1,9 @@
+import type {
+  Request,
+  Response} from "express";
 import {
   Router,
-  type Router as ExpressRouter,
-  Request,
-  Response,
+  type Router as ExpressRouter
 } from "express";
 import ContributorRecognitionService from "../services/contributorRecognitionService";
 import AutomatedRemediationService from "../services/automatedRemediationService";

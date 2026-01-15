@@ -448,7 +448,7 @@ export class ContributorRecognitionService {
 
     // Consistency Badge (for maintaining high scores over time)
     const contributor = await this.getContributorById(contributorId);
-    if (contributor && contributor.contribution_level === "platinum") {
+    if (contributor?.contribution_level === "platinum") {
       await this.awardBadge(contributorId, "consistency_champion", "platinum", {
         contribution_level: contributor.contribution_level,
         total_contributions: contributor.total_contributions,

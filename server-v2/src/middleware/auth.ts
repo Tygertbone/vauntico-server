@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { TrustScoreService } from "../services/trustScoreService";
 
 // API Key storage - In production, this would be stored securely

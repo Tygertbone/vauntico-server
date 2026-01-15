@@ -2,7 +2,6 @@ import * as Sentry from "@sentry/node";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import compression from "compression";
 import morgan from "morgan";
 import { sendSlackAlert } from "./utils/slack-alerts";
 import logger from "./utils/logger";
@@ -14,6 +13,7 @@ import { authRateLimit, apiRateLimit } from "./middleware/rateLimit";
 import { correlationMiddleware } from "./middleware/correlation";
 import { checkDatabaseHealth } from "./db/health";
 import { checkRedisHealth } from "./queue/upstash";
+import { routeAliasMiddleware } from "./middleware/routeAliasMiddleware";
 
 // Initialize Sentry
 Sentry.init({
@@ -55,6 +55,7 @@ import plansRoutes from "./routes/plans";
 import monitoringRoutes from "./routes/monitoring";
 import productRoutes from "./routes/products";
 import enterpriseRoutes from "./routes/enterprise-compliance";
+import routeAliasRoutes from "./routes/routeAliases";
 
 const app: express.Application = express();
 
@@ -64,11 +65,14 @@ app.set("trust proxy", 1);
 // Request correlation middleware (must be first)
 app.use(correlationMiddleware);
 
+// Route alias middleware - must be applied early
+app.use(routeAliasMiddleware);
+
 // Security middleware
 app.use(
   helmet({
     crossOriginEmbedderPolicy: false,
-  }),
+  })
 );
 
 // CORS configuration - restrict to vauntico.com domains
@@ -104,11 +108,8 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-  }),
+  })
 );
-
-// Compression
-app.use(compression());
 
 // Request logging
 app.use(
@@ -119,7 +120,7 @@ app.use(
       },
     },
     skip: (req) => req.url === "/health", // Skip health checks in production logs
-  }),
+  })
 );
 
 // Body parsing
@@ -185,6 +186,7 @@ app.use("/api/plans", plansRoutes);
 app.use("/api/products", productRoutes);
 app.use("/monitoring", monitoringRoutes);
 app.use("/api/v1/enterprise", enterpriseRoutes);
+app.use("/", routeAliasRoutes);
 
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import { addRequestId } from "./middleware/errorHandler";

@@ -146,7 +146,7 @@ class StandardsEnforcer {
 
     try {
       const requiredDocs = ["README.md", "CONTRIBUTING.md", "LICENSE"];
-      let missingDocs = [];
+      const missingDocs = [];
 
       for (const doc of requiredDocs) {
         if (!fs.existsSync(path.join(this.projectRoot, doc))) {
@@ -223,7 +223,7 @@ class StandardsEnforcer {
           "Testing Guidelines",
         ];
 
-        let missingSections = [];
+        const missingSections = [];
         for (const section of requiredSections) {
           if (!content.includes(section)) {
             missingSections.push(section);

@@ -1,4 +1,5 @@
-import { Router, Request, Response } from "express";
+import type { Request, Response } from "express";
+import { Router } from "express";
 import { body, validationResult } from "express-validator";
 import {
   hashPassword,
@@ -314,7 +315,7 @@ router.post("/logout", authenticate, async (req: Request, res: Response) => {
     }
 
     const authHeader = req.headers.authorization;
-    if (authHeader && authHeader.startsWith("Bearer ")) {
+    if (authHeader?.startsWith("Bearer ")) {
       const accessToken = authHeader.substring(7);
 
       // Invalidate the specific refresh token to prevent reuse

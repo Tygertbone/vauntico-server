@@ -1,6 +1,7 @@
-import { Pool, PoolConfig, PoolClient } from "pg";
+import type { PoolConfig} from "pg";
+import { Pool, PoolClient } from "pg";
 import { logger } from "../utils/logger";
-import { DatabasePool, DatabaseConnection } from "../types/database";
+import type { DatabasePool, DatabaseConnection } from "../types/database";
 
 // Neon PostgreSQL connection configuration
 const dbConfig: PoolConfig = {

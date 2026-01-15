@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import { verifyAccessToken, JWTPayload } from "../auth/tokens";
+import type { Request, Response, NextFunction } from "express";
+import type { JWTPayload } from "../auth/tokens";
+import { verifyAccessToken } from "../auth/tokens";
 import { logger } from "../utils/logger";
 
 // Extend Express Request interface to include user
@@ -20,7 +21,7 @@ export const authenticate = async (
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!authHeader?.startsWith("Bearer ")) {
       logger.warn("Missing or invalid auth header", {
         authHeader: authHeader ? "[REDACTED]" : undefined,
         ip: req.ip,
@@ -106,7 +107,7 @@ export const optionalAuthenticate = async (
   try {
     const authHeader = req.headers.authorization;
 
-    if (authHeader && authHeader.startsWith("Bearer ")) {
+    if (authHeader?.startsWith("Bearer ")) {
       const token = authHeader.substring(7);
       const decoded = verifyAccessToken(token);
 
@@ -137,7 +138,7 @@ export const authenticateCron = (
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!authHeader?.startsWith("Bearer ")) {
       logger.warn("Missing cron auth header", {
         ip: req.ip,
         url: req.url,

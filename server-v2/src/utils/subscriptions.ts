@@ -125,7 +125,7 @@ export class SubscriptionManager {
       const usage = await this.getFeatureUsage(userId, featureKey);
 
       // If no usage data or no limit set, allow access
-      if (!usage || !usage.usage_limit) return true;
+      if (!usage?.usage_limit) return true;
 
       // Check usage against limits
       return usage.usage_count < usage.usage_limit;

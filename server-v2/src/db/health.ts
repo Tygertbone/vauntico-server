@@ -1,5 +1,5 @@
 import { query } from "./pool";
-import { HealthCheckResult } from "../types/database";
+import type { HealthCheckResult } from "../types/database";
 
 // Health check function for database - simple SELECT NOW() test
 export async function checkDatabaseHealth(): Promise<HealthCheckResult> {

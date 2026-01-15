@@ -233,7 +233,7 @@ export const logRequest = (req: any, res: any, next: any) => {
       .labels(
         req.method,
         String(res.statusCode),
-        meta?.service || "vauntico-trust-score",
+        "vauntico-trust-score",
         process.env.NODE_ENV || "development"
       )
       .inc();
@@ -242,7 +242,7 @@ export const logRequest = (req: any, res: any, next: any) => {
         req.method,
         req.url,
         String(res.statusCode),
-        meta?.service || "vauntico-trust-score",
+        "vauntico-trust-score",
         process.env.NODE_ENV || "development"
       )
       .observe(durationSeconds);

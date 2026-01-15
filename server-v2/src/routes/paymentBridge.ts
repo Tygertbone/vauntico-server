@@ -1,8 +1,9 @@
+import type {
+  Request,
+  Response} from "express";
 import {
   Router,
-  type Router as ExpressRouter,
-  Request,
-  Response,
+  type Router as ExpressRouter
 } from "express";
 import { body, validationResult } from "express-validator";
 import { authenticate, requireAdmin } from "../middleware/authenticate";

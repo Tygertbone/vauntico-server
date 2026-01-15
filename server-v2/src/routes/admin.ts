@@ -1,4 +1,5 @@
-import { Router, Request, Response } from "express";
+import type { Request, Response } from "express";
+import { Router } from "express";
 import { securityMonitor } from "../middleware/security";
 import { featureFlagManager, FeatureFlagType } from "../utils/featureFlags";
 import { ProofVault } from "../services/ProofVault";

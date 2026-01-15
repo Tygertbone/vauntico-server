@@ -3,5 +3,42 @@
   "extensions.autoCheckUpdates": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "eslint.validate": ["typescript", "javascript"]
+  "eslint.validate": ["typescript", "javascript"],
+  "telemetry.enableTelemetry": true,
+  "telemetry.enableCrashReporter": true,
+  "update.mode": "default",
+  "extensions.ignoreRecommendations": false,
+  "extensions.showRecommendationsOnlyOnDemand": false,
+  "workbench.enableExperiments": true,
+  "workbench.settings.enableNaturalLanguageSearch": true,
+  "liveShare.suppressNotifications": false,
+  "remote.autoForwardPorts": true,
+  "remote.SSH.showLoginTerminal": true,
+  "github.copilot.enable": {
+    "*": true
+  },
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "prompt",
+  "javascript.suggest.autoImports": true,
+  "javascript.updateImportsOnFileMove.enabled": "prompt",
+  "typescript.preferences.includePackageJsonAutoImports": "auto",
+  "javascript.preferences.includePackageJsonAutoImports": "auto",
+  "npm.enableRunFromFolder": true,
+  "npm.enableScriptExplorer": true,
+  "git.autofetch": true,
+  "git.enableSmartCommit": true,
+  "git.confirmSync": true,
+  "git.postCommitCommand": "none",
+  "git.showInlineOpenFileAction": true,
+  "editor.semanticTokenColorCustomizations": {
+    "enabled": true
+  },
+  "editor.codeLens": true,
+  "editor.lightbulb.enabled": true,
+  "editor.hover.enabled": true,
+  "editor.suggestSelection": "recentlyUsed",
+  "editor.quickSuggestions": true,
+  "workbench.startupEditor": "welcomePageInEmptyWorkbench",
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+  "terminal.integrated.enablePersistentSessions": true
 }

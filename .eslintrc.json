@@ -15,12 +15,13 @@
     }
   },
   "ignorePatterns": [
-    "dist/",
+    "dist/**/*",
     "node_modules/",
     "*.min.js",
     "build/",
-    "coverage/",
-    ".nyc_output/"
+    "coverage/**/*",
+    ".nyc_output/",
+    "server-v2/check-db.js"
   ],
   "rules": {
     "no-unused-vars": "warn",
@@ -113,6 +114,22 @@
       },
       "rules": {
         "no-console": "warn"
+      }
+    },
+    {
+      "files": ["server-v2/**/*.js"],
+      "env": {
+        "node": true,
+        "es2022": true
+      },
+      "parser": "espree",
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+      },
+      "plugins": [],
+      "rules": {
+        "no-console": "off"
       }
     },
     {

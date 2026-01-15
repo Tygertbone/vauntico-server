@@ -1,0 +1,352 @@
+name: MCP Monitoring Connector
+
+on:
+  workflow_dispatch:
+    inputs:
+      monitoring_action:
+        description: "Monitoring Action"
+        required: true
+        default: "validate"
+        type: choice
+        options:
+          - validate
+          - alerts
+          - dashboards
+          - slo
+          - health
+  push:
+    branches: [main]
+    paths:
+      - "monitoring/**"
+      - ".github/workflows/monitoring*"
+  schedule:
+    - cron: "0 * * * *" # Hourly monitoring check
+
+jobs:
+  prometheus-validation:
+    runs-on: ubuntu-latest
+    outputs:
+      prometheus-status: ${{ steps.validate.outputs.status }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Prometheus configuration
+        id: validate
+        run: |
+          echo "🔍 Validating Prometheus configuration..."
+
+          # Check if Prometheus config exists
+          if [ -f "monitoring/prometheus.yml" ]; then
+            echo "✅ Prometheus configuration found"
+            
+            # Validate YAML syntax
+            if python3 -c "import yaml; yaml.safe_load(open('monitoring/prometheus.yml'))"; then
+              echo "✅ Prometheus YAML is valid"
+              echo "status=success" >> $GITHUB_OUTPUT
+            else
+              echo "❌ Prometheus YAML has syntax errors"
+              echo "status=failure" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+            
+            # Check for essential scrape configs
+            if grep -q "scrape_configs:" monitoring/prometheus.yml; then
+              echo "✅ Scrape configs present"
+            else
+              echo "❌ Scrape configs missing"
+              echo "status=failure" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+          else
+            echo "❌ Prometheus configuration missing"
+            echo "status=failure" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+  alert-rules-validation:
+    runs-on: ubuntu-latest
+    needs: prometheus-validation
+    if: needs.prometheus-validation.outputs.prometheus-status == 'success'
+    outputs:
+      alert-rules-status: ${{ steps.validate.outputs.status }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate alert rules
+        id: validate
+        run: |
+          echo "🔔 Validating alert rules..."
+
+          # Check if alert rules exist
+          if [ -f "monitoring/alert_rules.yml" ]; then
+            echo "✅ Alert rules found"
+            
+            # Validate YAML syntax
+            if python3 -c "import yaml; yaml.safe_load(open('monitoring/alert_rules.yml'))"; then
+              echo "✅ Alert rules YAML is valid"
+              echo "status=success" >> $GITHUB_OUTPUT
+            else
+              echo "❌ Alert rules YAML has syntax errors"
+              echo "status=failure" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+            
+            # Count alert rules
+            ALERT_COUNT=$(grep -c "alert:" monitoring/alert_rules.yml)
+            echo "🔔 Found $ALERT_COUNT alert rules"
+            
+            if [ $ALERT_COUNT -gt 0 ]; then
+              echo "✅ Alert rules configured"
+            else
+              echo "⚠️ No alert rules configured"
+            fi
+          else
+            echo "❌ Alert rules missing"
+            echo "status=failure" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+  grafana-dashboards-validation:
+    runs-on: ubuntu-latest
+    needs: prometheus-validation
+    if: needs.prometheus-validation.outputs.prometheus-status == 'success' && (github.event_name == 'workflow_dispatch' && github.event.inputs.monitoring_action == 'dashboards')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Grafana dashboards
+        run: |
+          echo "📊 Validating Grafana dashboards..."
+
+          # Check if Grafana directory exists
+          if [ -d "monitoring/grafana" ]; then
+            echo "✅ Grafana directory found"
+            
+            # Check for dashboards
+            if [ -d "monitoring/grafana/dashboards" ]; then
+              DASHBOARD_COUNT=$(find monitoring/grafana/dashboards -name "*.json" | wc -l)
+              echo "📊 Found $DASHBOARD_COUNT dashboards"
+              
+              if [ $DASHBOARD_COUNT -gt 0 ]; then
+                echo "✅ Grafana dashboards configured"
+                
+                # List dashboards
+                echo "📋 Available dashboards:"
+                find monitoring/grafana/dashboards -name "*.json" -exec basename {} \;
+              else
+                echo "⚠️ No Grafana dashboards found"
+              fi
+            else
+              echo "⚠️ Grafana dashboards directory missing"
+            fi
+            
+            # Check for provisioning
+            if [ -d "monitoring/grafana/provisioning" ]; then
+              echo "✅ Grafana provisioning configured"
+            else
+              echo "⚠️ Grafana provisioning directory missing"
+            fi
+          else
+            echo "❌ Grafana directory missing"
+          fi
+
+  slo-validation:
+    runs-on: ubuntu-latest
+    needs: prometheus-validation
+    if: needs.prometheus-validation.outputs.prometheus-status == 'success' && (github.event_name == 'workflow_dispatch' && github.event.inputs.monitoring_action == 'slo')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate SLO configuration
+        run: |
+          echo "🎯 Validating SLO configuration..."
+
+          # Check Prometheus for SLO-related metrics
+          if grep -q "slo" monitoring/prometheus.yml; then
+            echo "✅ SLO metrics configured in Prometheus"
+          else
+            echo "⚠️ No SLO metrics found in Prometheus"
+          fi
+
+          # Check alert rules for SLO alerts
+          if grep -q "slo" monitoring/alert_rules.yml; then
+            echo "✅ SLO alerts configured"
+          else
+            echo "⚠️ No SLO alerts found"
+          fi
+
+          echo "📊 SLO validation completed"
+          echo "🎯 Target SLOs:"
+          echo "- Availability: 99.95%"
+          echo "- Latency: <200ms"
+          echo "- Error Rate: <1%"
+
+  monitoring-health-check:
+    runs-on: ubuntu-latest
+    needs: [prometheus-validation, alert-rules-validation]
+    if: needs.prometheus-validation.outputs.prometheus-status == 'success' && needs.alert-rules-validation.outputs.alert-rules-status == 'success'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check monitoring health
+        run: |
+          echo "🩺 Checking monitoring health..."
+
+          # Check if monitoring services are configured
+          MONITORING_SERVICES=(
+            "prometheus"
+            "grafana"
+            "alertmanager"
+          )
+
+          for service in "${MONITORING_SERVICES[@]}"; do
+            if grep -qr "$service" monitoring/; then
+              echo "✅ $service configured"
+            else
+              echo "⚠️ $service not found in monitoring configuration"
+            fi
+          done
+
+          # Check scrape targets
+          SCRAPE_TARGETS=$(grep -A 5 "scrape_configs:" monitoring/prometheus.yml | grep -c "job_name:")
+          echo "🎯 Found $SCRAPE_TARGETS scrape targets"
+
+          if [ $SCRAPE_TARGETS -gt 0 ]; then
+            echo "✅ Monitoring targets configured"
+          else
+            echo "❌ No monitoring targets configured"
+          fi
+
+  monitoring-alerts:
+    runs-on: ubuntu-latest
+    needs: alert-rules-validation
+    if: needs.alert-rules-validation.outputs.alert-rules-status == 'success' && (github.event_name == 'workflow_dispatch' && github.event.inputs.monitoring_action == 'alerts')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check monitoring alerts
+        run: |
+          echo "🔔 Checking monitoring alerts..."
+
+          # List all configured alerts
+          echo "📋 Configured alerts:"
+          grep "alert:" monitoring/alert_rules.yml | sed 's/alert: //'
+
+          # Check for critical alerts
+          CRITICAL_ALERTS=$(grep -A 5 "severity: critical" monitoring/alert_rules.yml | grep "alert:" | sed 's/alert: //')
+          if [ -n "$CRITICAL_ALERTS" ]; then
+            echo "⚠️ Critical alerts configured:"
+            echo "$CRITICAL_ALERTS"
+          fi
+
+          # Check for warning alerts
+          WARNING_ALERTS=$(grep -A 5 "severity: warning" monitoring/alert_rules.yml | grep "alert:" | sed 's/alert: //')
+          if [ -n "$WARNING_ALERTS" ]; then
+            echo "⚠️ Warning alerts configured:"
+            echo "$WARNING_ALERTS"
+          fi
+
+  monitoring-validation:
+    runs-on: ubuntu-latest
+    needs:
+      [
+        prometheus-validation,
+        alert-rules-validation,
+        grafana-dashboards-validation,
+        slo-validation,
+        monitoring-health-check,
+        monitoring-alerts,
+      ]
+    if: always()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate monitoring setup
+        run: |
+          echo "🔐 Validating monitoring configuration..."
+
+          # Check if all monitoring components are present
+          MONITORING_COMPONENTS=(
+            "prometheus.yml"
+            "alert_rules.yml"
+            "grafana/dashboards"
+            "grafana/provisioning"
+          )
+
+          MISSING_COMPONENTS=0
+          for component in "${MONITORING_COMPONENTS[@]}"; do
+            if [ ! -e "monitoring/$component" ]; then
+              echo "❌ Missing component: $component"
+              MISSING_COMPONENTS=1
+            fi
+          done
+
+          if [ $MISSING_COMPONENTS -eq 0 ]; then
+            echo "✅ All monitoring components present"
+          else
+            echo "❌ Some monitoring components missing"
+          fi
+
+          # Check monitoring coverage
+          SCRAPE_JOBS=$(grep "job_name:" monitoring/prometheus.yml | wc -l)
+          ALERT_RULES=$(grep "alert:" monitoring/alert_rules.yml | wc -l)
+          DASHBOARDS=$(find monitoring/grafana/dashboards -name "*.json" | wc -l)
+
+          echo "📊 Monitoring coverage:"
+          echo "- Scrape jobs: $SCRAPE_JOBS"
+          echo "- Alert rules: $ALERT_RULES"
+          echo "- Dashboards: $DASHBOARDS"
+
+  notification:
+    runs-on: ubuntu-latest
+    needs:
+      [
+        prometheus-validation,
+        alert-rules-validation,
+        grafana-dashboards-validation,
+        slo-validation,
+        monitoring-health-check,
+        monitoring-alerts,
+        monitoring-validation,
+      ]
+    if: always()
+    steps:
+      - name: Send monitoring notification
+        run: |
+          echo "📢 Sending monitoring notification..."
+
+          # Check if Slack webhook URL is available
+          if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+            ACTION="${{ github.event.inputs.monitoring_action || 'validate' }}"
+            
+            if [ "${{ needs.prometheus-validation.outputs.prometheus-status }}" = "success" ] &&
+               [ "${{ needs.alert-rules-validation.outputs.alert-rules-status }}" = "success" ] &&
+               [ "${{ needs.monitoring-validation.result }}" = "success" ]; then
+              if [ "$ACTION" = "validate" ]; then
+                MESSAGE="🔐 Monitoring validation completed! ✅ Prometheus and alert rules validated"
+              elif [ "$ACTION" = "alerts" ]; then
+                MESSAGE="🔔 Monitoring alerts checked! ✅ Alert rules configured and validated"
+              elif [ "$ACTION" = "dashboards" ]; then
+                MESSAGE="📊 Grafana dashboards validated! ✅ Dashboards configured and ready"
+              elif [ "$ACTION" = "slo" ]; then
+                MESSAGE="🎯 SLO validation completed! ✅ Service Level Objectives configured"
+              elif [ "$ACTION" = "health" ]; then
+                MESSAGE="🩺 Monitoring health check passed! ✅ All monitoring services healthy"
+              fi
+            else
+              MESSAGE="⚠️ Monitoring operation completed with issues. Please review the logs for details."
+            fi
+            
+            curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+              -H 'Content-type: application/json' \
+              -d "{\"text\":\"$MESSAGE\"}" \
+              --max-time 30
+          else
+            echo "📢 Slack webhook URL not configured, skipping notification"
+          fi

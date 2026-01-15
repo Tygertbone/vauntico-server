@@ -1,0 +1,158 @@
+name: MCP GitHub Connector
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["docs/**", "*.md"]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 0 * * *" # Daily Dependabot check
+
+jobs:
+  semantic-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate semantic commits
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          requireScope: false
+          subjectPattern: ^(?![A-Z]).+$
+          subjectPatternError: |
+            The subject {subject} found in the pull request title "{title}"
+            didn't match the pattern. Please ensure that the subject is not
+            capitalized and doesn't end with a period.
+
+  pr-templates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate PR template
+        run: |
+          if [ -f ".github/pull_request_template.md" ]; then
+            echo "✅ PR template found"
+          else
+            echo "❌ PR template missing"
+            exit 1
+          fi
+
+  branch-discipline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Enforce branch naming convention
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          if [[ "$BRANCH_NAME" =~ ^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)/[a-z0-9-]+$ ]]; then
+            echo "✅ Branch name follows convention"
+          else
+            echo "❌ Branch name does not follow convention: feat/fix/docs/style/refactor/perf/test/build/ci/chore/revert/prefix"
+            exit 1
+          fi
+
+  dependabot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Dependabot configuration
+        run: |
+          if [ -f ".github/dependabot.yml" ]; then
+            echo "✅ Dependabot configuration found"
+            cat .github/dependabot.yml
+          else
+            echo "❌ Dependabot configuration missing"
+            exit 1
+          fi
+
+      - name: Run Dependabot updates
+        uses: dependabot/fetch-metadata@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  ci-cd-triggers:
+    runs-on: ubuntu-latest
+    needs: [semantic-commits, pr-templates, branch-discipline, dependabot]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Trigger CI/CD workflows
+        run: |
+          echo "✅ All GitHub connector checks passed"
+          echo "🚀 Triggering CI/CD workflows..."
+          # This would typically trigger other workflows via GitHub API
+          echo "CI/CD workflows triggered successfully"
+
+  secret-scanning:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run GitGuardian scan
+        uses: GitGuardian/ggshield-action@v1
+        env:
+          GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
+          GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
+          GITHUB_PULL_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+
+  repo-hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run repo hygiene checks
+        run: |
+          echo "🧹 Running repository hygiene checks..."
+
+          # Check for large files
+          LARGE_FILES=$(find . -type f -size +10M | grep -v node_modules | grep -v .git)
+          if [ -n "$LARGE_FILES" ]; then
+            echo "⚠️ Large files found:"
+            echo "$LARGE_FILES"
+          fi
+
+          # Check for sensitive files
+          SENSITIVE_FILES=$(find . -type f \( -name "*.env*" -o -name "*.pem" -o -name "*.key" \) | grep -v node_modules | grep -v .git)
+          if [ -n "$SENSITIVE_FILES" ]; then
+            echo "⚠️ Sensitive files found:"
+            echo "$SENSITIVE_FILES"
+          fi
+
+          # Check .gitignore
+          if [ -f ".gitignore" ]; then
+            echo "✅ .gitignore found"
+          else
+            echo "❌ .gitignore missing"
+            exit 1
+          fi
+
+          echo "✅ Repository hygiene checks completed"

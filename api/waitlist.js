@@ -1,9 +1,15 @@
-const fs = require("fs").promises;
-const path = require("path");
-const { Resend } = require("resend");
+import fs from "fs/promises";
+import path from "path";
+import { Resend } from "resend";
 
 // Initialize Resend with API key from environment
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Simple logger for this API endpoint
+const logger = {
+  info: (message) => console.log(message),
+  error: (message) => console.error(message),
+};
 
 // Simple file-based storage for waitlist
 const filePath = path.join(process.cwd(), "public", "waitlist.json");
@@ -99,9 +105,9 @@ module.exports = async (req, res) => {
           </div>
         `,
       });
-      console.log(`✅ Confirmation email sent to ${email}`);
+      logger.info(`✅ Confirmation email sent to ${email}`);
     } catch (emailError) {
-      console.error("Email send error:", emailError);
+      logger.error("Email send error:", emailError);
       // Continue even if email fails - user is still added to waitlist
     }
 
@@ -112,7 +118,7 @@ module.exports = async (req, res) => {
       message: `Welcome! You're #${newEntry.position} on the waitlist. Check your email for confirmation.`,
     });
   } catch (error) {
-    console.error("Waitlist error:", error);
+    logger.error("Waitlist error:", error);
     res.status(500).json({ error: "Server error" });
   }
 };

@@ -96,7 +96,7 @@ cat > "$BACKUP_DIR/new-env-template" << EOF
 # WARNING: Replace placeholder values with actual secrets from secure source
 
 # Database Configuration (Neon.tech PostgreSQL)
-DATABASE_URL="postgresql://neondb_owner_new:${NEW_DB_PASSWORD}@ep-sparkling-bush-ahi9wjg6-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require"
+DATABASE_URL="postgresql://neondb_owner_new:${NEW_DB_PASSWORD}@YOUR_NEON_HOST/neondb?sslmode=require"
 
 # API Keys (Store in AWS Secrets Manager or GitHub Actions secrets)
 RESEND_API_KEY="re_NEW_SECURE_API_KEY_HERE"

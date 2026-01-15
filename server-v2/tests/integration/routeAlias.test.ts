@@ -97,14 +97,22 @@ describe("Route Alias Mapping Validation", () => {
       ];
 
       for (const invalidAlias of invalidAliases) {
+        const aliasToTest = (invalidAlias.alias ?? "/invalid") as string; // Handle null/undefined
         const response = await request(app)
-          .get(invalidAlias.alias)
+          .get(aliasToTest)
           .set("Authorization", "Bearer test-valid-key")
           .expect(400);
 
         expect(response.body).toHaveProperty("error");
         expect(response.body.error).toHaveProperty("code");
-        expect(["INVALID_ALIAS_FORMAT", "INVALID_CANONICAL_PATH", "NULL_ALIAS", "UNDEFINED_ALIAS", "NON_STRING_ALIAS", "EMPTY_CANONICAL_PATH"]).toContain(response.body.error.code);
+        expect([
+          "INVALID_ALIAS_FORMAT",
+          "INVALID_CANONICAL_PATH",
+          "NULL_ALIAS",
+          "UNDEFINED_ALIAS",
+          "NON_STRING_ALIAS",
+          "EMPTY_CANONICAL_PATH",
+        ]).toContain(response.body.error.code);
       }
     });
 
@@ -138,9 +146,11 @@ describe("Route Alias Mapping Validation", () => {
         expect(response.body).toHaveProperty("deprecated");
         expect(response.body).toHaveProperty("warning");
         expect(response.body).toHaveProperty("deprecationDate");
-        
+
         if (deprecatedAlias.deprecationDate) {
-          expect(response.body.deprecationDate).toBe(deprecatedAlias.deprecationDate);
+          expect(response.body.deprecationDate).toBe(
+            deprecatedAlias.deprecationDate
+          );
         }
 
         expect(response.body.canonicalPath).toBe(deprecatedAlias.canonical);
@@ -159,7 +169,7 @@ describe("Route Alias Mapping Validation", () => {
       }));
 
       // Test all aliases concurrently
-      const requests = aliases.map(alias =>
+      const requests = aliases.map((alias) =>
         request(app)
           .get(alias.alias)
           .set("Authorization", "Bearer test-valid-key")
@@ -171,7 +181,7 @@ describe("Route Alias Mapping Validation", () => {
       const avgResponseTime = (endTime - startTime) / aliases.length;
 
       expect(responses).toHaveLength(aliases.length);
-      responses.forEach(response => {
+      responses.forEach((response) => {
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty("canonicalPath");
       });
@@ -231,7 +241,9 @@ describe("Route Alias Mapping Validation", () => {
         deprecated: true,
         warning: "Use /api/v2/new-feature instead",
         deprecationDate: new Date().toISOString(),
-        sunsetDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
+        sunsetDate: new Date(
+          Date.now() + 90 * 24 * 60 * 60 * 1000
+        ).toISOString(),
       };
 
       const deprecationResponse = await request(app)
@@ -277,7 +289,7 @@ describe("Route Alias Mapping Validation", () => {
       ];
 
       const responses = await Promise.all(
-        circularAliases.map(alias =>
+        circularAliases.map((alias) =>
           request(app)
             .get(alias.alias)
             .set("Authorization", "Bearer test-valid-key")
@@ -285,7 +297,7 @@ describe("Route Alias Mapping Validation", () => {
         )
       );
 
-      responses.forEach(response => {
+      responses.forEach((response) => {
         expect(response.status).toBe(200);
       });
 
@@ -312,14 +324,14 @@ describe("Route Alias Mapping Validation", () => {
 
     it("should handle concurrent route alias modifications safely", async () => {
       const aliasId = "/api/v2/test-alias";
-      
+
       // Simulate concurrent modifications
       const modifications = Array.from({ length: 3 }, (_, index) => ({
         description: `Updated description ${index}`,
         priority: index % 2 === 0 ? "high" : "normal",
-      });
+      }));
 
-      const promises = modifications.map(mod =>
+      const promises = modifications.map((mod) =>
         request(app)
           .patch(`/api/route-aliases/${aliasId}`)
           .set("Authorization", "Bearer admin-key")
@@ -328,10 +340,10 @@ describe("Route Alias Mapping Validation", () => {
       );
 
       const results = await Promise.allSettled(promises);
-      
+
       // At least one should succeed, but conflicts should be handled
-      const successful = results.filter(r => r.status === 'fulfilled');
-      const conflicts = results.filter(r => r.status === 'rejected');
+      const successful = results.filter((r) => r.status === "fulfilled");
+      const conflicts = results.filter((r) => r.status === "rejected");
 
       expect(successful.length + conflicts.length).toBe(3);
       expect(conflicts.length).toBeGreaterThan(0);

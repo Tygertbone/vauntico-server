@@ -1,0 +1,74 @@
+name: Semantic Commit Validation
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  semantic-commit-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install commitlint
+        run: npm install -g @commitlint/cli @commitlint/config-conventional
+
+      - name: Run commitlint validation
+        run: |
+          echo "🔍 Running semantic commit validation..."
+
+          # Check if commitlint config exists
+          if [ -f ".commitlintrc.json" ]; then
+            echo "✅ commitlint configuration found"
+          else
+            echo "⚠️  No .commitlintrc.json found - creating default"
+            echo 'module.exports = { extends: ["@commitlint/config-conventional"] }' > .commitlintrc.json
+          fi
+
+          # Run commitlint on all commits in this PR
+          npx commitlint --from origin/main HEAD~1 --verbose
+
+          # Check for conventional commit format violations
+          if [ $? -ne 0 ]; then
+            echo ""
+            echo "❌ SEMANTIC COMMIT VALIDATION FAILED!"
+            echo "Found non-conventional commit messages"
+            echo ""
+            echo "📋 Please follow conventional commit format:"
+            echo "  feat: new feature"
+            echo "  fix: bug fix"
+            echo "  docs: documentation changes"
+            echo "  style: code formatting changes"
+            echo "  refactor: code refactoring"
+            echo "  test: adding or updating tests"
+            echo "  chore: maintenance tasks"
+            echo ""
+            echo "📖 See: https://www.conventionalcommits.org/en/v1.0.0/"
+            exit 1
+          else
+            echo ""
+            echo "✅ All commits follow conventional format!"
+          fi
+
+      # Additional check for scope consistency
+      - name: Validate package.json for proper naming
+        run: |
+          echo "🔍 Checking package.json structure..."
+
+          # Check if package name follows kebab-case
+          PACKAGE_NAME=$(node -e "console.log(require('./package.json').name)")
+          if [[ ! "$PACKAGE_NAME" =~ ^[a-z][a-z0-9-]*$ ]]; then
+            echo "❌ Package name '$PACKAGE_NAME' contains uppercase letters or invalid characters"
+            echo "Package names should be kebab-case (lowercase, numbers, hyphens only)"
+            exit 1
+          else
+            echo "✅ Package name '$PACKAGE_NAME' follows kebab-case convention"
+          fi

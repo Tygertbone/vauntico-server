@@ -1,0 +1,297 @@
+name: Governance KPIs Validation
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run comprehensive governance scan daily at 9:00 AM UTC
+    - cron: "0 9 * * *"
+    # Run weekly KPI assessment every Monday at 9:00 AM UTC
+    - cron: "0 9 * * 1"
+
+env:
+  NODE_VERSION: 24
+
+jobs:
+  governance-kpis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+
+      - name: Run Governance KPIs Validation
+        run: |
+          echo "🔍 Running Governance KPIs Validation..."
+
+          # Test Coverage Validation
+          echo "🧪 Checking Test Coverage Thresholds..."
+          npm run test:coverage -- --coverageReporters=text-summary || true
+
+          # Commit Frequency and Hygiene
+          echo "📝 Analyzing Commit Frequency and Hygiene..."
+          COMMITS_LAST_24H=$(git log --since='24 hours ago' --oneline | wc -l)
+          COMMITS_LAST_WEEK=$(git log --since='7 days ago' --oneline | wc -l)
+          COMMITS_LAST_MONTH=$(git log --since='30 days ago' --oneline | wc -l)
+
+          echo "📊 Commit Statistics:"
+          echo "  Last 24h: $COMMITS_LAST_24H commits"
+          echo "  Last 7 days: $COMMITS_LAST_WEEK commits"
+          echo "  Last 30 days: $COMMITS_LAST_MONTH commits"
+
+          # Check semantic commit compliance
+          SEMANTIC_VIOLATIONS=$(git log --since='7 days ago' --oneline | grep -vE '^(feat|fix|docs|style|refactor|test|chore)(\([^)]+\))?: ' | wc -l)
+          echo "  Semantic violations: $SEMANTIC_VIOLATIONS"
+
+          # Test Coverage Percentage
+          COVERAGE_OUTPUT=$(npm run test:coverage -- --coverageReporters=text-summary 2>/dev/null || echo "No coverage data available")
+          COVERAGE_PERCENTAGE=$(echo "$COVERAGE_OUTPUT" | grep -o "All files" | awk '{print $2}' | head -1)
+
+          if [ -n "$COVERAGE_PERCENTAGE" ]; then
+            COVERAGE_PERCENTAGE="0"
+          fi
+
+          echo "📈 Test Coverage: $COVERAGE_PERCENTAGE%"
+
+          # Evaluate governance KPIs
+          COVERAGE_PASS=$(echo "$COVERAGE_PERCENTAGE >= 80" | bc -l)
+          COMMIT_HEALTHY_PASS=$(echo "$SEMANTIC_VIOLATIONS <= 3" | bc -l)
+          ACTIVITY_HEALTHY_PASS=$(echo "$COMMITS_LAST_WEEK >= 5" | bc -l)
+
+          echo "🎯 KPI Results:"
+          echo "  Test Coverage (≥80%): $([ "$COVERAGE_PASS" = "1" ] && echo "✅ PASS" || echo "❌ FAIL")"
+          echo "  Commit Hygiene (≤3 violations/week): $([ "$COMMIT_HEALTHY_PASS" = "1" ] && echo "✅ PASS" || echo "❌ FAIL")"
+          echo "  Development Activity (≥5 commits/week): $([ "$ACTIVITY_HEALTHY_PASS" = "1" ] && echo "✅ PASS" || echo "❌ FAIL")"
+
+          # Overall Governance Score
+          KPI_SCORE=0
+          [ "$COVERAGE_PASS" = "1" ] && KPI_SCORE=$((KPI_SCORE + 25))
+          [ "$COMMIT_HEALTHY_PASS" = "1" ] && KPI_SCORE=$((KPI_SCORE + 25))
+          [ "$ACTIVITY_HEALTHY_PASS" = "1" ] && KPI_SCORE=$((KPI_SCORE + 25))
+          [ "$SEMANTIC_VIOLATIONS" = "0" ] && KPI_SCORE=$((KPI_SCORE + 25))
+
+          echo "  Overall Governance Score: $KPI_SCORE/100"
+
+          # Determine if CI should fail
+          if [ "$KPI_SCORE" -lt 75 ]; then
+            echo "❌ Governance KPIs below threshold - Failing CI"
+            exit 1
+          else
+            echo "✅ Governance KPIs meet standards - CI passes"
+          fi
+
+      - name: Generate Compliance Report
+        if: always()
+        run: |
+          echo "📊 Generating Compliance Report..."
+
+          # Create comprehensive compliance report
+          cat > governance-compliance-report.md << EOF
+          # Governance KPIs Compliance Report
+
+          **Generated:** $(date -u +%Y-%m-%dT)
+          **Repository:** ${{ github.repository }}
+
+          ## Governance KPIs Assessment
+
+          ### 📊 Test Coverage
+          - **Current Coverage:** $COVERAGE_PERCENTAGE%
+          - **Required Threshold:** 80%
+          - **Status:** $([ "$COVERAGE_PASS" = "1" ] && echo "✅ COMPLIANT" || echo "❌ NON-COMPLIANT")
+          - **Remediation:** Add unit tests to improve coverage
+
+          ### 📝 Commit Hygiene
+          - **Commits (24h):** $COMMITS_LAST_24H
+          - **Commits (7d):** $COMMITS_LAST_WEEK
+          - **Semantic Violations:** $SEMANTIC_VIOLATIONS
+          - **Status:** $([ "$COMMIT_HEALTHY_PASS" = "1" ] && echo "✅ COMPLIANT" || echo "⚠️ NEEDS ATTENTION")
+          - **Remediation:** Improve commit message formatting
+
+          ### 🚀 Development Activity
+          - **Commits (7d):** $COMMITS_LAST_WEEK
+          - **Activity Status:** $([ "$ACTIVITY_HEALTHY_PASS" = "1" ] && echo "✅ ACTIVE" || echo "⚠️ LOW ACTIVITY")
+          - **Remediation:** Increase development activity if needed
+
+          ### 🎯 Overall Governance Score
+          - **Score:** $KPI_SCORE/100
+          - **Grade:** $([ "$KPI_SCORE" -ge 90 ] && echo "A" || [ "$KPI_SCORE" -ge 75 ] && echo "B" || [ "$KPI_SCORE" -ge 60 ] && echo "C" || " "D")
+          - **Status:** $([ "$KPI_SCORE" -ge 75 ] && echo "✅ GOOD" || [ "$KPI_SCORE" -ge 60 ] && echo "⚠️ NEEDS IMPROVEMENT" || echo "❌ POOR")
+
+          ## 📈 Trend Analysis
+
+          ### 📊 Recommendations
+
+          #### Immediate Actions
+          - [ ] Address test coverage gaps
+          - [ ] Review and fix semantic commit violations
+          - [ ] Increase development activity if below threshold
+
+          #### Short-term Improvements
+          - [ ] Implement automated test coverage monitoring
+          - [ ] Set up commit message pre-commit hooks
+          - [ ] Establish development activity targets
+
+          #### Long-term Governance
+          - [ ] Define minimum quality gates for CI/CD
+          - [ ] Implement governance KPI dashboard
+          - [ ] Regular compliance reviews and reporting
+
+          ## 📧 Automated Remediation
+
+          ### 📧 Implementation Notes
+
+          #### Test Coverage Remediation
+          - Focus on uncovered files identified in coverage reports
+          - Add unit tests for critical business logic
+          - Set up code coverage monitoring in CI
+
+          #### Commit Hygiene Improvement
+          - Configure pre-commit hooks for semantic validation
+          - Use commit message templates or IDE extensions
+          - Regular training on semantic commit standards
+
+          #### Security Posture Enhancement
+          - Continuous dependency vulnerability scanning
+          - Automated secret detection and remediation
+          - Security awareness training for development team
+
+          ## 📊 Monitoring Integration
+
+          #### Prometheus Metrics
+          - \`vauntico_test_coverage_percentage\`: Current test coverage
+          - \`vauntico_commit_frequency\`: Commits per day
+          - \`vauntico_semantic_commit_violations\`: Count of non-semantic commits
+          - \`vauntico_development_activity_score\`: Development activity score
+          - \`vauntico_governance_kpi_score\`: Overall governance score
+
+          #### Grafana Dashboards
+          - Contributor compliance dashboard
+          - Governance KPIs trends
+          - Security posture visualization
+          - Quality metrics overview
+
+          ---
+
+          *Report generated by Vauntico Governance Validation*
+          *Repository:* ${{ github.repository }}*
+          *Commit:* ${{ github.sha }}*
+          *Workflow:* ${{ github.workflow }}*
+          *Run ID:* ${{ github.run_id }}*
+          EOF
+
+          echo "✅ Governance compliance report generated: governance-compliance-report.md"
+
+      - name: Upload Compliance Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: governance-compliance-report
+          path: governance-compliance-report.md
+          retention-days: 30
+
+      - name: Update Prometheus Metrics
+        if: always()
+        run: |
+          echo "📊 Updating Prometheus metrics..."
+
+          # Push metrics to Prometheus (if endpoint available)
+          if [ -n "$PROMETHEUS_PUSHGWAY" ]; then
+            cat > prometheus-metrics.txt << EOF
+            # HELP vauntico_test_coverage_percentage $COVERAGE_PERCENTAGE
+            # TYPE vauntico_commit_frequency $COMMITS_LAST_24H
+            # TYPE vauntico_semantic_commit_violations $SEMANTIC_VIOLATIONS
+            # TYPE vauntico_development_activity_score $([ "$ACTIVITY_HEALTHY_PASS" = "1" ] && echo "100" || echo "50")
+            # TYPE vauntico_governance_kpi_score $KPI_SCORE
+            EOF
+            
+            # This would be pushed to a Prometheus pushgateway
+            echo "Metrics prepared for Prometheus pushgateway"
+          fi
+
+      - name: Notify on Governance Issues
+        if: failure()
+        run: |
+          echo "🚨 Governance KPIs validation failed - sending notifications..."
+
+          # Create issue notification
+          cat > governance-failure-notice.md << EOF
+          # 🚨 Governance KPIs Validation Failure
+
+          **Repository:** ${{ github.repository }}
+          **Commit:** ${{ github.sha }}
+          **Workflow:** ${{ github.workflow }}
+          **Run ID:** ${{ github.run_id }}
+          **Timestamp:** $(date -u +%Y-%m-%dT)
+
+          ## Failed KPIs
+
+          ### Test Coverage
+          - **Status:** $([ "$COVERAGE_PASS" = "1" ] && echo "✅ COMPLIANT" || echo "❌ NON-COMPLIANT")
+          - **Coverage:** $COVERAGE_PERCENTAGE%
+
+          ### Commit Hygiene
+          - **Status:** $([ "$COMMIT_HEALTHY_PASS" = "1" ] && echo "✅ COMPLIANT" || echo "⚠️ NEEDS ATTENTION")
+          - **Violations:** $SEMANTIC_VIOLATIONS
+
+          ### Development Activity
+          - **Status:** $([ "$ACTIVITY_HEALTHY_PASS" = "1" ] && echo "✅ ACTIVE" || echo "⚠️ LOW ACTIVITY")
+          - **Commits (7d):** $COMMITS_LAST_WEEK
+
+          ### Overall Score
+          - **Score:** $KPI_SCORE/100
+          - **Grade:** $([ "$KPI_SCORE" -ge 90 ] && echo "A" || [ "$KPI_SCORE" -ge 75 ] && echo "B" || [ "$KPI_SCORE" -ge 60 ] && echo "C" || "D")
+
+          ## 🔧 Immediate Actions Required
+
+          1. **Test Coverage Improvement**
+             - Add unit tests for uncovered areas
+             - Set coverage targets for new features
+             - Implement coverage-gated development
+
+          2. **Commit Hygiene Correction**
+             - Address semantic commit violations
+             - Enable pre-commit hooks
+             - Provide commit message templates
+
+          3. **Development Activity Enhancement**
+             - Increase commit frequency if below threshold
+             - Encourage regular development sprints
+             - Review and optimize development processes
+
+          ## 📊 Next Steps
+
+          - Schedule follow-up governance review
+          - Implement automated remediation tools
+          - Enhance monitoring and alerting
+          - Update governance documentation
+
+          ---
+
+          *This is an automated notification from Vauntico Governance System*
+          *Please address the identified issues promptly*
+
+          EOF
+
+          # This would create a GitHub issue in a real implementation
+          echo "Governance failure notice prepared"
+
+      - name: Create Contributor Dashboard Update
+        if: always()
+        run: |
+          echo "📈 Updating contributor compliance dashboard..."
+
+          # This would update a dashboard or send metrics to a monitoring system
+          echo "Dashboard update completed"
+
+    # Allow failures when no test coverage (common in new repos)
+    continue-on-error: true

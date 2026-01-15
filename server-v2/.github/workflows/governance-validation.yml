@@ -1,0 +1,59 @@
+name: Governance Validation
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+
+jobs:
+  governance-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ✅ Commit message governance
+      - name: Validate commit messages (semantic)
+        uses: wagoid/commitlint-github-action@v5
+        with:
+          configFile: commitlint.config.js
+
+      # ✅ Code quality governance
+      - name: Run ESLint validation
+        run: npm run lint
+
+      - name: Run Prettier formatting check
+        run: npm run prettier:check
+
+      # ✅ Security governance
+      - name: Run dependency audit
+        run: npm audit --audit-level=moderate
+
+      # ✅ Test coverage governance
+      - name: Run unit tests with coverage
+        run: npm run test:coverage
+
+      # ✅ Governance KPI export
+      - name: Generate compliance report
+        run: npm run governance:export
+        env:
+          REPORT_FORMAT: json
+          REPORT_PATH: ./compliance_reports/latest.json
+
+      # ✅ Upload artifacts for auditing
+      - name: Upload compliance report
+        uses: actions/upload-artifact@v3
+        with:
+          name: compliance-report
+          path: ./compliance_reports/latest.json

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { X, Cookie } from "lucide-react";
 
 const CookieConsentBanner = () => {
@@ -46,7 +46,11 @@ const CookieConsentBanner = () => {
     setShowPreferences(false);
   };
 
-  const savePreferences = (prefs) => {
+  const savePreferences = (prefs: {
+    essential: boolean;
+    analytics: boolean;
+    marketing: boolean;
+  }) => {
     localStorage.setItem("vauntico_cookie_consent", JSON.stringify(prefs));
     localStorage.setItem("vauntico_consent_date", new Date().toISOString());
     setShowBanner(false);
@@ -59,7 +63,7 @@ const CookieConsentBanner = () => {
 
   const initializeAnalytics = () => {
     // Initialize Google Analytics or other services here
-    console.log("Analytics initialized");
+    // Analytics would be initialized here in production
   };
 
   if (!showBanner) return null;

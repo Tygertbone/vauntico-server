@@ -5,7 +5,7 @@ describe("API Key Error Handling Tests", () => {
   describe("Invalid API Key Scenarios", () => {
     it("should reject requests with missing API key", async () => {
       const response = await request(app)
-        .get("/api/trust-score/user_123")
+        .get("/trustscore/user_123")
         .expect(401);
 
       expect(response.body).toHaveProperty("error");
@@ -17,7 +17,7 @@ describe("API Key Error Handling Tests", () => {
 
     it("should reject requests with empty API key", async () => {
       const response = await request(app)
-        .get("/api/trust-score/user_123")
+        .get("/trustscore/user_123")
         .set("Authorization", "Bearer ")
         .expect(401);
 
@@ -26,7 +26,7 @@ describe("API Key Error Handling Tests", () => {
 
     it("should reject requests with malformed API key", async () => {
       const response = await request(app)
-        .get("/api/trust-score/user_123")
+        .get("/trustscore/user_123")
         .set("Authorization", "Bearer invalid_format")
         .expect(401);
 
@@ -36,7 +36,7 @@ describe("API Key Error Handling Tests", () => {
 
     it("should reject requests with revoked API key", async () => {
       const response = await request(app)
-        .get("/api/trust-score/user_123")
+        .get("/trustscore/user_123")
         .set("Authorization", "Bearer revoked_key_123")
         .expect(401);
 
@@ -46,7 +46,7 @@ describe("API Key Error Handling Tests", () => {
 
     it("should reject requests with expired API key", async () => {
       const response = await request(app)
-        .get("/api/trust-score/user_123")
+        .get("/trustscore/user_123")
         .set("Authorization", "Bearer expired_key_123")
         .expect(401);
 
@@ -56,7 +56,7 @@ describe("API Key Error Handling Tests", () => {
 
     it("should reject requests with rate-limited API key", async () => {
       const response = await request(app)
-        .get("/api/trust-score/user_123")
+        .get("/trustscore/user_123")
         .set("Authorization", "Bearer rate_limited_key")
         .expect(429);
 
@@ -66,7 +66,7 @@ describe("API Key Error Handling Tests", () => {
 
     it("should handle API key with insufficient permissions", async () => {
       const response = await request(app)
-        .get("/api/admin/users")
+        .get("/admin/users")
         .set("Authorization", "Bearer read_only_key")
         .expect(403);
 
@@ -96,7 +96,7 @@ describe("API Key Error Handling Tests", () => {
       // Test valid keys
       for (const validKey of validKeys) {
         const response = await request(app)
-          .get("/api/trust-score/validate-key")
+          .get("/trustscore/validate-key")
           .set("Authorization", `Bearer ${validKey}`)
           .expect(200);
 
@@ -108,7 +108,7 @@ describe("API Key Error Handling Tests", () => {
       // Test invalid keys
       for (const invalidKey of invalidKeys) {
         const response = await request(app)
-          .get("/api/trust-score/validate-key")
+          .get("/trustscore/validate-key")
           .set("Authorization", `Bearer ${invalidKey}`)
           .expect(400);
 
@@ -125,8 +125,8 @@ describe("API Key Error Handling Tests", () => {
       // Test rate limiting by making rapid requests
       const requests = Array.from({ length: 10 }, (_, index) =>
         request(app)
-          .get("/api/trust-score/user_123")
-          .set("Authorization", `Bearer ${testKey}`),
+          .get("/trustscore/user_123")
+          .set("Authorization", `Bearer ${testKey}`)
       );
 
       const responses = await Promise.all(requests);
@@ -142,7 +142,7 @@ describe("API Key Error Handling Tests", () => {
 
     it("should track API key usage metrics", async () => {
       const response = await request(app)
-        .get("/api/trust-score/key-usage")
+        .get("/trustscore/key-usage")
         .set("Authorization", "Bearer test-admin-key")
         .expect(200);
 
@@ -166,7 +166,7 @@ describe("API Key Error Handling Tests", () => {
       };
 
       const response = await request(app)
-        .post("/api/admin/keys")
+        .post("/admin/keys")
         .set("Authorization", "Bearer test-admin-key")
         .send(keyData)
         .expect(201);
@@ -186,7 +186,7 @@ describe("API Key Error Handling Tests", () => {
 
     it("should allow user to view their API keys", async () => {
       const response = await request(app)
-        .get("/api/user/keys")
+        .get("/admin/keys")
         .set("Authorization", "Bearer test-user-key")
         .expect(200);
 
@@ -211,7 +211,7 @@ describe("API Key Error Handling Tests", () => {
       };
 
       const response = await request(app)
-        .post("/api/admin/keys/revoke")
+        .post("/admin/keys/revoke")
         .set("Authorization", "Bearer test-admin-key")
         .send(revokeData)
         .expect(200);
@@ -233,7 +233,7 @@ describe("API Key Error Handling Tests", () => {
       };
 
       const response = await request(app)
-        .post("/api/admin/keys/rotate")
+        .post("/admin/keys/rotate")
         .set("Authorization", "Bearer test-admin-key")
         .send(rotationData)
         .expect(200);
@@ -249,7 +249,7 @@ describe("API Key Error Handling Tests", () => {
 
     it("should provide API key usage audit trail", async () => {
       const response = await request(app)
-        .get("/api/admin/keys/test_key_123/audit")
+        .get("/admin/keys/test_key_123/audit")
         .set("Authorization", "Bearer test-admin-key")
         .expect(200);
 
@@ -268,7 +268,7 @@ describe("API Key Error Handling Tests", () => {
   describe("API Key Error Response Format", () => {
     it("should return consistent error response format", async () => {
       const response = await request(app)
-        .get("/api/trust-score/user_123")
+        .get("/trustscore/user_123")
         .set("Authorization", "Bearer invalid_key");
 
       expect(response.status).toBe(401);

@@ -21,13 +21,14 @@ jobs:
           echo "🔍 Validating PR governance compliance..."
 
           # Check if PR has monetization phase selected
-          if [[ "${{ github.event.pull_request.body }}" != *"Phase 1: Foundation"* ]] && \
-             [[ "${{ github.event.pull_request.body }}" != *"Phase 2: B2B API Licensing"* ]] && \
-             [[ "${{ github.event.pull_request.body }}" != *"Phase 3: Enterprise Compliance"* ]] && \
-             [[ "${{ github.event.pull_request.body }}" != *"Phase 4: Creator Economy"* ]] && \
-             [[ "${{ github.event.pull_request.body }}" != *"Phase 5: Vauntico Credits"* ]]; then
+          if [[ "${{ github.event.pull_request.body }}" != *"Monetization-Phase: Foundation"* ]] && \
+             [[ "${{ github.event.pull_request.body }}" != *"Monetization-Phase: B2B API Licensing"* ]] && \
+             [[ "${{ github.event.pull_request.body }}" != *"Monetization-Phase: Enterprise Compliance"* ]] && \
+             [[ "${{ github.event.pull_request.body }}" != *"Monetization-Phase: Creator Economy"* ]] && \
+             [[ "${{ github.event.pull_request.body }}" != *"Monetization-Phase: Vauntico Credits"* ]]; then
             echo "❌ PR missing monetization phase selection"
             echo "::error::PR must specify monetization phase"
+            echo "::error::Process completed with exit code 1."
             exit 1
           fi
 

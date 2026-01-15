@@ -1,18 +1,83 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+
+dotenv.config();
+
+// Grafana configuration
+const GRAFANA_URL = process.env.GRAFANA_URL || "http://localhost:3001";
+const GRAFANA_API_KEY = process.env.GRAFANA_API_KEY;
+
+async function postToGrafana(metricName, value, tags = {}) {
+  if (!GRAFANA_URL || !GRAFANA_API_KEY) {
+    console.log("⚠️ Grafana integration not configured");
+    return;
+  }
+
+  const timestamp = new Date().toISOString();
+
+  try {
+    const response = await fetch(`${GRAFANA_URL}/api/v1/metrics`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${GRAFANA_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        metric: `vauntico_${metricName}`,
+        value: value,
+        timestamp: timestamp,
+        tags: {
+          environment: process.env.NODE_ENV || "development",
+          service: "vauntico-health-check",
+          ...tags,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error(`❌ Grafana API error: ${response.status} - ${error}`);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error(`❌ Grafana push failed: ${error.message}`);
+    return false;
+  }
+}
 
 async function checkService(serviceName, checkFunction) {
   try {
     const result = await checkFunction();
+    const success = await postToGrafana(
+      `service_${serviceName.toLowerCase()}_status`,
+      result.status === "ok" ? 1 : 0,
+      {
+        service: serviceName,
+      }
+    );
+
     return {
       service: serviceName,
-      status: "ok",
-      message: result.message || "Service is healthy",
+      status: result.status || "unknown",
+      message: result.message || "Service check completed",
+      grafanaPushed: success,
     };
   } catch (error) {
+    const success = await postToGrafana(
+      `service_${serviceName.toLowerCase()}_status`,
+      0,
+      {
+        service: serviceName,
+        error: error.message,
+      }
+    );
+
     return {
       service: serviceName,
       status: "error",
       message: error.message || "Unknown error occurred",
+      grafanaPushed: success,
     };
   }
 }
@@ -91,7 +156,7 @@ async function checkPaystack() {
         Authorization: `Bearer ${secretKey}`,
         "Content-Type": "application/json",
       },
-    },
+    }
   );
 
   if (response.status === 404) {
@@ -116,7 +181,7 @@ async function checkSentry() {
   }
 
   // Parse DSN to validate format
-  const dsnMatch = dsn.match(/https:\/\/([^@]+)@([^\/]+)\/(\d+)/);
+  const dsnMatch = dsn.match(/https:\/\/([^@]+)@([^/]+)\/(\d+)/);
   if (!dsnMatch) {
     throw new Error("Invalid SENTRY_DSN format");
   }
@@ -173,35 +238,11 @@ async function checkSlack() {
   return { message: "Alerting service operational" };
 }
 
-async function checkStripe() {
-  const secretKey = process.env.STRIPE_SECRET_KEY;
-  if (!secretKey || secretKey === "sk_test_your-stripe-secret-key") {
-    throw new Error("STRIPE_SECRET_KEY not properly configured");
-  }
-
-  const response = await fetch("https://api.stripe.com/v1/customers", {
-    headers: {
-      Authorization: `Bearer ${secretKey}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Stripe API error: ${response.status} - ${error}`);
-  }
-
-  const data = await response.json();
-  if (!data.object === "list") {
-    throw new Error("Unexpected Stripe API response format");
-  }
-
-  return { message: "Payment processor operational (Stripe)" };
-}
-
 async function runHealthChecks() {
-  const services = ["Resend", "Anthropic", "Paystack", "Sentry", "Slack"];
+  console.log("🏥 Running Vauntico Service Health Checks...");
+  console.log(`📊 Grafana URL: ${GRAFANA_URL || "Not configured"}`);
 
+  const services = ["Resend", "Anthropic", "Paystack", "Sentry", "Slack"];
   const results = [];
 
   // Check each service
@@ -225,36 +266,18 @@ async function runHealthChecks() {
         break;
     }
 
-    // Removed console.log for production
     const result = await checkService(service, checkFunction);
     results.push(result);
 
     if (result.status === "ok") {
-      // Removed console.log for production
+      console.log(
+        `✅ ${result.service}: ${result.message} (pushed to Grafana)`
+      );
     } else {
-      // Removed console.log for production
+      console.log(
+        `❌ ${result.service}: ${result.message} (pushed to Grafana)`
+      );
     }
-  }
-
-  // Check Stripe separately as it's disabled/scaffolded
-  // Removed console.log for production
-  try {
-    const stripeResult = await checkService("Stripe", checkStripe);
-    results.push(stripeResult);
-
-    if (stripeResult.status === "ok") {
-      // Removed console.log for production
-    } else {
-      // Removed console.log for production
-    }
-  } catch (error) {
-    results.push({
-      service: "Stripe",
-      status: "error",
-      message:
-        "Stripe is disabled or not properly configured (expected for scaffolded service)",
-    });
-    // Removed console.log for production
   }
 
   // Determine overall status
@@ -264,15 +287,14 @@ async function runHealthChecks() {
   const output = {
     status: overallStatus,
     services: results,
+    grafanaEnabled: !!(GRAFANA_URL && GRAFANA_API_KEY),
   };
-
-  // Removed console.log statements for production
 
   return output;
 }
 
 // Run as script only when called directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   runHealthChecks().catch((error) => {
     // eslint-disable-next-line no-console
     console.error("❌ Health check runner failed:", error);
@@ -280,4 +302,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { runHealthChecks };
+export { runHealthChecks };

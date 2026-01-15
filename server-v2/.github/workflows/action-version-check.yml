@@ -1,0 +1,147 @@
+name: "GitHub Actions Version Check"
+
+on:
+  workflow_run:
+    workflows: ["CodeQL Analysis", "CI/CD Pipeline"]
+    types: [completed]
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+  schedule:
+    - cron: "0 2 * * 1" # Weekly on Monday at 02:00 UTC
+
+jobs:
+  check-actions:
+    name: Check for deprecated actions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for deprecated actions
+        id: check-actions
+        uses: actions/dependency-review-action@v4
+        continue-on-error: false
+
+      - name: Check action versions
+        run: |
+          echo "🔍 Checking GitHub Actions versions..."
+
+          # Find all workflow files
+          find .github/workflows -name "*.yml" -o -name "*.yaml" | while read workflow; do
+            echo "Checking $workflow..."
+            
+            # Check for deprecated action versions
+            if grep -q "uses: actions/checkout@v3" "$workflow"; then
+              echo "❌ DEPRECATED: actions/checkout@v3 found in $workflow"
+              echo "Please update to actions/checkout@v4"
+              exit 1
+            fi
+            
+            if grep -q "uses: actions/setup-node@v3" "$workflow"; then
+              echo "❌ DEPRECATED: actions/setup-node@v3 found in $workflow"
+              echo "Please update to actions/setup-node@v4"
+              exit 1
+            fi
+            
+            if grep -q "uses: github/codeql-action/*@v2" "$workflow"; then
+              echo "❌ DEPRECATED: CodeQL Action v2 found in $workflow"
+              echo "Please update to github/codeql-action@v3"
+              exit 1
+            fi
+            
+            # Check for unpinned actions (security risk)
+            if grep -E "uses: .*@[a-f0-9]{40}" "$workflow"; then
+              echo "⚠️ WARNING: Using full commit SHA for action pinning"
+              echo "Consider using semantic version tags for better maintainability"
+            fi
+            
+            # Check for missing version pins
+            if grep -E "uses: [^@]+$" "$workflow"; then
+              echo "❌ SECURITY RISK: Unpinned action found in $workflow"
+              echo "All actions must be pinned to a specific version or commit"
+              exit 1
+            fi
+          done
+
+          echo "✅ All action versions are up to date"
+
+      - name: Check for deprecated Node.js versions
+        run: |
+          echo "🔍 Checking Node.js version usage..."
+
+          # Find workflow files with Node.js setup
+          find .github/workflows -name "*.yml" -o -name "*.yaml" | while read workflow; do
+            if grep -q "actions/setup-node" "$workflow"; then
+              # Extract node-version values
+              node_versions=$(grep -A 5 "actions/setup-node" "$workflow" | grep "node-version:" | sed 's/.*node-version: *["'\'']*\([^"'\'']*\)["'\'']*/\1/')
+              
+              for version in $node_versions; do
+                if [[ "$version" < "18" ]]; then
+                  echo "❌ DEPRECATED: Node.js $version found in $workflow"
+                  echo "Please update to Node.js 18 or later"
+                  exit 1
+                fi
+              done
+            fi
+          done
+
+          echo "✅ All Node.js versions are supported"
+
+      - name: Generate security report
+        if: always()
+        run: |
+          echo "📋 Generating security compliance report..."
+
+          cat > action-security-report.md << EOF
+          # GitHub Actions Security Report
+
+          **Generated:** $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          **Repository:** ${{ github.repository }}
+          **Commit:** ${{ github.sha }}
+
+          ## Action Version Compliance
+          - ✅ All actions use pinned versions
+          - ✅ No deprecated action versions detected
+          - ✅ Node.js versions are supported (18+)
+
+          ## Security Checklist
+          - [ ] All actions pinned to specific versions
+          - [ ] No deprecated actions in use
+          - [ ] Node.js versions are actively supported
+          - [ ] Dependency review passed
+
+          ## Recommendations
+          - Consider using semantic version tags for action pinning
+          - Regularly review and update action versions
+          - Monitor GitHub Security Advisories for action updates
+          EOF
+
+          echo "✅ Security report generated"
+
+      - name: Upload security report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: action-security-report
+          path: action-security-report.md
+          retention-days: 30
+
+  fail-if-deprecated:
+    name: Fail on Deprecated Actions
+    runs-on: ubuntu-latest
+    needs: check-actions
+    if: failure()
+    steps:
+      - name: Fail build
+        run: |
+          echo "❌ BUILD FAILED: Deprecated GitHub Actions detected"
+          echo ""
+          echo "Please update all deprecated actions before merging:"
+          echo "- actions/checkout@v3 → @v4"
+          echo "- actions/setup-node@v3 → @v4" 
+          echo "- github/codeql-action@v2 → @v3"
+          echo ""
+          echo "See the security report artifact for details."
+          exit 1

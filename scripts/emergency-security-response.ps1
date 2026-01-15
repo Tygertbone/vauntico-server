@@ -107,7 +107,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO neondb_owner_ne
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO neondb_owner_new;
 
 -- 5. Test connection with new user (optional)
--- \c postgresql://neondb_owner_new:$NewDbPassword@ep-sparkling-bush-ahi9wjg6-pooler.c-3.us-east-1.aws.neon.tech/neondb
+-- \c postgresql://neondb_owner_new:$NewDbPassword@YOUR_NEON_HOST/neondb
 
 -- 6. After confirming new user works, drop old user
 -- DROP USER neondb_owner;
@@ -128,7 +128,7 @@ $envTemplate = @"
 # WARNING: Replace placeholder values with actual secrets from secure source
 
 # Database Configuration (Neon.tech PostgreSQL)
-DATABASE_URL="postgresql://neondb_owner_new:$NewDbPassword@ep-sparkling-bush-ahi9wjg6-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require"
+DATABASE_URL="postgresql://neondb_owner_new:$NewDbPassword@YOUR_NEON_HOST/neondb?sslmode=require"
 
 # API Keys (Store in AWS Secrets Manager or GitHub Actions secrets)
 RESEND_API_KEY="re_NEW_SECURE_API_KEY_HERE"

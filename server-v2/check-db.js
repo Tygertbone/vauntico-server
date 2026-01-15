@@ -1,5 +1,7 @@
-require("dotenv").config();
-const { Pool } = require("pg");
+import dotenv from "dotenv";
+import { Pool } from "pg";
+
+dotenv.config();
 
 async function checkDatabase() {
   const dbConfig = {
@@ -28,14 +30,14 @@ async function checkDatabase() {
 
     console.log(
       "Existing tables:",
-      result.rows.map((r) => r.table_name),
+      result.rows.map((r) => r.table_name)
     );
 
     if (result.rows.length === 0) {
       console.log("✅ Database is empty, ready for migrations");
     } else {
       console.log(
-        "⚠️  Database has existing tables. Some may need to be dropped first",
+        "⚠️  Database has existing tables. Some may need to be dropped first"
       );
     }
   } catch (error) {

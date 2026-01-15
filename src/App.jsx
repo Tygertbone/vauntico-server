@@ -1,5 +1,5 @@
 ﻿import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { useState, lazy, Suspense } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { FullLogo } from "./components/Logo";
@@ -35,7 +35,7 @@ const Referrals = lazy(() => import("./pages/Referrals"));
 const PaymentBridgeLanding = lazy(() => import("./pages/PaymentBridgeLanding"));
 const VerificationLanding = lazy(() => import("./pages/VerificationLanding"));
 const ContentRecoveryLanding = lazy(
-  () => import("./pages/ContentRecoveryLanding"),
+  () => import("./pages/ContentRecoveryLanding")
 );
 
 // Service pages (require auth)

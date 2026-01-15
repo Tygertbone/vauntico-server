@@ -18,33 +18,6 @@ import {
   trackRouteAliasUsage,
 } from "./middleware/routeAliasMiddleware";
 
-// Initialize Sentry
-Sentry.init({
-  dsn: process.env.SENTRY_DSN || "",
-  environment: process.env.NODE_ENV || "development",
-  integrations: [
-    // HTTP integration for outgoing requests
-    Sentry.httpIntegration(),
-    // PostgreSQL integration for database calls
-    Sentry.postgresIntegration(),
-  ],
-  // Performance monitoring (sampled for free tier)
-  tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
-  beforeSend: (event: Sentry.ErrorEvent, hint?: Sentry.EventHint) => {
-    // Don't capture health check errors
-    if (event.request?.url?.includes("/health")) {
-      return null;
-    }
-    // Add service identification
-    event.tags = {
-      ...event.tags,
-      service: "vauntico-trust-score-backend",
-      version: process.env.npm_package_version || "2.0.0",
-    };
-    return event;
-  },
-});
-
 // Routes
 import healthRoutes from "./routes/health";
 import authRoutes from "./routes/auth";
@@ -59,6 +32,7 @@ import productRoutes from "./routes/products";
 import widgetRoutes from "./routes/widget";
 import enterpriseComplianceRoutes from "./routes/enterprise-compliance";
 import sacredFeaturesRoutes from "./routes/sacred-features";
+import governanceRoutes from "./routes/governance";
 
 const app: express.Application = express();
 
@@ -153,9 +127,11 @@ app.use("/trustscore", trustScoreRoutes);
 app.use("/admin", adminRoutes);
 app.use("/stripe", stripeWebhookRoutes);
 app.use("/subscriptions", subscriptionRoutes);
+app.use("/api/paystack", subscriptionRoutes); // Paystack webhook route
 app.use("/api/plans", plansRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/v1/enterprise", enterpriseComplianceRoutes);
+app.use("/api/v1/governance", governanceRoutes);
 app.use("/", sacredFeaturesRoutes); // Sacred features routes (includes both sacred and enterprise aliases)
 app.use("/monitoring", monitoringRoutes);
 app.use("/", widgetRoutes);

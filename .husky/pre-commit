@@ -1,9 +1,65 @@
 #!/bin/sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo "🔍 Running Vauntico Standards Enforcement pre-commit checks..."
+
+# Check for ignored files
 if git diff --cached --name-only | grep -E '\.env|\.log|dist/|build/'; then
   echo "⚠️ Warning: You are trying to commit ignored files!"
   exit 1
 fi
 
-npm run lint && npm run tsc:check
+# Run comprehensive standards enforcement
+echo "📋 Running standards enforcement..."
+node scripts/enforce-standards.js
+standards_exit_code=$?
+
+if [ $standards_exit_code -ne 0 ]; then
+  echo ""
+  echo "❌ STANDARDS ENFORCEMENT FAILED"
+  echo ""
+  echo "Please fix the following issues before committing:"
+  echo "1. Run 'node scripts/enforce-standards.js' to see detailed issues"
+  echo "2. Fix all critical errors (blockers)"
+  echo "3. Address warnings to improve code quality"
+  echo ""
+  echo "Common issues and fixes:"
+  echo "- ESLint errors: Run 'npm run lint:fix' in server-v2"
+  echo "- Console usage: Replace console.log with logger from server-v2/src/utils/logger.ts"
+  echo "- require() statements: Use ES module imports instead"
+  echo "- Secret exposure: Remove hardcoded secrets and use environment variables"
+  echo ""
+  exit 1
+fi
+
+# Run project-specific lint and type checks
+echo "🔧 Running project-specific checks..."
+cd server-v2
+npm run lint
+lint_exit_code=$?
+
+if [ $lint_exit_code -ne 0 ]; then
+  echo ""
+  echo "❌ LINT FAILED"
+  echo "Run 'npm run lint:fix' to auto-fix some issues"
+  exit 1
+fi
+
+# Run TypeScript check if available
+if [ -f "package.json" ] && grep -q "tsc:check" package.json; then
+  npm run tsc:check
+  tsc_exit_code=$?
+  
+  if [ $tsc_exit_code -ne 0 ]; then
+    echo ""
+    echo "❌ TYPE CHECK FAILED"
+    echo "Fix TypeScript errors before committing"
+    exit 1
+  fi
+fi
+
+cd ..
+
+echo ""
+echo "✅ All standards enforcement checks passed!"
+echo "🎉 Ready to commit!"

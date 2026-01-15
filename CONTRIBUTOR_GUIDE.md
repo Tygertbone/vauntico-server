@@ -441,9 +441,194 @@ Request code review for:
 3. Help with testing if needed
 4. Celebrate your contribution! 🎉
 
+## 🛡️ Vauntico Standards Enforcement
+
+Vauntico enforces strict coding standards, security requirements, and governance rules across all contributions. These standards are automatically validated through:
+
+### 1. Lint & Hygiene Enforcement ✅
+
+**Requirements:**
+
+- **ESLint Rules**: All critical rules set to `error` level
+- **Console Usage**: `console.log` blocked in production code
+- **ES Modules**: `require()` statements blocked in TypeScript files
+- **Type Imports**: Consistent `import type` syntax enforced
+
+**Implementation:**
+
+```bash
+# Run locally before committing
+node scripts/enforce-standards.js
+
+# Fix auto-fixable issues
+cd server-v2 && npm run lint:fix
+
+# Manual fixes required for:
+# - Case block declarations (wrap in braces)
+# - Import statement corrections
+# - Logger integration
+```
+
+**Common Issues & Solutions:**
+
+```javascript
+// ❌ WRONG - Console usage
+console.log("debug info");
+
+// ✅ CORRECT - Structured logging
+import { logger } from "../utils/logger";
+logger.info("debug info", { component: "auth", action: "login" });
+
+// ❌ WRONG - CommonJS require
+const config = require("./config");
+
+// ✅ CORRECT - ES module import
+import config from "./config";
+
+// ❌ WRONG - Case block without braces
+switch (type) {
+  case "user":
+    const user = getUser();
+    break;
+}
+
+// ✅ CORRECT - Wrapped in braces
+switch (type) {
+  case "user": {
+    const user = getUser();
+    break;
+  }
+}
+```
+
+### 2. Logger Discipline 📝
+
+**Requirements:**
+
+- **Structured JSON Logging**: All logs use winston with JSON formatting
+- **Sentry Integration**: Production errors routed to Sentry
+- **Prometheus Metrics**: Application metrics exposed for monitoring
+- **No Console**: Replace all `console.log` with logger
+
+**Logger Usage:**
+
+```typescript
+import { logger } from "../utils/logger";
+
+// Structured logging with metadata
+logger.info("User authenticated successfully", {
+  userId: user.id,
+  component: "auth",
+  action: "login",
+  timestamp: new Date().toISOString(),
+});
+
+// Error logging with context
+logger.error("Database connection failed", {
+  error: error.message,
+  stack: error.stack,
+  component: "database",
+  retryCount: 3,
+});
+```
+
+### 3. Security Guardrails 🔒
+
+**Requirements:**
+
+- **CodeQL Analysis**: Runs on every PR and weekly scheduled scans
+- **Secret Scanning**: Blocks merges if secrets detected
+- **Action Versions**: Deprecated GitHub Actions fail builds
+- **Hardcoded Secrets**: Automatic detection and blocking
+
+**Security Best Practices:**
+
+```bash
+# ✅ CORRECT - Environment variables
+const dbUrl = process.env.DATABASE_URL;
+const apiKey = process.env.STRIPE_SECRET_KEY;
+
+# ❌ WRONG - Hardcoded secrets
+const dbUrl = "postgresql://user:pass@localhost/db";
+const apiKey = "sk_live_1234567890abcdef";
+```
+
+### 4. Documentation & Onboarding 📚
+
+**Requirements:**
+
+- **ES Module Migration**: Reference in contributor guide
+- **Migration Checklist**: Step-by-step migration process
+- **Governance Docs**: VAUNTICO.md as canonical source
+- **Auto-notify**: Failures trigger notifications
+
+**Documentation Structure:**
+
+```
+📁 docs/
+├── VAUNTICO.md                    # Canonical governance
+├── CONTRIBUTOR_GUIDE.md           # This file
+├── CONTRIBUTOR_ONBOARDING.md      # New contributor setup
+├── SECURITY_OPERATIONS.md          # Security procedures
+├── DEPLOYMENT_GUIDE.md           # Deployment instructions
+└── migration-checklist.md         # ES module migration steps
+```
+
+### 5. Workflow Discipline 🔄
+
+**Requirements:**
+
+- **Semantic Commits**: Enforced format `type(scope): description`
+- **Commit Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+- **Hygiene Batching**: Group fixes efficiently
+- **Caching**: Optimize long-running CI/CD jobs
+
+**Semantic Commit Examples:**
+
+```bash
+feat(auth): add OAuth login flow
+fix(stripe): wrap case block declarations in braces
+docs(readme): update API documentation
+refactor(api): optimize database queries
+test(widget): add unit tests for trust score
+chore(deps): update dependencies to latest versions
+```
+
+## 🚀 Pre-Commit Standards Enforcement
+
+**Automated Checks:**
+
+1. **Standards Validation**: `node scripts/enforce-standards.js`
+2. **ESLint**: `npm run lint` (with auto-fix suggestions)
+3. **TypeScript**: `npm run tsc:check` (type safety)
+4. **Secret Detection**: Scan for hardcoded secrets
+5. **File Validation**: Prevent committing ignored files
+
+**Local Development Workflow:**
+
+```bash
+# 1. Make your changes
+git add .
+
+# 2. Run standards check (optional - pre-commit will run automatically)
+node scripts/enforce-standards.js
+
+# 3. Commit (pre-commit hooks enforce standards)
+git commit -m "feat(scope): implement new feature with proper standards"
+
+# 4. Push and let CI validate
+git push origin feature/your-feature
+```
+
 ## 🧹 Lint Sweep Checklist
 
 When performing lint stabilization, follow this systematic approach:
+
+- [ ] **Standards Enforcement**: Run `node scripts/enforce-standards.js` for comprehensive validation
+  - Fix all critical errors (blockers)
+  - Address warnings for code quality
+  - Validate ESLint configuration
+  - Check logger integration
 
 - [ ] **Case block audit**: Wrap all lexical declarations (`const`, `let`, `class`, `function`) in case blocks with braces
 
@@ -474,20 +659,45 @@ When performing lint stabilization, follow this systematic approach:
   npm install @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest
   ```
 
-- [ ] **Contributor documentation**: Update guide with lint setup and semantic commit examples
-  - Document case block fixes
-  - Include version alignment procedures
-  - Add common rule explanations
+- [ ] **Logger Integration**: Replace all console.log with structured logging
 
-- [ ] **Final verification**: Run `npm run lint` and confirm remaining warnings are acceptable
-  - Console statements in development files (acceptable)
-  - Unused variables in test files (acceptable)
-  - k6 globals in tools directory (acceptable)
+  ```typescript
+  // ❌ WRONG
+  console.log("User logged in", userId);
 
-- [ ] **GitHub Actions rerun**: Push changes and rerun all workflows to ensure CI/CD stability
+  // ✅ CORRECT
+  import { logger } from "../utils/logger";
+  logger.info("User logged in", { userId, component: "auth" });
+  ```
+
+- [ ] **Security Review**: Scan for hardcoded secrets and vulnerabilities
+
+  ```bash
+  # Run local security scan
+  node scripts/enforce-standards.js --category security
+  ```
+
+- [ ] **Contributor documentation**: Update guide with standards enforcement
+  - Document ESLint fixes
+  - Include logger integration examples
+  - Add security best practices
+  - Reference governance documentation
+
+- [ ] **Final verification**: Run full standards suite
+
+  ```bash
+  # Complete standards validation
+  node scripts/enforce-standards.js
+
+  # Project-specific checks
+  cd server-v2 && npm run lint && npm run tsc:check
+  ```
+
+- [ ] **GitHub Actions rerun**: Push changes and monitor CI/CD validation
   ```bash
   git push origin main
-  # Monitor GitHub Actions for any lint-related failures
+  # Monitor GitHub Actions for standards enforcement results
+  # Review uploaded artifacts for detailed reports
   ```
 
 ## 🚨 Phase 2: TypeScript Error Triage Plan

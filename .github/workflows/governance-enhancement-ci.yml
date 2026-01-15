@@ -1,0 +1,347 @@
+name: Governance Enhancement CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "server-v2/src/services/governance/**"
+      - "server-v2/migrations/**"
+      - "monitoring/grafana/dashboards/**"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "server-v2/src/services/governance/**"
+      - "server-v2/migrations/**"
+      - "monitoring/grafana/dashboards/**"
+
+jobs:
+  lint-and-type-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          cd server-v2
+          npm ci
+
+      - name: Run ESLint
+        run: |
+          cd server-v2
+          npx eslint src/services/governance/**/*.ts --fix
+
+      - name: Run TypeScript compiler check
+        run: |
+          cd server-v2
+          npx tsc --noEmit --project src/services/governance/
+
+      - name: Check for TypeScript errors
+        run: |
+          cd server-v2
+          echo "Checking for TypeScript compilation errors..."
+          if ! npx tsc --noEmit --project src/services/governance/ 2>&1 | grep -q "error"; then
+            echo "❌ TypeScript errors found"
+            exit 1
+          else
+            echo "✅ No TypeScript errors"
+            exit 0
+          fi
+
+  build-and-test:
+    needs: lint-and-type-check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          cd server-v2
+          npm ci
+
+      - name: Build services
+        run: |
+          cd server-v2
+          npm run build:services
+
+      - name: Run unit tests
+        run: |
+          cd server-v2
+          npm test -- --testPathPattern=src/services/governance/
+
+      - name: Run integration tests
+        run: |
+          cd server-v2
+          npm run test:integration: governance
+
+      - name: Test database migrations
+        run: |
+          cd server-v2
+          npm run test:migration
+
+  security-scan:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          cd server-v2
+          npm ci
+
+      - name: Run security audit
+        run: |
+          cd server-v2
+          npm audit --audit-level=moderate
+
+      - name: Run CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          languages: typescript
+          queries: security-extended
+
+  validate-governance-services:
+    needs: [lint-and-type-check, build-and-test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          cd server-v2
+          npm ci
+
+      - name: Validate governance service health
+        run: |
+          cd server-v2
+          node -e "
+            const { ContributorRecognitionService } = require('./src/services/contributorRecognitionService');
+            const { AutomatedRemediationService } = require('./src/services/automatedRemediationService');
+            const { EnterpriseComplianceExportService } = require('./src/services/enterpriseComplianceExportService');
+            const { AIInsightService } = require('./src/services/aiInsightsService');
+            
+            console.log('✅ All governance services loaded successfully');
+            
+            // Test service instantiation
+            try {
+              new ContributorRecognitionService();
+              new AutomatedRemediationService();
+              new EnterpriseComplianceExportService();
+              new AIInsightService();
+              console.log('✅ Service instantiation tests passed');
+            } catch (error) {
+              console.error('❌ Service instantiation failed:', error.message);
+              process.exit(1);
+            }
+          "
+
+      - name: Validate database schema
+        run: |
+          cd server-v2
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Check if migration files exist and are valid SQL
+            const migrationFiles = [
+              'migrations/012_create_governance_enhancements.sql'
+            ];
+            
+            for (const file of migrationFiles) {
+              if (fs.existsSync(file)) {
+                console.log(\`✅ Migration file exists: \${file}\`);
+                const content = fs.readFileSync(file, 'utf8');
+                if (content.includes('CREATE TABLE') || content.includes('ALTER TABLE')) {
+                  console.log(\`✅ Valid SQL structure in: \${file}\`);
+                } else {
+                  console.log(\`⚠️  Warning: No SQL changes found in: \${file}\`);
+                }
+              } else {
+                console.log(\`❌ Migration file missing: \${file}\`);
+                process.exit(1);
+              }
+            }
+          "
+
+      - name: Validate Grafana dashboards
+        run: |
+          cd server-v2
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Check if Grafana dashboard files exist and are valid JSON
+            const dashboardFiles = [
+              '../monitoring/grafana/dashboards/vauntico-cross-team-benchmarking.json',
+              '../monitoring/grafana/dashboards/vauntico-contributor-compliance.json'
+            ];
+            
+            for (const file of dashboardFiles) {
+              if (fs.existsSync(file)) {
+                console.log(\`✅ Dashboard file exists: \${file}\`);
+                try {
+                  const content = fs.readFileSync(file, 'utf8');
+                  JSON.parse(content);
+                  console.log(\`✅ Valid JSON structure in: \${file}\`);
+                } catch (error) {
+                  console.log(\`❌ Invalid JSON in: \${file} - \${error.message}\`);
+                  process.exit(1);
+                }
+              } else {
+                console.log(\`❌ Dashboard file missing: \${file}\`);
+                process.exit(1);
+              }
+            }
+          "
+
+  deploy-staging:
+    needs: validate-governance-services
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          cd server-v2
+          npm ci
+
+      - name: Build for staging
+        run: |
+          cd server-v2
+          npm run build
+
+      - name: Deploy to staging
+        run: |
+          echo "🚀 Deploying governance enhancements to staging..."
+          # Add your staging deployment commands here
+          # Example: npm run deploy:staging
+
+      - name: Run smoke tests
+        run: |
+          echo "🧪 Running smoke tests on staging..."
+          # Add smoke test commands here
+          # Example: npm run test:smoke:staging
+
+  deploy-production:
+    needs: validate-governance-services
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          cd server-v2
+          npm ci
+
+      - name: Build for production
+        run: |
+          cd server-v2
+          npm run build:production
+
+      - name: Deploy to production
+        run: |
+          echo "🚀 Deploying governance enhancements to production..."
+          # Add your production deployment commands here
+          # Example: npm run deploy:production
+
+      - name: Run production smoke tests
+        run: |
+          echo "🧪 Running production smoke tests..."
+          # Add production smoke test commands here
+          # Example: npm run test:smoke:production
+
+      - name: Generate deployment report
+        run: |
+          echo "📊 Generating deployment report..."
+          cd server-v2
+          node -e "
+            const fs = require('fs');
+            const report = {
+              deployment: {
+                timestamp: new Date().toISOString(),
+                environment: 'production',
+                governance_services: [
+                  'contributor-recognition',
+                  'automated-remediation',
+                  'enterprise-compliance-export',
+                  'ai-insights'
+                ],
+                components: [
+                  'database-schema',
+                  'grafana-dashboards',
+                  'api-endpoints'
+                ]
+              }
+            };
+            
+            fs.writeFileSync('deployment-report.json', JSON.stringify(report, null, 2));
+            console.log('✅ Deployment report generated');
+          "
+
+  notify-results:
+    needs: [deploy-staging, deploy-production]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Notify on success
+        if: needs.deploy-staging.result == 'success' || needs.deploy-production.result == 'success'
+        run: |
+          echo "✅ Governance enhancement deployment completed successfully!"
+          # Add notification logic here
+          # Example: webhook to Slack, Teams, etc.
+
+      - name: Notify on failure
+        if: needs.deploy-staging.result == 'failure' || needs.deploy-production.result == 'failure'
+        run: |
+          echo "❌ Governance enhancement deployment failed!"
+          # Add failure notification logic here
+          # Example: webhook to Slack, Teams, etc.

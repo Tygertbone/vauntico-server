@@ -7,8 +7,71 @@ on:
     branches: [main]
 
 jobs:
+  check-deprecated-actions:
+    name: Check Deprecated GitHub Actions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for deprecated actions
+        run: |
+          echo "🔍 Checking for deprecated GitHub Actions..."
+
+          # List of deprecated or outdated action versions
+          DEPRECATED_ACTIONS=(
+            "actions/checkout@v1"
+            "actions/checkout@v2"
+            "actions/checkout@v3"
+            "actions/setup-node@v1"
+            "actions/setup-node@v2"
+            "actions/setup-node@v3"
+            "actions/cache@v1"
+            "actions/cache@v2"
+            "actions/upload-artifact@v1"
+            "actions/upload-artifact@v2"
+            "actions/download-artifact@v1"
+            "actions/download-artifact@v2"
+          )
+
+          # Check all workflow files
+          DEPRECATED_FOUND=false
+          for workflow in .github/workflows/*.yml; do
+            echo "Checking $workflow..."
+            while IFS= read -r line; do
+              if [[ $line =~ uses: ]]; then
+                action=$(echo "$line" | sed -n 's/.*uses: *["'\'']*\([^"'\'']*\)["'\'']*.*/\1/p')
+                for deprecated in "${DEPRECATED_ACTIONS[@]}"; do
+                  if [[ "$action" == "$deprecated" ]]; then
+                    echo "❌ DEPRECATED ACTION FOUND: $action in $workflow"
+                    echo "   Line: $line"
+                    DEPRECATED_FOUND=true
+                  fi
+                done
+              fi
+            done < "$workflow"
+          done
+
+          if [ "$DEPRECATED_FOUND" = true ]; then
+            echo ""
+            echo "🚨 BUILD FAILED: Deprecated GitHub Actions detected!"
+            echo ""
+            echo "Please update to newer versions:"
+            echo "- actions/checkout: Use @v4 or later"
+            echo "- actions/setup-node: Use @v4 or later"
+            echo "- actions/cache: Use @v3 or later"
+            echo "- actions/upload-artifact: Use @v3 or later"
+            echo "- actions/download-artifact: Use @v3 or later"
+            echo ""
+            echo "📖 See GitHub Actions documentation for latest versions"
+            exit 1
+          else
+            echo "✅ No deprecated actions found"
+          fi
+
   install:
     runs-on: ubuntu-latest
+    needs: check-deprecated-actions
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node
@@ -19,9 +82,68 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-  lint:
+  security-audit:
+    name: Security Audit
     runs-on: ubuntu-latest
     needs: install
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Audit dependencies
+        run: |
+          echo "🔍 Running security audit..."
+
+          # Run npm audit with JSON output
+          audit_result=$(npm audit --json)
+
+          # Parse results with jq if available
+          if command -v jq &> /dev/null; then
+            echo "$audit_result" | jq -r '
+              if .vulnerabilities | length > 0 then
+                "🚨 VULNERABILITIES FOUND:",
+                "High: \(.vulnerabilities | map(select(.severity == "high")) | length)",
+                "Moderate: \(.vulnerabilities | map(select(.severity == "moderate")) | length)",
+                "Low: \(.vulnerabilities | map(select(.severity == "low")) | length)",
+                "Total: \(.vulnerabilities | length)"
+              else
+                "✅ No vulnerabilities found"
+              end
+            '
+          else
+            echo "$audit_result"
+          fi
+
+          # Set exit code based on severity thresholds
+          if command -v jq &> /dev/null; then
+            high_count=$(echo "$audit_result" | jq -r '.vulnerabilities | map(select(.severity == "high")) | length')
+            moderate_count=$(echo "$audit_result" | jq -r '.vulnerabilities | map(select(.severity == "moderate")) | length')
+            
+            # Fail build if high vulnerabilities or >5 moderate
+            if [ "$high_count" -gt 0 ] || [ "$moderate_count" -gt 5 ]; then
+              echo ""
+              echo "❌ SECURITY AUDIT FAILED!"
+              echo "High vulnerabilities: $high_count"
+              echo "Moderate vulnerabilities: $moderate_count"
+              echo ""
+              echo "Thresholds:"
+              echo "- High: 0 (fail if > 0)"
+              echo "- Moderate: 5 (fail if > 5)"
+              echo ""
+              echo "📖 Fix critical vulnerabilities before merging"
+              exit 1
+            fi
+          fi
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: [security-audit, typecheck]
     steps:
       - uses: actions/checkout@v4
       - name: Run ESLint + Prettier
@@ -31,7 +153,7 @@ jobs:
 
   typecheck:
     runs-on: ubuntu-latest
-    needs: install
+    needs: [security-audit]
     steps:
       - uses: actions/checkout@v4
       - name: Run TypeScript strict mode
@@ -39,7 +161,7 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
-    needs: [lint, typecheck]
+    needs: [lint, security-audit]
     steps:
       - uses: actions/checkout@v4
       - name: Run smoke + integration tests

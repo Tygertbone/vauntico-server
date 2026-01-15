@@ -7,7 +7,7 @@ describe("Sacred Features Integration Tests", () => {
 
   beforeEach(() => {
     // Mock API key validation to always accept our test key
-    jest.mock("../src/middleware/auth", () => ({
+    jest.mock("../../src/middleware/auth", () => ({
       validateApiKey: jest.fn().mockReturnValue(true),
       getUserIdFromApiKey: jest.fn().mockReturnValue(USER_ID),
     }));
@@ -92,7 +92,7 @@ describe("Sacred Features Integration Tests", () => {
       expect(response.body).toHaveProperty("id");
       expect(response.body.title).toBe("Test Ubuntu Story");
       expect(response.body.content).toBe(
-        "This is a test story about community wisdom",
+        "This is a test story about community wisdom"
       );
     });
 

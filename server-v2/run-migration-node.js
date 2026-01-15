@@ -1,11 +1,17 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load environment variables from .env file in server-v2 directory
-require("dotenv").config({ path: path.join(__dirname, ".env") });
+import dotenv from "dotenv";
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 // Import pg
-const { Client } = require("pg");
+import { Client } from "pg";
 
 async function runMigration() {
   console.log("🚀 Starting Vauntico Emergency Revenue Database Migration...");
@@ -19,14 +25,14 @@ async function runMigration() {
 
   console.log(
     "✅ DATABASE_URL found:",
-    databaseUrl.replace(/\/\/[^:]+:[^@]+@/, "//***:***@"),
+    databaseUrl.replace(/\/\/[^:]+:[^@]+@/, "//***:***@")
   );
 
   // Check if migration file exists
   const migrationPath = path.join(
     __dirname,
     "migrations",
-    "019_create_emergency_revenue_tables_simple.sql",
+    "019_create_emergency_revenue_tables_simple.sql"
   );
   if (!fs.existsSync(migrationPath)) {
     console.error("❌ Migration file not found:", migrationPath);
@@ -40,7 +46,7 @@ async function runMigration() {
   console.log(
     "📋 Migration SQL loaded, length:",
     migrationSQL.length,
-    "characters",
+    "characters"
   );
 
   // Create PostgreSQL client
@@ -79,7 +85,7 @@ async function runMigration() {
     const verifyResult = await client.query(verificationQuery);
     console.log(
       "✅ Tables found:",
-      verifyResult.rows.map((row) => row.table_name),
+      verifyResult.rows.map((row) => row.table_name)
     );
 
     if (verifyResult.rows.length !== 3) {
@@ -118,7 +124,7 @@ async function runMigration() {
     console.log("   - 3 emergency revenue tables created");
     console.log("   - Database: Neon PostgreSQL");
     console.log(
-      "   - Tables: creator_payment_requests, creator_verifications, content_recovery_cases",
+      "   - Tables: creator_payment_requests, creator_verifications, content_recovery_cases"
     );
   } catch (error) {
     console.error("❌ Migration failed:", error.message);

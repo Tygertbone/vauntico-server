@@ -1,5 +1,7 @@
-require("dotenv").config();
-const { Pool } = require("pg");
+import dotenv from "dotenv";
+import { Pool } from "pg";
+
+dotenv.config();
 
 async function testConnection() {
   const dbConfig = {

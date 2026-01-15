@@ -9,7 +9,7 @@
     "vauntico-fulfillment-engine"
   ],
   "engines": {
-    "node": ">=24.0.0"
+    "node": "20.x"
   },
   "scripts": {
     "dev": "vite",

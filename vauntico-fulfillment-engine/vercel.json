@@ -1,23 +1,14 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["package.json", ".env"]
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/server.js"
-    }
-  ],
   "functions": {
     "server.js": {
-      "runtime": "nodejs18.x"
+      "runtime": "nodejs20.x"
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/server.js"
+    }
+  ]
 }

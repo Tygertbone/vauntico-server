@@ -1,0 +1,52 @@
+[
+  {
+    "email": "creator1@example.com",
+    "timestamp": "2026-01-15T10:00:00.000Z",
+    "position": 1
+  },
+  {
+    "email": "creator2@example.com",
+    "timestamp": "2026-01-15T11:30:00.000Z",
+    "position": 2
+  },
+  {
+    "email": "creator3@example.com",
+    "timestamp": "2026-01-15T14:15:00.000Z",
+    "position": 3
+  },
+  {
+    "email": "creator4@nigeria.com",
+    "timestamp": "2026-01-15T16:45:00.000Z",
+    "position": 4
+  },
+  {
+    "email": "creator5@nigeria.com",
+    "timestamp": "2026-01-15T18:20:00.000Z",
+    "position": 5
+  },
+  {
+    "email": "creator6@safrica.com",
+    "timestamp": "2026-01-15T20:10:00.000Z",
+    "position": 6
+  },
+  {
+    "email": "creator7@example.com",
+    "timestamp": "2026-01-15T22:30:00.000Z",
+    "position": 7
+  },
+  {
+    "email": "creator8@example.com",
+    "timestamp": "2026-01-16T08:15:00.000Z",
+    "position": 8
+  },
+  {
+    "email": "creator9@example.com",
+    "timestamp": "2026-01-16T09:45:00.000Z",
+    "position": 9
+  },
+  {
+    "email": "creator10@example.com",
+    "timestamp": "2026-01-16T11:00:00.000Z",
+    "position": 10
+  }
+]

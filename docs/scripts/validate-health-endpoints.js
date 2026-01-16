@@ -2,17 +2,15 @@
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
-// Simple logger for this script
-import { logger } from "../../server-v2/src/utils/logger.js";
-
+// Simple logger for this script - using console for now to avoid import issues
 const loggerInstance = {
-  info: (message) => logger.info(message),
-  error: (message) => logger.error(message),
+  info: (message) => console.log(message),
+  error: (message) => console.error(message),
 };
 
 async function validateHealthEndpoints() {
-  logger.info("🔍 Vauntico Production Readiness Validation\n");
-  logger.info("=".repeat(50));
+  loggerInstance.info("🔍 Vauntico Production Readiness Validation\n");
+  loggerInstance.info("=".repeat(50));
 
   const validations = {
     security: {
@@ -121,11 +119,11 @@ async function validateHealthEndpoints() {
   let passedTests = 0;
 
   for (const category of Object.values(validations)) {
-    logger.info(`\n📋 ${category.title}`);
-    logger.info("-".repeat(30));
+    loggerInstance.info(`\n📋 ${category.title}`);
+    loggerInstance.info("-".repeat(30));
 
     for (const test of category.tests) {
-      logger.info(`  ${test.result} - ${test.name}`);
+      loggerInstance.info(`  ${test.result} - ${test.name}`);
       totalTests++;
       if (test.result.includes("✅")) {
         passedTests++;
@@ -133,27 +131,33 @@ async function validateHealthEndpoints() {
     }
   }
 
-  logger.info("\n" + "=".repeat(50));
-  logger.info(`🎯 VALIDATION SUMMARY`);
-  logger.info("=".repeat(50));
-  logger.info(
+  loggerInstance.info("\n" + "=".repeat(50));
+  loggerInstance.info(`🎯 VALIDATION SUMMARY`);
+  loggerInstance.info("=".repeat(50));
+  loggerInstance.info(
     `✅ Tests Passed: ${passedTests}/${totalTests} (${Math.round((passedTests / totalTests) * 100)}%)`
   );
-  logger.info(`⚠️  Ready for Production Configuration`);
-  logger.info(`🎉 Enterprise Security Controls: ACTIVE`);
+  loggerInstance.info(`⚠️  Ready for Production Configuration`);
+  loggerInstance.info(`🎉 Enterprise Security Controls: ACTIVE`);
 
   // Production Readiness Score
   const readinessScore = Math.round((passedTests / totalTests) * 100);
-  logger.info(`\n🏆 PRODUCTION READINESS: ${readinessScore}%`);
-  logger.info(`📋 Next Steps: Configure API keys and deploy to production`);
+  loggerInstance.info(`\n🏆 PRODUCTION READINESS: ${readinessScore}%`);
+  loggerInstance.info(
+    `📋 Next Steps: Configure API keys and deploy to production`
+  );
 
   if (readinessScore >= 95) {
-    logger.info(`\n🎊 EXCELLENT: Platform ready for enterprise deployment!`);
+    loggerInstance.info(
+      `\n🎊 EXCELLENT: Platform ready for enterprise deployment!`
+    );
   } else if (readinessScore >= 85) {
-    logger.info(`\n👍 GOOD: Minor configuration required before launch`);
+    loggerInstance.info(
+      `\n👍 GOOD: Minor configuration required before launch`
+    );
   } else {
-    logger.info(`\n⚠️  CAUTION: Additional validation needed`);
+    loggerInstance.info(`\n⚠️  CAUTION: Additional validation needed`);
   }
 }
 
-validateHealthEndpoints().catch(logger.error);
+validateHealthEndpoints().catch(loggerInstance.error);

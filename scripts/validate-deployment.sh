@@ -7,9 +7,12 @@ set -euo pipefail
 
 # Configuration
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly DEFAULT_BASE_URL="http://localhost:3000"
+readonly DEFAULT_BASE_URL="https://api.vauntico.com"
 readonly BASE_URL="${1:-$DEFAULT_BASE_URL}"
-readonly SERVICE_NAME="vauntico-backend"
+readonly SERVICE_NAME="vauntico-server"
+readonly MAX_RETRIES=5
+readonly RETRY_DELAY=10
+readonly REQUEST_TIMEOUT=30
 
 # Colors for output
 readonly RED='\033[0;31m'
@@ -45,7 +48,7 @@ log_info() {
     echo -e "${BLUE}ℹ️  $1${NC}"
 }
 
-# Test helper functions
+# Test helper functions with retry logic for OCI
 test_endpoint() {
     local endpoint="$1"
     local description="$2"
@@ -53,27 +56,40 @@ test_endpoint() {
     local url="${BASE_URL}${endpoint}"
     
     ((TOTAL_TESTS++))
-    log "Testing $description..."
+    log "Testing $description with retries..."
     
     local response
-    local status_code
-    response=$(curl -s -w "%{http_code}" -o /tmp/response_$$.json "$url" 2>/dev/null)
-    status_code=$?
+    local http_status
+    local attempt
     
-    if [[ $status_code -eq 0 ]]; then
-        local http_status=$(tail -n1 /tmp/response_$$.json)
-        if [[ "$http_status" == "$expected_status" ]]; then
-            log_success "$description - HTTP $http_status"
-            RESULTS["$endpoint"]="PASS"
+    for attempt in $(seq 1 $MAX_RETRIES); do
+        log "Attempt $attempt/$MAX_RETRIES for $description..."
+        
+        response=$(curl -s -w "%{http_code}" --max-time $REQUEST_TIMEOUT -o /tmp/response_$$.json "$url" 2>/dev/null)
+        local curl_exit_code=$?
+        
+        if [[ $curl_exit_code -eq 0 ]]; then
+            http_status=$(tail -n1 /tmp/response_$$.json)
+            if [[ "$http_status" == "$expected_status" ]]; then
+                log_success "$description - HTTP $http_status (attempt $attempt)"
+                RESULTS["$endpoint"]="PASS"
+                rm -f "/tmp/response_$$.json" 2>/dev/null || true
+                return 0
+            else
+                log_warning "$description - HTTP $http_status (expected $expected_status) - attempt $attempt"
+            fi
         else
-            log_error "$description - HTTP $http_status (expected $expected_status)"
-            RESULTS["$endpoint"]="FAIL: HTTP $http_status"
+            log_warning "$description - Connection failed (attempt $attempt)"
         fi
-    else
-        log_error "$description - Connection failed"
-        RESULTS["$endpoint"]="FAIL: Connection failed"
-    fi
+        
+        if [[ $attempt -lt $MAX_RETRIES ]]; then
+            log "Waiting $RETRY_DELAY seconds before retry..."
+            sleep $RETRY_DELAY
+        fi
+    done
     
+    log_error "$description - Failed after $MAX_RETRIES attempts"
+    RESULTS["$endpoint"]="FAIL: Failed after $MAX_RETRIES attempts"
     rm -f "/tmp/response_$$.json" 2>/dev/null || true
 }
 
@@ -294,6 +310,11 @@ main() {
     test_endpoint "/api/v1/status" "Status API" "200"
     test_endpoint "/" "Root Endpoint" "200"
     test_endpoint "/api/docs" "API Documentation" "200"
+    
+    # OCI-specific endpoint validation
+    test_endpoint "/api/v1/trustscore" "Trust Score API" "200"
+    test_endpoint "/api/v1/brand" "Brand API" "200"
+    test_endpoint "/api/v1/pass" "Creator Pass API" "200"
     
     test_json_structure "/health" "Health JSON Structure" "status timestamp version uptime memory environment"
     test_json_structure "/api/v1/status" "Status API JSON Structure" "status version service uptime environment timestamp"

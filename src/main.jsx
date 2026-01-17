@@ -8,13 +8,15 @@ import * as Sentry from "@sentry/react";
 import { browserTracingIntegration } from "@sentry/react";
 
 // Initialize Sentry for error tracking
-Sentry.init({
-  dsn: "https://5d94454fcc0960e8d36f67aefd0d05c5@o4510480205807616.ingest.us.sentry.io/4510480214851584",
-  environment: process.env.NODE_ENV || "production",
-  integrations: [browserTracingIntegration()],
-  // Performance monitoring
-  tracesSampleRate: 1.0,
-});
+if (process.env.VITE_SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.VITE_SENTRY_DSN,
+    environment: process.env.NODE_ENV || "production",
+    integrations: [browserTracingIntegration()],
+    // Performance monitoring
+    tracesSampleRate: 1.0,
+  });
+}
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

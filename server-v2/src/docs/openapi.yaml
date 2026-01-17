@@ -1,0 +1,1396 @@
+openapi: 3.0.3
+info:
+  title: Vauntico Trust Score Dashboard API
+  description: |
+    Enterprise-grade trust score dashboard API for creators and organizations.
+
+    ## Overview
+    The Vauntico Trust Score Dashboard API provides comprehensive endpoints for managing creator trust scores,
+    trends, features, subscriptions, and enterprise compliance features.
+
+    ## Authentication
+    All API endpoints require authentication using either:
+    - **API Key**: Include `X-API-Key` header for programmatic access
+    - **JWT Bearer Token**: Include `Authorization: Bearer <token>` header for user-based access
+
+    ## Rate Limiting
+    API requests are rate-limited based on subscription tier:
+    - Bronze: 100 requests/minute
+    - Silver: 500 requests/minute  
+    - Gold: 1000 requests/minute
+    - Platinum: 5000 requests/minute
+
+    ## Error Handling
+    All errors include correlation IDs for tracking and support:
+    ```json
+    {
+      "error": "Error message",
+      "code": "ERROR_CODE",
+      "metadata": {
+        "correlationId": "req_123456789",
+        "timestamp": "2024-01-01T00:00:00.000Z"
+      }
+    }
+    ```
+
+    ## Subscription Tiers
+    Access to features is controlled by subscription tiers:
+    - **Bronze**: Basic trust score access
+    - **Silver**: Advanced analytics and trends
+    - **Gold**: Enterprise features and API access
+    - **Platinum**: Full enterprise suite with priority support
+
+  version: 1.0.0
+  contact:
+    name: Vauntico API Support
+    email: api-support@vauntico.com
+    url: https://vauntico.com/support
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.vauntico.com/v1
+    description: Production server
+  - url: https://staging-api.vauntico.com/v1
+    description: Staging server
+  - url: http://localhost:3001/api/v1
+    description: Development server
+
+security:
+  - apiKeyAuth: []
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: |
+        API key for programmatic access.
+        Include in header: `X-API-Key: your_api_key_here`
+
+        Example: `X-API-Key: vauntico_live_1234567890abcdef`
+
+        **Security Note**: Keep your API key confidential and never expose it in client-side code.
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT bearer token for user-based authentication.
+        Include in header: `Authorization: Bearer your_jwt_token_here`
+
+        Example: `Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
+
+  schemas:
+    # Core Response Schemas
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          description: Response data payload
+        metadata:
+          $ref: "#/components/schemas/ResponseMetadata"
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - code
+        - metadata
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: Human-readable error message
+          example: "Invalid API key provided"
+        code:
+          type: string
+          description: Machine-readable error code
+          example: "UNAUTHORIZED"
+        details:
+          type: object
+          description: Additional error details
+          example:
+            missingFields: ["userId"]
+        metadata:
+          $ref: "#/components/schemas/ErrorMetadata"
+
+    RateLimitError:
+      allOf:
+        - $ref: "#/components/schemas/ErrorResponse"
+        - type: object
+          properties:
+            retryAfter:
+              type: integer
+              description: Seconds to wait before retrying
+              example: 60
+            limit:
+              type: integer
+              description: Rate limit quota
+              example: 100
+            remaining:
+              type: integer
+              description: Remaining requests in current window
+              example: 0
+            reset:
+              type: integer
+              description: Unix timestamp when rate limit resets
+              example: 1640995200
+
+    ResponseMetadata:
+      type: object
+      required:
+        - version
+        - timestamp
+        - requestId
+      properties:
+        version:
+          type: string
+          description: API version
+          example: "1.0.0"
+        timestamp:
+          type: string
+          format: date-time
+          description: Response timestamp
+          example: "2024-01-01T12:00:00.000Z"
+        requestId:
+          type: string
+          description: Unique request identifier for tracking
+          example: "req_1234567890abcdef"
+        processingTimeMs:
+          type: integer
+          description: Request processing time in milliseconds
+          example: 150
+
+    ErrorMetadata:
+      type: object
+      required:
+        - version
+        - timestamp
+        - correlationId
+      properties:
+        version:
+          type: string
+          description: API version
+          example: "1.0.0"
+        timestamp:
+          type: string
+          format: date-time
+          description: Error timestamp
+          example: "2024-01-01T12:00:00.000Z"
+        correlationId:
+          type: string
+          description: Unique correlation ID for error tracking
+          example: "corr_1234567890abcdef"
+        endpoint:
+          type: string
+          description: API endpoint that generated the error
+          example: "/api/v1/dashboard/trustscore"
+
+    # Trust Score Schemas
+    TrustScoreResponse:
+      type: object
+      required:
+        - score
+        - tier
+        - factors
+        - calculatedAt
+        - expiresAt
+        - trend
+        - change
+        - lastUpdated
+      properties:
+        score:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Overall trust score (0-100)
+          example: 85
+        tier:
+          $ref: "#/components/schemas/SubscriptionTier"
+        factors:
+          $ref: "#/components/schemas/TrustScoreFactors"
+        calculatedAt:
+          type: string
+          format: date-time
+          description: When the score was calculated
+          example: "2024-01-01T12:00:00.000Z"
+        expiresAt:
+          type: string
+          format: date-time
+          description: When the score expires and needs recalculation
+          example: "2024-01-02T12:00:00.000Z"
+        trend:
+          type: string
+          enum: [up, down, stable]
+          description: Score trend direction
+          example: "up"
+        change:
+          type: number
+          description: Score change from previous calculation
+          example: 5.2
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Last time any factor was updated
+          example: "2024-01-01T11:30:00.000Z"
+
+    TrustScoreFactors:
+      type: object
+      required:
+        - engagement
+        - consistency
+        - quality
+        - community
+      properties:
+        engagement:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Audience engagement factor score
+          example: 88
+        consistency:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Content consistency factor score
+          example: 92
+        quality:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Content quality factor score
+          example: 85
+        community:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Community interaction factor score
+          example: 75
+
+    TrustScoreCalculationRequest:
+      type: object
+      required:
+        - userId
+      properties:
+        userId:
+          type: string
+          description: User ID to calculate trust score for
+          example: "user_1234567890"
+        force:
+          type: boolean
+          description: Force recalculation even if cache is valid
+          default: false
+        factors:
+          type: array
+          items:
+            type: string
+            enum: [engagement, consistency, quality, community]
+          description: Specific factors to recalculate
+          example: ["engagement", "quality"]
+
+    TrustScoreCalculationResponse:
+      type: object
+      required:
+        - calculationId
+        - status
+        - estimatedTime
+      properties:
+        calculationId:
+          type: string
+          description: Unique calculation identifier
+          example: "calc_1234567890abcdef"
+        status:
+          type: string
+          enum: [processing, completed, failed]
+          description: Calculation status
+          example: "processing"
+        estimatedTime:
+          type: integer
+          description: Estimated completion time in seconds
+          example: 30
+        startedAt:
+          type: string
+          format: date-time
+          description: When calculation started
+          example: "2024-01-01T12:00:00.000Z"
+
+    # Trend Data Schemas
+    TrendDataPoint:
+      type: object
+      required:
+        - date
+        - score
+        - benchmark
+      properties:
+        date:
+          type: string
+          format: date
+          description: Date of the data point
+          example: "2024-01-01"
+        score:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Trust score for this date
+          example: 85.5
+        benchmark:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Industry benchmark for this date
+          example: 75.2
+
+    TrendResponse:
+      type: object
+      required:
+        - data
+        - timeframe
+        - metadata
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrendDataPoint"
+          description: Array of trend data points
+        timeframe:
+          type: string
+          description: Timeframe covered by the data
+          example: "30d"
+        metadata:
+          $ref: "#/components/schemas/TrendMetadata"
+
+    TrendMetadata:
+      type: object
+      required:
+        - version
+        - endpoint
+        - generatedAt
+        - count
+      properties:
+        version:
+          type: string
+          example: "1.0.0"
+        endpoint:
+          type: string
+          example: "/api/v1/dashboard/trend"
+        generatedAt:
+          type: string
+          format: date-time
+          example: "2024-01-01T12:00:00.000Z"
+        count:
+          type: integer
+          description: Number of data points returned
+          example: 30
+        averageScore:
+          type: number
+          description: Average score across timeframe
+          example: 82.3
+        highestScore:
+          type: number
+          description: Highest score in timeframe
+          example: 88.7
+        lowestScore:
+          type: number
+          description: Lowest score in timeframe
+          example: 76.1
+
+    # Features Schemas
+    SacredFeature:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - icon
+        - status
+        - sacredLevel
+      properties:
+        id:
+          type: string
+          description: Unique feature identifier
+          example: "premium-content"
+        name:
+          type: string
+          description: Feature display name
+          example: "Premium Content"
+        description:
+          type: string
+          description: Feature description
+          example: "Create exclusive content for your most loyal supporters with advanced monetization options."
+        icon:
+          type: string
+          description: Feature icon (emoji or icon name)
+          example: "📝"
+        status:
+          $ref: "#/components/schemas/FeatureStatus"
+        sacredLevel:
+          $ref: "#/components/schemas/SubscriptionTier"
+        progress:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Feature unlock progress (if applicable)
+          example: 85
+        unlockDate:
+          type: string
+          format: date-time
+          description: When feature was unlocked (if applicable)
+          example: "2024-01-01T12:00:00.000Z"
+        category:
+          type: string
+          description: Feature category
+          example: "content"
+        benefits:
+          type: array
+          items:
+            type: string
+          description: List of feature benefits
+          example:
+            - "Higher revenue per supporter"
+            - "Exclusive content tools"
+            - "Advanced analytics"
+        requirements:
+          type: array
+          items:
+            type: string
+          description: Requirements to unlock/use feature
+          example:
+            - "Silver tier or higher"
+            - "Complete onboarding"
+            - "Verify identity"
+
+    FeatureStatus:
+      type: string
+      enum: [active, locked, coming-soon, deprecated]
+      description: Feature availability status
+      example: "active"
+
+    FeaturesResponse:
+      type: object
+      required:
+        - features
+        - userLevel
+        - unlockedCount
+        - totalCount
+        - metadata
+      properties:
+        features:
+          type: array
+          items:
+            $ref: "#/components/schemas/SacredFeature"
+          description: List of available features
+        userLevel:
+          $ref: "#/components/schemas/SubscriptionTier"
+        unlockedCount:
+          type: integer
+          description: Number of unlocked features
+          example: 12
+        totalCount:
+          type: integer
+          description: Total number of features
+          example: 20
+        metadata:
+          $ref: "#/components/schemas/FeaturesMetadata"
+
+    FeaturesMetadata:
+      type: object
+      required:
+        - version
+        - endpoint
+        - generatedAt
+      properties:
+        version:
+          type: string
+          example: "1.0.0"
+        endpoint:
+          type: string
+          example: "/api/v1/dashboard/features"
+        generatedAt:
+          type: string
+          format: date-time
+          example: "2024-01-01T12:00:00.000Z"
+        nextUnlockFeature:
+          type: string
+          description: Next feature to unlock
+          example: "collaboration-hub"
+        nextUnlockProgress:
+          type: number
+          description: Progress toward next feature unlock
+          example: 75
+
+    # Subscription Tiers
+    SubscriptionTier:
+      type: string
+      enum: [bronze, silver, gold, platinum]
+      description: User subscription tier
+      example: "silver"
+
+    SubscriptionInfo:
+      type: object
+      required:
+        - tier
+        - status
+        - currentPeriod
+      properties:
+        tier:
+          $ref: "#/components/schemas/SubscriptionTier"
+        status:
+          type: string
+          enum: [active, inactive, cancelled, past_due]
+          description: Subscription status
+          example: "active"
+        currentPeriod:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date-time
+              description: Current period start
+              example: "2024-01-01T00:00:00.000Z"
+            end:
+              type: string
+              format: date-time
+              description: Current period end
+              example: "2024-02-01T00:00:00.000Z"
+        apiQuota:
+          type: object
+          properties:
+            limit:
+              type: integer
+              description: API request limit per minute
+              example: 500
+            used:
+              type: integer
+              description: API requests used in current minute
+              example: 127
+            reset:
+              type: integer
+              description: Unix timestamp when quota resets
+              example: 1640995200
+
+    # User Management
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - username
+        - tier
+        - createdAt
+      properties:
+        id:
+          type: string
+          description: Unique user identifier
+          example: "user_1234567890"
+        email:
+          type: string
+          format: email
+          description: User email address
+          example: "creator@example.com"
+        username:
+          type: string
+          description: Unique username
+          example: "creator123"
+        displayName:
+          type: string
+          description: Display name
+          example: "John Creator"
+        avatar:
+          type: string
+          format: uri
+          description: Profile avatar URL
+          example: "https://cdn.vauntico.com/avatars/user_123.jpg"
+        tier:
+          $ref: "#/components/schemas/SubscriptionTier"
+        subscription:
+          $ref: "#/components/schemas/SubscriptionInfo"
+        createdAt:
+          type: string
+          format: date-time
+          description: Account creation date
+          example: "2024-01-01T12:00:00.000Z"
+        lastLogin:
+          type: string
+          format: date-time
+          description: Last login timestamp
+          example: "2024-01-01T10:30:00.000Z"
+        verified:
+          type: boolean
+          description: Whether user is verified
+          example: true
+
+    # Health Check
+    HealthCheck:
+      type: object
+      required:
+        - status
+        - timestamp
+        - services
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          description: Overall system health
+          example: "healthy"
+        timestamp:
+          type: string
+          format: date-time
+          description: Health check timestamp
+          example: "2024-01-01T12:00:00.000Z"
+        uptime:
+          type: number
+          description: System uptime in seconds
+          example: 86400
+        services:
+          type: object
+          description: Individual service health
+          properties:
+            database:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [up, down, degraded]
+                  example: "up"
+                responseTime:
+                  type: number
+                  description: Response time in milliseconds
+                  example: 15
+                lastCheck:
+                  type: string
+                  format: date-time
+                  example: "2024-01-01T12:00:00.000Z"
+            redis:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [up, down, degraded]
+                  example: "up"
+                responseTime:
+                  type: number
+                  example: 2
+                lastCheck:
+                  type: string
+                  format: date-time
+                  example: "2024-01-01T12:00:00.000Z"
+            api:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [up, down, degraded]
+                  example: "up"
+                responseTime:
+                  type: number
+                  example: 45
+                lastCheck:
+                  type: string
+                  format: date-time
+                  example: "2024-01-01T12:00:00.000Z"
+
+  responses:
+    # Success Responses
+    OK:
+      description: Request completed successfully
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SuccessResponse"
+          example:
+            success: true
+            data:
+              message: "Operation completed successfully"
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              requestId: "req_1234567890"
+
+    Created:
+      description: Resource created successfully
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SuccessResponse"
+          example:
+            success: true
+            data:
+              id: "new_resource_123"
+              message: "Resource created successfully"
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              requestId: "req_1234567890"
+
+    Accepted:
+      description: Request accepted for processing
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SuccessResponse"
+          example:
+            success: true
+            data:
+              calculationId: "calc_1234567890"
+              status: "processing"
+              estimatedTime: 30
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              requestId: "req_1234567890"
+
+    # Error Responses
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            success: false
+            error: "Invalid request parameters"
+            code: "VALIDATION_ERROR"
+            details:
+              missingFields: ["userId"]
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              correlationId: "corr_1234567890"
+              endpoint: "/api/v1/dashboard/trustscore"
+
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            success: false
+            error: "Invalid or missing API key"
+            code: "UNAUTHORIZED"
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              correlationId: "corr_1234567890"
+              endpoint: "/api/v1/dashboard/trustscore"
+
+    Forbidden:
+      description: Insufficient permissions or subscription tier
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            success: false
+            error: "Insufficient subscription tier for this feature"
+            code: "INSUFFICIENT_TIER"
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              correlationId: "corr_1234567890"
+              endpoint: "/api/v1/dashboard/features"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            success: false
+            error: "User not found"
+            code: "NOT_FOUND"
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              correlationId: "corr_1234567890"
+              endpoint: "/api/v1/dashboard/trustscore"
+
+    TooManyRequests:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RateLimitError"
+          example:
+            success: false
+            error: "Rate limit exceeded"
+            code: "RATE_LIMIT_EXCEEDED"
+            retryAfter: 60
+            limit: 100
+            remaining: 0
+            reset: 1640995200
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              correlationId: "corr_1234567890"
+              endpoint: "/api/v1/dashboard/trustscore"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            success: false
+            error: "Internal server error"
+            code: "INTERNAL_ERROR"
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              correlationId: "corr_1234567890"
+              endpoint: "/api/v1/dashboard/trustscore"
+
+tags:
+  - name: dashboard
+    description: Dashboard and trust score management endpoints
+  - name: trust-score
+    description: Trust score calculation and retrieval
+  - name: trends
+    description: Historical trend data and analytics
+  - name: features
+    description: Sacred features and subscription management
+  - name: users
+    description: User management and profile information
+  - name: health
+    description: System health and monitoring endpoints
+  - name: authentication
+    description: Authentication and authorization
+
+paths:
+  # Health Check
+  /health:
+    get:
+      tags:
+        - health
+      summary: System health check
+      description: |
+        Performs a comprehensive health check of all system services.
+
+        This endpoint checks the status of:
+        - Database connectivity and performance
+        - Redis cache availability
+        - API response times
+        - External service integrations
+
+        Returns overall system health and individual service statuses.
+      operationId: healthCheck
+      responses:
+        "200":
+          description: System health status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthCheck"
+          example:
+            status: "healthy"
+            timestamp: "2024-01-01T12:00:00.000Z"
+            uptime: 86400
+            services:
+              database:
+                status: "up"
+                responseTime: 15
+                lastCheck: "2024-01-01T12:00:00.000Z"
+              redis:
+                status: "up"
+                responseTime: 2
+                lastCheck: "2024-01-01T12:00:00.000Z"
+              api:
+                status: "up"
+                responseTime: 45
+                lastCheck: "2024-01-01T12:00:00.000Z"
+
+  # Dashboard Trust Score Endpoints
+  /dashboard/trustscore:
+    get:
+      tags:
+        - dashboard
+        - trust-score
+      summary: Get user trust score
+      description: |
+        Retrieves the current trust score for a specific user, including detailed factor breakdowns.
+
+        The trust score is calculated based on multiple factors:
+        - **Engagement** (25%): Audience interaction and participation
+        - **Consistency** (25%): Regular content creation and updates
+        - **Quality** (25%): Content quality and relevance metrics
+        - **Community** (25%): Community building and interaction
+
+        Scores are cached for 24 hours and automatically recalculated based on user activity.
+      operationId: getTrustScore
+      security:
+        - apiKeyAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Unique user identifier
+          example: "user_1234567890"
+        - name: includeFactors
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+          description: Include detailed factor breakdown
+        - name: cache
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+          description: Use cached score if available
+      responses:
+        "200":
+          description: Trust score retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/OK"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/TrustScoreResponse"
+          example:
+            success: true
+            data:
+              score: 85
+              tier: "silver"
+              factors:
+                engagement: 88
+                consistency: 92
+                quality: 85
+                community: 75
+              calculatedAt: "2024-01-01T12:00:00.000Z"
+              expiresAt: "2024-01-02T12:00:00.000Z"
+              trend: "up"
+              change: 5.2
+              lastUpdated: "2024-01-01T11:30:00.000Z"
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              requestId: "req_1234567890"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+    post:
+      tags:
+        - dashboard
+        - trust-score
+      summary: Trigger trust score calculation
+      description: |
+        Initiates an asynchronous recalculation of a user's trust score.
+
+        Use this endpoint when:
+        - User has made significant changes to their profile
+        - Manual score refresh is needed
+        - Specific factors need updating
+        - Cache bypass is required
+
+        The calculation runs in the background and typically completes within 30 seconds.
+      operationId: calculateTrustScore
+      security:
+        - apiKeyAuth: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrustScoreCalculationRequest"
+            example:
+              userId: "user_1234567890"
+              force: true
+              factors: ["engagement", "quality"]
+      responses:
+        "202":
+          description: Trust score calculation initiated
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/Accepted"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/TrustScoreCalculationResponse"
+          example:
+            success: true
+            data:
+              calculationId: "calc_1234567890abcdef"
+              status: "processing"
+              estimatedTime: 30
+              startedAt: "2024-01-01T12:00:00.000Z"
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              requestId: "req_1234567890"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  # Trends Endpoint
+  /dashboard/trend:
+    get:
+      tags:
+        - dashboard
+        - trends
+      summary: Get trust score trends
+      description: |
+        Retrieves historical trust score data for trend analysis and visualization.
+
+        Provides time-series data showing:
+        - Daily trust score values
+        - Industry benchmark comparisons
+        - Trend analysis metrics
+        - Performance insights
+
+        Data is aggregated daily and includes rolling averages for smooth visualization.
+      operationId: getTrustScoreTrends
+      security:
+        - apiKeyAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Unique user identifier
+          example: "user_1234567890"
+        - name: timeframe
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [7d, 30d, 90d, 1y]
+            default: "30d"
+          description: Time period for trend data
+          example: "30d"
+        - name: granularity
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [daily, weekly, monthly]
+            default: "daily"
+          description: Data granularity
+        - name: includeBenchmark
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+          description: Include industry benchmark data
+      responses:
+        "200":
+          description: Trend data retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/OK"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/TrendResponse"
+          example:
+            success: true
+            data:
+              data:
+                - date: "2024-01-01"
+                  score: 85.5
+                  benchmark: 75.2
+                - date: "2024-01-02"
+                  score: 86.1
+                  benchmark: 75.8
+              timeframe: "30d"
+              metadata:
+                version: "1.0.0"
+                endpoint: "/api/v1/dashboard/trend"
+                generatedAt: "2024-01-01T12:00:00.000Z"
+                count: 30
+                averageScore: 82.3
+                highestScore: 88.7
+                lowestScore: 76.1
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              requestId: "req_1234567890"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  # Features Endpoint
+  /dashboard/features:
+    get:
+      tags:
+        - dashboard
+        - features
+      summary: Get user features
+      description: |
+        Retrieves available sacred features based on user's subscription tier.
+
+        Features are organized by:
+        - **Availability**: Active, locked, or coming soon
+        - **Subscription Tier**: Minimum tier required
+        - **Category**: Content, analytics, community, etc.
+        - **Progress**: Unlock progress and requirements
+
+        Premium features enhance creator capabilities and revenue potential.
+      operationId: getUserFeatures
+      security:
+        - apiKeyAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Unique user identifier
+          example: "user_1234567890"
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [content, analytics, community, commerce, support, ai]
+          description: Filter by feature category
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [active, locked, coming-soon]
+          description: Filter by feature status
+        - name: includeComingSoon
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+          description: Include upcoming features
+      responses:
+        "200":
+          description: Features retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/OK"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/FeaturesResponse"
+          example:
+            success: true
+            data:
+              features:
+                - id: "premium-content"
+                  name: "Premium Content"
+                  description: "Create exclusive content for your most loyal supporters with advanced monetization options."
+                  icon: "📝"
+                  status: "active"
+                  sacredLevel: "silver"
+                  progress: 85
+                  category: "content"
+                  benefits:
+                    - "Higher revenue per supporter"
+                    - "Exclusive content tools"
+                    - "Advanced analytics"
+                  requirements:
+                    - "Silver tier or higher"
+                    - "Complete onboarding"
+                    - "Verify identity"
+              userLevel: "silver"
+              unlockedCount: 12
+              totalCount: 20
+              metadata:
+                version: "1.0.0"
+                endpoint: "/api/v1/dashboard/features"
+                generatedAt: "2024-01-01T12:00:00.000Z"
+                nextUnlockFeature: "collaboration-hub"
+                nextUnlockProgress: 75
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              requestId: "req_1234567890"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  # User Management
+  /users/me:
+    get:
+      tags:
+        - users
+      summary: Get current user profile
+      description: |
+        Retrieves the current user's profile information and subscription details.
+
+        Returns comprehensive user data including:
+        - Basic profile information
+        - Current subscription tier and status
+        - API quota and usage information
+        - Account verification status
+        - Recent activity metrics
+      operationId: getCurrentUser
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/OK"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/User"
+          example:
+            success: true
+            data:
+              id: "user_1234567890"
+              email: "creator@example.com"
+              username: "creator123"
+              displayName: "John Creator"
+              avatar: "https://cdn.vauntico.com/avatars/user_123.jpg"
+              tier: "silver"
+              subscription:
+                tier: "silver"
+                status: "active"
+                currentPeriod:
+                  start: "2024-01-01T00:00:00.000Z"
+                  end: "2024-02-01T00:00:00.000Z"
+                apiQuota:
+                  limit: 500
+                  used: 127
+                  reset: 1640995200
+              createdAt: "2024-01-01T12:00:00.000Z"
+              lastLogin: "2024-01-01T10:30:00.000Z"
+              verified: true
+            metadata:
+              version: "1.0.0"
+              timestamp: "2024-01-01T12:00:00.000Z"
+              requestId: "req_1234567890"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /users/{userId}:
+    get:
+      tags:
+        - users
+      summary: Get user by ID
+      description: |
+        Retrieves public user information for a specific user ID.
+
+        Returns limited public information:
+        - Basic profile data
+        - Public trust score
+        - Verification status
+        - Creator metrics (if public)
+
+        Requires appropriate permissions to access user data.
+      operationId: getUserById
+      security:
+        - apiKeyAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique user identifier
+          example: "user_1234567890"
+        - name: includePrivate
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+          description: Include private information (requires admin permissions)
+      responses:
+        "200":
+          description: User information retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/OK"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"

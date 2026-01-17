@@ -118,43 +118,48 @@ jobs:
         run: |
           echo "🔐 Configuring OCI CLI..."
 
-          # Create OCI directory
-          mkdir -p ~/.oci
+          # Create OCI directory using RUNNER_TEMP for security (GitHub Actions runner patch)
+          mkdir -p $RUNNER_TEMP/.oci
 
-          # Write private key from secret
-          echo "${{ secrets.OCI_PRIVATE_KEY }}" | base64 -d > ~/.oci/oci_api_key.pem
-          chmod 600 ~/.oci/oci_api_key.pem
+          # Write private key from secret (GitHub Actions runner patch)
+          echo "$OCI_PRIVATE_KEY" | base64 -d > $RUNNER_TEMP/oci_api_key.pem
 
-          # Create OCI config file
-          cat > ~/.oci/config <<EOF
+          # Create OCI config file with RUNNER_TEMP paths (GitHub Actions runner patch)
+          cat > $RUNNER_TEMP/.oci/config <<EOF
           [DEFAULT]
-          user=${{ secrets.OCI_USER_OCID }}
-          fingerprint=${{ secrets.OCI_FINGERPRINT }}
-          tenancy=${{ secrets.OCI_TENANCY_OCID }}
-          region=${{ secrets.OCI_REGION }}
-          key_file=~/.oci/oci_api_key.pem
+          user=$OCI_USER_OCID
+          fingerprint=$OCI_FINGERPRINT
+          tenancy=$OCI_TENANCY_OCID
+          region=$OCI_REGION
+          key_file=$RUNNER_TEMP/oci_api_key.pem
           EOF
 
-          chmod 600 ~/.oci/config
+          # Export OCI_CLI_CONFIG_FILE environment variable (GitHub Actions runner patch)
+          export OCI_CLI_CONFIG_FILE=$RUNNER_TEMP/.oci/config
+
+          # Set proper permissions
+          chmod 600 $RUNNER_TEMP/oci_api_key.pem
+          chmod 600 $RUNNER_TEMP/.oci/config
 
           # Force API key authentication
           export OCI_CLI_AUTH=api_key
 
-          echo "✅ OCI CLI configured"
+          echo "✅ OCI CLI configured with runner patch"
+          echo "📁 Config file: $OCI_CLI_CONFIG_FILE"
 
       - name: Test OCI authentication
         id: auth
         run: |
           echo "🔐 Testing OCI authentication..."
 
-          # Test authentication with retry logic
+          # Test authentication with retry logic using the patched config
           for i in {1..3}; do
             echo "🔐 Authentication attempt $i/3..."
-            if timeout 10 oci iam compartment list --compartment-id ${{ secrets.OCI_TENANCY_OCID }} --limit 1 --auth api_key >/dev/null 2>&1; then
+            if timeout 10 oci iam compartment list --compartment-id $OCI_TENANCY_OCID --limit 1 --auth api_key --config-file $OCI_CLI_CONFIG_FILE >/dev/null 2>&1; then
               echo "success=true" >> $GITHUB_OUTPUT
               
-              # Get namespace
-              NAMESPACE=$(timeout 10 oci os ns get --query 'data' --raw-output --auth api_key 2>/dev/null)
+              # Get namespace using the patched config
+              NAMESPACE=$(timeout 10 oci os ns get --query 'data' --raw-output --auth api_key --config-file $OCI_CLI_CONFIG_FILE 2>/dev/null)
               echo "namespace=$NAMESPACE" >> $GITHUB_OUTPUT
               
               echo "✅ OCI authentication successful"
@@ -252,6 +257,118 @@ jobs:
           echo "✅ Container image pushed successfully"
           echo "📦 Image: ${{ needs.oci-authentication.outputs.namespace }}.ocir.io/vauntico-repo/vauntico-server:${{ needs.container-build.outputs.image-tag }}"
 
+  post-deploy-health-check:
+    runs-on: ubuntu-latest
+    needs: container-push
+    if: needs.container-push.result == 'success'
+    steps:
+      - name: Wait for service to come online
+        run: sleep 30
+
+      - name: Check multiple endpoints with retries and thresholds
+        run: |
+          echo "🏥 Starting comprehensive health check..."
+
+          # Initialize health check log
+          echo "=== Vauntico API Health Check ===" > healthcheck.log
+          echo "Timestamp: $(date)" >> healthcheck.log
+          echo "Deployment: ${{ needs.container-build.outputs.image-tag }}" >> healthcheck.log
+          echo "" >> healthcheck.log
+
+          endpoints=("https://api.vauntico.com/health" "https://api.vauntico.com/status" "https://api.vauntico.com/metrics")
+          overall_success=true
+
+          for url in "${endpoints[@]}"; do
+            echo "" >> healthcheck.log
+            echo "Checking $url ..." | tee -a healthcheck.log
+            success=false
+            endpoint_start_time=$(date +%s)
+            
+            for attempt in {1..3}; do
+              echo "Attempt $attempt..." | tee -a healthcheck.log
+              
+              # Measure response time
+              curl_start=$(date +%s%N)
+              curl -s -o response.txt -w "%{http_code}" "$url" > status.txt
+              curl_end=$(date +%s%N)
+              response_time=$(( (curl_end - curl_start) / 1000000 ))
+              
+              code=$(cat status.txt)
+              echo "HTTP status: $code" | tee -a healthcheck.log
+              echo "Response time: ${response_time}s" | tee -a healthcheck.log
+              echo "Response body:" | tee -a healthcheck.log
+              cat response.txt | tee -a healthcheck.log
+              echo "" >> healthcheck.log
+              
+              # Extra validation for /metrics
+              if [[ "$url" == *"/metrics"* ]]; then
+                if ! grep -q "uptime_seconds" response.txt; then
+                  echo "❌ Metrics endpoint missing uptime_seconds" | tee -a healthcheck.log
+                  rm -f response.txt status.txt
+                  overall_success=false
+                  break 2
+                fi
+                if ! grep -q "status" response.txt; then
+                  echo "❌ Metrics endpoint missing status field" | tee -a healthcheck.log
+                  rm -f response.txt status.txt
+                  overall_success=false
+                  break 2
+                fi
+              fi
+              
+              # Extra validation for /status
+              if [[ "$url" == *"/status"* ]]; then
+                if ! grep -q "healthy" response.txt; then
+                  echo "❌ Status endpoint missing healthy indicator" | tee -a healthcheck.log
+                  rm -f response.txt status.txt
+                  overall_success=false
+                  break 2
+                fi
+              fi
+              
+              if [ "$code" -eq 200 ]; then
+                echo "✅ Health check passed for $url (attempt $attempt)" | tee -a healthcheck.log
+                success=true
+                break
+              else
+                echo "❌ Health check failed for $url (attempt $attempt) - HTTP $code" | tee -a healthcheck.log
+                if [ $attempt -lt 3 ]; then
+                  echo "Waiting 10 seconds before retry..." | tee -a healthcheck.log
+                  sleep 10
+                fi
+              fi
+            done
+            
+            # Clean up temp files
+            rm -f response.txt status.txt
+            
+            if [ "$success" = false ]; then
+              echo "❌ Health check failed for $url after 3 attempts" | tee -a healthcheck.log
+              overall_success=false
+            fi
+          done
+
+          echo "" >> healthcheck.log
+          echo "=== Summary ===" >> healthcheck.log
+          if [ "$overall_success" = true ]; then
+            echo "Overall Status: ✅ ALL HEALTH CHECKS PASSED" | tee -a healthcheck.log
+            echo "Total endpoints checked: ${#endpoints[@]}" >> healthcheck.log
+            echo "Health check completed at: $(date)" >> healthcheck.log
+          else
+            echo "Overall Status: ❌ HEALTH CHECKS FAILED" | tee -a healthcheck.log
+            echo "Total endpoints checked: ${#endpoints[@]}" >> healthcheck.log
+            echo "Health check failed at: $(date)" >> healthcheck.log
+            exit 1
+          fi
+
+      - name: Upload health check log
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: healthcheck-log
+          path: healthcheck.log
+          retention-days: 30
+
   rollback-procedure:
     runs-on: ubuntu-latest
     needs: oci-authentication
@@ -282,7 +399,7 @@ jobs:
 
   deployment-validation:
     runs-on: ubuntu-latest
-    needs: [container-push, rollback-procedure]
+    needs: [post-deploy-health-check, rollback-procedure]
     if: always()
     steps:
       - name: Checkout repository
@@ -292,12 +409,12 @@ jobs:
         run: |
           echo "🔍 Validating deployment..."
 
-          # Check if container is running
-          # This would typically check the OCI deployment status
-
-          if [ "${{ needs.container-push.result }}" = "success" ]; then
-            echo "✅ Container image pushed successfully"
+          # Check if health check passed
+          if [ "${{ needs.post-deploy-health-check.result }}" = "success" ]; then
+            echo "✅ Post-deploy health check passed"
             echo "📦 Image: ${{ needs.oci-authentication.outputs.namespace }}.ocir.io/vauntico-repo/vauntico-server:${{ needs.container-build.outputs.image-tag }}"
+          elif [ "${{ needs.post-deploy-health-check.result }}" = "failure" ]; then
+            echo "❌ Post-deploy health check failed - service may be unhealthy"
           fi
 
           if [ "${{ needs.rollback-procedure.result }}" = "success" ]; then
@@ -313,6 +430,7 @@ jobs:
         oci-authentication,
         container-build,
         container-push,
+        post-deploy-health-check,
         rollback-procedure,
         deployment-validation,
       ]
@@ -328,11 +446,15 @@ jobs:
             
             if [ "${{ needs.oci-authentication.outputs.auth-success }}" = "true" ]; then
               if [ "$ACTION" = "build-push" ] && [ "${{ needs.container-push.result }}" = "success" ]; then
-                MESSAGE="🚀 OCI build and push successful! 📦 ${{ needs.oci-authentication.outputs.namespace }}.ocir.io/vauntico-repo/vauntico-server:${{ needs.container-build.outputs.image-tag }} ✅ Container image built and pushed"
+                if [ "${{ needs.post-deploy-health-check.result }}" = "success" ]; then
+                  MESSAGE="🚀 OCI deployment successful! 📦 ${{ needs.oci-authentication.outputs.namespace }}.ocir.io/vauntico-repo/vauntico-server:${{ needs.container-build.outputs.image-tag }} ✅ Container built, pushed, and all health checks passed"
+                elif [ "${{ needs.post-deploy-health-check.result }}" = "failure" ]; then
+                  MESSAGE="⚠️ OCI deployment partially successful! 📦 ${{ needs.oci-authentication.outputs.namespace }}.ocir.io/vauntico-repo/vauntico-server:${{ needs.container-build.outputs.image-tag }} ✅ Container built and pushed, but health checks failed"
+                fi
               elif [ "$ACTION" = "rollback" ] && [ "${{ needs.rollback-procedure.result }}" = "success" ]; then
                 MESSAGE="🔄 OCI rollback successful! ✅ Rolled back to stable version"
               elif [ "$ACTION" = "authenticate" ]; then
-                MESSAGE="🔐 OCI authentication successful! ✅ OCI CLI configured and authenticated"
+                MESSAGE="🔐 OCI authentication successful! ✅ OCI CLI configured and authenticated with runner patch"
               else
                 MESSAGE="⚠️ OCI operation completed with issues. Please check logs for details."
               fi

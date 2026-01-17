@@ -1,9 +1,37 @@
-import React, { useState } from "react";
-import { Menu, X, Bell, User, Settings, LogOut } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import {
+  Menu,
+  X,
+  Bell,
+  User,
+  Settings,
+  LogOut,
+  BarChart3,
+  Users,
+  FileText,
+} from "lucide-react";
 import { clsx } from "clsx";
+
+// Import enhanced components
+import {
+  DashboardCard,
+  StatCard,
+  Button,
+  Badge,
+  Skeleton,
+  Progress,
+} from "../components/dashboard/UIkit";
+import { ThemeToggle } from "../components/ThemeToggle";
+import { ErrorBoundary } from "../components/ErrorBoundary";
 import TrustScoreCard from "../components/TrustScoreCard";
 import TrustScoreTrend from "../components/TrustScoreTrend";
 import SacredFeatures from "../components/SacredFeatures";
+
+// Import custom hooks
+import { useTheme } from "../context/ThemeContext";
+import { useTrustScore } from "../hooks/useTrustScore";
+import { useTrend } from "../hooks/useTrend";
+import { useFeatures } from "../hooks/useFeatures";
 
 interface CreatorData {
   name: string;
@@ -21,97 +49,73 @@ interface CreatorData {
 const CreatorDashboard: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
+  const { theme } = useTheme();
 
-  // Mock data - in real app, this would come from API
+  // Use custom hooks for data fetching
+  const {
+    data: trustScoreData,
+    loading: trustScoreLoading,
+    error: trustScoreError,
+  } = useTrustScore({
+    autoRefresh: true,
+    refreshInterval: 30000, // 30 seconds
+  });
+
+  const {
+    data: trendData,
+    loading: trendLoading,
+    error: trendError,
+  } = useTrend({
+    timeframe: "30d",
+    autoRefresh: true,
+    refreshInterval: 60000, // 1 minute
+  });
+
+  const {
+    features,
+    loading: featuresLoading,
+    error: featuresError,
+    unlockedCount,
+    totalCount,
+  } = useFeatures({
+    userLevel: trustScoreData?.tier || "silver",
+    autoRefresh: true,
+    refreshInterval: 120000, // 2 minutes
+  });
+
+  // Mock creator data
   const creatorData: CreatorData = {
     name: "Alex Creator",
     email: "alex@example.com",
-    trustScore: 78,
-    trustScoreTrend: "up",
-    trustScoreChange: 5.2,
-    level: "silver",
+    trustScore: trustScoreData?.score || 78,
+    trustScoreTrend: trustScoreData?.trend || "up",
+    trustScoreChange: trustScoreData?.change || 5.2,
+    level: trustScoreData?.tier || "silver",
     joinDate: "2024-01-15",
     revenue: 1247.5,
     subscribers: 847,
     contentCount: 42,
   };
 
-  const trustScoreHistory = [
-    { date: "2026-01-10", score: 65, benchmark: 70 },
-    { date: "2026-01-11", score: 68, benchmark: 70 },
-    { date: "2026-01-12", score: 70, benchmark: 71 },
-    { date: "2026-01-13", score: 72, benchmark: 71 },
-    { date: "2026-01-14", score: 75, benchmark: 72 },
-    { date: "2026-01-15", score: 76, benchmark: 73 },
-    { date: "2026-01-16", score: 78, benchmark: 74 },
-  ];
-
-  const sacredFeatures = [
-    {
-      id: "premium-content",
-      name: "Premium Content",
-      description:
-        "Create exclusive content for your most loyal supporters with advanced monetization options.",
-      icon: <Settings className="w-6 h-6" />,
-      status: "active" as const,
-      sacredLevel: "silver" as const,
-      progress: 85,
-    },
-    {
-      id: "analytics-pro",
-      name: "Analytics Pro",
-      description:
-        "Advanced insights about your audience, engagement patterns, and revenue optimization.",
-      icon: <Bell className="w-6 h-6" />,
-      status: "active" as const,
-      sacredLevel: "silver" as const,
-    },
-    {
-      id: "collaboration-hub",
-      name: "Collaboration Hub",
-      description:
-        "Connect with other creators and collaborate on exclusive content projects.",
-      icon: <User className="w-6 h-6" />,
-      status: "locked" as const,
-      sacredLevel: "gold" as const,
-      progress: 45,
-    },
-    {
-      id: "ai-assistant",
-      name: "AI Assistant",
-      description:
-        "Get AI-powered suggestions for content creation and audience growth.",
-      icon: <Settings className="w-6 h-6" />,
-      status: "coming-soon" as const,
-      sacredLevel: "platinum" as const,
-    },
-    {
-      id: "merchandise-store",
-      name: "Merchandise Store",
-      description: "Open your own merchandise store with zero inventory risk.",
-      icon: <Settings className="w-6 h-6" />,
-      status: "locked" as const,
-      sacredLevel: "gold" as const,
-      progress: 20,
-    },
-    {
-      id: "priority-support",
-      name: "Priority Support",
-      description: "Get 24/7 priority support from our creator success team.",
-      icon: <Bell className="w-6 h-6" />,
-      status: "active" as const,
-      sacredLevel: "silver" as const,
-    },
-  ];
-
   const navigation = [
-    { id: "overview", label: "Overview", icon: <User className="w-5 h-5" /> },
-    { id: "analytics", label: "Analytics", icon: <Bell className="w-5 h-5" /> },
-    { id: "content", label: "Content", icon: <Settings className="w-5 h-5" /> },
-    { id: "community", label: "Community", icon: <User className="w-5 h-5" /> },
     {
-      id: "settings",
-      label: "Settings",
+      id: "overview",
+      label: "Overview",
+      icon: <BarChart3 className="w-5 h-5" />,
+    },
+    {
+      id: "analytics",
+      label: "Analytics",
+      icon: <Users className="w-5 h-5" />,
+    },
+    {
+      id: "content",
+      label: "Content",
+      icon: <FileText className="w-5 h-5" />,
+    },
+    {
+      id: "features",
+      label: "Features",
       icon: <Settings className="w-5 h-5" />,
     },
   ];
@@ -131,200 +135,381 @@ const CreatorDashboard: React.FC = () => {
     });
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-      {/* Mobile Menu Button */}
-      <div className="lg:hidden fixed top-4 left-4 z-50">
-        <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-2 bg-white rounded-lg shadow-lg border border-gray-200"
-        >
-          {sidebarOpen ? (
-            <X className="w-6 h-6 text-gray-600" />
-          ) : (
-            <Menu className="w-6 h-6 text-gray-600" />
-          )}
-        </button>
-      </div>
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setSidebarOpen(false);
+    }
+  };
 
-      {/* Sidebar */}
-      <div
-        className={clsx(
-          "fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-xl border-r border-gray-200 transform transition-transform duration-300 ease-in-out",
-          "lg:translate-x-0 lg:static lg:inset-0",
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        )}
-      >
-        <div className="flex flex-col h-full">
-          {/* Logo */}
-          <div className="flex items-center gap-3 p-6 border-b border-gray-200">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">V</span>
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "overview":
+        return (
+          <div className="space-y-8">
+            {/* Stats Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <StatCard
+                title="Total Revenue"
+                value={formatCurrency(creatorData.revenue)}
+                icon="💰"
+                trend={{
+                  value: 12.5,
+                  direction: creatorData.trustScoreTrend,
+                }}
+              />
+              <StatCard
+                title="Subscribers"
+                value={creatorData.subscribers.toLocaleString()}
+                icon="👥"
+                trend={{
+                  value: 8.3,
+                  direction: "up",
+                }}
+              />
+              <StatCard
+                title="Content Pieces"
+                value={creatorData.contentCount}
+                icon="📝"
+                trend={{
+                  value: 15.2,
+                  direction: "up",
+                }}
+              />
+              <StatCard
+                title="Member Since"
+                value={formatDate(creatorData.joinDate)}
+                icon="📅"
+              />
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">Vauntico</h1>
-              <p className="text-sm text-gray-500">Creator Dashboard</p>
-            </div>
-          </div>
 
-          {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2">
-            {navigation.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={clsx(
-                  "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors",
-                  activeTab === item.id
-                    ? "bg-indigo-50 text-indigo-700 border border-indigo-200"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                )}
-              >
-                {item.icon}
-                <span className="font-medium">{item.label}</span>
-              </button>
-            ))}
-          </nav>
-
-          {/* User Info */}
-          <div className="p-4 border-t border-gray-200">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center">
-                <span className="text-white font-semibold text-sm">
-                  {creatorData.name.charAt(0)}
-                </span>
-              </div>
-              <div className="flex-1">
-                <p className="font-medium text-gray-900 text-sm">
-                  {creatorData.name}
-                </p>
-                <p className="text-xs text-gray-500">{creatorData.email}</p>
-              </div>
-            </div>
-            <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors">
-              <LogOut className="w-4 h-4" />
-              Sign Out
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="lg:ml-64 min-h-screen">
-        {/* Header */}
-        <header className="bg-white shadow-sm border-b border-gray-200">
-          <div className="px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">
-                  Welcome back, {creatorData.name}! 🎉
-                </h2>
-                <p className="text-gray-600">
-                  Your creator journey is flourishing. Here's your latest
-                  overview.
-                </p>
-              </div>
-              <div className="flex items-center gap-4">
-                <button className="relative p-2 text-gray-600 hover:text-gray-900 transition-colors">
-                  <Bell className="w-5 h-5" />
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                </button>
-                <button className="p-2 text-gray-600 hover:text-gray-900 transition-colors">
-                  <Settings className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Dashboard Content */}
-        <main className="p-6">
-          {activeTab === "overview" && (
-            <div className="space-y-8">
-              {/* Stats Overview */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2 bg-green-50 rounded-lg">
-                      <span className="text-green-600 font-bold text-lg">
-                        💰
-                      </span>
-                    </div>
-                    <span className="text-sm text-gray-500">Total Revenue</span>
+            {/* Trust Score Card */}
+            {trustScoreLoading ? (
+              <div className="flex justify-center">
+                <DashboardCard className="w-96 h-64">
+                  <div className="flex items-center justify-center h-full">
+                    <Skeleton lines={3} height="h-4" className="w-full mb-4" />
+                    <Skeleton
+                      lines={1}
+                      height="h-8"
+                      className="w-24 h-8 mx-auto"
+                    />
                   </div>
-                  <div className="text-2xl font-bold text-gray-900">
-                    {formatCurrency(creatorData.revenue)}
-                  </div>
+                </DashboardCard>
+              </div>
+            ) : trustScoreError ? (
+              <DashboardCard className="text-center">
+                <div className="text-red-600 mb-4">
+                  ⚠️ Failed to load trust score
                 </div>
-
-                <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2 bg-blue-50 rounded-lg">
-                      <span className="text-blue-600 font-bold text-lg">
-                        👥
-                      </span>
-                    </div>
-                    <span className="text-sm text-gray-500">Subscribers</span>
-                  </div>
-                  <div className="text-2xl font-bold text-gray-900">
-                    {creatorData.subscribers.toLocaleString()}
-                  </div>
-                </div>
-
-                <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2 bg-purple-50 rounded-lg">
-                      <span className="text-purple-600 font-bold text-lg">
-                        📝
-                      </span>
-                    </div>
-                    <span className="text-sm text-gray-500">
-                      Content Pieces
-                    </span>
-                  </div>
-                  <div className="text-2xl font-bold text-gray-900">
-                    {creatorData.contentCount}
-                  </div>
-                </div>
-
-                <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2 bg-indigo-50 rounded-lg">
-                      <span className="text-indigo-600 font-bold text-lg">
-                        📅
-                      </span>
-                    </div>
-                    <span className="text-sm text-gray-500">Member Since</span>
-                  </div>
-                  <div className="text-lg font-bold text-gray-900">
-                    {formatDate(creatorData.joinDate)}
-                  </div>
-                </div>
-              </div>
-
-              {/* Trust Score Card */}
+                <Button onClick={() => window.location.reload()}>
+                  Retry
+                </Button>
+              </DashboardCard>
+            ) : (
               <div className="flex justify-center">
                 <TrustScoreCard
                   score={creatorData.trustScore}
                   trend={creatorData.trustScoreTrend}
                   change={creatorData.trustScoreChange}
-                  lastUpdated={new Date().toISOString()}
+                  lastUpdated={
+                    trustScoreData?.calculatedAt || new Date().toISOString()
+                  }
+                  animated={true}
+                  showDetails={true}
                 />
               </div>
+            )}
 
-              {/* Trust Score Trend */}
-              <TrustScoreTrend data={trustScoreHistory} timeframe="30d" />
-
-              {/* Sacred Features */}
-              <SacredFeatures
-                features={sacredFeatures}
-                userLevel={creatorData.level}
+            {/* Trust Score Trend */}
+            {trendLoading ? (
+              <div className="flex justify-center">
+                <DashboardCard className="w-full h-64">
+                  <Skeleton lines={2} height="h-4" className="w-full" />
+                </DashboardCard>
+              </div>
+            ) : trendError ? (
+              <DashboardCard className="text-center">
+                <div className="text-red-600 mb-4">
+                  ⚠️ Failed to load trend data
+                </div>
+                <Button onClick={() => window.location.reload()}>
+                  Retry
+                </Button>
+              </DashboardCard>
+            ) : (
+              <TrustScoreTrend
+                data={trendData}
+                timeframe="30d"
+                showExport={true}
+                showZoom={true}
+                interactive={true}
+                height={400}
               />
-            </div>
+            )}
+
+            {/* Sacred Features */}
+            {featuresLoading ? (
+              <div className="flex justify-center">
+                <DashboardCard className="w-full h-64">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {[...Array(6)].map((_, i) => (
+                      <div key={i} className="space-y-3">
+                        <Skeleton lines={1} height="h-4" className="w-3/4" />
+                        <Skeleton lines={2} height="h-3" className="w-full" />
+                      </div>
+                    ))}
+                  </div>
+                </DashboardCard>
+              </div>
+            ) : featuresError ? (
+              <DashboardCard className="text-center">
+                <div className="text-red-600 mb-4">
+                  ⚠️ Failed to load features
+                </div>
+                <Button onClick={() => window.location.reload()}>
+                  Retry
+                </Button>
+              </DashboardCard>
+            ) : (
+              <SacredFeatures
+                features={features}
+                userLevel={creatorData.level}
+                interactive={true}
+                showProgress={true}
+              />
+            )}
+          </div>
+        );
+      case "analytics":
+        return (
+          <div className="space-y-6">
+            <DashboardCard>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                Analytics Dashboard
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Detailed analytics coming soon...
+              </p>
+            </DashboardCard>
+          </div>
+        );
+      case "content":
+        return (
+          <div className="space-y-6">
+            <DashboardCard>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                Content Management
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Content management tools coming soon...
+              </p>
+            </DashboardCard>
+          </div>
+        );
+      case "features":
+        return (
+          <div className="space-y-6">
+            <DashboardCard>
+              <div className="text-center">
+                <div className="mb-6">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <Badge variant="success" className="text-lg">
+                      {creatorData.level.charAt(0).toUpperCase() +
+                        creatorData.level.slice(1)}
+                    </Badge>
+                    <span className="ml-3 text-gray-600 dark:text-gray-300">
+                      {unlockedCount} of {totalCount} features unlocked
+                    </span>
+                  </div>
+                  <Progress
+                    value={(unlockedCount / totalCount) * 100}
+                    max={100}
+                    variant="success"
+                    showLabel={true}
+                    className="max-w-md mx-auto"
+                  />
+                </div>
+                <SacredFeatures
+                  features={features}
+                  userLevel={creatorData.level}
+                  interactive={true}
+                  showProgress={true}
+                />
+              </div>
+            </DashboardCard>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <ErrorBoundary>
+      <div
+        className={clsx(
+          "min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50",
+          "dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
+        )}
+      >
+        {/* Mobile Menu Button */}
+        <div className="lg:hidden fixed top-4 left-4 z-50">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700"
+            aria-label="Toggle navigation menu"
+          >
+            {sidebarOpen ? (
+              <X className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+            ) : (
+              <Menu className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+            )}
+          </Button>
+        </div>
+
+        {/* Sidebar */}
+        <div
+          className={clsx(
+            "fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 shadow-xl border-r border-gray-200 dark:border-gray-700 transform transition-transform duration-300 ease-in-out",
+            "lg:translate-x-0 lg:static lg:inset-0",
+            sidebarOpen ? "translate-x-0" : "-translate-x-full"
           )}
-        </main>
+        >
+          <div className="flex flex-col h-full">
+            {/* Logo */}
+            <div className="flex items-center gap-3 p-6 border-b border-gray-200 dark:border-gray-700">
+              <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">V</span>
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+                  Vauntico
+                </h1>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Creator Dashboard
+                </p>
+              </div>
+            </div>
+
+            {/* Navigation */}
+            <nav className="flex-1 p-4 space-y-2">
+              {navigation.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  className={clsx(
+                    "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors",
+                    activeTab === item.id
+                      ? "bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 border border-indigo-200 dark:border-indigo-800"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700"
+                  )}
+                >
+                  {item.icon}
+                  <span className="font-medium">{item.label}</span>
+                </button>
+              ))}
+            </nav>
+
+            {/* User Info */}
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center">
+                  <span className="text-white font-semibold text-sm">
+                    {creatorData.name.charAt(0)}
+                  </span>
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium text-gray-900 dark:text-white text-sm">
+                    {creatorData.name}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {creatorData.email}
+                  </p>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  /* Handle sign out */
+                }}
+                className="w-full"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="lg:ml-64 min-h-screen">
+          {/* Header */}
+          <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+            <div className="px-6 py-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Welcome back, {creatorData.name}! 🎉
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Your creator journey is flourishing. Here's your latest
+                    overview.
+                  </p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <ThemeToggle />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      /* Handle notifications */
+                    }}
+                    className="relative"
+                  >
+                    <Bell className="w-5 h-5" />
+                    <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      /* Handle settings */
+                    }}
+                  >
+                    <Settings className="w-5 h-5" />
+                  </Button>
+                </div>
+              </div>
+            </header>
+
+          {/* Dashboard Content */}
+          <main className="p-6">
+            {trustScoreLoading || trendLoading || featuresLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-2 border-indigo-600 border-t-transparent mb-4"></div>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Loading dashboard data...
+                  </p>
+                </div>
+              </div>
+            ) : (
+              renderContent()
+            )}
+          </main>
+        </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 };
 

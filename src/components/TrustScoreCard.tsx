@@ -1,12 +1,16 @@
 import React from "react";
 import { Shield, Star, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { clsx } from "clsx";
+import { DashboardCard, Badge, Progress } from "./dashboard/UIkit";
 
 interface TrustScoreCardProps {
   score: number;
   trend: "up" | "down" | "stable";
   change: number;
   lastUpdated: string;
+  className?: string;
+  showDetails?: boolean;
+  animated?: boolean;
 }
 
 const TrustScoreCard: React.FC<TrustScoreCardProps> = ({
@@ -14,71 +18,86 @@ const TrustScoreCard: React.FC<TrustScoreCardProps> = ({
   trend,
   change,
   lastUpdated,
+  className,
+  showDetails = true,
+  animated = true,
 }) => {
   const getScoreColor = (score: number) => {
-    if (score >= 90) return "text-green-500";
-    if (score >= 75) return "text-blue-500";
-    if (score >= 60) return "text-orange-500";
-    return "text-red-500";
+    if (score >= 90) return "text-green-600";
+    if (score >= 75) return "text-blue-600";
+    if (score >= 60) return "text-orange-600";
+    return "text-red-600";
   };
 
   const getScoreGradient = (score: number) => {
-    if (score >= 90) return "from-green-500 to-green-400";
-    if (score >= 75) return "from-blue-500 to-blue-400";
-    if (score >= 60) return "from-orange-500 to-orange-400";
-    return "from-red-500 to-red-400";
+    if (score >= 90) return "from-green-600 to-green-400";
+    if (score >= 75) return "from-blue-600 to-blue-400";
+    if (score >= 60) return "from-orange-600 to-orange-400";
+    return "from-red-600 to-red-400";
   };
 
-  const getProgressBarGradient = (score: number) => {
-    if (score >= 90) return "bg-gradient-to-r from-green-500 to-green-400";
-    if (score >= 75) return "bg-gradient-to-r from-blue-500 to-blue-400";
-    if (score >= 60) return "bg-gradient-to-r from-orange-500 to-orange-400";
-    return "bg-gradient-to-r from-red-500 to-red-400";
+  const getScoreLevel = (score: number) => {
+    if (score >= 90) return "Excellent";
+    if (score >= 80) return "Very Good";
+    if (score >= 70) return "Good";
+    if (score >= 60) return "Fair";
+    return "Needs Improvement";
   };
 
   const getTrendIcon = () => {
     switch (trend) {
       case "up":
-        return <TrendingUp className="w-5 h-5 text-green-500" />;
+        return (
+          <TrendingUp className="w-5 h-5 text-green-600" aria-hidden="true" />
+        );
       case "down":
-        return <TrendingDown className="w-5 h-5 text-red-500" />;
+        return (
+          <TrendingDown className="w-5 h-5 text-red-600" aria-hidden="true" />
+        );
       default:
-        return <Minus className="w-5 h-5 text-gray-500" />;
+        return <Minus className="w-5 h-5 text-gray-600" aria-hidden="true" />;
     }
   };
 
-  const getChangeColor = () => {
+  const getTrendColor = () => {
     switch (trend) {
       case "up":
-        return "text-green-500";
+        return "text-green-600";
       case "down":
-        return "text-red-500";
+        return "text-red-600";
       default:
-        return "text-gray-500";
+        return "text-gray-600";
     }
   };
 
+  const scoreColor = getScoreColor(score);
+  const scoreGradient = getScoreGradient(score);
+  const scoreLevel = getScoreLevel(score);
+  const trendColor = getTrendColor();
+
   return (
-    <div
-      className={clsx(
-        "relative bg-white rounded-3xl shadow-xl border border-white/80 backdrop-blur-lg",
-        "transform transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl",
-        "p-6 max-w-sm mx-auto"
-      )}
-      style={{
-        background: "linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)",
-        boxShadow: "0 8px 32px rgba(31, 38, 135, 0.15)",
-      }}
+    <DashboardCard
+      className={className}
+      variant={animated ? "elevated" : "default"}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Shield className="w-6 h-6 text-indigo-500" />
-          <h3 className="text-lg font-semibold text-gray-900">Trust Score</h3>
+          <Shield className="w-6 h-6 text-indigo-600" aria-hidden="true" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            Trust Score
+          </h3>
         </div>
-        <div className="flex items-center gap-2">
+        <div
+          className="flex items-center gap-2"
+          role="group"
+          aria-label="Trend information"
+        >
           {getTrendIcon()}
-          <span className={clsx("text-sm font-medium", getChangeColor())}>
+          <span
+            className={clsx("text-sm font-medium", trendColor)}
+            aria-label={`Trend is ${trend} with ${change}% change`}
+          >
             {trend === "up" ? "+" : ""}
             {change}%
           </span>
@@ -90,46 +109,73 @@ const TrustScoreCard: React.FC<TrustScoreCardProps> = ({
         <div
           className={clsx(
             "text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r",
-            getScoreGradient(score)
+            scoreGradient,
+            animated && "transition-all duration-500"
           )}
+          role="img"
+          aria-label={`Trust score of ${score} out of 100, which is ${scoreLevel}`}
+          tabIndex={0}
         >
           {score}
         </div>
-        <div className="flex items-center justify-center gap-1 mt-2">
+        <div
+          className="flex items-center justify-center gap-1 mt-2"
+          role="img"
+          aria-label={`${Math.floor(score / 20)} out of 5 stars`}
+        >
           {[...Array(5)].map((_, i) => (
             <Star
               key={i}
               className={clsx(
-                "w-4 h-4",
+                "w-4 h-4 transition-colors",
                 i < Math.floor(score / 20)
                   ? "text-yellow-400 fill-yellow-400"
                   : "text-gray-300 fill-gray-300"
               )}
+              aria-hidden="true"
             />
           ))}
         </div>
       </div>
 
-      {/* Progress Bar */}
-      <div className="mb-4">
-        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-          <div
-            className={clsx(
-              "h-full rounded-full transition-all duration-500 ease-out",
-              getProgressBarGradient(score)
-            )}
-            style={{ width: `${score}%` }}
-          />
-        </div>
+      {/* Level Badge */}
+      <div className="flex justify-center mb-4">
+        <Badge
+          variant={score >= 80 ? "success" : score >= 60 ? "warning" : "error"}
+          aria-label={`Score level: ${scoreLevel}`}
+        >
+          {scoreLevel}
+        </Badge>
       </div>
 
-      {/* Footer */}
-      <div className="text-center">
-        <p className="text-xs text-gray-500">
-          Last updated: {new Date(lastUpdated).toLocaleDateString()}
-        </p>
+      {/* Progress Bar */}
+      <Progress
+        value={score}
+        max={100}
+        variant={score >= 80 ? "success" : score >= 60 ? "warning" : "error"}
+        showLabel={false}
+        className="mb-4"
+        aria-label={`Trust score progress: ${score} out of 100`}
+      />
+
+      {/* Additional Details */}
+      {showDetails && (
+        <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+          <div>Last updated: {new Date(lastUpdated).toLocaleDateString()}</div>
+          <div>
+            Score calculated based on engagement, consistency, quality, and
+            community factors
+          </div>
+        </div>
+      )}
+
+      {/* Accessibility Info */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        Trust score is {score} out of 100, which is considered {scoreLevel}. The
+        trend is {trend} with a {change}% change from previous period.
+        {Math.floor(score / 20)} out of 5 stars achieved.
       </div>
-    </div>
+    </DashboardCard>
   );
 };
 

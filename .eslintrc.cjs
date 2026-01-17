@@ -50,6 +50,40 @@ module.exports = {
       },
     },
     {
+      files: ["src/**/*.ts", "src/**/*.tsx"],
+      parser: "@typescript-eslint/parser",
+      plugins: ["@typescript-eslint"],
+      extends: [
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+      ],
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      env: {
+        browser: true,
+        es2022: true,
+      },
+      rules: {
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-console": "warn",
+        "@typescript-eslint/prefer-const": "error",
+        "no-unused-vars": "off",
+        "no-console": "off",
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": "off",
+      },
+      settings: {
+        react: {
+          version: "detect",
+        },
+      },
+    },
+    {
       files: ["widget/**/*.ts", "widget/**/*.tsx"],
       parser: "@typescript-eslint/parser",
       plugins: ["@typescript-eslint"],

@@ -1,6 +1,6 @@
 # Vauntico Python SDK
 
-Official Python client SDK for the Vauntico Trust Score Dashboard API.
+Official Python client SDK for the Vauntico Trust Score Dashboard API. This package provides async/await support with comprehensive error handling, authentication, and enterprise-grade features.
 
 ## Installation
 

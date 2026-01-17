@@ -1,14 +1,19 @@
 {
-  "name": "vauntico-sdk",
+  "name": "@vauntico/sdk",
   "version": "1.0.0",
   "description": "Official TypeScript client SDK for the Vauntico Trust Score Dashboard API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "jest",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
     "lint": "eslint src/**/*.ts",
-    "prepublishOnly": "npm run build"
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "audit": "npm audit --audit-level=moderate",
+    "coverage:check": "jest --coverage --coverageReporters=text-lcov | coveralls",
+    "prepublishOnly": "npm run build && npm run test && npm run audit",
+    "semantic-release": "semantic-release"
   },
   "keywords": [
     "vauntico",
@@ -16,33 +21,65 @@
     "api",
     "sdk",
     "typescript",
-    "dashboard"
+    "dashboard",
+    "enterprise",
+    "security",
+    "authentication"
   ],
-  "author": "Vauntico Team",
+  "author": "Vauntico Team <api-support@vauntico.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vauntico/typescript-sdk.git"
+    "url": "https://github.com/Tygertbone/vauntico-server.git",
+    "directory": "sdk/typescript"
+  },
+  "homepage": "https://github.com/Tygertbone/vauntico-server/tree/main/sdk/typescript",
+  "bugs": {
+    "url": "https://github.com/Tygertbone/vauntico-server/issues"
   },
   "dependencies": {
-    "axios": "^1.6.0"
+    "axios": "^1.6.0",
+    "jsonwebtoken": "^9.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@types/jsonwebtoken": "^9.0.0",
     "typescript": "^5.0.0",
     "jest": "^29.0.0",
     "@types/jest": "^29.0.0",
     "ts-jest": "^29.0.0",
     "eslint": "^8.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0"
+    "@typescript-eslint/parser": "^6.0.0",
+    "coveralls": "^3.1.1",
+    "semantic-release": "^22.0.0",
+    "@semantic-release/changelog": "^6.0.0",
+    "@semantic-release/git": "^10.0.0"
   },
   "files": [
     "dist/**/*",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "engines": {
     "node": ">=16.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git",
+      "@semantic-release/github"
+    ]
   }
 }

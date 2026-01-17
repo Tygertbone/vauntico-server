@@ -1,11 +1,25 @@
-# Vauntico TypeScript SDK
+# @vauntico/sdk
 
-Official TypeScript client SDK for the Vauntico Trust Score Dashboard API.
+Official TypeScript client SDK for the Vauntico Trust Score Dashboard API. This package provides type-safe access to all Vauntico API endpoints with comprehensive error handling, authentication, and enterprise-grade features.
 
-## Installation
+## 🚀 Installation
+
+### npm (Recommended)
 
 ```bash
-npm install vauntico-sdk
+npm install @vauntico/sdk
+```
+
+### yarn
+
+```bash
+yarn add @vauntico/sdk
+```
+
+### pnpm
+
+```bash
+pnpm add @vauntico/sdk
 ```
 
 ## Usage

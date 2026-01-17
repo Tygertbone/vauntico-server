@@ -1,0 +1,252 @@
+# Vauntico SDK Multi-Stage Build Container
+# Enterprise-grade containerized build process for both TypeScript and Python SDKs
+
+# Base image for building
+FROM node:20-alpine AS node-builder
+LABEL maintainer="Vauntico Team <api-support@vauntico.com>"
+LABEL description="Vauntico SDK Build Environment"
+LABEL version="1.0.0"
+
+# Install system dependencies
+RUN apk add --no-cache \
+    python3 \
+    python3-dev \
+    py3-pip \
+    gcc \
+    musl-dev \
+    libffi-dev \
+    openssl-dev \
+    curl \
+    bash \
+    git \
+    gnupg \
+    jq \
+    make \
+    g++ \
+    libc-dev \
+    linux-headers \
+    rust \
+    cargo
+
+# Create workspace
+WORKDIR /workspace
+
+# Copy shared configuration
+COPY .releaserc.json .npmrc .pypirc ./
+COPY sdk/ ./sdk/
+
+# Install Node.js dependencies
+RUN cd sdk/typescript && \
+    npm ci --ignore-scripts && \
+    npm cache clean --force
+
+# Build TypeScript SDK
+RUN cd sdk/typescript && \
+    npm run build && \
+    npm pack --pack-destination /workspace/dist
+
+# Python build stage
+FROM python:3.11-slim AS python-builder
+LABEL maintainer="Vauntico Team <api-support@vauntico.com>"
+LABEL description="Vauntico Python SDK Build Environment"
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libssl-dev \
+    libffi-dev \
+    python3-dev \
+    curl \
+    bash \
+    git \
+    gnupg \
+    jq \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create workspace
+WORKDIR /workspace
+
+# Copy Python SDK and built artifacts
+COPY --from=node-builder /workspace/dist/ ./dist/
+COPY sdk/python/ ./sdk/python/
+COPY .releaserc.json .pypirc ./
+
+# Install Python dependencies
+RUN cd sdk/python && \
+    pip install --upgrade pip setuptools wheel build twine && \
+    pip install -e .[dev]
+
+# Build Python SDK
+RUN cd sdk/python && \
+    python -m build --sdist --wheel --outdir /workspace/dist
+
+# Security scanning stage
+FROM node:20-alpine AS security-scanner
+LABEL description="Security Scanning Stage"
+
+# Install security tools
+RUN npm install -g audit-ci snyk && \
+    apk add --no-cache python3 py3-pip
+
+# Install Python security tools
+RUN pip3 install safety bandit pip-audit
+
+# Copy artifacts for scanning
+COPY --from=node-builder /workspace/dist/ ./dist/
+COPY --from=python-builder /workspace/dist/ ./dist/
+COPY sdk/ ./sdk/
+
+# Run security scans
+RUN cd sdk/typescript && \
+    npm audit --audit-level=moderate || true && \
+    audit-ci --moderate || true
+
+RUN cd sdk/python && \
+    pip-audit --requirement <(pip list --format=freeze) || true && \
+    safety check || true && \
+    bandit -r src/vauntico_sdk || true
+
+# Test coverage stage
+FROM node:20-alpine AS test-runner
+LABEL description="Test Coverage Execution"
+
+# Install test dependencies
+RUN apk add --no-cache python3 py3-pip && \
+    pip3 install pytest pytest-cov
+
+# Copy SDKs
+COPY --from=node-builder /workspace/sdk/ ./sdk/
+COPY --from=python-builder /workspace/sdk/ ./sdk/
+
+# Run tests with coverage
+RUN cd sdk/typescript && \
+    npm test -- --coverage --coverageReporters=json || true
+
+RUN cd sdk/python && \
+    pip3 install -e .[test] && \
+    pytest --cov=vauntico_sdk --cov-report=json || true
+
+# GPG Signing stage
+FROM alpine:3.18 AS gpg-signer
+LABEL description="GPG Artifact Signing"
+
+# Install GPG
+RUN apk add --no-cache gnupg gpg-agent
+
+# Create workspace and import GPG key
+WORKDIR /workspace
+COPY --from=node-builder /workspace/dist/ ./dist/
+COPY --from=python-builder /workspace/dist/ ./dist/
+
+# Import GPG key and sign artifacts
+RUN echo "${GPG_PRIVATE_KEY}" | gpg --import --batch --passphrase "${GPG_PASSPHRASE}" && \
+    for file in dist/*; do \
+        if [ -f "$file" ] && [[ "$file" != *.asc ]]; then \
+            gpg --detach-sign --armor --passphrase "${GPG_PASSPHRASE}" --output "$file.asc" "$file"; \
+        fi; \
+    done
+
+# Final production stage
+FROM alpine:3.18 AS production
+LABEL maintainer="Vauntico Team <api-support@vauntico.com>"
+LABEL description="Vauntico SDK Production Build"
+LABEL version="1.0.0"
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+    curl \
+    bash \
+    jq \
+    gnupg \
+    tar \
+    gzip
+
+# Create final workspace
+WORKDIR /release
+
+# Copy all artifacts
+COPY --from=gpg-signer /workspace/dist/ ./artifacts/
+COPY --from=test-runner /workspace/sdk/typescript/coverage/ ./coverage/typescript/
+COPY --from=test-runner /workspace/sdk/python/htmlcov/ ./coverage/python/
+COPY --from=security-scanner /workspace/sdk/ ./scans/
+
+# Generate final reports
+RUN echo "# Vauntico SDK Build Report" > build-report.md && \
+    echo "Build completed at: $(date)" >> build-report.md && \
+    echo "" >> build-report.md && \
+    echo "## Artifacts:" >> build-report.md && \
+    ls -la artifacts/ >> build-report.md && \
+    echo "" >> build-report.md && \
+    echo "## Coverage Reports:" >> build-report.md && \
+    echo "- TypeScript: coverage/typescript/" >> build-report.md && \
+    echo "- Python: coverage/python/" >> build-report.md && \
+    echo "" >> build-report.md && \
+    echo "## Security Scans:" >> build-report.md && \
+    ls -la scans/ >> build-report.md
+
+# Generate checksums
+RUN cd artifacts && \
+    sha256sum * > checksums.txt && \
+    sha512sum * > checksums-sha512.txt
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/health || exit 1
+
+# Expose build status endpoint (optional)
+EXPOSE 8080
+
+# Default command
+CMD ["/bin/bash"]
+
+# Development stage for local development
+FROM node:20-alpine AS development
+LABEL description="Vauntico SDK Development Environment"
+
+# Install all dependencies
+RUN apk add --no-cache \
+    python3 \
+    python3-dev \
+    py3-pip \
+    gcc \
+    musl-dev \
+    libffi-dev \
+    openssl-dev \
+    curl \
+    bash \
+    git \
+    gnupg \
+    jq \
+    make \
+    g++
+
+WORKDIR /workspace
+
+# Copy all source code
+COPY . .
+
+# Install dependencies
+RUN cd sdk/typescript && npm install
+RUN cd sdk/python && pip install -e .[dev]
+
+# Default development command
+CMD ["bash"]
+
+# Multi-platform build support
+FROM --platform=linux/amd64 production AS amd64-production
+FROM --platform=linux/arm64 production AS arm64-production
+
+# Environment variables
+ENV SDK_VERSION=1.0.0
+ENV BUILD_DATE=""
+ENV VCS_REF=""
+ENV DOCKER_VERSION=docker-1.0.0
+
+# Labels for container metadata
+LABEL org.opencontainers.image.title="Vauntico SDK"
+LABEL org.opencontainers.image.description="Enterprise-grade Vauntico SDK build container"
+LABEL org.opencontainers.image.version="${SDK_VERSION}"
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.revision="${VCS_REF}"
+LABEL org.opencontainers.image.source="https://github.com/Tygertbone/vauntico-server"
+LABEL org.opencontainers.image.licenses="MIT"

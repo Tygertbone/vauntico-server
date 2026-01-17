@@ -1,0 +1,507 @@
+name: PyPI Publish - Enterprise Grade
+
+on:
+  push:
+    branches: [main, alpha, beta, rc]
+    paths:
+      - "sdk/python/**"
+      - ".github/workflows/pypi-publish.yml"
+      - ".releaserc.json"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (semantic)"
+        required: false
+        default: ""
+      dry_run:
+        description: "Dry run (do not actually publish)"
+        required: false
+        default: false
+        type: boolean
+      repository:
+        description: "Repository to publish to"
+        required: false
+        default: "pypi"
+        type: choice
+        options:
+          - pypi
+          - testpypi
+          - both
+
+env:
+  PYPI_USERNAME: __token__
+  PYPI_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+  TEST_PYPI_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+  GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+jobs:
+  security-scan:
+    name: Security & Dependency Audit
+    runs-on: ubuntu-latest
+    outputs:
+      security-passed: ${{ steps.security.outputs.passed }}
+      audit-passed: ${{ steps.audit.outputs.passed }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: "sdk/python/pyproject.toml"
+
+      - name: Install dependencies
+        run: |
+          cd sdk/python
+          pip install --upgrade pip setuptools wheel
+          pip install -e .[dev]
+
+      - name: Run pip-audit
+        id: audit
+        run: |
+          cd sdk/python
+          if pip-audit --requirement <(pip list --format=freeze); then
+            echo "passed=true" >> $GITHUB_OUTPUT
+            echo "✅ pip-audit passed"
+          else
+            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "⚠️ pip-audit found issues"
+            exit 1
+          fi
+
+      - name: Run safety scan
+        id: security
+        run: |
+          cd sdk/python
+          if safety check --json; then
+            echo "passed=true" >> $GITHUB_OUTPUT
+            echo "✅ Safety scan passed"
+          else
+            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Safety scan found issues"
+            exit 1
+          fi
+
+      - name: Run bandit security scan
+        run: |
+          cd sdk/python
+          bandit -r src/vauntico_sdk -f json || echo "⚠️ Bandit found issues"
+
+      - name: Check for known vulnerabilities
+        run: |
+          cd sdk/python
+          pip-audit --dry-run --requirement <(pip list --format=freeze)
+
+  test-coverage:
+    name: Test Coverage Gate (80%+)
+    runs-on: ubuntu-latest
+    outputs:
+      coverage-passed: ${{ steps.coverage.outputs.passed }}
+      coverage-percentage: ${{ steps.coverage.percentage }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: "sdk/python/pyproject.toml"
+
+      - name: Install dependencies
+        run: |
+          cd sdk/python
+          pip install --upgrade pip setuptools wheel
+          pip install -e .[dev,test]
+
+      - name: Run tests with coverage
+        id: coverage
+        run: |
+          cd sdk/python
+          pytest --cov=vauntico_sdk --cov-report=json --cov-report=term-missing --cov-report=html
+
+          # Extract coverage percentage
+          COVERAGE=$(python -c "import json; print(json.load(open('coverage.json'))['totals']['percent_covered'])")
+          echo "percentage=$COVERAGE" >> $GITHUB_OUTPUT
+
+          # Check if coverage meets threshold
+          if (( $(echo "$COVERAGE >= 80" | bc -l) )); then
+            echo "passed=true" >> $GITHUB_OUTPUT
+            echo "✅ Test coverage ${COVERAGE}% meets 80% threshold"
+          else
+            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "❌ Test coverage ${COVERAGE}% below 80% threshold"
+            exit 1
+          fi
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./sdk/python/coverage.xml
+          flags: python-sdk
+          name: python-sdk-coverage
+
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-coverage
+          path: sdk/python/htmlcov/
+          retention-days: 30
+
+  quality-checks:
+    name: Code Quality Gates
+    runs-on: ubuntu-latest
+    outputs:
+      quality-passed: ${{ steps.quality.outputs.passed }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: "sdk/python/pyproject.toml"
+
+      - name: Install dependencies
+        run: |
+          cd sdk/python
+          pip install --upgrade pip setuptools wheel
+          pip install -e .[dev]
+
+      - name: Run black formatting check
+        run: |
+          cd sdk/python
+          black --check --diff src/vauntico_sdk
+
+      - name: Run isort import sorting check
+        run: |
+          cd sdk/python
+          isort --check-only --diff src/vauntico_sdk
+
+      - name: Run flake8 linting
+        run: |
+          cd sdk/python
+          flake8 src/vauntico_sdk --max-line-length=88 --extend-ignore=E203,W503
+
+      - name: Run mypy type checking
+        id: quality
+        run: |
+          cd sdk/python
+          if mypy src/vauntico_sdk; then
+            echo "passed=true" >> $GITHUB_OUTPUT
+            echo "✅ Type checking passed"
+          else
+            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "❌ Type checking failed"
+            exit 1
+          fi
+
+  build-and-sign:
+    name: Build & GPG Sign Package
+    runs-on: ubuntu-latest
+    needs: [security-scan, test-coverage, quality-checks]
+    if: |
+      needs.security-scan.outputs.security-passed == 'true' && 
+      needs.test-coverage.outputs.coverage-passed == 'true' && 
+      needs.quality-checks.outputs.quality-passed == 'true'
+    outputs:
+      build-passed: ${{ steps.build.outputs.passed }}
+      wheel-path: ${{ steps.build.outputs.wheel-path }}
+      sdist-path: ${{ steps.build.outputs.sdist-path }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: "sdk/python/pyproject.toml"
+
+      - name: Install build dependencies
+        run: |
+          cd sdk/python
+          pip install --upgrade pip setuptools wheel build twine
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: Build package
+        id: build
+        run: |
+          cd sdk/python
+          python -m build --sdist --wheel --outdir dist
+
+          WHEEL_PATH=$(ls dist/*.whl)
+          SDIST_PATH=$(ls dist/*.tar.gz)
+          echo "wheel-path=$WHEEL_PATH" >> $GITHUB_OUTPUT
+          echo "sdist-path=$SDIST_PATH" >> $GITHUB_OUTPUT
+          echo "passed=true" >> $GITHUB_OUTPUT
+          echo "✅ Package built successfully"
+          echo "Wheel: $WHEEL_PATH"
+          echo "Source: $SDIST_PATH"
+
+      - name: Sign packages with GPG
+        run: |
+          cd sdk/python/dist
+          for file in *.whl *.tar.gz; do
+            gpg --detach-sign --armor --output "$file.asc" "$file"
+            echo "✅ Signed: $file.asc"
+          done
+
+      - name: Verify signatures
+        run: |
+          cd sdk/python/dist
+          for file in *.whl *.tar.gz; do
+            gpg --verify "$file.asc" "$file"
+            echo "✅ Signature verified: $file"
+          done
+
+      - name: Check package with twine
+        run: |
+          cd sdk/python/dist
+          twine check *.whl *.tar.gz
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-packages
+          path: |
+            sdk/python/dist/*.whl
+            sdk/python/dist/*.tar.gz
+            sdk/python/dist/*.asc
+          retention-days: 30
+
+  multi-repository-publish:
+    name: Multi-Repository Publishing
+    runs-on: ubuntu-latest
+    needs: [build-and-sign]
+    if: needs.build-and-sign.outputs.build-passed == 'true'
+    strategy:
+      matrix:
+        repository: [pypi, testpypi]
+      fail-fast: false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: python-packages
+          path: dist/
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install twine
+        run: pip install --upgrade twine
+
+      - name: Configure .pypirc
+        run: |
+          cat > ~/.pypirc << EOF
+          [distutils]
+          index-servers =
+              pypi
+              testpypi
+
+          [pypi]
+          repository = https://upload.pypi.org/legacy/
+          username = __token__
+          password = \${PYPI_PASSWORD}
+
+          [testpypi]
+          repository = https://test.pypi.org/legacy/
+          username = __token__
+          password = \${TEST_PYPI_PASSWORD}
+          EOF
+
+      - name: Publish to ${{ matrix.repository }}
+        id: publish
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            echo "🔍 Dry run: Would publish to ${{ matrix.repository }}"
+            echo "published=false" >> $GITHUB_OUTPUT
+          else
+            if twine upload --repository ${{ matrix.repository }} dist/*; then
+              echo "✅ Published to ${{ matrix.repository }}"
+              echo "published=true" >> $GITHUB_OUTPUT
+            else
+              echo "❌ Failed to publish to ${{ matrix.repository }}"
+              echo "published=false" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+          fi
+        env:
+          PYPI_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+          TEST_PYPI_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
+
+      - name: Verify package availability
+        if: steps.publish.outputs.published == 'true'
+        run: |
+          sleep 30  # Wait for package to be available
+          if [ "${{ matrix.repository }}" = "pypi" ]; then
+            pip install vauntico-sdk --index-url https://pypi.org/simple/
+          else
+            pip install vauntico-sdk --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/
+          fi
+          python -c "import vauntico_sdk; print('✅ Package verified')"
+
+  pre-release-check:
+    name: Pre-release Validation
+    runs-on: ubuntu-latest
+    needs: [multi-repository-publish]
+    if: github.ref != 'refs/heads/main'
+    steps:
+      - name: Check branch and set pre-release label
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/alpha" ]]; then
+            echo "RELEASE_CHANNEL=alpha" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/beta" ]]; then
+            echo "RELEASE_CHANNEL=beta" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/rc" ]]; then
+            echo "RELEASE_CHANNEL=rc" >> $GITHUB_ENV
+          fi
+
+      - name: Create pre-release tag
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const branch = context.ref.replace('refs/heads/', '');
+            const fs = require('fs');
+            const packageData = JSON.parse(fs.readFileSync('./sdk/python/pyproject.toml', 'utf8'));
+            const version = packageData.match(/version = "([^"]+)"/)[1];
+            const tag = `v${version}-${process.env.RELEASE_CHANNEL || 'alpha'}`;
+
+            await github.rest.git.createRef({
+              owner,
+              repo,
+              ref: `refs/tags/${tag}`,
+              sha: context.sha
+            });
+
+  rollback-strategy:
+    name: Rollback Strategy
+    runs-on: ubuntu-latest
+    needs: [multi-repository-publish]
+    if: failure() && github.ref == 'refs/heads/main'
+    steps:
+      - name: Create rollback issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+
+            await github.rest.issues.create({
+              owner,
+              repo,
+              title: `🚨 Rollback Required - PyPI Publish Failed`,
+              body: `
+              ## Rollback Required
+
+              The PyPI publish workflow failed for commit ${context.sha}.
+              
+              ### Immediate Actions Required:
+              1. **Investigate Failure**: Check the workflow logs for the root cause
+              2. **Manual Rollback**: If a partial publish occurred, remove the version
+              3. **Fix Issues**: Address the problems that caused the failure
+              4. **Redeploy**: Run the workflow again after fixes
+              
+              ### Rollback Commands:
+              \`\`\`bash
+              # List current versions
+              twine search vauntico-sdk
+              
+              # Manual removal if needed (contact PyPI admin)
+              # Or yank the problematic version
+              twine yank vauntico-sdk==version --repository pypi
+              \`\`\`
+              
+              ### Affected Components:
+              - Python SDK package
+              - PyPI repository
+              - Test PyPI (if applicable)
+              
+              **Priority**: 🚨 Critical
+              **Timeline**: Immediate
+              `,
+              labels: ['critical', 'rollback', 'pypi-publish'],
+              assignees: ['maintainer-team']
+            });
+
+      - name: Notify team
+        run: |
+          echo "🚨 ROLLBACK NOTIFICATION:"
+          echo "PyPI publish workflow failed on main branch"
+          echo "Please check the rollback issue for immediate actions"
+
+  publish-summary:
+    name: Publish Summary
+    runs-on: ubuntu-latest
+    needs:
+      [security-scan, test-coverage, quality-checks, multi-repository-publish]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## 🐍 PyPI Publish Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Security results
+          if [ "${{ needs.security-scan.outputs.security-passed }}" == "true" ]; then
+            echo "✅ Security Scan: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Security Scan: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.security-scan.outputs.audit-passed }}" == "true" ]; then
+            echo "✅ pip-audit: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ pip-audit: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Quality results
+          if [ "${{ needs.quality-checks.outputs.quality-passed }}" == "true" ]; then
+            echo "✅ Code Quality: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Code Quality: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Coverage results
+          if [ "${{ needs.test-coverage.outputs.coverage-passed }}" == "true" ]; then
+            echo "✅ Test Coverage: ${{ needs.test-coverage.outputs.coverage-percentage }}%" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Test Coverage: ${{ needs.test-coverage.outputs.coverage-percentage }}% (below 80%)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Publish results
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📦 Publishing Results:" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ needs.multi-repository-publish.result }}" == "success" ]; then
+            echo "✅ Publishing: Successful" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Publishing: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔗 Links:" >> $GITHUB_STEP_SUMMARY
+          echo "- [PyPI Package](https://pypi.org/project/vauntico-sdk/)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Test PyPI Package](https://test.pypi.org/project/vauntico-sdk/)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Documentation](https://docs.vauntico.com/api)" >> $GITHUB_STEP_SUMMARY
+          echo "- [GitHub Repository](https://github.com/Tygertbone/vauntico-server/tree/main/sdk/python)" >> $GITHUB_STEP_SUMMARY

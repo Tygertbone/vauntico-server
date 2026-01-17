@@ -46,11 +46,7 @@ const CookieConsentBanner = () => {
     setShowPreferences(false);
   };
 
-  const savePreferences = (prefs: {
-    essential: boolean;
-    analytics: boolean;
-    marketing: boolean;
-  }) => {
+  const savePreferences = (prefs) => {
     localStorage.setItem("vauntico_cookie_consent", JSON.stringify(prefs));
     localStorage.setItem("vauntico_consent_date", new Date().toISOString());
     setShowBanner(false);
@@ -165,7 +161,7 @@ const CookieConsentBanner = () => {
                         </span>
                       </div>
                       <p className="text-sm text-slate-600">
-                        Required for the website to function. These cannot be
+                        Required for website to function. These cannot be
                         disabled.
                       </p>
                     </div>
@@ -198,7 +194,7 @@ const CookieConsentBanner = () => {
                       </h4>
                       <p className="text-sm text-slate-600">
                         Help us understand how visitors use our website to
-                        improve the experience.
+                        improve experience.
                       </p>
                     </div>
                   </div>

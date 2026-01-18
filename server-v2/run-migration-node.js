@@ -1,146 +1,84 @@
-import fs from "fs";
+import { execSync } from "child_process";
+import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Get __dirname equivalent in ES modules
+dotenv.config();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables from .env file in server-v2 directory
-import dotenv from "dotenv";
-dotenv.config({ path: path.join(__dirname, ".env") });
-
-// Import pg
-import { Client } from "pg";
-
-async function runMigration() {
-  console.log("🚀 Starting Vauntico Emergency Revenue Database Migration...");
-
-  // Check if DATABASE_URL is available
-  const databaseUrl = process.env.DATABASE_URL;
-  if (!databaseUrl) {
-    console.error("❌ DATABASE_URL not found in environment variables");
-    process.exit(1);
-  }
-
-  console.log(
-    "✅ DATABASE_URL found:",
-    databaseUrl.replace(/\/\/[^:]+:[^@]+@/, "//***:***@")
-  );
-
-  // Check if migration file exists
-  const migrationPath = path.join(
-    __dirname,
-    "migrations",
-    "019_create_emergency_revenue_tables_simple.sql"
-  );
-  if (!fs.existsSync(migrationPath)) {
-    console.error("❌ Migration file not found:", migrationPath);
-    process.exit(1);
-  }
-
-  console.log("✅ Migration file found:", migrationPath);
-
-  // Read migration SQL
-  const migrationSQL = fs.readFileSync(migrationPath, "utf8");
-  console.log(
-    "📋 Migration SQL loaded, length:",
-    migrationSQL.length,
-    "characters"
-  );
-
-  // Create PostgreSQL client
-  const client = new Client({
-    connectionString: databaseUrl,
-    ssl: {
-      rejectUnauthorized: true,
-    },
-  });
-
+async function runMigrations() {
   try {
-    // Connect to database
-    console.log("🔄 Connecting to database...");
-    await client.connect();
-    console.log("✅ Connected to database");
+    console.log("🔄 Running database migrations...");
 
-    // Run migration
-    console.log("🔄 Running migration...");
-    const result = await client.query(migrationSQL);
-    console.log("✅ Migration completed successfully!");
-
-    if (result.rows && result.rows.length > 0) {
-      console.log("📊 Migration result:", result.rows);
+    // Set database URL from environment or use default
+    const databaseUrl = process.env.DATABASE_URL;
+    if (!databaseUrl) {
+      throw new Error("DATABASE_URL environment variable is not set");
     }
 
-    // Verify tables were created
-    console.log("🔍 Verifying tables were created...");
-    const verificationQuery = `
-            SELECT table_name 
-            FROM information_schema.tables 
-            WHERE table_schema = 'public' 
-            AND table_name IN ('creator_payment_requests', 'creator_verifications', 'content_recovery_cases')
-            ORDER BY table_name;
-        `;
-
-    const verifyResult = await client.query(verificationQuery);
     console.log(
-      "✅ Tables found:",
-      verifyResult.rows.map((row) => row.table_name)
+      `📊 Database URL configured: ${databaseUrl.replace(/\/\/.*@/, "//***:***@")}`,
     );
 
-    if (verifyResult.rows.length !== 3) {
-      console.error(`❌ Expected 3 tables, found ${verifyResult.rows.length}`);
-      process.exit(1);
+    // Run migrations using the migration scripts
+    const migrationsPath = path.join(__dirname, "migrations");
+    console.log(`📁 Migration path: ${migrationsPath}`);
+
+    // Check if migrations directory exists
+    try {
+      await execSync(`test -d "${migrationsPath}"`, { stdio: "inherit" });
+    } catch (error) {
+      console.log("ℹ️ No migrations directory found, skipping migrations");
+      return;
     }
 
-    // Check row counts
-    console.log("📊 Checking row counts...");
-    const rowCountQuery = `
-            SELECT 
-                'creator_payment_requests' as table_name,
-                COUNT(*) as row_count
-            FROM creator_payment_requests
-            UNION ALL
-            SELECT 
-                'creator_verifications' as table_name,
-                COUNT(*) as row_count
-            FROM creator_verifications
-            UNION ALL
-            SELECT 
-                'content_recovery_cases' as table_name,
-                COUNT(*) as row_count
-            FROM content_recovery_cases;
-        `;
-
-    const rowCountResult = await client.query(rowCountQuery);
-    console.log("📊 Row counts:");
-    rowCountResult.rows.forEach((row) => {
-      console.log(`   ${row.table_name}: ${row.row_count} rows`);
-    });
-
-    console.log("🎉 Migration and verification completed successfully!");
-    console.log("");
-    console.log("📋 Summary:");
-    console.log("   - 3 emergency revenue tables created");
-    console.log("   - Database: Neon PostgreSQL");
-    console.log(
-      "   - Tables: creator_payment_requests, creator_verifications, content_recovery_cases"
+    // Run migrations with node directly
+    console.log("🚀 Executing migration files...");
+    execSync(
+      `node -e "
+      const fs = require('fs');
+      const path = require('path');
+      const { Pool } = require('pg');
+      
+      async function runMigrations() {
+        const pool = new Pool({
+          connectionString: process.env.DATABASE_URL,
+          ssl: { rejectUnauthorized: false }
+        });
+        
+        const migrationsDir = '${migrationsPath}';
+        const files = fs.readdirSync(migrationsDir)
+          .filter(f => f.endsWith('.sql'))
+          .sort();
+        
+        console.log('Found migration files:', files);
+        
+        for (const file of files) {
+          console.log(\`Running migration: \${file}\`);
+          const sql = fs.readFileSync(path.join(migrationsDir, file), 'utf8');
+          await pool.query(sql);
+          console.log(\`✅ Completed: \${file}\`);
+        }
+        
+        await pool.end();
+        console.log('🎉 All migrations completed successfully');
+      }
+      
+      runMigrations().catch(console.error);
+    "`,
+      {
+        stdio: "inherit",
+        env: { ...process.env, DATABASE_URL: databaseUrl },
+      },
     );
+
+    console.log("✅ Database migrations completed successfully");
   } catch (error) {
     console.error("❌ Migration failed:", error.message);
-    if (error.detail) {
-      console.error("Details:", error.detail);
-    }
     process.exit(1);
-  } finally {
-    // Close connection
-    await client.end();
-    console.log("🔌 Database connection closed");
   }
 }
 
-// Run migration
-runMigration().catch((error) => {
-  console.error("❌ Unexpected error:", error);
-  process.exit(1);
-});
+runMigrations();

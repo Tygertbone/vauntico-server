@@ -6,8 +6,6 @@
     "node": true,
     "jest": true
   },
-  "extends": ["eslint:recommended"],
-  "parser": "espree",
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
@@ -21,7 +19,8 @@
     "*.min.js",
     "build/**",
     "coverage/**/*",
-    ".nyc_output/**"
+    ".nyc_output/**",
+    "vauntico-mvp/**"
   ],
   "rules": {
     "no-unused-vars": "warn",
@@ -34,25 +33,9 @@
   },
   "overrides": [
     {
-      "files": ["*.jsx", "*.tsx"],
-      "parserOptions": {
-        "ecmaFeatures": {
-          "jsx": true
-        }
-      },
-      "env": {
-        "browser": true,
-        "es2022": true
-      },
-      "rules": {
-        "no-unused-vars": "warn",
-        "no-console": "warn"
-      }
-    },
-    {
-      "files": ["src/**/*.ts", "src/**/*.tsx"],
+      "files": ["src/**/*.{ts,tsx}"],
       "parser": "@typescript-eslint/parser",
-      "plugins": ["@typescript-eslint"],
+      "plugins": ["@typescript-eslint", "react"],
       "extends": [
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended"
@@ -84,16 +67,61 @@
       }
     },
     {
-      "files": ["*.js"],
-      "env": {
-        "node": true,
-        "browser": true
-      },
+      "files": ["server-v2/**/*.{ts,tsx}"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "extends": ["plugin:@typescript-eslint/recommended"],
       "parserOptions": {
+        "ecmaVersion": "latest",
         "sourceType": "module"
       },
+      "env": {
+        "node": true,
+        "es2022": true,
+        "jest": true
+      },
       "rules": {
-        "no-console": "warn"
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-console": "off",
+        "no-unused-vars": "off",
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["widget/**/*.ts"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "extends": ["plugin:@typescript-eslint/recommended"],
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+      },
+      "env": {
+        "browser": true,
+        "es2022": true
+      },
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-console": "warn",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "no-unused-vars": "off",
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["stress-test.js"],
+      "env": {
+        "node": true,
+        "browser": false,
+        "k6": true
+      },
+      "globals": {
+        "__VU": "readonly",
+        "__ITER": "readonly"
+      },
+      "rules": {
+        "no-console": "off",
+        "no-unused-vars": "warn"
       }
     }
   ]

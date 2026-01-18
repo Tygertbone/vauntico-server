@@ -4,6 +4,10 @@ module.exports = {
     node: true,
     es2021: true,
   },
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+  },
   rules: {
     // Forbid console.* globally to enforce proper logging
     "no-console": "error",
@@ -24,6 +28,9 @@ module.exports = {
     {
       // Allow require in config files that may need it
       files: ["*.config.js", "*.config.cjs"],
+      parserOptions: {
+        sourceType: "commonjs",
+      },
       rules: {
         "@typescript-eslint/no-require-imports": "off",
         "@typescript-eslint/no-var-requires": "off",
@@ -35,6 +42,10 @@ module.exports = {
       parser: "espree",
       plugins: [],
       extends: ["eslint:recommended"],
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+      },
       rules: {
         "no-console": "off",
         "no-unused-vars": "warn",
@@ -46,6 +57,10 @@ module.exports = {
       parser: "espree",
       plugins: [],
       extends: ["eslint:recommended"],
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+      },
       rules: {
         "no-console": "off",
         "no-unused-vars": "warn",

@@ -88,6 +88,21 @@
       }
     },
     {
+      "files": ["server-v2/**/*.js"],
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+      },
+      "env": {
+        "node": true,
+        "es2022": true
+      },
+      "rules": {
+        "no-unused-vars": "warn",
+        "no-console": "off"
+      }
+    },
+    {
       "files": ["widget/**/*.ts"],
       "parser": "@typescript-eslint/parser",
       "plugins": ["@typescript-eslint"],

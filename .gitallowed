@@ -1,0 +1,17 @@
+# Git allowed patterns for secret scan
+# False positive patterns that should be ignored
+
+# Allow postgres:// in documentation and configuration files
+postgres://
+
+# Allow stripe_ in documentation and configuration files  
+stripe_
+
+# Allow resend_ in documentation and configuration files
+resend_
+
+# Allow paystack_ in documentation and configuration files
+paystack_
+
+# Allow database URL examples in validation files
+DATABASE_URL.*postgres

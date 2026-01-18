@@ -1,0 +1,100 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2022": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": ["eslint:recommended"],
+  "parser": "espree",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "ignorePatterns": [
+    "dist/**/*",
+    "node_modules/**",
+    "*.min.js",
+    "build/**",
+    "coverage/**/*",
+    ".nyc_output/**"
+  ],
+  "rules": {
+    "no-unused-vars": "warn",
+    "no-console": "warn",
+    "prefer-const": "error",
+    "no-useless-escape": "warn",
+    "no-extra-semi": "error",
+    "no-prototype-builtins": "error",
+    "no-case-declarations": "error"
+  },
+  "overrides": [
+    {
+      "files": ["*.jsx", "*.tsx"],
+      "parserOptions": {
+        "ecmaFeatures": {
+          "jsx": true
+        }
+      },
+      "env": {
+        "browser": true,
+        "es2022": true
+      },
+      "rules": {
+        "no-unused-vars": "warn",
+        "no-console": "warn"
+      }
+    },
+    {
+      "files": ["src/**/*.ts", "src/**/*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "extends": [
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "ecmaFeatures": {
+          "jsx": true
+        }
+      },
+      "env": {
+        "browser": true,
+        "es2022": true
+      },
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-console": "warn",
+        "@typescript-eslint/prefer-const": "error",
+        "no-unused-vars": "off",
+        "no-console": "off",
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": "off"
+      },
+      "settings": {
+        "react": {
+          "version": "detect"
+        }
+      }
+    },
+    {
+      "files": ["*.js"],
+      "env": {
+        "node": true,
+        "browser": true
+      },
+      "parserOptions": {
+        "sourceType": "module"
+      },
+      "rules": {
+        "no-console": "warn"
+      }
+    }
+  ]
+}

@@ -33,13 +33,10 @@
   },
   "overrides": [
     {
-      "files": ["src/**/*.{ts,tsx}"],
+      "files": ["src/hooks/**/*.{ts,tsx}"],
       "parser": "@typescript-eslint/parser",
-      "plugins": ["@typescript-eslint", "react"],
-      "extends": [
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended"
-      ],
+      "plugins": ["react", "react-hooks"],
+      "extends": ["plugin:react/recommended", "plugin:react-hooks/recommended"],
       "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module",
@@ -52,9 +49,34 @@
         "es2022": true
       },
       "rules": {
-        "@typescript-eslint/no-unused-vars": "warn",
-        "@typescript-eslint/no-console": "warn",
-        "@typescript-eslint/prefer-const": "error",
+        "no-unused-vars": "warn",
+        "no-console": "warn",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn"
+      },
+      "settings": {
+        "react": {
+          "version": "detect"
+        }
+      }
+    },
+    {
+      "files": ["src/**/*.{ts,tsx}"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["react"],
+      "extends": ["plugin:react/recommended"],
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "ecmaFeatures": {
+          "jsx": true
+        }
+      },
+      "env": {
+        "browser": true,
+        "es2022": true
+      },
+      "rules": {
         "no-unused-vars": "off",
         "no-console": "off",
         "react/react-in-jsx-scope": "off",

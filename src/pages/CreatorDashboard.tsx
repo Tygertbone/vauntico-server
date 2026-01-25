@@ -244,14 +244,16 @@ const CreatorDashboard: React.FC = () => {
                 </Button>
               </DashboardCard>
             ) : (
-              <TrustScoreTrend
-                data={trendData}
-                timeframe="30d"
-                showExport={true}
-                showZoom={true}
-                interactive={true}
-                height={400}
-              />
+              <div className="flex justify-center">
+                <TrustScoreTrend
+                  data={trendData}
+                  timeframe="30d"
+                  showExport={true}
+                  showZoom={true}
+                  interactive={true}
+                  height={400}
+                />
+              </div>
             )}
 
             {/* Sacred Features */}

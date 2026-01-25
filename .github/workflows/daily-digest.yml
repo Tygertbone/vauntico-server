@@ -1,0 +1,299 @@
+name: 📅 Daily Digest Generator
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Run daily at 9:00 AM UTC (adjust for your timezone)
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+    inputs:
+      depth:
+        description: "Repository tree depth (default: 2)"
+        required: false
+        default: "2"
+        type: string
+      force_update:
+        description: "Force update even if no changes"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  generate-digest:
+    name: Generate Daily Digest
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 50 # Get more commits for better context
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4  # For future web scraping capabilities
+
+      - name: Get current digest info
+        id: digest-info
+        run: |
+          if [ -f "daily_digest.md" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            LAST_MODIFIED=$(stat -c %Y daily_digest.md 2>/dev/null || stat -f %m daily_digest.md 2>/dev/null || echo "0")
+            echo "last_modified=$LAST_MODIFIED" >> $GITHUB_OUTPUT
+            CURRENT_TIME=$(date +%s)
+            AGE=$((CURRENT_TIME - LAST_MODIFIED))
+            echo "age_seconds=$AGE" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Parse GitHub issues for blockers
+        id: blockers
+        run: |
+          echo "Analyzing GitHub issues for blockers..." 
+
+          # Get critical and high priority issues
+          CRITICAL_ISSUES=$(gh issue list --limit 20 --state open --label "critical" --json number,title,labels --jq '.[] | "#\(.number) \(.title) [CRITICAL]"' 2>/dev/null || echo "")
+          HIGH_ISSUES=$(gh issue list --limit 15 --state open --label "high-priority" --json number,title,labels --jq '.[] | "#\(.number) \(.title) [HIGH]"' 2>/dev/null || echo "")
+
+          # Get CI/CD failures
+          CI_ISSUES=$(gh issue list --limit 10 --state open --label "ci" --json number,title,labels --jq '.[] | "#\(.number) \(.title) [CI]"' 2>/dev/null || echo "")
+
+          # Combine all blockers
+          ALL_BLOCKERS="$CRITICAL_ISSUES
+          $HIGH_ISSUES
+          $CI_ISSUES"
+
+          # Format for digest
+          if [ -n "$ALL_BLOCKERS" ]; then
+            echo "blockers<<EOF" >> $GITHUB_OUTPUT
+            echo "$ALL_BLOCKERS" | head -10 | sed 's/^/- /' >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "blockers=- No critical blockers identified" >> $GITHUB_OUTPUT
+          fi
+
+          # Count issues by priority
+          CRITICAL_COUNT=$(echo "$CRITICAL_ISSUES" | grep -c . || echo "0")
+          HIGH_COUNT=$(echo "$HIGH_ISSUES" | grep -c . || echo "0")
+          CI_COUNT=$(echo "$CI_ISSUES" | grep -c . || echo "0")
+
+          echo "critical_count=$CRITICAL_COUNT" >> $GITHUB_OUTPUT
+          echo "high_count=$HIGH_COUNT" >> $GITHUB_OUTPUT
+          echo "ci_count=$CI_COUNT" >> $GITHUB_OUTPUT
+          echo "total_blockers=$((CRITICAL_COUNT + HIGH_COUNT + CI_COUNT))" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check recent workflow failures
+        id: workflow-status
+        run: |
+          echo "Checking recent workflow runs..."
+
+          # Get workflow runs from last 24 hours
+          FAILED_WORKFLOWS=$(gh run list --limit 10 --status failure --created "24 hours ago" --json name,conclusion,created_at --jq '.[] | "- \(.name) (\(.created_at))"' 2>/dev/null || echo "")
+
+          if [ -n "$FAILED_WORKFLOWS" ]; then
+            echo "failed_workflows<<EOF" >> $GITHUB_OUTPUT
+            echo "$FAILED_WORKFLOWS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            echo "workflow_failures=true" >> $GITHUB_OUTPUT
+          else
+            echo "failed_workflows=- No workflow failures in last 24 hours" >> $GITHUB_OUTPUT
+            echo "workflow_failures=false" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate enhanced digest
+        run: |
+          # Set depth from input or default
+          DEPTH="${{ github.event.inputs.depth || '2' }}"
+
+          echo "Generating digest with depth: $DEPTH"
+
+          # Create enhanced Python script
+          cat > generate_digest_enhanced.py << 'EOF'
+          import os
+          import subprocess
+          import json
+          from datetime import datetime
+
+          REPO_PATH = "."
+          OUTPUT_FILE = "daily_digest.md"
+
+          def get_repo_tree(path, depth=2):
+              tree = []
+              for root, dirs, files in os.walk(path):
+                  level = root.replace(path, "").count(os.sep)
+                  if level < depth:
+                      indent = " " * 2 * level
+                      tree.append(f"{indent}{os.path.basename(root)}/")
+                      subindent = " " * 2 * (level + 1)
+                      for f in files:
+                          # Skip hidden files and common non-source files
+                          if not f.startswith('.') and f not in ['node_modules', '.git', '__pycache__', 'dist', 'build']:
+                              tree.append(f"{subindent}{f}")
+              return "\n".join(tree)
+
+          def get_recent_commits(n=10):
+              try:
+                  commits = subprocess.check_output(
+                      ["git", "log", "--oneline", f"-n{n}", "--since='24 hours ago'"],
+                      text=True,
+                      cwd=REPO_PATH
+                  )
+                  return commits.strip() if commits.strip() else "No commits in last 24 hours"
+              except Exception as e:
+                  return f"Error fetching commits: {e}"
+
+          def get_git_stats():
+              try:
+                  stats = subprocess.check_output(
+                      ["git", "log", "--since='24 hours ago'", "--stat", "--oneline"],
+                      text=True,
+                      cwd=REPO_PATH
+                  )
+                  return stats.strip() if stats.strip() else "No changes in last 24 hours"
+              except Exception as e:
+                  return f"Error fetching stats: {e}"
+
+          # Environment variables from GitHub Actions
+          blockers = os.getenv('BLOCKERS', '- No critical blockers identified')
+          failed_workflows = os.getenv('FAILED_WORKFLOWS', '- No workflow failures in last 24 hours')
+          critical_count = os.getenv('CRITICAL_COUNT', '0')
+          high_count = os.getenv('HIGH_COUNT', '0')
+          ci_count = os.getenv('CI_COUNT', '0')
+          total_blockers = os.getenv('TOTAL_BLOCKERS', '0')
+
+          def main():
+              repo_tree = get_repo_tree(REPO_PATH, depth=int(os.getenv('DEPTH', '2')))
+              commits = get_recent_commits()
+              git_stats = get_git_stats()
+              today = datetime.now().strftime("%Y-%m-%d")
+              
+              # Dynamic mission based on blocker count
+              if int(total_blockers) > 10:
+                  mission_focus = "CRITICAL BLOCKER RESOLUTION - Address urgent issues before deployment"
+              elif int(total_blockers) > 5:
+                  mission_focus = "Blocker cleanup and stabilization"
+              else:
+                  mission_focus = "Phase 2: Monetization (Months 4-6) - Activating Pro tier subscriptions ($49/month) and Trust Score Insurance add-on ($19/month) to achieve first $10K MRR milestone."
+              
+              digest = f"""You are working inside the Vauntico codebase. Before you act, always keep this context in mind:
+
+          ## 📅 Digest Date
+          {today}
+
+          ## 📂 Repo Map (Depth: {os.getenv('DEPTH', '2')})
+          {repo_tree}
+
+          ## 🎯 Current Mission
+          {mission_focus}
+
+          ## 🚧 Known Blockers ({total_blockers} total)
+          {blockers}
+
+          ## 🔧 CI/CD Status
+          {failed_workflows}
+
+          ## 📝 Recent Activity (Last 24 Hours)
+          {commits}
+
+          ## 📊 Git Statistics
+          {git_stats}
+
+          ## 🌐 Deployment Status
+          {get_deployment_status()}
+
+          ## 🔮 Vision Anchor
+          Vauntico is building "FICO score for creators" - AI-powered trust infrastructure solving the $104B creator economy's credibility crisis. 
+
+          Core Innovation: Portable trust scoring (0-100) measuring authenticity, consistency, and impact across platforms. Dual-personality architecture serving individual creators (viral free calculator → Pro tier) and enterprise clients (API licensing). Ubuntu philosophy ("I am because we are") creating emotional moat through sacred features.
+
+          Target: 2,847+ waitlist users, African market expansion, $1B ARR by Year 5.
+
+          ---
+
+          When coding, always reason with this context first. Don't treat tasks as isolated snippets — connect them back to the repo's structure, current mission, blockers, and vision. If a request seems incomplete, ask for clarification using this context.
+          """
+              
+              with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+                  f.write(digest)
+              
+              print(f"Digest generated at {OUTPUT_FILE}")
+
+          def get_deployment_status():
+              # This could be enhanced to check actual deployment status
+              if int(total_blockers) > 5:
+                  return "⚠️ BLOCKED - Critical blockers prevent deployment"
+              elif int(total_blockers) > 0:
+                  return "🟡 CAUTION - Minor blockers exist"
+              else:
+                  return "✅ READY - No critical blockers identified"
+
+          if __name__ == "__main__":
+              main()
+          EOF
+
+          # Run the enhanced digest generation
+          python generate_digest_enhanced.py
+        env:
+          BLOCKERS: ${{ steps.blockers.outputs.blockers }}
+          FAILED_WORKFLOWS: ${{ steps.workflow-status.outputs.failed_workflows }}
+          CRITICAL_COUNT: ${{ steps.blockers.outputs.critical_count }}
+          HIGH_COUNT: ${{ steps.blockers.outputs.high_count }}
+          CI_COUNT: ${{ steps.blockers.outputs.ci_count }}
+          TOTAL_BLOCKERS: ${{ steps.blockers.outputs.total_blockers }}
+          DEPTH: ${{ github.event.inputs.depth || '2' }}
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if [ "${{ steps.digest-info.outputs.exists }}" = "true" ]; then
+            # Check if digest has changed significantly
+            if git diff --quiet daily_digest.md; then
+              echo "changed=false" >> $GITHUB_OUTPUT
+              echo "message=No significant changes to digest" >> $GITHUB_OUTPUT
+            else
+              echo "changed=true" >> $GITHUB_OUTPUT
+              echo "message=Digest updated with new content" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "message=New digest created" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.changes.outputs.changed == 'true' || github.event.inputs.force_update == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add daily_digest.md
+          git commit -m "📅 Update daily digest - ${{ steps.changes.outputs.message }}"
+          git push
+
+      - name: Create summary
+        run: |
+          echo "## 📅 Daily Digest Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ${{ steps.changes.outputs.message }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Blockers**: ${{ steps.blockers.outputs.total_blockers }} total (Critical: ${{ steps.blockers.outputs.critical_count }}, High: ${{ steps.blockers.outputs.high_count }}, CI: ${{ steps.blockers.outputs.ci_count }})" >> $GITHUB_STEP_SUMMARY
+          echo "- **Workflow Failures**: ${{ steps.workflow-status.outputs.workflow_failures == 'true' && 'Yes' || 'No' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Repository Depth**: ${{ github.event.inputs.depth || '2' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🚧 Current Blockers" >> $GITHUB_STEP_SUMMARY
+          echo '${{ steps.blockers.outputs.blockers }}' >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload digest as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: daily-digest-${{ github.run_number }}
+          path: daily_digest.md
+          retention-days: 30

@@ -306,7 +306,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "20"
           cache: "npm"
 
       - name: Install dependencies
@@ -685,7 +685,7 @@ jobs:
                       \"type\": \"section\",
                       \"text\": {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"⚠️ *Deployment completed with validation issues*\\n🎯 *Phase:*\\n$PHASE\\n📊 *Target:*\\n$TARGET\\n🏷️ *ID:*\\n$DEPLOY_ID\\n📡 *API:*\\n${{ needs.deploy-services.outputs.deployment-url }}\\n📝 *Feature:* $FEATURE_DESCRIPTION\\n⚠️ Some validation checks failed. Please review deployment logs.\"
+                        \"text\": \"⚠️ *Deployment completed with validation issues*\\n🎯 *Phase:*\\n$PHASE\\n📊 *Target:*\\n$TARGET\\n🏷️ *ID:*\\n$DEPLOY_ID\\n📡 *API:*\\n${{ needs.deploy-services.outputs.deployment-url }}\\n📝 *Feature:*\\n$FEATURE_DESCRIPTION\\n⚠️ Some validation checks failed. Please review deployment logs.\"
                       }
                     }
                   ]
@@ -700,7 +700,7 @@ jobs:
                       \"type\": \"section\",
                       \"text\": {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"❌ *Deployment Failed*\\n🎯 *Phase:*\\n$PHASE\\n📊 *Target:*\\n$TARGET\\n🏷️ *ID:*\\n$DEPLOY_ID\\n📝 *Feature:* $FEATURE_DESCRIPTION\\nPlease check GitHub Actions logs for detailed error information.\"
+                        \"text\": \"❌ *Deployment Failed*\\n🎯 *Phase:*\\n$PHASE\\n📊 *Target:*\\n$TARGET\\n🏷️ *ID:*\\n$DEPLOY_ID\\n📝 *Feature:*\\n$FEATURE_DESCRIPTION\\nPlease check GitHub Actions logs for detailed error information.\"
                       }
                     }
                   ]

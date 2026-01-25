@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 export interface SacredFeature {
   id: string;
@@ -181,7 +181,7 @@ const mockFeatures: SacredFeature[] = [
 ];
 
 export const useFeatures = (
-  options: UseFeaturesOptions = {}
+  options: UseFeaturesOptions = {},
 ): UseFeaturesReturn => {
   const {
     userId = "demo-user",

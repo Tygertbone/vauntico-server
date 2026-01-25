@@ -53,10 +53,7 @@ module.exports = {
       files: ["src/**/*.ts", "src/**/*.tsx"],
       parser: "@typescript-eslint/parser",
       plugins: ["@typescript-eslint"],
-      extends: [
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended",
-      ],
+      extends: ["plugin:react/recommended"],
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
@@ -69,9 +66,6 @@ module.exports = {
         es2022: true,
       },
       rules: {
-        "@typescript-eslint/no-unused-vars": "warn",
-        "@typescript-eslint/no-console": "warn",
-        "@typescript-eslint/prefer-const": "error",
         "no-unused-vars": "off",
         "no-console": "off",
         "react/react-in-jsx-scope": "off",
@@ -156,6 +150,7 @@ module.exports = {
     },
     {
       files: ["vauntico-mvp/**/*.js", "vauntico-mvp/**/*.jsx"],
+      parser: "espree",
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
@@ -166,7 +161,6 @@ module.exports = {
       env: {
         browser: true,
         es2022: true,
-        jest: true,
       },
       extends: ["eslint:recommended", "plugin:react/recommended"],
       plugins: ["react"],

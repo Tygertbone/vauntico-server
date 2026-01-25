@@ -123,7 +123,7 @@ jobs:
           # Set exit code based on severity thresholds
           if command -v jq &> /dev/null; then
             high_count=$(echo "$audit_result" | jq -r '.vulnerabilities | map(select(.severity == "high")) | length')
-            moderate_count=$(echo "$audit_result" | jq -r '.vulnerabilities | map(select(.severity == "moderate")) | length')
+            moderate_count=$(echo "$audit_result" | jq -r '.vulnerabilities | map(select(.severity == "moderate")) | length)'
             
             # Fail build if high vulnerabilities or >5 moderate
             if [ "$high_count" -gt 0 ] || [ "$moderate_count" -gt 5 ]; then
@@ -146,6 +146,13 @@ jobs:
     needs: [security-audit]
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
       - name: Run TypeScript strict mode
         run: npm run typecheck
 
@@ -154,6 +161,13 @@ jobs:
     needs: [security-audit, typecheck]
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
       - name: Run ESLint + Prettier
         run: |
           npm run lint -- --max-warnings=0
@@ -164,6 +178,13 @@ jobs:
     needs: [lint, security-audit]
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
       - name: Run smoke + integration tests
         run: npm test -- --ci --reporters=default
 
@@ -172,5 +193,12 @@ jobs:
     needs: tests
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
       - name: Validate Sacred Features APIs
         run: npm run test:sacred

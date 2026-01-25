@@ -1,0 +1,151 @@
+import { useState } from 'react'
+import { checkoutWorkshopKit } from '../utils/paystack'
+
+function WorkshopKit() {
+  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [paymentType, setPaymentType] = useState('one_time')
+  const [isPurchasing, setIsPurchasing] = useState(false)
+  const [hasPurchased, setHasPurchased] = useState(
+    localStorage.getItem('vauntico_workshop_kit') === 'true'
+  )
+
+  const handlePurchase = async () => {
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address')
+      return
+    }
+
+    if (!name.trim()) {
+      alert('Please enter your name')
+      return
+    }
+
+    setIsPurchasing(true)
+    
+    try {
+      await checkoutWorkshopKit(email, paymentType, name)
+    } catch (error) {
+      alert('Failed to open payment window. Please try again.')
+      console.error(error)
+    } finally {
+      setIsPurchasing(false)
+    }
+  }
+
+  // Check URL for purchase confirmation
+  const urlParams = new URLSearchParams(window.location.search)
+  const justPurchased = urlParams.get('purchased') === 'true'
+
+  if (justPurchased && !hasPurchased) {
+    setHasPurchased(true)
+  }
+
+  return (
+    <div className=\"min-h-screen bg-gradient-to-b from-green-50 to-white\">
+      {/* Hero Section */}
+      <div className=\"bg-gradient-to-r from-green-600 to-emerald-600 text-white py-20\">
+        <div className=\"max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center\">
+          <div className=\"inline-block bg-yellow-400 text-green-900 px-4 py-2 rounded-full text-sm font-bold mb-6 animate-pulse\">
+            \ud83d\udca1 START YOUR CREATOR JOURNEY TODAY
+          </div>
+          
+          <h1 className=\"text-5xl md:text-6xl font-bold mb-6 leading-tight\">
+            Make R500 in 30 Days<br/>Using Only Your Phone
+          </h1>
+          
+          <p className=\"text-2xl md:text-3xl mb-8 opacity-95\">
+            The complete system for African creators - no expensive equipment, no experience needed,<br/>
+            just your smartphone and 1 hour per day
+          </p>
+
+          {hasPurchased ? (
+            <div className=\"bg-white/10 backdrop-blur rounded-2xl p-8 mb-8\">
+              <div className=\"text-3xl mb-4\">\u2705</div>
+              <h2 className=\"text-2xl font-bold mb-2\">You're In!</h2>
+              <p className=\"text-lg opacity-90 mb-4\">
+                Check your email for immediate access to the R500 Challenge.
+              </p>
+              <p className=\"text-sm opacity-75\">
+                Your 30-day journey to R500 starts NOW. Let's go!
+              </p>
+            </div>
+          ) : (
+            <div className=\"bg-white text-gray-900 rounded-2xl p-8 max-w-md mx-auto shadow-2xl\">
+              <h3 className=\"text-2xl font-bold mb-6\">Start Your R500 Challenge</h3>
+              
+              <input
+                type=\"text\"
+                placeholder=\"Your Name\"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className=\"w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4 focus:border-green-500 focus:outline-none\"
+                required
+              />
+              
+              <input
+                type=\"email\"
+                placeholder=\"Your Email\"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className=\"w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4 focus:border-green-500 focus:outline-none\"
+                required
+              />
+              
+              <input
+                type=\"tel\"
+                placeholder=\"WhatsApp Number (Optional)\"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className=\"w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-6 focus:border-green-500 focus:outline-none\"
+              />
+
+              {/* Payment Options */}
+              <div className=\"space-y-3 mb-6\">
+                <button
+                  onClick={() => setPaymentType('one_time')}
+                  className={\w-full p-4 rounded-lg border-2 text-left transition-all \\}
+                >
+                  <div className=\"flex items-center justify-between\">
+                    <div>
+                      <div className=\"font-bold text-lg\">Pay R399 Once</div>
+                      <div className=\"text-sm text-gray-600\">Best value - full access immediately</div>
+                    </div>
+                    <div className=\"text-2xl font-bold text-green-600\">R399</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => setPaymentType('payment_plan')}
+                  className={\w-full p-4 rounded-lg border-2 text-left transition-all \\}
+                >
+                  <div className=\"flex items-center justify-between\">
+                    <div>
+                      <div className=\"font-bold text-lg\">3 Payments of R149</div>
+                      <div className=\"text-sm text-gray-600\">Spread the cost, start today</div>
+                    </div>
+                    <div className=\"text-2xl font-bold text-green-600\">R149<span className=\"text-sm\">/mo</span></div>
+                  </div>
+                </button>
+              </div>
+
+              <button
+                onClick={handlePurchase}
+                disabled={isPurchasing || !email || !name}
+                className=\"w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold text-lg py-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed\"
+              >
+                {isPurchasing
+                  ? '\u231b Opening Payment...'
+                  : paymentType === 'one_time'
+                  ? '\ud83d\ude80 Start Challenge - R399'
+                  : '\ud83d\ude80 Start Challenge - R149 Today'}
+              </button>
+
+              <p className=\"text-xs text-gray-500 text-center mt-4\">
+                \ud83d\udd12 Secure payment via Paystack \u2022 \ud83d\udce7 Instant email access
+              </p>
+            </div>
+          )}
+        </div>
+      </div>

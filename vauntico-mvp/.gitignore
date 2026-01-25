@@ -1,0 +1,111 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.yarn/
+.npm/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.development
+.env.test
+
+# Build outputs
+dist/
+build/
+.output/
+.vercel/
+.netlify/
+
+# IDE and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS generated files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Submodule directories (prevent corruption)
+vauntico-mvp-cursur-build/
+vauntico-mvp/
+vauntico-dream-mover/
+vaultscrolls/
+vaultclientsdemo-clientscrolls/
+packages/
+server/
+tools/
+vault/
+.husky/
+syndication/
+archive/
+docs/
+
+# Keep critical files tracked
+!src/**
+!public/**
+!package.json
+!pnpm-lock.yaml
+!tailwind.config.js
+!vite.config.js
+!tsconfig.json
+!index.html
+!vercel.json
+!components.json
+.vercel
+
+# Sentry Config File
+.env.sentry-build-plugin
+
+# Corrupted and temporary files
+*.tmp
+*git config user.*
+err.name*
+signal.txt
+signal.txtgit
+ χρήστης
+FIX_LOG.md
+JSX_FIX_SUMMARY.txt
+folderMap.txt
+gitignoldecho
+h origin main
+load-test-results-*.txt
+FINAL_FIX_REPORT.txt
+IMPLEMENTATION_SUMMARY.txt
+VAULT_SUCCESS_SUMMARY.md
+*_REPORT.md
+*_SUMMARY.*
+*_AUDIT_README.md
+*_FIX_REPORT.txt
+*_IMPLEMENTATION_SUMMARY.txt
+*_SUCCESS_SUMMARY.md
+
+# Git task files (if needed for future)
+AppData/
+localStorage/
+globalStorage/
+.env*.local

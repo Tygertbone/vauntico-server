@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "at-rule-no-unknown": null,
+    "function-no-unknown": null,
+    "property-no-unknown": null,
+    "color-hex-length": "short",
+    "color-no-invalid-hex": true
+  }
+}

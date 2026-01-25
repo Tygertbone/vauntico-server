@@ -1,0 +1,312 @@
+/* Mobile Optimizations - imported first to avoid PostCSS warnings */
+@import './styles/mobile-optimizations.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Respect user's reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  
+  body {
+    @apply bg-white text-gray-900 antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  }
+  
+  /* Screen reader only utility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  .sr-only:focus,
+  .sr-only:active {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+  
+  /* Focus visible for all interactive elements */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply outline-2 outline-offset-2 outline-vault-purple;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-vault-purple hover:bg-vault-purple/90 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-primary:focus-visible {
+    @apply outline-2 outline-offset-2 outline-vault-purple ring-2 ring-vault-purple ring-offset-2;
+  }
+  
+  .btn-secondary {
+    @apply bg-vault-blue hover:bg-vault-blue/90 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-secondary:focus-visible {
+    @apply outline-2 outline-offset-2 outline-vault-blue ring-2 ring-vault-blue ring-offset-2;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-vault-purple text-vault-purple hover:bg-vault-purple hover:text-white font-semibold py-2 px-6 rounded-lg transition-all duration-200;
+  }
+  
+  .btn-outline:focus-visible {
+    @apply outline-2 outline-offset-2 outline-vault-purple ring-2 ring-vault-purple ring-offset-2;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-200;
+  }
+  
+  .vault-gradient {
+    @apply bg-gradient-to-br from-vault-purple via-vault-blue to-vault-cyan;
+  }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-vault-purple via-vault-blue to-vault-cyan;
+  }
+}
+
+@layer utilities {
+  /* Fade Animations */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Unlock Animations */
+  .animate-unfurl {
+    animation: unfurl 1s ease-out;
+  }
+  
+  @keyframes unfurl {
+    0% {
+      transform: scale(0.5) rotate(-10deg);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.1) rotate(5deg);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+  }
+
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+  }
+
+  .animate-sparkle {
+    animation: sparkle 1s ease-in-out infinite;
+  }
+  
+  @keyframes sparkle {
+    0%, 100% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.4s ease-out;
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+      max-height: 0;
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 1000px;
+    }
+  }
+
+    .animate-shimmer {
+    animation: shimmer 2s ease-in-out infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-pulse-slow {
+    animation: pulseSlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes pulseSlow {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(1.05);
+    }
+  }
+
+  /* Delay utilities */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+  .delay-600 { animation-delay: 600ms; }
+
+  /* Prose styling for markdown content */
+  .prose {
+    @apply text-gray-700 leading-relaxed;
+  }
+  
+  .prose h1 {
+    @apply text-4xl font-bold mt-8 mb-4 text-gray-900;
+  }
+  
+  .prose h2 {
+    @apply text-3xl font-bold mt-8 mb-4 text-gray-900 border-b pb-2;
+  }
+  
+  .prose h3 {
+    @apply text-2xl font-bold mt-6 mb-3 text-gray-900;
+  }
+  
+  .prose h4 {
+    @apply text-xl font-semibold mt-4 mb-2 text-gray-900;
+  }
+  
+  .prose p {
+    @apply mb-4;
+  }
+  
+  .prose ul {
+    @apply list-disc list-inside mb-4 space-y-2;
+  }
+  
+  .prose ol {
+    @apply list-decimal list-inside mb-4 space-y-2;
+  }
+  
+  .prose li {
+    @apply text-gray-700;
+  }
+  
+  .prose strong {
+    @apply font-bold text-gray-900;
+  }
+  
+  .prose em {
+    @apply italic;
+  }
+  
+  .prose hr {
+    @apply my-8 border-gray-300;
+  }
+  
+  .prose table {
+    @apply w-full border-collapse border border-gray-300 mb-6;
+  }
+  
+  .prose thead {
+    @apply bg-gray-100;
+  }
+  
+  .prose th {
+    @apply border border-gray-300 px-4 py-2 font-semibold text-left;
+  }
+  
+  .prose td {
+    @apply border border-gray-300 px-4 py-2;
+  }
+  
+  .prose tr:hover {
+    @apply bg-gray-50;
+  }
+}

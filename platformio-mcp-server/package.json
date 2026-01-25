@@ -1,0 +1,64 @@
+{
+  "name": "platformio-mcp-server",
+  "version": "1.0.0",
+  "description": "A board-agnostic MCP server for PlatformIO embedded development - supports 1000+ boards across 30+ platforms",
+  "type": "module",
+  "main": "build/index.js",
+  "bin": {
+    "platformio-mcp-server": "build/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "watch": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "platformio",
+    "embedded",
+    "iot",
+    "arduino",
+    "esp32",
+    "stm32",
+    "firmware",
+    "embedded-systems",
+    "cline",
+    "ai"
+  ],
+  "author": "PlatformIO MCP Server Contributors",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "@vitest/ui": "^1.0.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/platformio-mcp-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/platformio-mcp-server/issues"
+  },
+  "homepage": "https://github.com/yourusername/platformio-mcp-server#readme"
+}

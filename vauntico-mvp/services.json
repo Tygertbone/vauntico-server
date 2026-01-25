@@ -1,0 +1,24 @@
+{
+  "services": [
+    {
+      "Name": "server-v2",
+      "Url": "https://vauntico-server-v2.up.railway.app",
+      "Path": "/health"
+    },
+    {
+      "Name": "vauntico-fulfillment-engine",
+      "Url": "https://vauntico-fulfillment-engine.up.railway.app",
+      "Path": "/health"
+    },
+    {
+      "Name": "vault-landing",
+      "Url": "https://vauntico-vault-landing.up.railway.app",
+      "Path": "/health.json"
+    },
+    {
+      "Name": "homepage-redesign",
+      "Url": "https://vauntico.com",
+      "Path": "/api/health"
+    }
+  ]
+}
